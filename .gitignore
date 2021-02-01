@@ -42,3 +42,4 @@ setup/win32/static/postgresql*.exe
 data_dir
 venv
 odoo-conf*
+venv-3.6
