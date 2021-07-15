@@ -412,6 +412,10 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         field = cls._fields.pop(name, None)
         if hasattr(cls, name):
             delattr(cls, name)
+        if cls._rec_name == name:
+            # fixup _rec_name and display_name's dependencies
+            cls._rec_name = None
+            cls.display_name.depends = tuple(dep for dep in cls.display_name.depends if dep != name)
         return field
 
     @api.model
@@ -907,7 +911,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                         if lines2:
                             # merge first line with record's main line
                             for j, val in enumerate(lines2[0]):
-                                if val or isinstance(val, bool):
+                                if val or isinstance(val, (int, float)):
                                     current[j] = val
                             # append the other lines at the end
                             lines += lines2[1:]
@@ -1216,7 +1220,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             exc_vals = dict(base, record=record, field=field_names[field])
             record = dict(base, type=type, record=record, field=field,
                           message=str(exception.args[0]) % exc_vals)
-            if len(exception.args) > 1 and exception.args[1]:
+            if len(exception.args) > 1 and isinstance(exception.args[1], dict):
                 record.update(exception.args[1])
             log(record)
 
@@ -1484,15 +1488,9 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         view = E.calendar(string=self._description)
         view.append(E.field(name=self._rec_name_fallback()))
 
-        if self._date_name not in self._fields:
-            date_found = False
-            for dt in ['date', 'date_start', 'x_date', 'x_date_start']:
-                if dt in self._fields:
-                    self._date_name = dt
-                    break
-            else:
-                raise UserError(_("Insufficient fields for Calendar View!"))
-        view.set('date_start', self._date_name)
+        if not set_first_of([self._date_name, 'date', 'date_start', 'x_date', 'x_date_start'],
+                            self._fields, 'date_start'):
+            raise UserError(_("Insufficient fields for Calendar View!"))
 
         set_first_of(["user_id", "partner_id", "x_user_id", "x_partner_id"],
                      self._fields, 'color')
@@ -2282,9 +2280,11 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         self._apply_ir_rules(query, 'read')
         for gb in groupby_fields:
-            assert gb in self._fields, "Unknown field %r in 'groupby'" % gb
+            if gb not in self._fields:
+                raise UserError(_("Unknown field %r in 'groupby'") % gb)
             gb_field = self._fields[gb].base_field
-            assert gb_field.store and gb_field.column_type, "Fields in 'groupby' must be regular database-persisted fields (no function or related fields), or function fields with store=True"
+            if not (gb_field.store and gb_field.column_type):
+                raise UserError(_("Fields in 'groupby' must be database-persisted fields (no computed fields)"))
 
         aggregated_fields = []
         select_terms = []
@@ -2848,14 +2848,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 raise
 
         for name in bad_fields:
-            del cls._fields[name]
-            delattr(cls, name)
-
-        # fix up _rec_name
-        if 'x_name' in bad_fields and cls._rec_name == 'x_name':
-            cls._rec_name = None
-            field = cls._fields['display_name']
-            field.depends = tuple(name for name in field.depends if name != 'x_name')
+            self._pop_field(name)
 
     @api.model
     def _setup_complete(self):
@@ -3688,6 +3681,11 @@ Fields:
             real_recs._validate_fields(vals, inverse_fields)
 
             for fields in determine_inverses.values():
+                # write again on non-stored fields that have been invalidated from cache
+                for field in fields:
+                    if not field.store and any(self.env.cache.get_missing_ids(real_recs, field)):
+                        field.write(real_recs, vals[field.name])
+
                 # inverse records that are not being computed
                 try:
                     fields[0].determine_inverse(real_recs)
@@ -4673,7 +4671,7 @@ Fields:
         """
         ids, new_ids = [], []
         for i in self._ids:
-            (ids if isinstance(i, int) else new_ids).append(i)
+            (new_ids if isinstance(i, NewId) else ids).append(i)
         if not ids:
             return self
         query = """SELECT id FROM "%s" WHERE id IN %%s""" % self._table
@@ -5294,6 +5292,9 @@ Fields:
                 result.append(self.browse())
             else:
                 (key, comparator, value) = d
+                if comparator in ('child_of', 'parent_of'):
+                    result.append(self.search([('id', 'in', self.ids), d]))
+                    continue
                 if key.endswith('.id'):
                     key = key[:-3]
                 if key == 'id':
@@ -5310,9 +5311,6 @@ Fields:
                 records_ids = OrderedSet()
                 for rec in self:
                     data = rec.mapped(key)
-                    if comparator in ('child_of', 'parent_of'):
-                        value = data.search([(data._parent_name, comparator, value)]).ids
-                        comparator = 'in'
                     if isinstance(data, BaseModel):
                         v = value
                         if (isinstance(value, list) or isinstance(value, tuple)) and len(value):
@@ -5924,7 +5922,7 @@ Fields:
             presence of ``other_fields``.
         """
         return (field.name in self._onchange_methods) or any(
-            dep in other_fields for dep in self._dependent_fields(field)
+            dep in other_fields for dep in self._dependent_fields(field.base_field)
         )
 
     @api.model
@@ -6191,6 +6189,11 @@ Fields:
         # triggers default_get() on the new record when creating snapshot0
         initial_values = dict(values, **dict.fromkeys(names, False))
 
+        # do not force delegate fields to False
+        for name in self._inherits.values():
+            if not initial_values.get(name, True):
+                initial_values.pop(name)
+
         # create a new record with values
         record = self.new(initial_values, origin=self)
 
@@ -6217,6 +6220,15 @@ Fields:
         protected = [self._fields[name] for name in names]
         with self.env.protecting(protected, record):
             record.modified(todo)
+            for name in todo:
+                field = self._fields[name]
+                if field.inherited:
+                    # modifying an inherited field should modify the parent
+                    # record accordingly; because we don't actually assign the
+                    # modified field on the record, the modification on the
+                    # parent record has to be done explicitly
+                    parent = record[field.related[0]]
+                    parent[name] = record[name]
 
         result = {'warnings': OrderedSet()}
 

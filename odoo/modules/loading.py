@@ -227,7 +227,7 @@ def load_module_graph(cr, graph, status=None, perform_checks=True,
 
             # Update translations for all installed languages
             overwrite = odoo.tools.config["overwrite_existing_translations"]
-            module.with_context(overwrite=overwrite)._update_translations()
+            module._update_translations(overwrite=overwrite)
 
         if package.name is not None:
             registry._init_modules.add(package.name)
@@ -421,7 +421,7 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
 
             module_names = [k for k, v in tools.config['update'].items() if v]
             if module_names:
-                modules = Module.search([('state', '=', 'installed'), ('name', 'in', module_names)])
+                modules = Module.search([('state', 'in', ('installed', 'to upgrade')), ('name', 'in', module_names)])
                 if modules:
                     modules.button_upgrade()
 
