@@ -10,7 +10,7 @@
 # gsong <gsong2014@foxmail.com>, 2020
 # Somchart Jabsung <jabsung.s@gmail.com>, 2020
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2020
-# Odoo Thaidev <odoothaidev@gmail.com>, 2020
+# Odoo Thaidev <odoothaidev@gmail.com>, 2021
 # 
 msgid ""
 msgstr ""
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-05 12:34+0000\n"
 "PO-Revision-Date: 2019-08-26 09:10+0000\n"
-"Last-Translator: Odoo Thaidev <odoothaidev@gmail.com>, 2020\n"
+"Last-Translator: Odoo Thaidev <odoothaidev@gmail.com>, 2021\n"
 "Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,7 +115,7 @@ msgstr "สถานะกิจกรรม"
 #: model:ir.actions.act_window,name:fleet.mail_activity_type_action_config_fleet
 #: model:ir.ui.menu,name:fleet.fleet_menu_config_activity_type
 msgid "Activity Types"
-msgstr ""
+msgstr "Activity Types"
 
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_tag_action
@@ -131,7 +131,7 @@ msgstr ""
 #. module: fleet
 #: model:res.groups,name:fleet.fleet_group_manager
 msgid "Administrator"
-msgstr ""
+msgstr "ผู้ดูแลระบบ"
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_6
@@ -884,7 +884,7 @@ msgstr ""
 #: model:ir.ui.menu,name:fleet.menu_root
 #: model_terms:ir.ui.view,arch_db:fleet.res_config_settings_view_form
 msgid "Fleet"
-msgstr ""
+msgstr "Fleet"
 
 #. module: fleet
 #: model_terms:ir.ui.view,arch_db:fleet.res_config_settings_view_form
@@ -1744,7 +1744,7 @@ msgstr ""
 #. module: fleet
 #: model:fleet.vehicle.tag,name:fleet.vehicle_tag_purchased
 msgid "Purchased"
-msgstr ""
+msgstr "จัดซื้อแล้ว"
 
 #. module: fleet
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_log_fuel__purchaser_id
@@ -1946,7 +1946,7 @@ msgstr "ตั้งค่า"
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_log_contract_view_search
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_view_search
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "Show all records which has next action date is before today"
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_service_6
@@ -2430,6 +2430,14 @@ msgstr ""
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_model_action
 msgid "You can define several models (e.g. A3, A4) for each make (Audi)."
+msgstr ""
+
+#. module: fleet
+#: code:addons/fleet/models/fleet_vehicle_cost.py:76
+#, python-format
+msgid ""
+"You cannot delete an activation cost linked to a contract. You should delete"
+" the contract instead."
 msgstr ""
 
 #. module: fleet

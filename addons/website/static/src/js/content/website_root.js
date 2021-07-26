@@ -102,7 +102,7 @@ var WebsiteRoot = publicRootData.PublicRoot.extend({
     _onLangChangeClick: function (ev) {
         ev.preventDefault();
 
-        var $target = $(ev.target);
+        var $target = $(ev.currentTarget);
         // retrieve the hash before the redirect
         var redirect = {
             lang: $target.data('url_code'),
@@ -169,12 +169,12 @@ var WebsiteRoot = publicRootData.PublicRoot.extend({
     _onWebsiteSwitch: function (ev) {
         var websiteId = ev.currentTarget.getAttribute('website-id');
         var websiteDomain = ev.currentTarget.getAttribute('domain');
-        var url = window.location.href;
+        let url = `/website/force/${websiteId}`;
         if (websiteDomain && window.location.hostname !== websiteDomain) {
-            var path = window.location.pathname + window.location.search + window.location.hash;
-            url = websiteDomain + path;
+            url = websiteDomain + url;
         }
-        window.location.href = $.param.querystring(url, {'fw': websiteId});
+        const path = window.location.pathname + window.location.search + window.location.hash;
+        window.location.href = $.param.querystring(url, {'path': path});
     },
     /**
      * @private
