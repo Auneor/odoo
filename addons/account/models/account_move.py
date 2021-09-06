@@ -1785,7 +1785,7 @@ class AccountMove(models.Model):
         for move in self:
             if move.name != '/' and not self._context.get('force_delete'):
                 raise UserError(_("You cannot delete an entry which has been posted once."))
-            move.line_ids.unlink()
+        self.line_ids.unlink()
         return super(AccountMove, self).unlink()
 
     @api.returns('self', lambda value: value.id)
@@ -2117,10 +2117,15 @@ class AccountMove(models.Model):
                         base_line = self.line_ids.filtered(lambda line: tax in line.tax_ids.flatten_taxes_hierarchy())[0]
                         account_id = base_line.account_id.id
 
+                tags = refund_repartition_line.tag_ids
+                if line_vals.get('tax_ids'):
+                    subsequent_taxes = self.env['account.tax'].browse(line_vals['tax_ids'][0][2])
+                    tags += subsequent_taxes.refund_repartition_line_ids.filtered(lambda x: x.repartition_type == 'base').tag_ids
+
                 line_vals.update({
                     'tax_repartition_line_id': refund_repartition_line.id,
                     'account_id': account_id,
-                    'tag_ids': [(6, 0, refund_repartition_line.tag_ids.ids)],
+                    'tag_ids': [(6, 0, tags.ids)],
                 })
             elif line_vals.get('tax_ids') and line_vals['tax_ids'][0][2]:
                 # Base line.
@@ -4217,7 +4222,7 @@ class AccountMoveLine(models.Model):
                 'move_id': move_line.id,
                 'user_id': move_line.move_id.invoice_user_id.id or self._uid,
                 'partner_id': move_line.partner_id.id,
-                'company_id': move_line.analytic_account_id.company_id.id or self.env.company.id,
+                'company_id': move_line.analytic_account_id.company_id.id or move_line.move_id.company_id.id,
             })
         return result
 
