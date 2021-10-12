@@ -14,7 +14,13 @@
     "website": "https://github.com/OCA/web",
     "license": "AGPL-3",
     "depends": ["web"],
-    "data": ["data/ribbon_data.xml", "view/base_view.xml"],
-    "auto_install": False,
-    "installable": True,
+    "data": [
+        "data/ribbon_data.xml",
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'web_environment_ribbon/static/src/js/ribbon.js',
+            'web_environment_ribbon/static/src/css/ribbon.css',
+        ],
+    },
 }
