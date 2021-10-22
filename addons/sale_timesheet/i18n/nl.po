@@ -248,7 +248,7 @@ msgstr "Minimaal één regel moet ingevuld zijn."
 #. module: sale_timesheet
 #: model:ir.model.fields.selection,name:sale_timesheet.selection__product_template__service_policy__delivered_manual
 msgid "Based on Milestones"
-msgstr "Gebaseerd op mijlpalen"
+msgstr "Op basis van milestones"
 
 #. module: sale_timesheet
 #: model:ir.model.fields.selection,name:sale_timesheet.selection__product_template__service_policy__delivered_timesheet
@@ -640,8 +640,8 @@ msgid ""
 "Invoice based on timesheets (delivered quantity), and create a task in an "
 "existing project to track the time spent."
 msgstr ""
-"Factureer op basis van urenstaten (geleverde hoeveelheid), en creëer een "
-"taak in een bestaand project om de bestede tijd bij te houden."
+"Factureer op basis van urenstaten (geleverde hoeveelheid), en maak een taak "
+"in een bestaand project om de bestede tijd bij te houden."
 
 #. module: sale_timesheet
 #: code:addons/sale_timesheet/models/product.py:0

@@ -118,7 +118,7 @@ msgid ""
 " When different than 0, inventory count date for products stored at this "
 "location will be automatically set at the defined frequency."
 msgstr ""
-" Cuando es diferente de 0, la fecha de recuento de inventario para los "
+"Cuando es diferente de 0, la fecha de recuento de inventario para los "
 "productos almacenados en esta ubicación se establecerá automáticamente con "
 "la frecuencia definida."
 
@@ -1622,7 +1622,7 @@ msgstr "Conflictos"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_config_settings__group_stock_tracking_owner
 msgid "Consignment"
-msgstr "Envío"
+msgstr "Consigna"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__consume_line_ids

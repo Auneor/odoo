@@ -3797,7 +3797,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Contiene las vistas de empresa para las cuentas de Stock\n"
+"Contiene las vistas de empresa para las cuentas de Inventario\n"
 "    "
 
 #. module: base
@@ -5252,7 +5252,7 @@ msgstr ""
 "* Los pedidos se emparejan con los productos Odoo según su referencia interna (SKU en Amazon).\n"
 "* Las entregas confirmadas en Odoo se sincronizan en Amazon.\n"
 "* Soporte para Fulfillment by Amazon (FBA) y Fulfillment by Merchant (FBM):\n"
-"    * Logística de Amazon: una ubicación de stock y los movimientos de stock permiten supervisar su stock en los centros logísticos de Amazon.\n"
+"    * Logística de Amazon: una ubicación de existencias y los movimientos de existencias permiten supervisar sus existencias en los centros logísticos de Amazon.\n"
 "    * FBM: las notificaciones de entrega se envían a Amazon para cada picking confirmado (entrega parcial amigable).\n"
 
 #. module: base
@@ -14488,7 +14488,7 @@ msgstr "Tasa de la empresa"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__company_registry
 msgid "Company Registry"
-msgstr "Registro de la empresa"
+msgstr "Registro mercantil"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__report_header
@@ -19200,8 +19200,8 @@ msgid ""
 "Helps you manage your inventory and main stock operations: delivery orders, "
 "receptions, etc."
 msgstr ""
-"Ayuda a gestionar el inventario y las operaciones principales de stock: "
-"albaranes, recepciones, etc"
+"Ayuda a gestionar el inventario y las operaciones principales de inventario:"
+" albaranes, recepciones, etc"
 
 #. module: base
 #: model:ir.module.category,description:base.module_category_manufacturing_manufacturing
@@ -21326,7 +21326,7 @@ msgstr "Chat en vivo para leads"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.module_view_kanban
 msgid "Learn More"
-msgstr "Saber más"
+msgstr "Más información"
 
 #. module: base
 #: model:res.country,name:base.lb

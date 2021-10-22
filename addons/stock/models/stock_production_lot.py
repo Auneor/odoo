@@ -61,7 +61,7 @@ class ProductionLot(models.Model):
         return lot_names
 
     @api.model
-    def get_next_serial(self, company, product):
+    def _get_next_serial(self, company, product):
         """Return the next serial number to be attributed to the product."""
         if product.tracking == "serial":
             last_serial = self.env['stock.production.lot'].search(
@@ -131,7 +131,7 @@ class ProductionLot(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         self._check_create()
-        return super(ProductionLot, self).create(vals_list)
+        return super(ProductionLot, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
 
     def write(self, vals):
         if 'company_id' in vals:
