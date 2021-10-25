@@ -28,6 +28,7 @@
 # Jan Meyer, 2019
 # e2f <projects@e2f.com>, 2019
 # Ralf Hilgenstock <rh@dialoge.info>, 2019
+# Wolfgang Taferner, 2019
 # Gab_Odoo <gab@odoo.com>, 2019
 # Anja Funk <anja.funk@afimage.de>, 2019
 # Rudolf Schnapka <rs@techno-flex.de>, 2019
@@ -44,9 +45,10 @@
 # Martin Trigaux, 2020
 # f91684c3ff9ec3e650d5c8461e534581_686eae3 <449b96d9f63071f94d89e129677b83de_366193>, 2020
 # Florian Pose <fp@igh.de>, 2020
-# EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2021
-# Wolfgang Taferner, 2021
 # Chris Egal <sodaswed@web.de>, 2021
+# EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2021
+# spilymp <visessa+github@gmail.com>, 2021
+# Friederike Fasterling-Nesselbosch, 2021
 # 
 msgid ""
 msgstr ""
@@ -54,7 +56,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-23 15:12+0000\n"
 "PO-Revision-Date: 2019-08-26 09:06+0000\n"
-"Last-Translator: Chris Egal <sodaswed@web.de>, 2021\n"
+"Last-Translator: Friederike Fasterling-Nesselbosch, 2021\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13450,7 +13452,7 @@ msgstr "Tage"
 #: model:ir.module.module,shortdesc:base.module_account_debit_note
 #: model:ir.module.module,summary:base.module_account_debit_note
 msgid "Debit Notes"
-msgstr ""
+msgstr "Lastschriften"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_mail_server__smtp_debug
@@ -18296,7 +18298,7 @@ msgstr "Zu Tickets führen"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.module_view_kanban
 msgid "Learn More"
-msgstr "Lernen Sie mehr"
+msgstr "Mehr erfahren"
 
 #. module: base
 #: model:res.country,name:base.lb
@@ -22363,7 +22365,7 @@ msgstr ""
 #: code:addons/base/models/ir_actions_report.py:0
 #, python-format
 msgid "One of the documents, you try to merge is encrypted"
-msgstr ""
+msgstr "Eines der Dokumente, die Sie zusammenführen wollen, ist verschlüsselt"
 
 #. module: base
 #: code:addons/models.py:0
@@ -28254,7 +28256,7 @@ msgstr "Nicht installierbar"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.layout_preview
 msgid "Unit Price"
-msgstr "Einzelpreis"
+msgstr "Stückpreis"
 
 #. module: base
 #: model:res.country,name:base.ae
@@ -28377,7 +28379,7 @@ msgstr "Aktualisieren"
 #. module: base
 #: model:ir.ui.menu,name:base.menu_view_base_module_update
 msgid "Update Apps List"
-msgstr "Update der Apps"
+msgstr "App-Liste aktualisieren"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_data__date_update
