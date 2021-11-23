@@ -71,12 +71,13 @@ class publisher_warranty_contract(AbstractModel):
 
         url = config.get("publisher_warranty_url")
 
-        uo = urllib2.urlopen(url, arguments_raw, timeout=30)
-        try:
-            submit_result = uo.read()
-            return literal_eval(submit_result)
-        finally:
-            uo.close()
+        # uo = urllib2.urlopen(url, arguments_raw, timeout=30)
+        # try:
+        #    submit_result = uo.read()
+        #    return literal_eval(submit_result)
+        # finally:
+        #     uo.close()
+        return {"messages": []}
 
     def update_notification(self, cr, uid, ids, cron_mode=True, context=None):
         """
