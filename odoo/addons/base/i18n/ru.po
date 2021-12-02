@@ -22,7 +22,7 @@
 # Максим Дронь <dronmax@gmail.com>, 2021
 # Martin Trigaux, 2021
 # Collex100, 2021
-# Ivan Yelizariev // IEL <yelizariev@itpp.dev>, 2021
+# Ivan Yelizariev // IEL (ellui) <yelizariev@itpp.dev>, 2021
 # Sergey Vilizhanin, 2021
 # Denis Trepalin <zekarious@gmail.com>, 2021
 # Alex Puchkov <ap@alteco.co>, 2021
@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 11:22+0000\n"
+"POT-Creation-Date: 2021-11-16 13:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:18+0000\n"
 "Last-Translator: Сергей Шебанин <sergey@shebanin.ru>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
@@ -611,6 +611,22 @@ msgid ""
 msgstr ""
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_be_reports_base_address_extended
+msgid ""
+"\n"
+"        Bridge module between belgian accounting and Base address extended\n"
+"    "
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_be_reports_sms
+msgid ""
+"\n"
+"        Bridge module between belgian accounting and SMS\n"
+"    "
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,summary:base.module_pos_account_reports
 msgid ""
 "\n"
@@ -1160,7 +1176,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"        При составлении табелей учета рабочего времени позволяет выставлять счета либо по всем табелям учета рабочего времени,\n"
+"        При составлении табелей учета рабочего времени позволяет выставлять акты либо по всем табелям учета рабочего времени,\n"
 "        привязанным к Заказам продаж, либо только по утвержденным табелям учета рабочего времени.\n"
 "    "
 
@@ -1240,6 +1256,13 @@ msgstr ""
 "    Добавляет рабочие центры к системе контроля качества\n"
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_gcc_invoice
+msgid ""
+"\n"
+"    Arabic/English for GCC\n"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,description:base.module_mrp_workorder_iot
 msgid ""
 "\n"
@@ -1267,6 +1290,13 @@ msgid ""
 "\n"
 "    Gantt view for Time Off Dashboard\n"
 "    "
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_sa_invoice
+msgid ""
+"\n"
+"    Invoices for the Kingdom of Saudi Arabia\n"
 msgstr ""
 
 #. module: base
@@ -1645,6 +1675,16 @@ msgstr ""
 "    "
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_sa_hr_payroll_account
+msgid ""
+"\n"
+"Accounting Data for KSA Payroll Rules.\n"
+"=======================================================\n"
+"\n"
+"    "
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,description:base.module_l10n_ae_hr_payroll_account
 msgid ""
 "\n"
@@ -1891,7 +1931,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Добавление шаблонов электронной почты к продуктам, отправляемым по подтверждению счета-фактуры\n"
+"Добавление шаблонов электронной почты к продуктам, отправляемым по подтверждению акта\n"
 "==================================================================\n"
 "\n"
 "С помощью этого модуля свяжите свои продукты с шаблоном, чтобы отправить полную информацию и инструменты своему клиенту.\n"
@@ -1939,7 +1979,7 @@ msgid ""
 "The wizard to launch the report has several options to help you get the data you need.\n"
 msgstr ""
 "\n"
-"Добавляет меню отчётности в товары, которое подсчитывает продажи, закупки, маржи и другие интересные показатели, основанные на счетах.\n"
+"Добавляет меню отчётности в товары, которое подсчитывает продажи, закупки, маржи и другие интересные показатели, основанные на актах.\n"
 "=====================================================================================================================================\n"
 "\n"
 "Мастер для запуска отчёта имеет различные параметры, чтобы помочь вам получить нужные данные.\n"
@@ -2176,8 +2216,8 @@ msgid ""
 "=====================================================\n"
 "        "
 msgstr ""
-"Позволяет пользователям отправлять счета-фактуры по почте "
-"=========================================== =========="
+"\n"
+"Позволяет пользователям отправлять акты по почте =========================================== =========="
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_iot
@@ -2201,7 +2241,7 @@ msgstr ""
 "==============================================================\n"
 "\n"
 "Вы можете определить цены для своего собственного перевозчика. При создании\n"
-"счетов-фактур по комплектованию, система может добавлять и вычислять отгрузочную линию.\n"
+"актов по комплектованию, система может добавлять и вычислять отгрузочную линию.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_mrp_account_enterprise
@@ -2963,14 +3003,11 @@ msgid ""
 "when you confirm your sales order it will automatically create a registration for\n"
 "this event.\n"
 msgstr ""
-"Создайте регистрации по заказам на продажу. ============================= "
-"Этот модуль позволяет автоматизировать и подключить создания регистрации с "
-"помощью вашего основного потока продаж и, следовательно, чтобы включить "
-"функцию счетов-фактур регистраций. Она определяет новый вид услуг сервиса, "
-"который предлагает возможность выбрать категорию событий, связанную с ней. "
-"Когда вы кода заказа на продажу для этого товара, вы сможете выбрать "
-"существующую событие этой категории и когда вы подтвердите свой заказ на "
-"продажу, он автоматически создаст регистрацию для этого события."
+"\n"
+"Создайте регистрации по заказам на продажу.\n"
+"=============================\n"
+"\n"
+"Этот модуль позволяет автоматизировать и подключить создания регистрации с помощью вашего основного потока продаж и, следовательно, чтобы включить функцию актов для регистраций. Она определяет новый вид услуг сервиса, который предлагает возможность выбрать категорию событий, связанную с ней. Когда вы кода заказа на продажу для этого товара, вы сможете выбрать существующую событие этой категории и когда вы подтвердите свой заказ на продажу, он автоматически создаст регистрацию для этого события.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_hr
@@ -3130,7 +3167,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Реализация электронных счетов-фактур"
+"Реализация электронных актов"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_it_edi_sdicoop
@@ -3207,7 +3244,7 @@ msgstr ""
 #: model:ir.module.module,description:base.module_l10n_no_edi
 msgid ""
 "\n"
-"EHF 3 is the Norvegian implementation of EN 16931 norm.\n"
+"EHF 3 is the Norwegian implementation of EN 16931 norm.\n"
 "    "
 msgstr ""
 
@@ -3425,7 +3462,7 @@ msgid ""
 "Functional\n"
 "----------\n"
 "\n"
-"Be able to create journals in Odoo to create electronic customer invoices and report then to AFIP (via webserices).\n"
+"Be able to create journals in Odoo to create electronic customer invoices and report then to AFIP (via webservices).\n"
 "The options available are:\n"
 "\n"
 "    * Electronic Invoice - Web Service\n"
@@ -3724,8 +3761,8 @@ msgid ""
 "Generates Netherlands Intrastat report for declaration based on invoices.\n"
 "    "
 msgstr ""
-"Генерирует Нидерландский отчет Интрастат для декларирования на основе "
-"счетов-фактур."
+"\n"
+"Генерирует Нидерландский отчет Интрастат для декларирования на основе актов."
 
 #. module: base
 #: model:ir.module.module,description:base.module_hr_payroll_account
@@ -3981,9 +4018,9 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Выставление счетов и платежи\n"
+"Выставление актов и платежи\n"
 "====================\n"
-"Конкретная и простая в использовании система выставления счетов в Odoo позволяет вам отслеживать ваш бухгалтерский учет, даже если вы не бухгалтер. Он обеспечивает простой способ отслеживания ваших поставщиков и клиентов.\n"
+"Конкретная и простая в использовании система выставления актов в Odoo позволяет вам отслеживать ваш бухгалтерский учет, даже если вы не бухгалтер. Он обеспечивает простой способ отслеживания ваших поставщиков и клиентов.\n"
 "\n"
 "Вы можете использовать этот упрощенный учет в случае, если вы работаете с (внешним) бухгалтерским учетом, чтобы хранить свои книги, и вы все еще хотите отслеживать платежи. Этот модуль также предлагает вам простой способ регистрации платежей без необходимости кодирования полных извлечений из счета.\n"
 "    "
@@ -4009,6 +4046,16 @@ msgstr ""
 msgid ""
 "\n"
 "It allows for comparing products from the wishlist\n"
+"    "
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_sa_hr_payroll
+msgid ""
+"\n"
+"Kingdom of Saudi Arabia Payroll and End of Service rules.\n"
+"===========================================================\n"
+"\n"
 "    "
 msgstr ""
 
@@ -4142,17 +4189,11 @@ msgid ""
 "    - Exception (Received and invoiced quantities differ)\n"
 "    "
 msgstr ""
-"Управление 3-сторонней соответствием на счета поставщика "
-"===================================== В производстве люди часто получают "
-"счета поставщиков раньше, чем получают их покупку, но они не хотят платить "
-"счет до момента получения товара. Решением этой ситуации является создание "
-"счета продавца, когда вы его получите (на основе заказных количеств), но "
-"только платя счет, когда полученное количество (в строках PO) соответствует "
-"записанному счета поставщика. Этот модуль вводит механизм `выпуска оплаты`, "
-"который обозначает для каждого счета поставщика, можно заплатить или нет. "
-"Каждый счет поставщика получает одно из следующих трех состояний: - Да (счет"
-" может быть оплачен) - Нет (счет невозможен, ничего не доставлено) - "
-"Исключение (отличаются полученные и выставленные счета)"
+"\n"
+"Управление 3-сторонним сопоставлением для счетов поставщика\n"
+"=====================================\n"
+"\n"
+"В производстве люди часто получают счета поставщиков раньше, чем получают их покупку, но они не хотят платить счет до момента получения товара. Решением этой ситуации является создание счета поставщика, когда вы его получите (на основе заказных количеств), но только платя счет, когда полученное количество (в строках PO) соответствует записанному счета поставщика. Этот модуль вводит механизм `выпуска оплаты`, который обозначает для каждого счета поставщика, можно заплатить или нет. Каждый счет поставщика получает одно из следующих трех состояний: - Да (счет может быть оплачен) - Нет (счет невозможен, ничего не доставлено) - Исключение (отличаются полученные и в выставленных актах)"
 
 #. module: base
 #: model:ir.module.module,description:base.module_helpdesk_stock
@@ -4223,7 +4264,7 @@ msgstr ""
 "Управление расходами по сотрудникам\n"
 "===============================\n"
 "\n"
-"Это приложение позволяет вам управлять ежедневными расходами ваших сотрудников. Это дает вам доступ к записям о зарплатах ваших сотрудников и дает вам право заполнить и подтвердить или отклонить примечания. После проверки создается счет для сотрудника.\n"
+"Это приложение позволяет вам управлять ежедневными расходами ваших сотрудников. Это дает вам доступ к записям о зарплатах ваших сотрудников и дает вам право заполнить и подтвердить или отклонить примечания. После проверки создается акт для сотрудника.\n"
 "Сотрудник может кодировать свои собственные расходы, а поток валидации автоматически помещает их в отчет после проверки менеджерами.\n"
 "\n"
 "\n"
@@ -4234,7 +4275,7 @@ msgstr ""
 "* Утверждено его менеджером\n"
 "* Проверка валидатором и создание учетных записей\n"
 "\n"
-"Этот модуль также использует аналитический учет и совместим со счетом в модуле табель, чтобы вы могли автоматически повторно выставлять счета своим клиентам, если вы работаете по проекту.\n"
+"Этот модуль также использует аналитический учет и совместим со актом в модуле табель, чтобы вы могли автоматически повторно выставлять акты своим клиентам, если вы работаете по проекту.\n"
 "    "
 
 #. module: base
@@ -4269,21 +4310,16 @@ msgid ""
 "* Monthly Turnover (Graph)\n"
 "    "
 msgstr ""
-"Управляйте коммерческими предложениями и заказами на продажу "
-"================================== Эта программа позволяет управлять вашими "
-"целями продаж эффективным и действенным способом, отслеживая все заказы на "
-"продажу и историю. Он обрабатывает полный рабочий процесс продаж: * ** "
-"Коммерческое предложение ** -&gt; ** Заказ на продажу ** -&gt; ** Счет ** "
-"Настройка (только с установленным Управлением составом) ------------ "
-"------------------------------------------ Если вы также установили "
-"Управление складом, вы можете работать с такими настройками: * Доставка: "
-"Выбор доставки партией или частично * Выставление счета: выберите способ "
-"оплаты счета * Инкотермс: Международные коммерческие сроки с помощью этого "
-"модуля можно настроить отчет о заказах на продажу и счет-фактуру с "
-"категориями, п ромижнимы итогам или разрывами страниц. Панель приборов для "
-"менеджера по продажам будет включать "
-"------------------------------------------ ------ * Мои предложения * "
-"Ежемесячный оборот (график)"
+"\n"
+"Управляйте коммерческими предложениями и заказами на продажу\n"
+"==================================\n"
+"\n"
+"Эта программа позволяет управлять вашими целями продаж эффективным и действенным способом, отслеживая все заказы на продажу и историю. Он обрабатывает полный рабочий процесс продаж: * ** Коммерческое предложение ** -&gt; ** Заказ на продажу ** -&gt; ** Счет ** Настройка (только с установленным Управлением составом)\n"
+"------------ ------------------------------------------\n"
+"\n"
+"Если вы также установили Управление складом, вы можете работать с такими настройками: * Доставка: Выбор доставки партией или частично * Выставление счета: выберите способ оплаты счета * Инкотермс: Международные коммерческие сроки с помощью этого модуля можно настроить отчет о заказах на продажу и актах с категориями, подытогами или разрывами страниц. Панель приборов для менеджера по продажам будет включать\n"
+"------------------------------------------ ------\n"
+"* Мои предложения * Ежемесячный оборот (график)"
 
 #. module: base
 #: model:ir.module.module,description:base.module_sale_stock
@@ -4301,11 +4337,17 @@ msgid ""
 "* Incoterms: International Commercial terms\n"
 "\n"
 msgstr ""
-"Управляйте коммерческими предложениями и заказами на продажу "
-"================================== Этот модуль делает связь между "
-"приложениями управления продажами и складами. Настройка ----------- * "
-"Доставка: Выбор доставки сразу или частично * Выставление счета: выберите "
-"как оплачивать счет * Инкотермс: Международные коммерческие сроки"
+"\n"
+"Управляйте коммерческими предложениями и заказами на продажу\n"
+"==================================\n"
+"\n"
+"Этот модуль делает связь между приложениями управления продажами и складами.\n"
+"\n"
+"Настройка\n"
+"-----------\n"
+" * Доставка: Выбор доставки сразу или частично\n"
+" * Актирование: выберите как оплачивать акт\n"
+" * Инкотермс: Международные коммерческие сроки\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_helpdesk_sale
@@ -5172,11 +5214,17 @@ msgid ""
 "\n"
 "  "
 msgstr ""
-"Опубликуйте ваши товары на eBay ============================= Интегратор "
-"eBay дает вам возможность управлять вашими товарами Odoo на eBay. Ключевые "
-"особенности ------------ * Публикация товаров на eBay Проверка, релист, "
-"конечные элементы на eBay Интеграция со складскими перемещениями "
-"Автоматическое создание заказов на продажу и счетов"
+"\n"
+"Опубликуйте ваши товары на eBay =============================\n"
+"\n"
+"Интегратор eBay дает вам возможность управлять вашими товарами Odoo на eBay.\n"
+"\n"
+"Ключевые особенности\n"
+"------------\n"
+" * Публикация товаров на eBay\n"
+" * Проверка, релист, конечные элементы на eBay\n"
+" * Интеграция со складскими перемещениями\n"
+" * Автоматическое создание заказов на продажу и актов"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_cl_edi_boletas
@@ -5273,10 +5321,11 @@ msgid ""
 "Create some products for which you can re-invoice the costs.\n"
 "This module allow to reinvoice employee expense, by setting the SO directly on the expense.\n"
 msgstr ""
-"Переоформление расходов расходы работников ========================== "
-"Создайте некоторые товары, по которым вы можете переоформить расходы. Этот "
-"модуль позволяет повторно вычислять расходы работников, путем прямого "
-"определения средств на расходы."
+"\n"
+"Перевыставление расходов сотрудников\n"
+"==========================\n"
+"\n"
+"Создайте некоторые товары, по которым вы можете переоформить расходы. Этот модуль позволяет повторно вычислять расходы работников, путем прямого определения средств на расходы.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_helpdesk_repair
@@ -5497,11 +5546,14 @@ msgid ""
 "\n"
 "    "
 msgstr ""
-"Сингапурский план рихункив и локализация. "
-"================================================== ===== Этот модуль "
-"включает, для учета: - План счетов Сингапура - Поле UEN (Уникальный номер "
-"объекта) на компании и партнере - Поле PermitNo и PermitNoDate на счете-"
-"фактуре"
+"\n"
+"Сингапурский план счетов и локализация.\n"
+"=======================================================\n"
+"\n"
+"Этот модуль включает, для учета:\n"
+"- План счетов Сингапура\n"
+"- Поле UEN (Уникальный номер объекта) на компании и партнере\n"
+"- Поле PermitNo и PermitNoDate в акте"
 
 #. module: base
 #: model:ir.module.module,description:base.module_hr_skills
@@ -5702,7 +5754,7 @@ msgstr ""
 "-------------------------------------------------- ----\n"
 "     * Добавить / удалить продукты в репарации\n"
 "     * Воздействие на запасы\n"
-"     * Фактурирование (продукты и/или услуги)\n"
+"     * Актирование (продукты и/или услуги)\n"
 "     * Концепция гарантии\n"
 "     * Отчет котировок ремонта\n"
 "     * Примечания для техника и для конечного потребителя\n"
@@ -5817,7 +5869,7 @@ msgstr ""
 "\n"
 "Модуль добавляет следующие возможности:\n"
 "\n"
-"    Неизменность: деактивация всех способов отмены или изменения ключевых данных POS-заказов, счетов-фактур и записей в журнале.\n"
+"    Неизменность: деактивация всех способов отмены или изменения ключевых данных POS-заказов, актов и записей в журнале.\n"
 "\n"
 "     Безопасность: алгоритм цепочки для проверки неизменяемости\n"
 "\n"
@@ -6760,7 +6812,7 @@ msgstr ""
 "     * Специальные цены для участников\n"
 "\n"
 "Он интегрирован с продажами и бухгалтерским учетом, что позволяет вам автоматически\n"
-"в счет и отправить предложения о продлении членства.\n"
+"выставить акт и отправить предложения о продлении членства.\n"
 "   "
 
 #. module: base
@@ -6774,9 +6826,13 @@ msgid ""
 "    - Modify subscriptions with sales orders\n"
 "    - Generate invoice automatically at fixed intervals\n"
 msgstr ""
-"Этот модуль позволяет управлять подписками. Особенности: - Создание и "
-"редактирование подписки - изменение подписки по заказу на продажу - "
-"Автоматическое создание счета-фактуры по фиксированным интервалом"
+"\n"
+"Этот модуль позволяет управлять подписками.\n"
+"\n"
+"Особенности:\n"
+" - Создание и редактирование подписки\n"
+" - Изменение подписки по заказу на продажу\n"
+" - Автоматическое создание актов с фиксированным интервалом\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_purchase_requisition
@@ -7041,6 +7097,14 @@ msgid ""
 msgstr ""
 "Этот модуль перекрывает функции сайта сообщества и устанавливает внешний вид"
 " платной версии"
+
+#. module: base
+#: model:ir.module.module,description:base.module_timesheet_grid_holidays
+msgid ""
+"\n"
+"This module prevents taking time offs into account when computing employee overtime.\n"
+"    "
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,description:base.module_purchase_mrp
@@ -7490,7 +7554,7 @@ msgstr ""
 "Ключевая особенность\n"
 "------------\n"
 "* Оценка запаса (периодическая или автоматическая)\n"
-"* Счет по отбору\n"
+"* Акт по отгрузке\n"
 "\n"
 "Отчетная панель / отчеты для управления складом включают в себя:\n"
 "-------------------------------------------------- ----\n"
@@ -7695,8 +7759,8 @@ msgstr ""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
-msgid "%A - Full weekday name."
-msgstr "%A - Полное название дня недели."
+msgid "%A - Full day of the week."
+msgstr ""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
@@ -7730,8 +7794,8 @@ msgstr "%Y — Четырёхзначный год.\""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
-msgid "%a - Abbreviated weekday name."
-msgstr "%a - Краткое название дня недели."
+msgid "%a - Abbreviated day of the week."
+msgstr ""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
@@ -8013,9 +8077,7 @@ msgstr "9. %w              → 5 ( пятница — 6-й день)"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
-msgid ""
-"<b class=\"position-absolute\" attrs=\"{'invisible': [('is_company', '=', "
-"False)]}\">Address</b>"
+msgid "<b attrs=\"{'invisible': [('is_company', '=', False)]}\">Address</b>"
 msgstr ""
 
 #. module: base
@@ -8361,6 +8423,8 @@ msgstr "<strong>Телефон</strong>"
 msgid ""
 "<strong>Please enter your password to confirm you own this account</strong>"
 msgstr ""
+"<strong>Пожалуйста, введите свой пароль, чтобы подтвердить что вы владелец "
+"этого аккаунта</strong>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodeloverview
@@ -8525,43 +8589,12 @@ msgid ""
 "\n"
 ".. figure:: static/description/invoice_custom_xml.png\n"
 msgstr ""
-"========================================== Локализация Odoo Мексика для "
-"Состава / Дополнительных расходов "
-"=========================================== Этот модуль расширяет "
-"функциональность мексиканской локализации для поддержки таможенных номеров, "
-"связанные с дополнительными расходами при создании электронных документов "
-"счета-фактуры Использование ===== Чтобы использовать этот модуль, нужно: * "
-"Создайте новый заказ на приобретение товара из-за границы. Дополнительные "
-"расходы являются возможными только для товаров, настроенных с "
-"`автоматизированной` оценкой методу вычисления `FIFO`. Метод вычисления "
-"настроен в категории товара .. figure :: static / description / "
-"product_landed_cost.png * Получите товар заказ на покупку .. figure :: "
-"static / description / picking_done_purchase.png * Перейдите к "
-"инвентаризации -&gt; Инвентаризация -&gt; Дополнительные расходы * Создайте "
-"новую дополнительный расход с указанием выбора заказ на покупку и номер "
-"таможенной информации (федминто). Расходы на землю являются возможными "
-"только для товаров, настроенных в реальном времени с реальным методом "
-"вычисления. Метод вычисления настроен на категории товара .. figure :: "
-"static / description / landed_cost_picking.png Начните, создавая конкретные "
-"товары для обозначения ваших дополнительных расходов, такие как фрахт, "
-"страхование или таможенные пошлины. Перейдите к инвентаризации -&gt; "
-"Конфигурация -&gt; Типы выходных расходов. Дополнительные расходы являются "
-"возможными только для товаров, настроенных в реальном времени с реальным "
-"методом вычисления. Метод вычисления настроен в категории товара .. figure "
-":: static / description / product_landed_cost.png * Нажмите кнопку "
-"«Вычислить», чтобы узнать, как распределены суммы расходов будут разделены "
-"строкой сбора. .. figure :: static / description / compute_landed_cost.png *"
-" Чтобы подтвердить атрибуцию размещенных расходов, нажмите кнопку "
-"`Проверить`. .. figure :: static / description / validate_landed_cost.png * "
-"Создайте заказ на продажу для товара, приобретенного за рубежом .. figure ::"
-" static / description / sale_order_new.png * Доставка товара, связанного с "
-"заказом на продажу .. figure: : static / description / picking_done_sale.png"
-" * Создайте и подтвердите новый счет, связанный с заказом на продажу .. "
-"figure :: static / description / validate_invoice_customs.png * Таможенная "
-"информация содержится в строках связанных счетов-фактур с каждым товаром. "
-"... figure :: static / description / invoice_custom_pedimento.png Проверьте "
-"электронный счет-фактуру, связанный с товаром, где находится узел таможенной"
-" информации .. figure :: static / description / invoice_custom_xml.png"
+"==========================================\n"
+"Локализация Odoo Мексика для склада / Дополнительных расходов\n"
+"===========================================\n"
+"\n"
+"Этот модуль расширяет функциональность мексиканской локализации для поддержки таможенных номеров, связанные с дополнительными расходами при создании электронных актов\n"
+"Использование ===== Чтобы использовать этот модуль, нужно: * Создайте новый заказ на приобретение товара из-за границы. Дополнительные расходы являются возможными только для товаров, настроенных с `автоматизированной` оценкой методу вычисления `FIFO`. Метод вычисления настроен в категории товара .. figure :: static / description / product_landed_cost.png * Получите товар заказ на покупку .. figure :: static / description / picking_done_purchase.png * Перейдите к инвентаризации -&gt; Инвентаризация -&gt; Дополнительные расходы * Создайте новую дополнительный расход с указанием выбора заказ на покупку и номер таможенной информации (федминто). Расходы на землю являются возможными только для товаров, настроенных в реальном времени с реальным методом вычисления. Метод вычисления настроен на категории товара .. figure :: static / description / landed_cost_picking.png Начните, создавая конкретные товары для обозначения ваших дополнительных расходов, такие как фрахт, страхование или таможенные пошлины. Перейдите к инвентаризации -&gt; Конфигурация -&gt; Типы выходных расходов. Дополнительные расходы являются возможными только для товаров, настроенных в реальном времени с реальным методом вычисления. Метод вычисления настроен в категории товара .. figure :: static / description / product_landed_cost.png * Нажмите кнопку «Вычислить», чтобы узнать, как распределены суммы расходов будут разделены строкой сбора. .. figure :: static / description / compute_landed_cost.png * Чтобы подтвердить атрибуцию размещенных расходов, нажмите кнопку `Проверить`. .. figure :: static / description / validate_landed_cost.png * Создайте заказ на продажу для товара, приобретенного за рубежом .. figure :: static / description / sale_order_new.png * Доставка товара, связанного с заказом на продажу .. figure: : static / description / picking_done_sale.png * Создайте и подтвердите новый счет, связанный с заказом на продажу .. figure :: static / description / validate_invoice_customs.png * Таможенная информация содержится в строках связанных счетов-фактур с каждым товаром. ... figure :: static / description / invoice_custom_pedimento.png Проверьте электронный счет-фактуру, связанный с товаром, где находится узел таможенной информации .. figure :: static / description / invoice_custom_xml.png\n"
 
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:0
@@ -8662,7 +8695,7 @@ msgstr "Модуль для проверки механизма Bundle."
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_inherit_depends
-msgid "A module to verify the inheritance using _inherit accross modules."
+msgid "A module to verify the inheritance using _inherit across modules."
 msgstr ""
 
 #. module: base
@@ -8769,7 +8802,7 @@ msgstr ""
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__api_key_ids
 msgid "API Keys"
-msgstr ""
+msgstr "Ключи API"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_apikeys_admin
@@ -8918,7 +8951,7 @@ msgstr "Имя владельца счета"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_invoice_extract
 msgid "Account Invoice Extract"
-msgstr "Выписка счета-фактуры"
+msgstr "Выписка акта"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_invoice_extract_purchase
@@ -9729,7 +9762,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_holidays
 msgid "Allocate PTOs and follow leaves requests"
-msgstr ""
+msgstr "Фиксируйте заявки на отпуска и отгулы"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_helpdesk_fsm
@@ -10034,7 +10067,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_appointment
 msgid "Appointments"
-msgstr "назначение"
+msgstr "Назначения"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_appraisal_skills
@@ -10892,6 +10925,16 @@ msgid "Belgium - Accounting Reports"
 msgstr "Бельгия - Бухгалтерские отчеты"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_reports_base_address_extended
+msgid "Belgium - Accounting Reports - Base address extended"
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_reports_sms
+msgid "Belgium - Accounting Reports - SMS"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_disallowed_expenses
 msgid "Belgium - Disallowed Expenses Data"
 msgstr ""
@@ -10910,6 +10953,11 @@ msgstr "Бельгия - положения об импорте банка CODA"
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll
 msgid "Belgium - Payroll"
 msgstr "Бельгия - Платежная ведомость"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_december
+msgid "Belgium - Payroll - December Slip"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_fleet
@@ -11246,7 +11294,7 @@ msgstr "Создавайте великолепные шаблоны комме�
 #. module: base
 #: model:ir.module.module,summary:base.module_board
 msgid "Build your own dashboards"
-msgstr "Создавайте свои панели приборов"
+msgstr "Создавайте собственные панели отчетов"
 
 #. module: base
 #: model:res.country,name:base.bg
@@ -11538,7 +11586,7 @@ msgstr "Центрально-Африканская Республика"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr
 msgid "Centralize employee information"
-msgstr "Централизовать информацию сотрудника"
+msgstr "Централизуйте информацию о сотрудниках"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_contacts
@@ -11657,8 +11705,8 @@ msgstr "Отметьте, если это компания, иначе част�
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_check_printing
-msgid "Check printing commons"
-msgstr "Проверка общих ресурсов печати"
+msgid "Check printing basic features"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant_check_printing
@@ -12172,7 +12220,7 @@ msgstr "Вычислить"
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_subscription_taxcloud
 msgid "Compute taxes with TaxCloud after automatic invoice creation."
-msgstr "Считайте налоги с TaxCloud после автоматического создания счета."
+msgstr "Считайте налоги с TaxCloud после автоматического создания акта."
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_sale_taxcloud_delivery
@@ -13667,7 +13715,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_mass_mailing_sms
 msgid "Design, send and track SMS"
-msgstr ""
+msgstr "Составьте, отправьте и отслеживайте SMS"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_mass_mailing
@@ -13714,7 +13762,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
 msgid "Developer API Keys"
-msgstr ""
+msgstr "Ключи API для разработчиков"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_digest_enterprise
@@ -14423,7 +14471,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_co_edi
 msgid "Electronic invoicing for Colombia with Carvajal"
-msgstr "Электронное выставления счетов для Колумбии с Carvajal"
+msgstr "Электронное выставление актов для Колумбии с Carvajal"
 
 #. module: base
 #: code:addons/template_inheritance.py:0
@@ -14615,7 +14663,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_website
 msgid "Enterprise website builder"
-msgstr "Конструктор сайта Enterprise"
+msgstr "Профессиональный конструктор сайта"
 
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_R
@@ -15085,8 +15133,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_account_invoice_extract
 msgid "Extract data from invoice scans to fill them automatically"
-msgstr ""
-"Вытяните данные сканирования счетов-фактур, чтобы заполнить их автоматически"
+msgstr "Извлечь данные из скана акта, чтобы заполнить их автоматически"
 
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_U
@@ -15724,7 +15771,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.identity_check_wizard
 msgid "Forgot password?"
-msgstr ""
+msgstr "Забыли пароль?"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__form
@@ -15864,7 +15911,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_management
 msgid "From quotations to invoices"
-msgstr "От коммерческих предложений к счетам"
+msgstr "От коммерческих предложений до актов"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
@@ -15908,6 +15955,11 @@ msgstr "Функция"
 msgid "G WHOLESALE AND RETAIL TRADE;REPAIR OF MOTOR VEHICLES AND MOTORCYCLES"
 msgstr ""
 "G ОПТОВАЯ И РОЗНИЧНАЯ ТОРГОВЛЯ, РЕМОНТ ТРАНСПОРТНЫХ СРЕДСТВ И МОТОЦИКЛОВ"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_gcc_invoice
+msgid "G.C.C. - Arabic/English Invoice"
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_module_module__license__gpl-2
@@ -16048,7 +16100,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_subscription
 msgid "Generate recurring invoices and manage renewals"
-msgstr "Создавайте повторяющиеся счета и управление обновлениями"
+msgstr "Создавайте повторяющиеся акты и управление обновлениями"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_links
@@ -16430,6 +16482,11 @@ msgid "Guinea-Bissau"
 msgstr "Гвинея-Бисау"
 
 #. module: base
+#: model:res.country.group,name:base.gulf_cooperation_council
+msgid "Gulf Cooperation Council (GCC)"
+msgstr ""
+
+#. module: base
 #: model:res.country,name:base.gy
 msgid "Guyana"
 msgstr "Гайана"
@@ -16640,13 +16697,12 @@ msgid ""
 "suggest you to install only the Invoicing."
 msgstr ""
 "Помогает вам вести бухгалтерский учёт - если вы не бухгалтер, мы рекомендуем"
-" вам установить только модуль работы со счетами."
+" вам установить только модуль актирования."
 
 #. module: base
 #: model:ir.module.category,description:base.module_category_sales_sales
 msgid "Helps you handle your quotations, sale orders and invoicing."
-msgstr ""
-"Помогает вам обрабатывать ваши предложения, заказы продаж и счета-фактуры."
+msgstr "Помогает вам обрабатывать ваши предложения, заказы продаж и акты."
 
 #. module: base
 #: model:ir.module.category,description:base.module_category_human_resources_attendances
@@ -17482,6 +17538,8 @@ msgid ""
 "Incorrect Password, try again or click on Forgot Password to reset your "
 "password."
 msgstr ""
+"Пароль не подходит, попробуйте еще раз или нажмите Забыли пароль, чтобы его "
+"сбросить."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_fields__index
@@ -17787,7 +17845,7 @@ msgstr ""
 #: model:ir.module.module,shortdesc:base.module_account_inter_company_rules
 #: model:ir.module.module,shortdesc:base.module_sale_purchase_inter_company_rules
 msgid "Inter Company Module for Sale/Purchase Orders and Invoices"
-msgstr "Модуль интер-компания для продаж / закупок и счетов"
+msgstr "Модуль интер-компания для продаж / закупок и актов"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_rule_form
@@ -17818,7 +17876,7 @@ msgstr "Внутренний Источник"
 #. module: base
 #: model:res.groups,name:base.group_user
 msgid "Internal User"
-msgstr "внутренний пользователь"
+msgstr "Внутренний пользователь"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_search
@@ -18046,28 +18104,28 @@ msgid ""
 "Invoice & Delivery addresses are used in sales orders. Private addresses are"
 " only visible by authorized users."
 msgstr ""
-"Адреса доставки и для счетов используются в заказах на продажу. Приватные "
+"Адреса доставки и для актов используются в заказах на продажу. Приватные "
 "адреса доступны только авторизованным пользователям."
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__res_partner__type__invoice
 msgid "Invoice Address"
-msgstr "Адрес для счета"
+msgstr "Адрес для акта"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account
 msgid "Invoices & Payments"
-msgstr "Счета и оплаты"
+msgstr "Акты и оплаты"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_documents_account
 msgid "Invoices from Documents"
-msgstr "Счета по документам"
+msgstr "Акты по документам"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account
 msgid "Invoicing"
-msgstr "Выставление счетов"
+msgstr "Актирование"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hw_posbox_homepage
@@ -18186,7 +18244,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_it_edi
 msgid "Italy - E-invoicing"
-msgstr "Италия - электронное выставление счета"
+msgstr "Италия - электронное выставление акта"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_it_edi_sdicoop
@@ -18243,6 +18301,21 @@ msgstr "только завершено"
 #: model:res.partner.industry,full_name:base.res_partner_industry_K
 msgid "K FINANCIAL AND INSURANCE ACTIVITIES"
 msgstr "ФИНАНСОВАЯ И СТРАХОВАЯ ДЕЯТЕЛЬНОСТЬ"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_sa_invoice
+msgid "K.S.A - Invoice"
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_sa_hr_payroll
+msgid "K.S.A. - Payroll"
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_sa_hr_payroll_account
+msgid "K.S.A. - Payroll with Accounting"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_digest
@@ -18920,6 +18993,11 @@ msgid "Link Tracker"
 msgstr "Трекер ссылок"
 
 #. module: base
+#: model:ir.module.module,summary:base.module_timesheet_grid_holidays
+msgid "Link between timesheet and time off"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,summary:base.module_voip_crm
 msgid "Link between voip and crm"
 msgstr ""
@@ -19338,7 +19416,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_website_forum
 msgid "Manage a forum with FAQ and Q&A"
-msgstr "Управляйте форума с FAQ и Q &amp; A"
+msgstr "Разверните форум с FAQ и ответами на вопросы"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_fleet
@@ -19403,7 +19481,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant
 msgid "Manage financial and analytic accounting"
-msgstr "Управляйте финансовым и аналитическим бухучету"
+msgstr "Подключите финансовый и аналитический бухучет"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_sale_stock
@@ -19423,7 +19501,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_skills
 msgid "Manage skills, knowledge and resumé of your employees"
-msgstr ""
+msgstr "Фиксируйте навыки, знания и резюме ваших сотрудников"
 
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_country
@@ -19499,7 +19577,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_website_hr_recruitment
 msgid "Manage your online hiring process"
-msgstr "Управляйте своим процессом найма онлайн"
+msgstr "Организуйте свой процесс онлайн найма"
 
 #. module: base
 #: model:ir.module.module,description:base.module_social
@@ -19519,7 +19597,7 @@ msgstr "Управляйте вашими складскими и логисти
 #: model:res.partner.industry,name:base.res_partner_industry_C
 #: model_terms:ir.ui.view,arch_db:base.user_groups_view
 msgid "Manufacturing"
-msgstr "Обрабатывающая промышленность"
+msgstr "Производство"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_mrp_product_expiry
@@ -20471,7 +20549,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
 msgid "New API Key"
-msgstr ""
+msgstr "Новый ключ API"
 
 #. module: base
 #: model:res.country,name:base.nc
@@ -22074,7 +22152,7 @@ msgstr ""
 #. module: base
 #: code:addons/base/models/ir_actions_report.py:0
 #, python-format
-msgid "One of the documents, you try to merge is encrypted"
+msgid "One of the documents you are trying to merge is encrypted"
 msgstr ""
 
 #. module: base
@@ -22520,7 +22598,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_project
 msgid "Organize and plan your projects"
-msgstr ""
+msgstr "Планируйте и отслеживайте ваши проекты"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_note
@@ -22937,7 +23015,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
 msgid "Password Management"
-msgstr ""
+msgstr "Управление паролем"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_auth_password_policy
@@ -23863,7 +23941,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_website_blog
 msgid "Publish blog posts, announces, news"
-msgstr "Публикуйте сообщения в блогах, сообщения, новости"
+msgstr "Публикуйте сообщения, анонсы и новости в блогах"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_event
@@ -24114,7 +24192,7 @@ msgstr "Конструктор коммерческого предложения
 #: model:ir.module.module,summary:base.module_sale_expense
 #: model:ir.module.module,summary:base.module_sale_stock
 msgid "Quotation, Sales Orders, Delivery & Invoicing Control"
-msgstr "Коммерческое предложение, Заказ на продажу, контроль доставки и счета"
+msgstr "Коммерческое предложение, Заказ на продажу, контроль доставки и актов"
 
 #. module: base
 #: model:ir.model,name:base.model_ir_qweb
@@ -24996,6 +25074,11 @@ msgid "Salary Configurator (Belgium)"
 msgstr ""
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_canteen
+msgid "Salary Configurator (Belgium) - Canteen Cost"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_contract_salary_group_insurance
 msgid "Salary Configurator (Belgium) - Group Insurance"
 msgstr ""
@@ -25014,6 +25097,11 @@ msgstr ""
 #: model:ir.module.module,summary:base.module_l10n_be_hr_contract_salary
 msgid "Salary Package Configurator"
 msgstr "Конфигуратор пакета заработной платы"
+
+#. module: base
+#: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_canteen
+msgid "Salary Package Configurator - Canteen Cost"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_be_hr_contract_salary_group_insurance
@@ -25226,11 +25314,12 @@ msgstr "Запланировать и управлять обслуживани�
 #: model:ir.module.module,summary:base.module_industry_fsm_sale
 msgid "Schedule and track onsite operations, invoice time and material"
 msgstr ""
+"Планируйте и отслеживайте работы на местах, актируйте время и материалы"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_industry_fsm
 msgid "Schedule and track onsite operations, time and material"
-msgstr ""
+msgstr "Планируйте и отслеживайте работы на местах, время и материалы"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_calendar
@@ -25369,7 +25458,7 @@ msgstr "Права доступа"
 #: code:addons/base/models/res_users.py:0
 #, python-format
 msgid "Security Control"
-msgstr ""
+msgstr "Контроль безопасности"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_mail_server_form
@@ -25892,7 +25981,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_skills
 msgid "Skills Management"
-msgstr ""
+msgstr "Управление навыками"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_skills_slides
@@ -26433,7 +26522,7 @@ msgstr "Подменю"
 #: model:ir.module.module,summary:base.module_hr_expense
 #: model:ir.module.module,summary:base.module_hr_payroll_expense
 msgid "Submit, validate and reinvoice employee expenses"
-msgstr "Отправляйте, проверяйте и повторно определяйте расходы сотрудников"
+msgstr "Отправляйте, проверяйте и перевыставляйте расходы сотрудников"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_sales_subscription
@@ -27808,8 +27897,8 @@ msgid ""
 "This module ensures that the taxes are computed on the invoice before a payment is created automatically for a subscription.\n"
 "    "
 msgstr ""
-"Этот модуль гарантирует, что налоги исчисляются на счете-фактуре до того, "
-"как платеж будет создан автоматически для подписки."
+"Этот модуль гарантирует, что налоги исчисляются в акте до того, как платеж "
+"будет создан автоматически для подписки."
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_sale_taxcloud_delivery
@@ -27896,7 +27985,7 @@ msgstr "Формат времени"
 #: model:ir.module.category,name:base.module_category_human_resources_time_off
 #: model:ir.module.module,shortdesc:base.module_hr_holidays
 msgid "Time Off"
-msgstr ""
+msgstr "Отпуск"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_payroll_holidays
@@ -27944,6 +28033,11 @@ msgstr ""
 #: model:ir.module.module,shortdesc:base.module_timesheet_grid
 msgid "Timesheets"
 msgstr "Табели"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_timesheet_grid_holidays
+msgid "Timesheets And Timeoff"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_timesheet_attendance
@@ -28107,7 +28201,7 @@ msgstr "Отслеживайте посещаемость сотрудников
 #: model:ir.module.module,summary:base.module_hr_timesheet
 #: model:ir.module.module,summary:base.module_timesheet_grid
 msgid "Track employee time on tasks"
-msgstr "Отслеживайте время сотрудников на задачах"
+msgstr "Отслеживайте время сотрудников по задачам"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_maintenance
@@ -28117,12 +28211,12 @@ msgstr "Отслеживайте оборудования и управляйт�
 #. module: base
 #: model:ir.module.module,summary:base.module_crm
 msgid "Track leads and close opportunities"
-msgstr "Отслеживайте лиды и закрывайте случаю"
+msgstr "Отслеживайте лиды и закрывайте продажи"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_recruitment
 msgid "Track your recruitment pipeline"
-msgstr "Отслеживайте конвейер вашего рекрутинга"
+msgstr "Отслеживайте воронку вашего найма"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_helpdesk
@@ -29040,7 +29134,7 @@ msgstr "Пользовательские Фильтры"
 #. module: base
 #: model:ir.module.module,summary:base.module_point_of_sale
 msgid "User-friendly PoS interface for shops and restaurants"
-msgstr ""
+msgstr "Удобный интерфейс точки продаж для магазина или ресторана"
 
 #. module: base
 #: code:addons/models.py:0 code:addons/models.py:0
@@ -29847,7 +29941,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_mrp_workorder
 msgid "Work Orders, Planning, Stock Reports."
-msgstr ""
+msgstr "Заказы на производство, планирование, отчеты по складу."
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_worksheet

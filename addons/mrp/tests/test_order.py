@@ -1539,12 +1539,12 @@ class TestMrpOrder(TestMrpCommon):
         (move1 | move2 | move3)._action_confirm()
 
         mo.invalidate_cache(['components_availability', 'components_availability_state'], mo.ids)
-        self.assertEqual(mo.components_availability, 'Exp %s' % format_date(self.env, tommorrow))
+        self.assertEqual(mo.components_availability, f'Exp {format_date(self.env, tommorrow)}')
         self.assertEqual(mo.components_availability_state, 'late')
 
         mo.date_planned_start = after_tommorrow
 
-        self.assertEqual(mo.components_availability, 'Exp %s' % format_date(self.env, tommorrow))
+        self.assertEqual(mo.components_availability, f'Exp {format_date(self.env, tommorrow)}')
         self.assertEqual(mo.components_availability_state, 'expected')
 
         (move1 | move2 | move3)._set_quantities_to_reservation()
@@ -1557,7 +1557,7 @@ class TestMrpOrder(TestMrpCommon):
         mo.action_assign()
 
         self.assertEqual(mo.reservation_state, 'assigned')
-        self.assertEqual(mo.components_availability, 'Ready')
+        self.assertEqual(mo.components_availability, 'Available')
         self.assertEqual(mo.components_availability_state, 'available')
 
 
@@ -1958,6 +1958,40 @@ class TestMrpOrder(TestMrpCommon):
             ('raw_material_production_id', '=', mo_backorder.id)])
         self.assertEqual(sum(move_prod_1_bo.mapped('product_uom_qty')), 60.0)
         self.assertEqual(sum(move_prod_2_bo.mapped('product_uom_qty')), 40.0)
+
+    def test_backorder_with_underconsumption(self):
+        """ Check that the components of the backorder have the correct quantities
+        when there is underconsumption in the initial MO
+        """
+        mo, _, _, p1, p2 = self.generate_mo(qty_final=20, qty_base_1=1, qty_base_2=1)
+        mo.action_confirm()
+        mo.qty_producing = 10
+        mo.move_raw_ids.filtered(lambda m: m.product_id == p1).quantity_done = 5
+        mo.move_raw_ids.filtered(lambda m: m.product_id == p2).quantity_done = 10
+        action = mo.button_mark_done()
+        backorder = Form(self.env['mrp.production.backorder'].with_context(**action['context']))
+        backorder.save().action_backorder()
+        mo_backorder = mo.procurement_group_id.mrp_production_ids[-1]
+
+        # Check quantities of the original MO
+        self.assertEqual(mo.product_uom_qty, 10.0)
+        self.assertEqual(mo.qty_produced, 10.0)
+        move_prod_1_done = mo.move_raw_ids.filtered(lambda m: m.product_id == p1 and m.state == 'done')
+        self.assertEqual(sum(move_prod_1_done.mapped('quantity_done')), 5)
+        self.assertEqual(sum(move_prod_1_done.mapped('product_uom_qty')), 5)
+        move_prod_1_cancel = mo.move_raw_ids.filtered(lambda m: m.product_id == p1 and m.state == 'cancel')
+        self.assertEqual(sum(move_prod_1_cancel.mapped('quantity_done')), 0)
+        self.assertEqual(sum(move_prod_1_cancel.mapped('product_uom_qty')), 5)
+        move_prod_2 = mo.move_raw_ids.filtered(lambda m: m.product_id == p2)
+        self.assertEqual(sum(move_prod_2.mapped('quantity_done')), 10)
+        self.assertEqual(sum(move_prod_2.mapped('product_uom_qty')), 10)
+
+        # Check quantities of the backorder MO
+        self.assertEqual(mo_backorder.product_uom_qty, 10.0)
+        move_prod_1_bo = mo_backorder.move_raw_ids.filtered(lambda m: m.product_id == p1)
+        move_prod_2_bo = mo_backorder.move_raw_ids.filtered(lambda m: m.product_id == p2)
+        self.assertEqual(sum(move_prod_1_bo.mapped('product_uom_qty')), 10.0)
+        self.assertEqual(sum(move_prod_2_bo.mapped('product_uom_qty')), 10.0)
 
     def test_state_workorders(self):
         bom = self.env['mrp.bom'].create({

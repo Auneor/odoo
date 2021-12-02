@@ -12,7 +12,6 @@
 # Tomasz Leppich <t.leppich@gmail.com>, 2021
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2021
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2021
-# Karol Rybak <karolrybak85@gmail.com>, 2021
 # Andrzej Donczew <a.donczew@hadron.eu.com>, 2021
 # Grzegorz Krukar <grzegorzgk1@gmail.com>, 2021
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2021
@@ -215,7 +214,7 @@ msgstr "Dodaj notatkę"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Add attachment"
-msgstr "Dodać załącznik"
+msgstr "Dodaj załącznik"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
@@ -785,7 +784,7 @@ msgstr "Pokaż jako opcjonalne dziedziczenie"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.user_sign_in
 msgid "Sign in"
-msgstr "Wejście"
+msgstr "Zaloguj się"
 
 #. module: portal
 #. openerp-web

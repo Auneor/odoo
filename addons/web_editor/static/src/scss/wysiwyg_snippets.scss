@@ -352,6 +352,7 @@ body.editor_enable.editor_has_snippets {
     > #o_scroll {
         background-color: $o-we-sidebar-blocks-content-bg;
         padding: 0 $o-we-sidebar-blocks-content-spacing;
+        height: 100%; // give enough space for tips pointing at snippets after a snippet search
         z-index: 1;
 
         .o_panel, .o_panel_header {
@@ -726,6 +727,7 @@ body.editor_enable.editor_has_snippets {
             + * {
                 display: none !important;
                 border: $o-we-sidebar-content-field-dropdown-border-width solid $o-we-sidebar-content-field-dropdown-border-color;
+                border-radius: $o-we-item-border-radius;
                 background-color: $o-we-sidebar-content-field-dropdown-bg;
                 box-shadow: $o-we-sidebar-content-field-dropdown-shadow;
             }
@@ -1015,6 +1017,7 @@ body.editor_enable.editor_has_snippets {
                     background-clip: padding-box;
                     background-color: $o-we-sidebar-content-field-dropdown-item-bg;
                     color: $o-we-sidebar-content-field-dropdown-item-color;
+                    border-radius: 0;
 
                     > we-title {
                         flex-grow: 1;
@@ -1140,10 +1143,10 @@ body.editor_enable.editor_has_snippets {
                     + we-button {
                         border-left: none;
                     }
-                    &:first-child {
+                    &:first-child, .active:first-child {
                         @include border-left-radius($o-we-sidebar-content-field-border-radius);
                     }
-                    &:last-child {
+                    &:last-child, .active:last-child {
                         @include border-right-radius($o-we-sidebar-content-field-border-radius);
                     }
                 }
@@ -1824,7 +1827,7 @@ body.editor_enable.editor_has_snippets {
                     grid-column: 1/span 2;
                     grid-row: 3;
                     background: none;
-                    -webkit-appearance: none;
+                    appearance: none;
                     cursor: ew-resize;
                     @supports (-moz-appearance:none) {
                         margin-top: 2px;
@@ -1834,7 +1837,7 @@ body.editor_enable.editor_has_snippets {
                         pointer-events: auto;
                         border: 1.5px solid rgba(255, 255, 255, 0.8);
                         background: currentColor;
-                        -webkit-appearance: none;
+                        appearance: none;
                         box-shadow: 0px 0px 0px #000000;
                         height: 20px;
                         width: 12px;
@@ -1878,6 +1881,7 @@ body.editor_enable.editor_has_snippets {
             .o_remove_color {
                 font-size: 14px !important;
                 text-align: center !important;
+                padding: 0;
             }
         }
     }
@@ -2084,16 +2088,14 @@ body.editor_enable.editor_has_snippets {
                 &, > .o_overlay_move_options, .o_overlay_edit_options {
                     display: flex;
                 }
-                > .o_overlay_move_options, .o_overlay_edit_options {
-                    > * {
-                        @extend %we-generic-button;
-                        margin: 0 1px 0;
-                        min-width: 22px;
-                        padding: 0 $o-we-sidebar-content-field-button-group-button-spacing * .5;
-                        color: $o-we-fg-lighter;
-                        &.oe_snippet_remove {
-                            background-color: mix($o-we-color-danger, $o-we-sidebar-content-field-clickable-bg);
-                        }
+                .o_overlay_move_options > *, .o_overlay_edit_options > *, > we-button {
+                    @extend %we-generic-button;
+                    margin: 0 1px 0;
+                    min-width: 22px;
+                    padding: 0 $o-we-sidebar-content-field-button-group-button-spacing * .5;
+                    color: $o-we-fg-lighter;
+                    &.oe_snippet_remove {
+                        background-color: mix($o-we-color-danger, $o-we-sidebar-content-field-clickable-bg);
                     }
                 }
                 > .o_overlay_move_options > .o_move_handle {
@@ -2105,14 +2107,12 @@ body.editor_enable.editor_has_snippets {
                     background-repeat: no-repeat;
                 }
                 &:hover {
-                    > .o_overlay_move_options, .o_overlay_edit_options {
-                        > * {
-                            @include o-hover-opacity(.6);
+                    .o_overlay_move_options > *, .o_overlay_edit_options > *, > we-button {
+                        @include o-hover-opacity(.6);
 
-                            &:hover {
-                                border-color: mix($o-we-handles-accent-color, $o-we-sidebar-content-field-pressed-bg, .4);
-                                background-color: $o-we-sidebar-content-field-pressed-bg;
-                            }
+                        &:hover {
+                            border-color: mix($o-we-handles-accent-color, $o-we-sidebar-content-field-pressed-bg, .4);
+                            background-color: $o-we-sidebar-content-field-pressed-bg;
                         }
                     }
                 }

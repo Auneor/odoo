@@ -994,9 +994,9 @@ function factory(dependencies) {
          *
          * @param {Object} [param0]
          * @param {boolean} [param0.expanded=false]
-         * @param {boolean} [param0.focus=true]
+         * @param {boolean} [param0.focus]
          */
-        async open({ expanded = false, focus = true } = {}) {
+        async open({ expanded = false, focus } = {}) {
             const discuss = this.messaging.discuss;
             // check if thread must be opened in form view
             if (!['mail.box', 'mail.channel'].includes(this.model)) {
@@ -1018,7 +1018,9 @@ function factory(dependencies) {
                 (!device.isMobile && (discuss.isOpen || expanded)) ||
                 this.model === 'mail.box'
             ) {
-                return discuss.openThread(this, { focus });
+                return discuss.openThread(this, {
+                    focus: focus !== undefined ? focus : !this.messaging.device.isMobileDevice,
+                });
             }
             // thread must be opened in chat window
             return this.messaging.chatWindowManager.openThread(this, {
@@ -2438,6 +2440,7 @@ function factory(dependencies) {
          */
         suggestedRecipientInfoList: one2many('mail.suggested_recipient_info', {
             inverse: 'thread',
+            isCausal: true,
         }),
         /**
          * Determines the last content of the last composer related to this

@@ -357,13 +357,15 @@ class Website(models.Model):
     @api.model
     def configurator_apply(self, **kwargs):
         def set_colors(selected_palette):
+            url = '/website/static/src/scss/options/user_values.scss'
+            selected_palette_name = selected_palette if isinstance(selected_palette, str) else 'base-1'
+            values = {'color-palettes-name': "'%s'" % selected_palette_name}
+            self.env['web_editor.assets'].make_scss_customization(url, values)
+
             if isinstance(selected_palette, list):
                 url = '/website/static/src/scss/options/colors/user_color_palette.scss'
                 values = {f'o-color-{i}': color for i, color in enumerate(selected_palette, 1)}
-            else:
-                url = '/website/static/src/scss/options/user_values.scss'
-                values = {'color-palettes-name': "'%s'" % selected_palette}
-            self.env['web_editor.assets'].make_scss_customization(url, values)
+                self.env['web_editor.assets'].make_scss_customization(url, values)
 
         def set_features(selected_features):
             features = self.env['website.configurator.feature'].browse(selected_features)
@@ -1135,7 +1137,7 @@ class Website(models.Model):
             :rtype: list({name: str, url: str})
         """
 
-        router = request.httprequest.app.get_db_router(request.db)
+        router = http.root.get_db_router(request.db)
         # Force enumeration to be performed as public user
         url_set = set()
 
@@ -1306,7 +1308,7 @@ class Website(models.Model):
         """
         self.ensure_one()
         if request.endpoint:
-            router = request.httprequest.app.get_db_router(request.db).bind('')
+            router = http.root.get_db_router(request.db).bind('')
             arguments = dict(request.endpoint_arguments)
             for key, val in list(arguments.items()):
                 if isinstance(val, models.BaseModel):
@@ -1434,7 +1436,6 @@ class Website(models.Model):
                     return True
         return False
 
-    @api.autovacuum
     def _disable_unused_snippets_assets(self):
         snippets_assets = self._get_snippets_assets()
         html_fields = self._get_html_fields()
@@ -1668,7 +1669,7 @@ class Website(models.Model):
                 from_clause=from_clause,
             )
             self.env.cr.execute(query, {'search': search})
-            ids = {row[0] for row in self.env.cr.fetchall() if row[1] >= similarity_threshold}
+            ids = {row[0] for row in self.env.cr.fetchall() if row[1] and row[1] >= similarity_threshold}
             if self.env.lang:
                 # Specific handling for website.page that inherits its arch_db and name fields
                 # TODO make more generic
@@ -1687,6 +1688,7 @@ class Website(models.Model):
                         WHERE t.lang = {lang}
                         AND t.name = ANY({names})
                         AND t.type = 'model_terms'
+                        AND t.value IS NOT NULL
                         ORDER BY _similarity desc
                         LIMIT 1000
                     """).format(
@@ -1707,6 +1709,7 @@ class Website(models.Model):
                         WHERE lang = {lang}
                         AND name = ANY({names})
                         AND type = 'model'
+                        AND value IS NOT NULL
                         ORDER BY _similarity desc
                         LIMIT 1000
                     """).format(
@@ -1715,7 +1718,7 @@ class Website(models.Model):
                         names=sql.Placeholder('names'),
                     )
                 self.env.cr.execute(query, {'lang': self.env.lang, 'names': names, 'search': search})
-                ids.update(row[0] for row in self.env.cr.fetchall() if row[1] >= similarity_threshold)
+                ids.update(row[0] for row in self.env.cr.fetchall() if row[1] and row[1] >= similarity_threshold)
             domain.append([('id', 'in', list(ids))])
             domain = AND(domain)
             records = model.search_read(domain, fields, limit=limit)

@@ -109,7 +109,7 @@ class StockQuant(models.Model):
     inventory_date = fields.Date(
         'Scheduled Date', compute='_compute_inventory_date', store=True, readonly=False,
         help="Next date the On Hand Quantity should be counted.")
-    inventory_quantity_set = fields.Boolean()  # Only used for UI purposes in the Inventory Adjustment page
+    inventory_quantity_set = fields.Boolean(store=True, compute='_compute_inventory_quantity_set', readonly=False)
     is_outdated = fields.Boolean('Quantity has been moved since last count', compute='_compute_is_outdated')
     user_id = fields.Many2one(
         'res.users', 'Assigned To', help="User assigned to do product count.")
@@ -129,8 +129,11 @@ class StockQuant(models.Model):
     @api.depends('inventory_quantity')
     def _compute_inventory_diff_quantity(self):
         for quant in self:
-            quant.inventory_quantity_set = True
             quant.inventory_diff_quantity = quant.inventory_quantity - quant.quantity
+
+    @api.depends('inventory_quantity')
+    def _compute_inventory_quantity_set(self):
+        self.inventory_quantity_set = True
 
     @api.depends('inventory_quantity', 'quantity', 'product_id')
     def _compute_is_outdated(self):
@@ -159,12 +162,12 @@ class StockQuant(models.Model):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             raise UserError(_('Operation not supported'))
         domain_loc = self.env['product.product']._get_domain_locations()[0]
-        quant_ids = [l['id'] for l in self.env['stock.quant'].search_read(domain_loc, ['id'])]
+        quant_query = self.env['stock.quant']._search(domain_loc)
         if (operator == '!=' and value is True) or (operator == '=' and value is False):
             domain_operator = 'not in'
         else:
             domain_operator = 'in'
-        return [('id', domain_operator, quant_ids)]
+        return [('id', domain_operator, quant_query)]
 
     @api.model
     def create(self, vals):
@@ -553,8 +556,9 @@ class StockQuant(models.Model):
         if self.location_id:
             return
         if self.product_id.tracking in ['lot', 'serial']:
-            previous_quants = self.env['stock.quant'].search(
-                [('product_id', '=', self.product_id.id)], limit=1, order='create_date desc')
+            previous_quants = self.env['stock.quant'].search([
+                ('product_id', '=', self.product_id.id),
+                ('location_id.usage', 'in', ['internal', 'transit'])], limit=1, order='create_date desc')
             if previous_quants:
                 self.location_id = previous_quants.location_id
         if not self.location_id:
@@ -748,7 +752,7 @@ class StockQuant(models.Model):
                 self.env.cr.execute(query)
                 self.invalidate_cache()
         except Error as e:
-            _logger.info('an error occured while merging quants: %s', e.pgerror)
+            _logger.info('an error occurred while merging quants: %s', e.pgerror)
 
     @api.model
     def _quant_tasks(self):
@@ -920,7 +924,7 @@ class StockQuant(models.Model):
                     message =  _('The Serial Number (%s) is already used in these location(s): %s.\n\n'
                                  'Is this expected? For example this can occur if a delivery operation is validated '
                                  'before its corresponding receipt operation is validated. In this case the issue will be solved '
-                                 'automatically once all steps are completed. Otherwise, the serial numbershould be corrected to '
+                                 'automatically once all steps are completed. Otherwise, the serial number should be corrected to '
                                  'prevent inconsistent data.',
                                  lot_id.name, ', '.join(sn_locations.mapped('display_name')))
 
@@ -938,11 +942,13 @@ class StockQuant(models.Model):
                                 recommended_location = location
                                 break
                     if recommended_location:
-                        message = _('Serial number (%s) is not located in %s, but is located in location(s): %s. Source location for this move will be changed to %s',
-                        lot_id.name, source_location_id.display_name, ', '.join(sn_locations.mapped('display_name')), recommended_location.display_name)
+                        message = _('Serial number (%s) is not located in %s, but is located in location(s): %s.\n\n'
+                                    'Source location for this move will be changed to %s',
+                                    lot_id.name, source_location_id.display_name, ', '.join(sn_locations.mapped('display_name')), recommended_location.display_name)
                     else:
-                        message = _('Serial number (%s) is not located in %s, but is located in location(s): %s. Please correct this to prevent inconsistent data.',
-                        lot_id.name, source_location_id.display_name, ', '.join(sn_locations.mapped('display_name')))
+                        message = _('Serial number (%s) is not located in %s, but is located in location(s): %s.\n\n'
+                                    'Please correct this to prevent inconsistent data.',
+                                    lot_id.name, source_location_id.display_name, ', '.join(sn_locations.mapped('display_name')))
         return message, recommended_location
 
 
@@ -958,7 +964,7 @@ class QuantPackage(models.Model):
     quant_ids = fields.One2many('stock.quant', 'package_id', 'Bulk Content', readonly=True,
         domain=['|', ('quantity', '!=', 0), ('reserved_quantity', '!=', 0)])
     package_type_id = fields.Many2one(
-        'stock.package.type', 'Package Type', index=True, check_company=True)
+        'stock.package.type', 'Package Type', index=True)
     location_id = fields.Many2one(
         'stock.location', 'Location', compute='_compute_package_info',
         index=True, readonly=True, store=True)

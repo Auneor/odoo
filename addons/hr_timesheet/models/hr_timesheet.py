@@ -48,6 +48,7 @@ class AccountAnalyticLine(models.Model):
     employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id)
     department_id = fields.Many2one('hr.department', "Department", compute='_compute_department_id', store=True, compute_sudo=True)
     encoding_uom_id = fields.Many2one('uom.uom', compute='_compute_encoding_uom_id')
+    partner_id = fields.Many2one(compute='_compute_partner_id', store=True, readonly=False)
 
     def name_get(self):
         result = super().name_get()
@@ -70,6 +71,12 @@ class AccountAnalyticLine(models.Model):
     def _compute_encoding_uom_id(self):
         for analytic_line in self:
             analytic_line.encoding_uom_id = analytic_line.company_id.timesheet_encode_uom_id
+
+    @api.depends('task_id.partner_id', 'project_id.partner_id')
+    def _compute_partner_id(self):
+        for timesheet in self:
+            if timesheet.project_id:
+                timesheet.partner_id = timesheet.task_id.partner_id or timesheet.project_id.partner_id
 
     @api.depends('task_id', 'task_id.project_id')
     def _compute_project_id(self):
@@ -156,9 +163,10 @@ class AccountAnalyticLine(models.Model):
     def _apply_time_label(self, view_arch, related_model):
         doc = etree.XML(view_arch)
         Model = self.env[related_model]
-        encoding_uom = self.env.company.timesheet_encode_uom_id
+        # Just fetch the name of the uom in `timesheet_encode_uom_id` of the current company
+        encoding_uom_name = self.env.company.timesheet_encode_uom_id.with_context(prefetch_fields=False).sudo().name
         for node in doc.xpath("//field[@widget='timesheet_uom'][not(@string)] | //field[@widget='timesheet_uom_no_toggle'][not(@string)]"):
-            name_with_uom = re.sub(_('Hours') + "|Hours", encoding_uom.name or '', Model._fields[node.get('name')]._description_string(self.env), flags=re.IGNORECASE)
+            name_with_uom = re.sub(_('Hours') + "|Hours", encoding_uom_name or '', Model._fields[node.get('name')]._description_string(self.env), flags=re.IGNORECASE)
             node.set('string', name_with_uom)
 
         return etree.tostring(doc, encoding='unicode')

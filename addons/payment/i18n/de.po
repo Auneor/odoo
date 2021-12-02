@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2021
+# Friederike Fasterling-Nesselbosch, 2021
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-14 10:29+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: Martin Trigaux, 2021\n"
+"Last-Translator: Friederike Fasterling-Nesselbosch, 2021\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,6 +131,8 @@ msgid ""
 "<strong>No suitable payment option could be found.</strong><br/>\n"
 "                                If you believe that it is an error, please contact the website administrator."
 msgstr ""
+"<strong>Es konnte keine geeignete Zahlungsmethode gefunden werden.</strong><br/>\n"
+"                                Wenn Sie dies für einen Fehler halten, kontaktieren Sie bitte den Website Administrator."
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_refund_wizard_view_form
@@ -156,7 +159,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
 msgid "<strong>Warning</strong> The currency is missing or incorrect."
-msgstr ""
+msgstr "<strong>Warnung</strong> Währung fehlt oder ist nicht korrekt."
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
@@ -490,7 +493,7 @@ msgstr "Klicken Sie hier, um zur Bestätigungsseite weitergeleitet zu werden."
 #: model_terms:ir.ui.view,arch_db:payment.payment_link_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:payment.payment_refund_wizard_view_form
 msgid "Close"
-msgstr "Abschliessen"
+msgstr "Abschließen"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_payment_register__payment_method_code
@@ -1644,7 +1647,7 @@ msgstr "Server fehler:"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.onboarding_payment_acquirer_step
 msgid "Set payments"
-msgstr "Zahlungen festlegen"
+msgstr "Zahlungsart festlegen"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_allow_tokenization
@@ -1967,7 +1970,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
 msgid "There is nothing to pay."
-msgstr ""
+msgstr "Es gibt keine offenen Zahlungen."
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__allow_tokenization
@@ -2133,7 +2136,7 @@ msgstr "Wir können Ihre Zahlung nicht finden, aber keine Sorge."
 #: code:addons/payment/static/src/js/payment_form_mixin.js:0
 #, python-format
 msgid "We are not able to process your payment."
-msgstr ""
+msgstr "Ihre Zahlung kann nicht verarbeitet werden."
 
 #. module: payment
 #. openerp-web

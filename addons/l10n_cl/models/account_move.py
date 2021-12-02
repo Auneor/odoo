@@ -42,7 +42,6 @@ class AccountMove(models.Model):
             domain += [('code', 'in', [])]
         return domain
 
-
     def _check_document_types_post(self):
         for rec in self.filtered(
                 lambda r: r.company_id.account_fiscal_country_id.code == "CL" and
@@ -110,9 +109,12 @@ class AccountMove(models.Model):
         if self.company_id.account_fiscal_country_id.code == "CL" and self.l10n_latam_use_documents:
             where_string = where_string.replace('journal_id = %(journal_id)s AND', '')
             where_string += ' AND l10n_latam_document_type_id = %(l10n_latam_document_type_id)s AND ' \
-                            'company_id = %(company_id)s AND move_type IN (\'out_invoice\', \'out_refund\')'
+                            'company_id = %(company_id)s AND move_type IN %(move_type)s'
+
             param['company_id'] = self.company_id.id or False
             param['l10n_latam_document_type_id'] = self.l10n_latam_document_type_id.id or 0
+            param['move_type'] = (('in_invoice', 'in_refund') if
+                  self.l10n_latam_document_type_id._is_doc_type_vendor() else ('out_invoice', 'out_refund'))
         return where_string, param
 
     def _get_name_invoice_report(self):
@@ -120,3 +122,31 @@ class AccountMove(models.Model):
         if self.l10n_latam_use_documents and self.company_id.account_fiscal_country_id.code == 'CL':
             return 'l10n_cl.report_invoice_document'
         return super()._get_name_invoice_report()
+
+    def _l10n_cl_get_invoice_totals_for_report(self):
+        self.ensure_one()
+        tax_ids_filter = tax_line_id_filter = None
+        include_sii = self._l10n_cl_include_sii()
+
+        if include_sii:
+            tax_ids_filter = (lambda aml, tax: bool(tax.l10n_cl_sii_code != 14))
+            tax_line_id_filter = (lambda aml, tax: bool(tax.l10n_cl_sii_code != 14))
+
+        tax_lines_data = self._prepare_tax_lines_data_for_totals_from_invoice(
+            tax_ids_filter=tax_ids_filter, tax_line_id_filter=tax_line_id_filter)
+
+        if include_sii:
+            amount_untaxed = self.currency_id.round(
+                self.amount_total - sum([x['tax_amount'] for x in tax_lines_data if 'tax_amount' in x]))
+        else:
+            amount_untaxed = self.amount_untaxed
+        return self._get_tax_totals(self.partner_id, tax_lines_data, self.amount_total, amount_untaxed, self.currency_id)
+
+    def _l10n_cl_include_sii(self):
+        self.ensure_one()
+        return self.l10n_latam_document_type_id.code in ['39', '41', '110', '111', '112', '34']
+
+    def _is_manual_document_number(self):
+        if self.journal_id.company_id.country_id.code == 'CL':
+            return self.journal_id.type == 'purchase' and not self.l10n_latam_document_type_id._is_doc_type_vendor()
+        return super()._is_manual_document_number()

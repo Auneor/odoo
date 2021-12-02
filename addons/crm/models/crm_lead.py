@@ -274,20 +274,28 @@ class Lead(models.Model):
         for lead in self:
             proposal = lead.company_id
 
-            # invalidate wrong configuration: company not in responsible companies or in team company if set
-            if proposal and lead.user_id and proposal not in lead.user_id.company_ids:
-                proposal = False
-            if proposal and lead.team_id.company_id and proposal != lead.team_id.company_id:
-                proposal = False
+            # invalidate wrong configuration
+            if proposal:
+                # company not in responsible companies
+                if lead.user_id and proposal not in lead.user_id.company_ids:
+                    proposal = False
+                # inconsistent
+                if lead.team_id.company_id and proposal != lead.team_id.company_id:
+                    proposal = False
+                # void company on team and no assignee
+                if lead.team_id and not lead.team_id.company_id and not lead.user_id:
+                    proposal = False
+                # no user and no team -> void company and let assignment do its job
+                if not lead.team_id and not lead.user_id:
+                    proposal = False
 
             # propose a new company based on responsible, limited by team
             if not proposal:
-                if not lead.user_id or lead.user_id == self.env.user:
-                    proposal = self.env.company
-                elif lead.user_id:
-                    proposal = lead.user_id.company_id
-
-                if lead.team_id.company_id and proposal != lead.team_id.company_id:
+                if lead.user_id:
+                    proposal = lead.team_id.company_id or lead.user_id.company_id
+                elif lead.team_id:
+                    proposal = lead.team_id.company_id
+                else:
                     proposal = False
 
             # set a new company
@@ -668,7 +676,7 @@ class Lead(models.Model):
         # stage change with new stage: update probability and date_closed
         if vals.get('probability', 0) >= 100 or not vals.get('active', True):
             vals['date_closed'] = fields.Datetime.now()
-        elif 'probability' in vals:
+        elif vals.get('probability', 0) > 0:
             vals['date_closed'] = False
 
         if any(field in ['active', 'stage_id'] for field in vals):
@@ -776,17 +784,17 @@ class Lead(models.Model):
             if 'stage_id' in vals:
                 if vals['stage_id'] in won_stage_ids:
                     if lead.probability == 0:
-                        leads_leave_lost |= lead
-                    leads_reach_won |= lead
+                        leads_leave_lost += lead
+                    leads_reach_won += lead
                 elif lead.stage_id.id in won_stage_ids and lead.active:  # a lead can be lost at won_stage
-                    leads_leave_won |= lead
+                    leads_leave_won += lead
             if 'active' in vals:
                 if not vals['active'] and lead.active:  # archive lead
                     if lead.stage_id.id in won_stage_ids and lead not in leads_leave_won:
-                        leads_leave_won |= lead
-                    leads_reach_lost |= lead
+                        leads_leave_won += lead
+                    leads_reach_lost += lead
                 elif vals['active'] and not lead.active:  # restore lead
-                    leads_leave_lost |= lead
+                    leads_leave_lost += lead
 
         leads_reach_won._pls_increment_frequencies(to_state='won')
         leads_leave_won._pls_increment_frequencies(from_state='won')
@@ -908,7 +916,7 @@ class Lead(models.Model):
             if not stage_id:
                 stage_id = next((stage for stage in reversed(won_stages) if stage.sequence <= lead.stage_id.sequence), won_stages)
             if stage_id in leads_by_won_stage:
-                leads_by_won_stage[stage_id] |= lead
+                leads_by_won_stage[stage_id] += lead
             else:
                 leads_by_won_stage[stage_id] = lead
         for won_stage_id, leads in leads_by_won_stage.items():
@@ -1009,6 +1017,7 @@ class Lead(models.Model):
             partner_ids.append(self.partner_id.id)
         current_opportunity_id = self.id if self.type == 'opportunity' else False
         action['context'] = {
+            'search_default_opportunity_id': current_opportunity_id,
             'default_opportunity_id': current_opportunity_id,
             'default_partner_id': self.partner_id.id,
             'default_partner_ids': partner_ids,

@@ -433,7 +433,7 @@ function factory(dependencies) {
             body = this._generateEmojisOnHtml(body);
             let data = {
                 body: body,
-                attachment_ids: composer.attachments.concat(this.messageViewInEditing.message.originThread.attachments).map(attachment => attachment.id),
+                attachment_ids: composer.attachments.concat(this.messageViewInEditing.message.attachments).map(attachment => attachment.id),
             };
             try {
                 composer.update({ isPostingMessage: true });
@@ -544,6 +544,22 @@ function factory(dependencies) {
             if (this.suggestionDelimiterPosition === undefined) {
                 return unlinkAll();
             }
+        }
+
+        /**
+         * @private
+         * @returns {string}
+         */
+        _computeSendButtonText() {
+            if (
+                this.composer &&
+                this.composer.isLog &&
+                this.composer.activeThread &&
+                this.composer.activeThread.model !== 'mail.channel'
+            ) {
+                return this.env._t("Log");
+            }
+            return this.env._t("Send");
         }
 
         /**
@@ -930,6 +946,12 @@ function factory(dependencies) {
         messageViewInEditing: one2one('mail.message_view', {
             inverse: 'composerViewInEditing',
             readonly: true,
+        }),
+        /**
+         * Determines the label on the send button of this composer view.
+         */
+        sendButtonText: attr({
+            compute: '_computeSendButtonText',
         }),
         /**
          * States which type of suggestion is currently in progress, if any.

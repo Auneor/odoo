@@ -16,7 +16,7 @@ except ImportError:
     slugify_lib = None
 
 import odoo
-from odoo import api, models, registry, exceptions, tools
+from odoo import api, models, registry, exceptions, tools, http
 from odoo.addons.base.models import ir_http
 from odoo.addons.base.models.ir_http import RequestUID
 from odoo.addons.base.models.qweb import QWebException
@@ -167,11 +167,7 @@ def url_lang(path_or_uri, lang_code=None):
             elif lang_url_code != default_lg.url_code or force_lang:
                 ps.insert(1, lang_url_code)
 
-            # remove trailing /
-            # ['', fr', ''] => /fr/ instead of /fr
-            if ps[-1] == '':
-                ps.pop(-1)
-            location = (u'/'.join(ps) or u'/') + sep + qs
+            location = u'/'.join(ps) + sep + qs
     return location
 
 
@@ -670,8 +666,7 @@ class IrHttp(models.AbstractModel):
     @tools.ormcache('path', 'query_args')
     def url_rewrite(self, path, query_args=None):
         new_url = False
-        req = request.httprequest
-        router = req.app.get_db_router(request.db).bind('')
+        router = http.root.get_db_router(request.db).bind('')
         endpoint = False
         try:
             endpoint = router.match(path, method='POST', query_args=query_args)

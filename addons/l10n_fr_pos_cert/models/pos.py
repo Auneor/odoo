@@ -14,9 +14,12 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     def open_ui(self):
-        for config in self.filtered(lambda c: c.company_id._is_accounting_unalterable()):
-            if config.current_session_id:
-                config.current_session_id._check_session_timing()
+        for config in self:
+            if not config.company_id.country_id:
+                raise UserError(_("You have to set a country in your company setting."))
+            if config.company_id._is_accounting_unalterable():
+                if config.current_session_id:
+                    config.current_session_id._check_session_timing()
         return super(pos_config, self).open_ui()
 
 
@@ -61,7 +64,7 @@ class pos_order(models.Model):
                                  ('l10n_fr_secure_sequence_number', '=', int(secure_seq_number) - 1)])
         if prev_order and len(prev_order) != 1:
             raise UserError(
-               _('An error occured when computing the inalterability. Impossible to get the unique previous posted point of sale order.'))
+               _('An error occurred when computing the inalterability. Impossible to get the unique previous posted point of sale order.'))
 
         #build and return the hash
         return self._compute_hash(prev_order.l10n_fr_hash if prev_order else u'')

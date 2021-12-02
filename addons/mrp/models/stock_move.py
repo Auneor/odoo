@@ -237,6 +237,9 @@ class StockMove(models.Model):
                     defaults['state'] = 'done'
                     defaults['additional'] = True
                 defaults['product_uom_qty'] = 0.0
+            elif production_id.state == 'draft':
+                defaults['group_id'] = production_id.procurement_group_id.id
+                defaults['reference'] = production_id.name
         return defaults
 
     def write(self, vals):
@@ -309,10 +312,9 @@ class StockMove(models.Model):
 
     def _action_cancel(self):
         res = super(StockMove, self)._action_cancel()
-        for production in self.mapped('raw_material_production_id'):
-            if production.state != 'cancel':
-                continue
-            production._action_cancel()
+        mo_to_cancel = self.mapped('raw_material_production_id').filtered(lambda p: all(m.state == 'cancel' for m in p.move_raw_ids))
+        if mo_to_cancel:
+            mo_to_cancel._action_cancel()
         return res
 
     def _prepare_move_split_vals(self, qty):
@@ -429,7 +431,7 @@ class StockMove(models.Model):
                 # Then, we collect every relevant moves related to a specific component
                 # to know how many are considered delivered.
                 uom_qty_per_kit = bom_line_data['qty'] / bom_line_data['original_qty']
-                qty_per_kit = bom_line.product_uom_id._compute_quantity(uom_qty_per_kit, bom_line.product_id.uom_id)
+                qty_per_kit = bom_line.product_uom_id._compute_quantity(uom_qty_per_kit, bom_line.product_id.uom_id, round=False)
                 if not qty_per_kit:
                     continue
                 incoming_moves = bom_line_moves.filtered(filters['incoming_moves'])

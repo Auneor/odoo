@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:53+0000\n"
+"POT-Creation-Date: 2021-11-16 13:18+0000\n"
 "PO-Revision-Date: 2021-09-14 12:27+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2021\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -1998,7 +1998,7 @@ msgstr "Er is een fout opgetreden, het formulier is nog niet verzonden."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.qweb_500
-msgid "An error occured while rendering the template"
+msgid "An error occurred while rendering the template"
 msgstr "Er is een fout opgetreden tijdens het renderen van het sjabloon"
 
 #. module: website
@@ -2152,7 +2152,7 @@ msgstr "Zoals beloofd bieden we 4 gratis kaartjes aan voor onze volgende top."
 #. module: website
 #: model:ir.model,name:website.model_ir_asset
 msgid "Asset"
-msgstr "Activa"
+msgstr "Asset"
 
 #. module: website
 #: model:ir.model,name:website.model_web_editor_assets
@@ -2877,7 +2877,7 @@ msgstr "Klik op"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_process_steps
 msgid "Click on the icon to adapt it <br/>to your purpose."
-msgstr "Klik op het icoon om het te wijzigen <br/> aan je doel."
+msgstr "Klik op het icoon om aan te passen <br/> aan je doel."
 
 #. module: website
 #. openerp-web
@@ -3596,7 +3596,7 @@ msgstr "Standaard omgekeerd"
 #: model:ir.model.fields,field_description:website.field_website__social_default_image
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Default Social Share Image"
-msgstr "Standaard afbeelding voor sociaal delen"
+msgstr "Standaard afbeelding voor delen op social media"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
@@ -3646,8 +3646,8 @@ msgid ""
 "message. Click on the picture to change its <em>rounded corner</em> style."
 msgstr ""
 "Verwijder de bovenstaande afbeelding of vervang ze door een afbeelding die "
-"je bericht illustreert. Klik op de afbeelding om de <em>afgeronden "
-"hoeken</em> hun stijl te wijzigen."
+"je bericht illustreert. Klik op de afbeelding om stijl van de <em>afgeronden"
+" hoeken</em> te wijzigen."
 
 #. module: website
 #. openerp-web
@@ -4122,7 +4122,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_embed_code_options
 #, python-format
 msgid "Edit"
-msgstr "Wijzigen"
+msgstr "Bewerken"
 
 #. module: website
 #. openerp-web
@@ -4173,7 +4173,7 @@ msgstr "Ingesloten code bewerken"
 #: model_terms:ir.ui.view,arch_db:website.publish_management
 #: model_terms:ir.ui.view,arch_db:website.user_navbar
 msgid "Edit in backend"
-msgstr "Wijzigen in backend"
+msgstr "Bewerken in backend"
 
 #. module: website
 #. openerp-web
@@ -5029,7 +5029,7 @@ msgstr "Grijs #{grayCode}"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Grays"
-msgstr "Grijzen"
+msgstr "Grijstinten"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_features_grid
@@ -5483,8 +5483,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "If set, replaces the website logo as the default social share image."
 msgstr ""
-"Indien ingesteld, vervangt het het logo van de website als de "
-"standaardafbeelding voor sociaal delen."
+"Indien ingesteld, vervangt deze het logo van de website als de "
+"standaardafbeelding voor het delen op social media."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.qweb_500
@@ -5588,7 +5588,7 @@ msgstr "In hoofdmenu"
 #: code:addons/website/static/src/xml/website_form_editor.xml:0
 #, python-format
 msgid "In the meantime we invite you to visit our"
-msgstr "In de tussentijd nodigen wij je uit om onze"
+msgstr "In de tussentijd nodigen wij je uit om eens rond te kijken op onze"
 
 #. module: website
 #. openerp-web
@@ -7433,7 +7433,7 @@ msgstr "Pagina"
 #: code:addons/website/models/website.py:0
 #, python-format
 msgid "Page <b>%s</b> contains a link to this page"
-msgstr "Pagina <b>%s</b> heeft een link daar deze pagina"
+msgstr "Pagina <b>%s</b> heeft een link naar deze pagina"
 
 #. module: website
 #: code:addons/website/models/website.py:0
@@ -7975,7 +7975,7 @@ msgstr "Opnieuw ordenen"
 #: code:addons/website/static/src/components/configurator/configurator.xml:0
 #, python-format
 msgid "Ready to build the"
-msgstr "Klaar om de . te bouwen"
+msgstr "Ben je klaar voor het bouwen van de"
 
 #. module: website
 #. openerp-web
@@ -10264,7 +10264,7 @@ msgid ""
 "Used to collect information about your interactions with the website, the pages you've seen,\n"
 "                                                and any specific marketing campaign that brought you to the website."
 msgstr ""
-"Wordt gebruikt om informatie te verzamelen over je interacties met de website, de pagina's die je heeft gezien,\n"
+"Wordt gebruikt om informatie te verzamelen over je interacties met de website, de pagina's die je hebt gezien,\n"
 "en elke specifieke marketingcampagne die je naar de website heeft geleid."
 
 #. module: website
@@ -10656,7 +10656,7 @@ msgstr "Wij nemen zo spoedig mogelijk contact met je op."
 #: code:addons/website/static/src/components/configurator/configurator.xml:0
 #, python-format
 msgid "We'll set you up and running in"
-msgstr "We helpen je aan de slag in"
+msgstr "We helpen je op weg in"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_tree
@@ -11290,16 +11290,6 @@ msgid "Zoom Out"
 msgstr "Uitzoomen"
 
 #. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "[\"code\"]"
-msgstr "[\"code\"]"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "[[\"id\", \"in\","
-msgstr "[[\"id\", \"in\","
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
 msgid ""
 "__gads (Google)<br/>\n"
@@ -11444,11 +11434,6 @@ msgid "cite"
 msgstr "citaat"
 
 #. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "code"
-msgstr "code"
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "columns, description"
 msgstr "kolommen, omschrijving"
@@ -11469,26 +11454,6 @@ msgid "customers, clients"
 msgstr "klanten, cliënten"
 
 #. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "data-country"
-msgstr "data-land"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "data-utm-campaign"
-msgstr "data-utm-campagne"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "data-utm-medium"
-msgstr "data-utm-medium"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "data-utm-source"
-msgstr "data-utm-bron"
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_popup_options
 msgid "days"
 msgstr "dagen"
@@ -11499,11 +11464,6 @@ msgstr "dagen"
 #, python-format
 msgid "develop the brand"
 msgstr "het merk ontwikkelen"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "display_name"
-msgstr "Weergavenaam"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
@@ -11692,11 +11652,6 @@ msgid "ir.ui.view"
 msgstr "ir.ui.view"
 
 #. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "lang"
-msgstr "lang"
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 #: model_terms:website.page,arch_db:website.bs_debug_page
 msgid "link"
@@ -11784,16 +11739,6 @@ msgid "promotion, characteristic, quality"
 msgstr "promotie, karakteristiek, kwaliteit"
 
 #. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "res.country"
-msgstr "res.country"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "res.lang"
-msgstr "res.lang"
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.searchbar_input_snippet_options
 msgid "results"
 msgstr "resultaten"
@@ -11868,74 +11813,9 @@ msgid "true"
 msgstr "waar"
 
 #. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "utm.campaign"
-msgstr "utm.campagne"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "utm.medium"
-msgstr "utm.medium"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "utm.source"
-msgstr "utm.bron"
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "valuation, rank"
 msgstr "waardering, rang"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueCountry"
-msgstr "zichtbaarheidWaardeLand"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueCountryRule"
-msgstr "zichtbaarheidValueCountryRule"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueLang"
-msgstr "zichtbaarheidWaardeLang"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueLangRule"
-msgstr "zichtbaarheidWaardeLangRule"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueUtmCampaign"
-msgstr "zichtbaarheidValueUtmCampagne"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueUtmCampaignRule"
-msgstr "zichtbaarheidValueUtmCampagneRegel"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueUtmMedium"
-msgstr "zichtbaarheidValueUtmMedium"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueUtmMediumRule"
-msgstr "zichtbaarheidValueUtmMediumRegel"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueUtmSource"
-msgstr "zichtbaarheidValueUtmBron"
-
-#. module: website
-#: model_terms:ir.ui.view,arch_db:website.snippet_options
-msgid "visibilityValueUtmSourceRule"
-msgstr "zichtbaarheidValueUtmSourceRule"
 
 #. module: website
 #. openerp-web

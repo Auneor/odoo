@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:49+0000\n"
+"POT-Creation-Date: 2021-11-16 13:18+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
 "Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2021\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
@@ -24,11 +24,9 @@ msgstr ""
 #: code:addons/payment_buckaroo/models/payment_transaction.py:0
 #, python-format
 msgid ""
-"An error occured during processing of your payment (code %s). Please try "
+"An error occurred during processing of your payment (code %s). Please try "
 "again."
 msgstr ""
-"Ocurrió un error durante el procesamiento de su pago (código %s). Vuelva a "
-"intentarlo."
 
 #. module: payment_buckaroo
 #: model:account.payment.method,name:payment_buckaroo.payment_method_buckaroo
@@ -56,7 +54,7 @@ msgstr "No se encontró ninguna transacción que coincida con la referencia %s."
 #. module: payment_buckaroo
 #: model:ir.model,name:payment_buckaroo.model_payment_acquirer
 msgid "Payment Acquirer"
-msgstr "Método de Pago"
+msgstr "Método de pago"
 
 #. module: payment_buckaroo
 #: model:ir.model,name:payment_buckaroo.model_account_payment_method
@@ -88,7 +86,7 @@ msgstr "Datos recibidos sin claves de transacción"
 #. module: payment_buckaroo
 #: model_terms:ir.ui.view,arch_db:payment_buckaroo.payment_acquirer_form
 msgid "Secret Key"
-msgstr "Contraseña secreta"
+msgstr "Clave secreta"
 
 #. module: payment_buckaroo
 #: model:ir.model.fields,help:payment_buckaroo.field_payment_acquirer__provider

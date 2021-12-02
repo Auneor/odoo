@@ -395,6 +395,13 @@ function factory(dependencies) {
         }
 
         /**
+         * @returns {boolean}
+         */
+        _computeHasReactionIcon() {
+            return !this.isTemporary && !this.isTransient;
+        }
+
+        /**
          * @private
          * @returns {boolean}
          */
@@ -511,6 +518,10 @@ function factory(dependencies) {
          * @returns {string}
          */
         _computePrettyBody() {
+            if (!this.body) {
+                // body null in db, body will be false instead of empty string
+                return clear();
+            }
             let prettyBody;
             for (const emoji of emojis) {
                 const { unicode } = emoji;
@@ -613,6 +624,12 @@ function factory(dependencies) {
         }),
         guestAuthor: many2one('mail.guest', {
             inverse: 'authoredMessages',
+        }),
+        /**
+         * Determines whether the message has a reaction icon.
+         */
+        hasReactionIcon: attr({
+            compute: '_computeHasReactionIcon',
         }),
         id: attr({
             readonly: true,
@@ -758,6 +775,7 @@ function factory(dependencies) {
          */
         prettyBody: attr({
             compute: '_computePrettyBody',
+            default: "",
         }),
         subject: attr(),
         subtype_description: attr(),

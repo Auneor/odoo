@@ -1967,7 +1967,7 @@ class TestStockFlow(TestStockCommon):
 
         # Validates the two receipts and checks the move lines' lot.
         (receipt_1 | receipt_2).button_validate()
-        lots = self.env['stock.production.lot'].search([('product_id', '=', product_lot.id)])
+        lots = self.env['stock.production.lot'].search([('product_id', '=', product_lot.id)], order='name asc')
         self.assertEqual(len(lots), 5)
         lot1, lot2, lot3, lot4, lot5 = lots
         self.assertEqual(lot1.name, 'lot-001')
@@ -2019,3 +2019,84 @@ class TestStockFlow(TestStockCommon):
         # Validates the two receipts => It should raise an error as there is duplicate SN.
         with self.assertRaises(ValidationError):
             (receipt_1 | receipt_2).button_validate()
+
+    def test_assign_qty_to_first_move(self):
+        """ Suppose two out picking waiting for an available quantity. When receiving such
+         a quantity, the latter should be assign to the picking with the highest priority
+         and the earliest scheduled date. """
+        def create_picking(type, from_loc, to_loc, sequence=10, delay=0):
+            picking = self.PickingObj.create({
+                'picking_type_id': type,
+                'location_id': from_loc,
+                'location_dest_id': to_loc,
+            })
+            self.MoveObj.create({
+                'name': self.productA.name,
+                'sequence': sequence,
+                'date': fields.Datetime.add(fields.Datetime.now(), second=delay),
+                'reservation_date': fields.Date.today(),
+                'product_id': self.productA.id,
+                'product_uom_qty': 1,
+                'product_uom': self.productA.uom_id.id,
+                'picking_id': picking.id,
+                'location_id': from_loc,
+                'location_dest_id': to_loc,
+            })
+            picking.action_confirm()
+            return picking
+
+        def validate_picking(picking):
+            res_dict = picking.button_validate()
+            wizard = Form(self.env[(res_dict.get('res_model'))].with_context(res_dict['context'])).save()
+            wizard.process()
+
+        out01 = create_picking(self.picking_type_out, self.stock_location, self.customer_location)
+        out02 = create_picking(self.picking_type_out, self.stock_location, self.customer_location, sequence=2, delay=1)
+        in01 = create_picking(self.picking_type_in, self.supplier_location, self.stock_location, delay=2)
+
+        validate_picking(in01)
+        self.assertEqual(out01.state, 'assigned')
+        self.assertEqual(out02.state, 'confirmed')
+
+        validate_picking(out01)
+
+        out03 = create_picking(self.picking_type_out, self.stock_location, self.customer_location, delay=3)
+        out03.priority = "1"
+        in02 = create_picking(self.picking_type_in, self.supplier_location, self.stock_location, delay=4)
+
+        validate_picking(in02)
+        self.assertEqual(out02.state, 'confirmed')
+        self.assertEqual(out03.state, 'assigned')
+
+    def test_auto_assign_backorder(self):
+        """ When a backorder is created, the quantities should be assigned if the reservation method
+         is set on 'At Confirmation' """
+        stock_location = self.env['stock.location'].browse(self.stock_location)
+        picking_type_out = self.env['stock.picking.type'].browse(self.picking_type_out)
+
+        self.env['stock.quant']._update_available_quantity(self.productA, stock_location, 10)
+        picking_type_out.reservation_method = 'at_confirm'
+
+        picking_out = self.PickingObj.create({
+            'picking_type_id': picking_type_out.id,
+            'location_id': stock_location.id,
+            'location_dest_id': self.customer_location,
+        })
+        move_out = self.MoveObj.create({
+            'name': self.productA.name,
+            'product_id': self.productA.id,
+            'product_uom_qty': 10,
+            'product_uom': self.productA.uom_id.id,
+            'picking_id': picking_out.id,
+            'location_id': stock_location.id,
+            'location_dest_id': self.customer_location
+        })
+
+        move_out.quantity_done = 7
+
+        action_dict = picking_out.button_validate()
+        backorder_wizard = Form(self.env[action_dict['res_model']].with_context(action_dict['context'])).save()
+        backorder_wizard.process()
+
+        bo = self.env['stock.picking'].search([('backorder_id', '=', picking_out.id)])
+        self.assertEqual(bo.state, 'assigned')

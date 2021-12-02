@@ -248,8 +248,8 @@ msgstr ""
 "            <div style=\"font-size: 13px; margin: 0px; padding: 0px;\">\n"
 "                Hello,\n"
 "                <br/><br/>\n"
-"                We bevestigen dat we je sollicitatie voor de vacature met succes hebben ontvangen\n"
-"                \"<a t-att-href=\"hasattr(object.job_id, 'website_url') and object.job_id.website_url or ''\" style=\"color:#9A6C8E;\"><strong t-out=\"object.job_id.name or ''\">Experienced Developer</strong></a>\" bij <strong t-out=\"object.company_id.name or ''\">YourCompany</strong>.\n"
+"                We bevestigen dat we je sollicitatie voor de vacature voor \n"
+"                \"<a t-att-href=\"hasattr(object.job_id, 'website_url') and object.job_id.website_url or ''\" style=\"color:#9A6C8E;\"><strong t-out=\"object.job_id.name or ''\">Experienced Developer</strong></a>\" bij <strong t-out=\"object.company_id.name or ''\">YourCompany</strong> in goede orde hebben ontvangen.\n"
 "                <br/><br/>\n"
 "                We komen snel bij je terug.\n"
 "\n"
@@ -334,7 +334,7 @@ msgid ""
 "                position, your application has been short listed for a\n"
 "                call or an interview.\n"
 "                <br/><br/>\n"
-"                <div t-if=\"'website_url' in object.joqb_id and object.job_id.website_url\" style=\"padding: 16px 8px 16px 8px;\">\n"
+"                <div t-if=\"'website_url' in object.job_id and object.job_id.website_url\" style=\"padding: 16px 8px 16px 8px;\">\n"
 "                    <a t-att-href=\"object.job_id.website_url\" style=\"background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;\">Job Description</a>\n"
 "                </div>\n"
 "\n"
@@ -423,7 +423,7 @@ msgstr ""
 "positie, staat je sollicitatie op de shortlist voor een\n"
 "bellen of een interview.\n"
 "                <br/><br/>\n"
-"                <div t-if=\"'website_url' in object.joqb_id and object.job_id.website_url\" style=\"padding: 16px 8px 16px 8px;\">\n"
+"                <div t-if=\"'website_url' in object.job_id and object.job_id.website_url\" style=\"padding: 16px 8px 16px 8px;\">\n"
 "                    <a t-att-href=\"object.job_id.website_url\" style=\"background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;\">Vacature omschrijving</a>\n"
 "                </div>\n"
 "\n"
@@ -1132,7 +1132,7 @@ msgstr "Vacature aanmaken"
 #: code:addons/hr_recruitment/static/src/js/tours/hr_recruitment.js:0
 #, python-format
 msgid "Create your first Job Position."
-msgstr "Creëer je eerste vacature."
+msgstr "Maak je eerste vacature."
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_applicant_get_refuse_reason__create_uid
@@ -2145,7 +2145,7 @@ msgid ""
 "                process and follow up all operations: meetings, interviews, etc."
 msgstr ""
 "Odoo helpt je bij het werven van sollicitanten en volgt\n"
-"alle handelingen op: vergaderingen, interviews, enz."
+"alle handelingen op: afspraken, interviews, enz."
 
 #. module: hr_recruitment
 #: model_terms:ir.actions.act_window,help:hr_recruitment.crm_case_categ0_act_job
@@ -2154,7 +2154,7 @@ msgid ""
 "            process and follow up all operations: meetings, interviews, etc."
 msgstr ""
 "Odoo helpt je bij het werven van sollicitanten en volgt\n"
-"alle handelingen op: vergaderingen, interviews, enz."
+"alle handelingen op: afspraken, interviews, enz."
 
 #. module: hr_recruitment
 #: model:res.groups,name:hr_recruitment.group_hr_recruitment_user
@@ -2366,7 +2366,7 @@ msgstr "Rood kanban label"
 #. module: hr_recruitment
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.hr_applicant_view_form
 msgid "Refuse"
-msgstr "Afkeuren"
+msgstr "Afwijzen"
 
 #. module: hr_recruitment
 #: code:addons/hr_recruitment/models/hr_recruitment.py:0
@@ -2534,14 +2534,14 @@ msgstr "Naam van bron"
 #. module: hr_recruitment
 #: model:ir.model,name:hr_recruitment.model_hr_recruitment_source
 msgid "Source of Applicants"
-msgstr "Bron van aanvragers"
+msgstr "Bron van sollicitanten"
 
 #. module: hr_recruitment
 #: model:ir.actions.act_window,name:hr_recruitment.hr_recruitment_source_action
 #: model:ir.ui.menu,name:hr_recruitment.menu_hr_recruitment_source
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.hr_recruitment_source_tree
 msgid "Sources of Applicants"
-msgstr "Bron van aanvragers"
+msgstr "Bron van sollicitanten"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,help:hr_recruitment.field_hr_recruitment_stage__job_ids

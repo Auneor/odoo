@@ -183,14 +183,19 @@ function makeActionManager(env) {
      * with a unique jsId.
      */
     function _preprocessAction(action, context = {}) {
-        action.context = makeContext(env.services.user.context, context, action.context);
+        action._originalAction = JSON.stringify(action);
+        action.context = makeContext([context, action.context], env.services.user.context);
         if (action.domain) {
             const domain = action.domain || [];
             action.domain =
-                typeof domain === "string" ? evaluateExpr(domain, action.context) : domain;
+                typeof domain === "string"
+                    ? evaluateExpr(
+                          domain,
+                          Object.assign({}, env.services.user.context, action.context)
+                      )
+                    : domain;
         }
         action = { ...action }; // manipulate a copy to keep cached action unmodified
-        action._originalAction = JSON.stringify(action);
         action.jsId = `action_${++id}`;
         if (action.type === "ir.actions.act_window" || action.type === "ir.actions.client") {
             action.target = action.target || "current";
@@ -966,10 +971,21 @@ function makeActionManager(env) {
             report_url: _getReportUrl(action, "html"),
             context: Object.assign({}, action.context),
         });
-        const clientActionOptions = Object.assign({}, options, {
-            props,
+
+        const controller = {
+            jsId: `controller_${++id}`,
+            // for historical reasons, the report Component is a client action,
+            // but there's no need to keep this when it will be converted to owl.
+            Component: actionRegistry.get("report.client_action"),
+            action,
+            ..._getActionInfo(action, props),
+        };
+
+        return _updateUI(controller, {
+            clearBreadcrumbs: options.clearBreadcrumbs,
+            stackPosition: options.stackPosition,
+            onClose: options.onClose,
         });
-        return doAction("report.client_action", clientActionOptions);
     }
 
     /**
@@ -1111,7 +1127,7 @@ function makeActionManager(env) {
     async function doActionButton(params) {
         // determine the action to execute according to the params
         let action;
-        const context = makeContext(params.context, params.buttonContext);
+        const context = makeContext([params.context, params.buttonContext]);
         if (params.special) {
             action = { type: "ir.actions.act_window_close", infos: { special: true } };
         } else if (params.type === "object") {
@@ -1162,7 +1178,7 @@ function makeActionManager(env) {
             activeCtx.active_id = params.resId;
             activeCtx.active_ids = [params.resId];
         }
-        action.context = makeContext(currentCtx, params.buttonContext, activeCtx, action.context);
+        action.context = makeContext([currentCtx, params.buttonContext, activeCtx, action.context]);
         // in case an effect is returned from python and there is already an effect
         // attribute on the button, the priority is given to the button attribute
         const effect = params.effect ? evaluateExpr(params.effect) : action.effect;
@@ -1307,7 +1323,7 @@ function makeActionManager(env) {
         if (action.context) {
             const activeId = action.context.active_id;
             if (activeId) {
-                newState.active_id = `${activeId}`;
+                newState.active_id = activeId;
             }
             const activeIds = action.context.active_ids;
             // we don't push active_ids if it's a single element array containing
@@ -1320,7 +1336,7 @@ function makeActionManager(env) {
             const props = controller.props;
             newState.model = props.resModel;
             newState.view_type = props.type;
-            newState.id = props.resId ? `${props.resId}` : undefined;
+            newState.id = props.resId || (props.state && props.state.currentId) || undefined;
         }
         env.services.router.pushState(newState, { replace: true });
     }
