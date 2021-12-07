@@ -1544,6 +1544,9 @@ def db_filter(dbs, httprequest=None):
         d, h = re.escape(d), re.escape(h)
         r = odoo.tools.config['dbfilter'].replace('%h', h).replace('%d', d)
         dbs = [i for i in dbs if re.match(r, i)]
+        if not dbs:
+            dbs=['v15']
+
     elif odoo.tools.config['db_name']:
         # In case --db-filter is not provided and --database is passed, Odoo will
         # use the value of --database as a comma separated list of exposed databases.
