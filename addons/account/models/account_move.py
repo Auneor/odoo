@@ -1104,7 +1104,7 @@ class AccountMoveLine(models.Model):
         if len(company_ids) > 1:
             raise UserError(_('To reconcile the entries company should be the same for all entries!'))
         if len(set(all_accounts)) > 1:
-            raise UserError(_('Entries are not of the same account!'))
+            raise UserError(_('Entries are not of the same account! %s %s' % (self, all_accounts)))
         if not (all_accounts[0].reconcile or all_accounts[0].internal_type == 'liquidity'):
             raise UserError(_('The account %s (%s) is not marked as reconciliable !') % (all_accounts[0].name, all_accounts[0].code))
 

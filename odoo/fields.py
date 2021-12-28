@@ -960,7 +960,11 @@ class Field(MetaField('DummyField', (object,), {})):
                     self.determine_value(record)
                 else:
                     self.determine_draft_value(record)
-                value = record.env.cache.get(record, self)
+                try:
+                    value = record.env.cache.get(record, self)
+                except KeyError:
+                    _logger.warning('Failed to determine value of field %s: %s' % (self, record))
+                    value = record.env.cache.get(record, self)
         else:
             # null record -> return the null value for this field
             value = self.convert_to_cache(False, record, validate=False)
