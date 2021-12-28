@@ -203,16 +203,6 @@ const Wysiwyg = Widget.extend({
 
             self.openMediaDialog(params);
         });
-        this.$editable.on('dblclick', this.customizableLinksSelector, function (ev) {
-            if (!this.getAttribute('data-oe-model') && self.toolbar.$el.is(':visible')) {
-                self.showTooltip = false;
-                self.toggleLinkTools({
-                    forceOpen: true,
-                    link: this,
-                    noFocusUrl: $(ev.target).data('popover-widget-initialized'),
-                });
-            }
-        });
 
         if (options.snippets) {
             $(this.odooEditor.document.body).addClass('editor_enable');
@@ -245,7 +235,7 @@ const Wysiwyg = Widget.extend({
         // Ensure the Toolbar always have the correct layout in note.
         this._updateEditorUI();
 
-        this.$root.on('mousedown', (ev) => {
+        this.$root.on('click', (ev) => {
             const $target = $(ev.target);
 
             // Keep popover open if clicked inside it, but not on a button
@@ -253,7 +243,11 @@ const Wysiwyg = Widget.extend({
                 ev.preventDefault();
             }
 
-            if ($target.is(this.customizableLinksSelector) && $target.is('a') && !$target.attr('data-oe-model') && !$target.find('> [data-oe-model]').length) {
+            if ($target.is(this.customizableLinksSelector)
+                    && $target.is('a')
+                    && !$target.attr('data-oe-model')
+                    && !$target.find('> [data-oe-model]').length
+                    && !$target[0].closest('.o_extra_menu_items')) {
                 this.linkPopover = $target.data('popover-widget-initialized');
                 if (!this.linkPopover) {
                     // TODO this code is ugly maybe the mutex should be in the
@@ -275,7 +269,7 @@ const Wysiwyg = Widget.extend({
                     this.toggleLinkTools({
                         forceOpen: true,
                         link: $target[0],
-                        noFocusUrl: true,
+                        noFocusUrl: ev.detail === 1,
                     });
                 }
             }
@@ -544,7 +538,7 @@ const Wysiwyg = Widget.extend({
         if (this.linkPopover) {
             this.linkPopover.hide();
         }
-
+        window.removeEventListener('beforeunload', this._onBeforeUnload);
         this._super();
     },
     /**
@@ -766,7 +760,7 @@ const Wysiwyg = Widget.extend({
     setValue: function (value) {
         this.$editable.html(value);
         this.odooEditor.sanitize();
-        this.odooEditor.historyStep();
+        this.odooEditor.historyStep(true);
     },
     /**
      * Undo one step of change in the editor.
@@ -786,7 +780,7 @@ const Wysiwyg = Widget.extend({
      * Set cursor to the editor latest position before blur or to the last editable node, ready to type.
      */
     focus: function () {
-        if (!this.odooEditor.historyResetLatestComputedSelection()) {
+        if (this.odooEditor && !this.odooEditor.historyResetLatestComputedSelection()) {
             // If the editor don't have an history step to focus to,
             // We place the cursor after the end of the editor exiting content.
             const range = document.createRange();
@@ -909,6 +903,7 @@ const Wysiwyg = Widget.extend({
                 if (!this.linkTools || ![options.link, ...wysiwygUtils.ancestors(options.link)].includes(this.linkTools.$link[0])) {
                     this.linkTools = new weWidgets.LinkTools(this, {wysiwyg: this, noFocusUrl: options.noFocusUrl}, this.odooEditor.editable, {}, $btn, options.link || this.lastMediaClicked);
                 }
+                this.linkTools.noFocusUrl = options.noFocusUrl;
                 const _onMousedown = ev => {
                     if (
                         !ev.target.closest('.oe-toolbar') &&
@@ -1034,6 +1029,7 @@ const Wysiwyg = Widget.extend({
             }
         });
     },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -1435,7 +1431,9 @@ const Wysiwyg = Widget.extend({
                 if (!this.showTooltip || $target.attr('title') !== undefined) {
                     return;
                 }
+                this.odooEditor.observerUnactive();
                 $target.tooltip({title: _t('Double-click to edit'), trigger: 'manual', container: 'body'}).tooltip('show');
+                this.odooEditor.observerActive();
                 setTimeout(() => $target.tooltip('dispose'), 800);
             }, 400);
         }
