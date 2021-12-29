@@ -185,7 +185,7 @@ msgstr "Modell"
 #: code:addons/snailmail/models/snailmail_letter.py:211
 #, python-format
 msgid "One or more required fields are empty."
-msgstr ""
+msgstr "Mindestens ein Pflichtfeld ist frei."
 
 #. module: snailmail
 #: model:ir.model.fields,field_description:snailmail.field_snailmail_letter__report_template
@@ -206,7 +206,7 @@ msgstr "Postalische Drucke"
 #. module: snailmail
 #: model:ir.model.fields,field_description:snailmail.field_res_config_settings__snailmail_duplex
 msgid "Print Both sides"
-msgstr ""
+msgstr "Beide Seiten drucken"
 
 #. module: snailmail
 #: model:ir.model.fields,field_description:snailmail.field_res_config_settings__snailmail_color
@@ -262,6 +262,8 @@ msgid ""
 "The attachment of the letter could not be sent. Please check its content and"
 " contact the support if the problem persists."
 msgstr ""
+"Der Anhang konnte nicht gesendet werden. Bitte kontrollieren Sie den Inhalt "
+"und kontaktieren Sie das Support Team, sollte das Problem erneut auftreten."
 
 #. module: snailmail
 #: code:addons/snailmail/models/snailmail_letter.py:209
@@ -307,3 +309,5 @@ msgid ""
 "You don't have enough credits to perform this operation.<br>Please go to "
 "your <a href=%s target=\"new\">iap account</a>."
 msgstr ""
+"Ihr Guthaben reicht nicht aus, um diesen Vorgang durchzuführen.<br>Bitte "
+"gehen zu Ihrem<a href=%s target=\"new\"> IAP-Account</a>."
