@@ -6,7 +6,7 @@
 
 {
     "name": "Web Environment Ribbon",
-    "version": "14.0.1.0.0",
+    "version": "15.0.1.0.0",
     "category": "Web",
     "author": "Francesco OpenCode Apruzzese, "
     "Tecnativa, "
@@ -17,10 +17,11 @@
     "data": [
         "data/ribbon_data.xml",
     ],
-    'assets': {
-        'web.assets_backend': [
-            'web_environment_ribbon/static/src/js/ribbon.js',
-            'web_environment_ribbon/static/src/css/ribbon.css',
+    "auto_install": False,
+    "installable": True,
+    "assets": {
+        "web.assets_common": [
+            "web_environment_ribbon/static/**/*",
         ],
     },
 }
