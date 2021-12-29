@@ -30,8 +30,9 @@ class SaleOrder(models.Model):
         for order in self:
             order.delivery_set = any(line.is_delivery for line in order.order_line)
 
-    @api.onchange('order_line', 'partner_id')
+    @api.onchange('order_line', 'partner_id', 'partner_shipping_id')
     def onchange_order_line(self):
+        self.ensure_one()
         delivery_line = self.order_line.filtered('is_delivery')
         if delivery_line:
             self.recompute_delivery_price = True
@@ -117,7 +118,7 @@ class SaleOrder(models.Model):
         else:
             values['price_unit'] = price_unit
         if carrier.free_over and self.currency_id.is_zero(price_unit) :
-            values['name'] += '\n' + 'Free Shipping'
+            values['name'] += '\n' + _('Free Shipping')
         if self.order_line:
             values['sequence'] = self.order_line[-1].sequence + 1
         sol = SaleOrderLine.sudo().create(values)
