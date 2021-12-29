@@ -100,7 +100,7 @@ class EmbeddedSlide(models.Model):
 
 
 class SlideTag(models.Model):
-    """ Tag to search slides accross channels. """
+    """ Tag to search slides across channels. """
     _name = 'slide.tag'
     _description = 'Slide Tag'
 
@@ -382,6 +382,10 @@ class Slide(models.Model):
             data = base64.b64decode(self.datas)
             if data.startswith(b'%PDF-'):
                 pdf = PyPDF2.PdfFileReader(io.BytesIO(data), overwriteWarnings=False, strict=False)
+                try:
+                    pdf.getNumPages()
+                except PyPDF2.utils.PdfReadError:
+                    return
                 self.completion_time = (5 * len(pdf.pages)) / 60
             else:
                 self.slide_type = 'infographic'

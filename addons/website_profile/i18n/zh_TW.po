@@ -34,22 +34,22 @@ msgstr ".在論壇或電子學習平臺上獲取積分。這些點將讓你提�
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.users_page_content
 msgid ". Try another search."
-msgstr ". 請嘗試其他搜尋條件"
+msgstr ". 請嘗試其他搜尋條件."
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_badges
 msgid "<i class=\"fa fa-arrow-right mr-1\"/>All Badges"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right mr-1\"/>所有成就"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_badges
 msgid "<i class=\"fa fa-arrow-right\"/> All Badges"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right\"/>所有成就"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_edit_content
 msgid "<i class=\"fa fa-pencil fa-1g float-sm-none float-md-left\" title=\"Edit\"/>"
-msgstr "<i class=\"fa fa-pencil fa-1g float-sm-none float-md-left\" title=\"編輯\"/>"
+msgstr "<i class=\"fa fa-pencil fa-1g float-sm-none float-md-left\" title=\"Edit\"/>"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_header
@@ -104,7 +104,7 @@ msgstr "<span class=\"font-weight-bold\">電子郵件</span>"
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_edit_content
 msgid "<span class=\"font-weight-bold\">Name</span>"
-msgstr ""
+msgstr "<span class=\"font-weight-bold\">姓名</span>"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_edit_content
@@ -146,7 +146,7 @@ msgstr "<span id=\"email_validated_message\">恭喜您！您的電子郵件剛�
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.users_page_header
 msgid "<strong class=\"form-group text-white mr-2\">Rank by :</strong>"
-msgstr ""
+msgstr "<strong class=\"form-group text-white mr-2\">排序依：</strong>"
 
 #. module: website_profile
 #: model:mail.template,body_html:website_profile.validation_email
@@ -253,14 +253,14 @@ msgstr "所有用戶"
 #: model_terms:ir.ui.view,arch_db:website_profile.all_user_card
 #: model_terms:ir.ui.view,arch_db:website_profile.users_page_header
 msgid "All time"
-msgstr ""
+msgstr "所有時間 "
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.badge_content
 #: model_terms:ir.ui.view,arch_db:website_profile.rank_badge_main
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_content
 msgid "Badges"
-msgstr "徽章"
+msgstr "成就"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.badge_content
@@ -269,6 +269,8 @@ msgid ""
 "                        you receive badges for being especially helpful.<br class=\"d-none d-lg-inline-block\"/>Badges\n"
 "                        appear on your profile page, and your posts."
 msgstr ""
+"除了通過您的問題和答案贏得聲譽之外，您還會因特別有幫助而獲得成就。<br class=\"d-none d-lg-inline-"
+"block\"/>成就將顯示在您的個人資料頁面和您的貼文上。"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_content
@@ -288,7 +290,7 @@ msgstr "清除"
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_content
 msgid "Click here to send a verification email."
-msgstr ""
+msgstr "點選此處發送驗證電子郵件。"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.email_validation_banner
@@ -348,7 +350,7 @@ msgstr "永續學習由"
 #. module: website_profile
 #: model:ir.model.fields,field_description:website_profile.field_website__karma_profile_min
 msgid "Minimal karma to see other user's profile"
-msgstr ""
+msgstr "查看其他用戶個人資料的最小活躍點數"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_sub_nav
@@ -373,7 +375,7 @@ msgstr "下一個等級："
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_badges
 msgid "No badges yet!"
-msgstr ""
+msgstr "尚未獲得成就！"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.users_page_content
@@ -390,7 +392,7 @@ msgstr "為了接收回覆通知，請輸入正確的郵箱地址。"
 #. module: website_profile
 #: model:mail.template,name:website_profile.validation_email
 msgid "Profile: Email Verification"
-msgstr ""
+msgstr "個人資料：電子郵件驗證"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.rank_badge_main
@@ -405,7 +407,7 @@ msgstr "等級"
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.private_profile
 msgid "Return to the website."
-msgstr "返回網站"
+msgstr "返回網站."
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_sub_nav
@@ -502,7 +504,7 @@ msgstr "您可以通過在每個課程結束時回答測驗來獲取更多積分
 #: model_terms:ir.ui.view,arch_db:website_profile.rank_badge_main
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_sub_nav
 msgid "breadcrumb"
-msgstr "導覽列"
+msgstr "頁面路徑"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.rank_badge_main
@@ -517,7 +519,7 @@ msgstr "本月"
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.all_user_card
 msgid "this week"
-msgstr ""
+msgstr "本星期"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.profile_next_rank_card
@@ -527,7 +529,7 @@ msgstr "xp"
 #. module: website_profile
 #: model:mail.template,subject:website_profile.validation_email
 msgid "{{ object.company_id.name }} Profile validation"
-msgstr ""
+msgstr "{{ object.company_id.name }} 個人資料驗證"
 
 #. module: website_profile
 #: model_terms:ir.ui.view,arch_db:website_profile.user_profile_sub_nav

@@ -23,7 +23,7 @@ msgstr ""
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid " Product cost updated from %(previous)s to %(new_cost)s."
-msgstr ""
+msgstr " 產品成本從 %(previous)s 更新為 %(new_cost)s。"
 
 #. module: stock_account
 #: code:addons/stock_account/models/product.py:0
@@ -39,7 +39,7 @@ msgstr "%(user)s 已將成本從 %(previous)s 更改為 %(new_price)s - %(produc
 msgid ""
 "%(user)s changed stock valuation from  %(previous)s to %(new_value)s - "
 "%(product)s"
-msgstr ""
+msgstr "%(user)s 將庫存估值從 %(previous)s 更改為 %(new_value)s - %(product)s"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_revaluation_form_view
@@ -47,11 +47,13 @@ msgid ""
 ")\n"
 "                            <small class=\"mx-2 font-italic\">Use a negative added value to record a decrease in the product value</small>"
 msgstr ""
+")\n"
+"                            <small class=\"mx-2 font-italic\">使用負的增加值來記錄產品價值的減少</small>"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.view_category_property_form
 msgid "<b>Set other input/output accounts on specific </b>"
-msgstr ""
+msgstr "<b>設置特定的其他輸入/輸出帳戶</b>"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_account_report_invoice_document
@@ -103,7 +105,7 @@ msgstr "會計資訊"
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_tree
 msgid "Add Manual Valuation"
-msgstr ""
+msgstr "添加手動評價"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.res_config_settings_view_form
@@ -114,12 +116,12 @@ msgstr "在產品價值中添加額外費用（運輸、海關等）。"
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_revaluation_form_view
 msgid "Added Value"
-msgstr ""
+msgstr "價值調整"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer_revaluation__added_value
 msgid "Added value"
-msgstr ""
+msgstr "價值調整"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_res_config_settings__module_stock_landed_costs
@@ -132,7 +134,7 @@ msgstr "影響接收操作的落地成本, 並在產品之間拆分以更新成�
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_move__analytic_account_line_id
 msgid "Analytic Account Line"
-msgstr ""
+msgstr "分析帳戶項目"
 
 #. module: stock_account
 #: model:ir.model.fields.selection,name:stock_account.selection__product_category__property_valuation__real_time
@@ -217,6 +219,8 @@ msgid ""
 "Counterpart journal items for all incoming stock moves will be posted in this account, unless there is a specific valuation account\n"
 "                set on the source location. This is the default value for all products in this category. It can also directly be set on each product."
 msgstr ""
+"所有進貨庫存移動的對應日記帳項目將在此科目中過帳，除非有特定的評價科目\n"
+"                設置在來源位置。這是此類別中所有產品的預設值。也可以直接設置在每個產品上。"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_picking__country_code
@@ -245,7 +249,7 @@ msgstr "幣別"
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer_revaluation__current_quantity_svl
 msgid "Current Quantity"
-msgstr ""
+msgstr "目前數量"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer_revaluation__current_value_svl
@@ -264,7 +268,7 @@ msgstr "日期"
 msgid ""
 "Date at which the accounting entries will be created in case of automated "
 "inventory valuation. If empty, the inventory date will be used."
-msgstr "在自動清點估價的情況下創建會計分錄的日期。如果為空，將使用庫存日期。"
+msgstr "在自動清點估價的情況下建立會計分錄的日期。如果為空，將使用庫存日期。"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_stock_valuation_layer__uom_id
@@ -405,13 +409,13 @@ msgstr "手動"
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid "Manual Stock Valuation: %s."
-msgstr ""
+msgstr "手動庫存估值：%s。"
 
 #. module: stock_account
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid "Manual Stock Valuation: No Reason Given."
-msgstr ""
+msgstr "手動庫存估值：沒有給出任何理由。"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_product_category__property_valuation
@@ -423,23 +427,23 @@ msgid ""
 "        Automated: An accounting entry is automatically created to value the inventory when a product enters or leaves the company.\n"
 "        "
 msgstr ""
-"手動：盤點存貨的會計輸入不會自動過帳。\n"
-"自動化：當產品進入或離開公司時，自動創建一個會計輸入來評估庫存。"
+"手動：盤點存貨的會計傳票不會自動過帳。\n"
+"自動：當產品進入或離開公司時，自動建立一個會計傳票來評估庫存。"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer_revaluation__new_value
 msgid "New value"
-msgstr ""
+msgstr "新值"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer_revaluation__new_value_by_qty
 msgid "New value by quantity"
-msgstr ""
+msgstr "按數量計算的新值"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_account_report_product_product_replenishment
 msgid "On Hand Value"
-msgstr ""
+msgstr "目前庫存價值"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_form
@@ -469,7 +473,7 @@ msgstr "產品移動(移庫明細)"
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_revaluation_form_view
 #, python-format
 msgid "Product Revaluation"
-msgstr ""
+msgstr "產品重估"
 
 #. module: stock_account
 #: model:ir.model,name:stock_account.model_product_template
@@ -507,12 +511,12 @@ msgstr "原因"
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_stock_valuation_layer_revaluation__reason
 msgid "Reason of the revaluation"
-msgstr ""
+msgstr "重估原因"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer_revaluation__product_id
 msgid "Related product"
-msgstr ""
+msgstr "相關產品"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer__remaining_qty
@@ -538,12 +542,12 @@ msgstr "退料明細"
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid "Revaluation of %s"
-msgstr ""
+msgstr "%s 的重估"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_revaluation_form_view
 msgid "Revalue"
-msgstr ""
+msgstr "重估"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_stock_valuation_layer__categ_id
@@ -567,7 +571,7 @@ msgid ""
 msgstr ""
 "標準價格：產品按照產品定義的標準成本進行估價。\n"
 "         平均成本（AVCO）：產品以加權平均成本估值。\n"
-"         先入先出（First In First Out，簡稱FIFO）：假設那些先進入公司的產品估值，它們也會先離開。"
+"         先進先出（First In First Out，簡稱FIFO）：假設那些先進入公司的產品估值，它們也會先離開。"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_category__property_stock_account_input_categ_id
@@ -606,7 +610,7 @@ msgstr "庫存補貨報告"
 #. module: stock_account
 #: model:ir.model,name:stock_account.model_stock_request_count
 msgid "Stock Request an Inventory Count"
-msgstr ""
+msgstr "庫存請求進行盤點"
 
 #. module: stock_account
 #: model:ir.actions.act_window,name:stock_account.stock_valuation_layer_action
@@ -659,7 +663,7 @@ msgstr ""
 msgid ""
 "The Stock Input and/or Output accounts cannot be the same as the Stock "
 "Valuation account."
-msgstr ""
+msgstr "庫存輸入和/或輸出科目不能與庫存估價科目相同。"
 
 #. module: stock_account
 #: code:addons/stock_account/models/product.py:0
@@ -668,13 +672,13 @@ msgstr ""
 msgid ""
 "The action leads to the creation of a journal entry, for which you don't "
 "have the access rights."
-msgstr ""
+msgstr "該操作會導致建立您沒有存取權限的日記帳分錄。"
 
 #. module: stock_account
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid "The added value doesn't have any impact on the stock valuation"
-msgstr ""
+msgstr "價值調整對庫存估值沒有任何影響"
 
 #. module: stock_account
 #: code:addons/stock_account/models/stock_move.py:0
@@ -706,7 +710,7 @@ msgstr "移動名細處於不一致的狀態:它們不屬於同一個來源或�
 msgid ""
 "There is no valuation layers. Valuation layers are created when some product"
 " moves should impact the valuation of the stock."
-msgstr "沒有估價層。當某些產品移動會影響股票的估值時，將創建估價層。"
+msgstr "沒有估價層。當某些產品移動會影響庫存的估值時，將建立估價層。"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_valuation_layer__value
@@ -823,19 +827,19 @@ msgstr "執行自動庫存評估時，這是會計日誌，其中處理庫存移
 #. module: stock_account
 #: model:ir.model,name:stock_account.model_stock_valuation_layer_revaluation
 msgid "Wizard model to reavaluate a stock inventory for a product"
-msgstr ""
+msgstr "用於重新評估產品庫存的作業模型"
 
 #. module: stock_account
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid "You cannot revalue a product with a standard cost method."
-msgstr ""
+msgstr "您不能使用標準成本方法重估產品。"
 
 #. module: stock_account
 #: code:addons/stock_account/wizard/stock_valuation_layer_revaluation.py:0
 #, python-format
 msgid "You cannot revalue a product with an empty or negative stock."
-msgstr ""
+msgstr "您不能重估具有空庫存或負庫存的產品。"
 
 #. module: stock_account
 #: code:addons/stock_account/models/product.py:0
@@ -844,7 +848,7 @@ msgid ""
 "You cannot update the cost of a product in automated valuation as it leads "
 "to the creation of a journal entry, for which you don't have the access "
 "rights."
-msgstr ""
+msgstr "您無法在自動評價中更新產品成本，因為這會導致建立您沒有存取權限的日記帳分錄。"
 
 #. module: stock_account
 #: code:addons/stock_account/models/product.py:0
@@ -860,7 +864,7 @@ msgstr "您沒有在產品類別上定義任何輸入估價項目。在處理此
 msgid ""
 "You don't have any stock input account defined on your product category. You"
 " must define one before processing this operation."
-msgstr ""
+msgstr "您沒有在您的產品類別中定義任何庫存輸入帳戶。您必須在處理此操作之前定義一個。"
 
 #. module: stock_account
 #: code:addons/stock_account/models/stock_move.py:0
@@ -885,7 +889,7 @@ msgstr "您沒有在您的產品類別中定義任何庫存評估帳戶。 處�
 #: code:addons/stock_account/models/product.py:0
 #, python-format
 msgid "You must set a counterpart account on your product category."
-msgstr ""
+msgstr "您必須在您的產品類別上設置一個對應賬戶。"
 
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.stock_valuation_layer_revaluation_form_view
@@ -900,4 +904,4 @@ msgstr "為"
 #. module: stock_account
 #: model_terms:ir.ui.view,arch_db:stock_account.view_category_property_form
 msgid "locations"
-msgstr ""
+msgstr "位置"

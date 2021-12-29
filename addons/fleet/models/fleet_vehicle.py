@@ -31,7 +31,6 @@ class FleetVehicle(models.Model):
     active = fields.Boolean('Active', default=True, tracking=True)
     manager_id = fields.Many2one(
         'res.users', 'Fleet Manager',
-        compute='_compute_manager_id', store=True, readonly=False,
         domain=lambda self: [('groups_id', 'in', self.env.ref('fleet.fleet_group_manager').id)],
     )
     company_id = fields.Many2one(
@@ -363,7 +362,7 @@ class FleetVehicle(models.Model):
 
     def _track_subtype(self, init_values):
         self.ensure_one()
-        if 'driver_id' in init_values:
+        if 'driver_id' in init_values or 'future_driver_id' in init_values:
             return self.env.ref('fleet.mt_fleet_driver_updated')
         return super(FleetVehicle, self)._track_subtype(init_values)
 

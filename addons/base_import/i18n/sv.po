@@ -7,17 +7,17 @@
 # Martin Trigaux, 2021
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2021
 # Haojun Zou <apollo_zhj@msn.com>, 2021
-# Kim Asplund <kim.asplund@gmail.com>, 2021
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2021
 # Simon S, 2021
+# Kim Asplund <kim.asplund@gmail.com>, 2021
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:28+0000\n"
+"POT-Creation-Date: 2021-11-16 13:19+0000\n"
 "PO-Revision-Date: 2021-09-14 12:20+0000\n"
-"Last-Translator: Simon S, 2021\n"
+"Last-Translator: Kim Asplund <kim.asplund@gmail.com>, 2021\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,7 +83,7 @@ msgstr "Bas"
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_import
 msgid "Base Import"
-msgstr ""
+msgstr "Basimport"
 
 #. module: base_import
 #: model:ir.model,name:base_import.model_base_import_mapping
@@ -509,7 +509,6 @@ msgstr ""
 #. module: base_import
 #. openerp-web
 #: code:addons/base_import/static/src/import_records/import_records.xml:0
-#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
 msgid "Import records"
 msgstr "Importera poster"
@@ -640,7 +639,7 @@ msgstr "Modell"
 #. openerp-web
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
-msgid "Multiple errors occured"
+msgid "Multiple errors occurred"
 msgstr ""
 
 #. module: base_import
@@ -1039,7 +1038,7 @@ msgstr ""
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
 msgid "Untitled"
-msgstr ""
+msgstr "Namnlös"
 
 #. module: base_import
 #. openerp-web

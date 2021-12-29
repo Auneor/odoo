@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:28+0000\n"
+"POT-Creation-Date: 2021-11-16 13:19+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2021\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -38,14 +38,14 @@ msgstr "分析項目"
 msgid ""
 "Analytic account in which cost and revenue entries will take        place "
 "for financial management of the manufacturing order."
-msgstr ""
+msgstr "將在其中進行成本和收入項目以進行製造訂單財務管理的分析帳戶。"
 
 #. module: mrp_account
 #: model:ir.model.fields,help:mrp_account.field_mrp_bom__analytic_account_id
 msgid ""
 "Analytic account in which cost and revenue entries will take place for "
 "financial management of the manufacturing order."
-msgstr ""
+msgstr "將在其中進行成本和收入項目以進行製造訂單的財務管理的分析帳戶。"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_bom
@@ -127,7 +127,7 @@ msgstr "製造訂單數量"
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_mrp_workorder__mo_analytic_account_line_id
 msgid "Mo Analytic Account Line"
-msgstr ""
+msgstr "MO分析帳戶項目"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
@@ -147,12 +147,17 @@ msgstr "製造訂單"
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_mrp_production__show_valuation
 msgid "Show Valuation"
-msgstr ""
+msgstr "顯示估值"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_stock_move
 msgid "Stock Move"
 msgstr "庫存移動"
+
+#. module: mrp_account
+#: model:ir.model,name:mrp_account.model_stock_rule
+msgid "Stock Rule"
+msgstr "庫存規則"
 
 #. module: mrp_account
 #: model:ir.model.fields,help:mrp_account.field_mrp_workcenter_productivity__cost_already_recorded
@@ -171,7 +176,7 @@ msgstr "計價"
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_mrp_workorder__wc_analytic_account_line_id
 msgid "Wc Analytic Account Line"
-msgstr ""
+msgstr "Wc 分析賬戶明細"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
@@ -191,22 +196,22 @@ msgstr "工單數量"
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
-msgstr "工作中心生產力日誌"
+msgstr "工作中心產能日誌"
 
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_account_analytic_account__workcenter_ids
 msgid "Workcenters"
-msgstr ""
+msgstr "工作中心"
 
 #. module: mrp_account
 #: code:addons/mrp_account/models/stock_move.py:0
 #, python-format
 msgid "[Raw] %s"
-msgstr ""
+msgstr "[Raw] %s"
 
 #. module: mrp_account
 #: code:addons/mrp_account/models/mrp_production.py:0
 #: code:addons/mrp_account/models/mrp_workorder.py:0
 #, python-format
 msgid "[WC] %s"
-msgstr ""
+msgstr "[WC] %s"

@@ -33,6 +33,9 @@ import {
     splitTextNode,
     startPos,
     nodeSize,
+    allowsParagraphRelatedElements,
+    isUnbreakable,
+    makeContentsInline,
 } from '../utils/utils.js';
 
 const TEXT_CLASSES_REGEX = /\btext-[^\s]*\b/g;
@@ -71,13 +74,18 @@ function insert(editor, data, isText = true) {
     let nodeToInsert;
     const insertedNodes = [...fakeEl.childNodes];
     while ((nodeToInsert = fakeEl.childNodes[0])) {
-        if (isBlock(nodeToInsert) && !isBlock(startNode)) {
+        if (isBlock(nodeToInsert) && !allowsParagraphRelatedElements(startNode)) {
             // Split blocks at the edges if inserting new blocks (preventing
             // <p><p>text</p></p> scenarios).
             while (
                 startNode.parentElement !== editor.editable &&
-                !isBlock(startNode.parentElement)
+                !allowsParagraphRelatedElements(startNode.parentElement)
             ) {
+                if (isUnbreakable(startNode.parentElement)) {
+                    makeContentsInline(fakeEl);
+                    nodeToInsert = fakeEl.childNodes[0];
+                    break;
+                }
                 let offset = childNodeIndex(startNode);
                 if (!insertBefore) {
                     offset += 1;
@@ -408,8 +416,8 @@ export const editorCommands = {
         // we need to remove the contentEditable isolation of links
         // before we apply the unlink, otherwise the command is not performed
         // because the content editable root is the link
-        const closestEl = closestElement(sel.focusNode);
-        if (closestEl.tagName === 'A' && closestEl.getAttribute('contenteditable') === 'true') {
+        const closestEl = closestElement(sel.focusNode, 'a');
+        if (closestEl && closestEl.getAttribute('contenteditable') === 'true') {
             editor._activateContenteditable();
         }
         if (sel.isCollapsed) {

@@ -53,7 +53,7 @@ msgstr "<i class=\"fa fa-fw fa-check-circle\"/>等待狀態"
 msgid ""
 "<i class=\"fa fa-info\"/> You have credits card registered, you can log-in "
 "to be able to use them."
-msgstr "<i class=\"fa fa-info\"/> 登記您的信用卡之後您就可以登錄後並使用"
+msgstr "<i class=\"fa fa-info\"/> 登記您的信用卡之後您就可以登入後並使用"
 
 #. module: account_payment
 #: model_terms:ir.ui.view,arch_db:account_payment.portal_my_invoices_payment
@@ -98,6 +98,8 @@ msgid ""
 "<span class=\"badge badge-pill badge-success\"><i class=\"fa fa-fw fa-"
 "check\"/><span class=\"d-none d-md-inline\"> Reversed</span></span>"
 msgstr ""
+"<span class=\"badge badge-pill badge-success\"><i class=\"fa fa-fw fa-"
+"check\"/><span class=\"d-none d-md-inline\"> 迴轉</span></span>"
 
 #. module: account_payment
 #: model_terms:ir.ui.view,arch_db:account_payment.portal_my_invoices_payment
@@ -114,6 +116,8 @@ msgid ""
 "<strong>No suitable payment option could be found.</strong><br/>\n"
 "                                If you believe that it is an error, please contact the website administrator."
 msgstr ""
+"<strong>找不到合適的付款方式.</strong><br/>\n"
+"                                如果您認為這是一個錯誤，請聯繫網站管理員"
 
 #. module: account_payment
 #: model_terms:ir.ui.view,arch_db:account_payment.portal_invoice_payment

@@ -531,6 +531,39 @@ QUnit.module('basic_fields', {
         form.destroy();
     });
 
+    QUnit.test('toggle_button in form view with readonly modifiers', async function (assert) {
+        assert.expect(3);
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `<form>
+                    <field name="bar" widget="toggle_button" options="{'active': 'Active value', 'inactive': 'Inactive value'}" readonly="True"/>
+                </form>`,
+            mockRPC: function (route, args) {
+                if (args.method === 'write') {
+                    throw new Error("Should not do a write RPC with readonly toggle_button");
+                }
+                return this._super.apply(this, arguments);
+            },
+            res_id: 2,
+        });
+
+        assert.strictEqual(form.$('.o_field_widget[name=bar] i.o_toggle_button_success:not(.text-muted)').length,
+            1, "should be green");
+        assert.ok(form.$('.o_field_widget[name=bar]').prop('disabled'),
+            "button should be disabled when readonly attribute is given");
+
+        // click on the button to check click doesn't call write as we throw error in write call
+        await testUtils.dom.click(form.$('.o_field_widget[name=bar]'));
+
+        assert.strictEqual(form.$('.o_field_widget[name=bar] i.o_toggle_button_success:not(.text-muted)').length,
+            1, "should be green even after click");
+
+        form.destroy();
+    });
+
     QUnit.module('FieldNumeric');
 
     QUnit.test('numeric field: fields with keydown on numpad decimal key', async function (assert) {
@@ -7726,7 +7759,7 @@ QUnit.module('basic_fields', {
     });
 
     QUnit.test('domain field: handle false domain as []', async function (assert) {
-        assert.expect(3);
+        assert.expect(4);
 
         this.data.partner.records[0].foo = false;
         this.data.partner.fields.bar.type = "char";
@@ -7833,6 +7866,243 @@ QUnit.module('basic_fields', {
             "should have picked the correct list view");
 
         form.destroy();
+    });
+
+    QUnit.test('domain field: manually edit domain with textarea', async function (assert) {
+        assert.expect(9);
+
+        const originalDebug = odoo.debug;
+        odoo.debug = true;
+
+        this.data.partner.records[0].foo = false;
+        this.data.partner.fields.bar.type = "char";
+        this.data.partner.records[0].bar = "product";
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <field name="bar"/>
+                    <field name="foo" widget="domain" options="{'model': 'bar'}"/>
+                </form>`,
+            mockRPC(route, args) {
+                if (args.method === 'search_count') {
+                    assert.step(JSON.stringify(args.args[0]));
+                }
+                return this._super.apply(this, arguments);
+            },
+            viewOptions: {
+                mode: 'edit',
+            },
+            res_id: 1,
+        });
+
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+        assert.verifySteps(["[]"]);
+
+        await testUtils.fields.editAndTrigger(form.$('.o_domain_debug_input'), "[['id', '<', 40]]", ["change"]);
+        // the count should not be re-computed when editing with the textarea
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+        assert.verifySteps([]);
+
+        await testUtils.form.clickSave(form);
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "1 record(s)");
+        assert.verifySteps([
+            "[[\"id\",\"<\",40]]", // to validate the domain, before saving
+            "[[\"id\",\"<\",40]]", // to render in readonly once it has been saved
+        ]);
+
+        form.destroy();
+        odoo.debug = originalDebug;
+    });
+
+    QUnit.test('domain field: manually set an invalid domain with textarea', async function (assert) {
+        assert.expect(9);
+
+        const originalDebug = odoo.debug;
+        odoo.debug = true;
+
+        this.data.partner.records[0].foo = false;
+        this.data.partner.fields.bar.type = "char";
+        this.data.partner.records[0].bar = "product";
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <field name="bar"/>
+                    <field name="foo" widget="domain" options="{'model': 'bar'}"/>
+                </form>`,
+            mockRPC(route, args) {
+                if (args.method === 'search_count') {
+                    assert.step(JSON.stringify(args.args[0]));
+                }
+                if (args.method === "write") {
+                    throw new Error("should not save");
+                }
+                return this._super.apply(this, arguments);
+            },
+            viewOptions: {
+                mode: 'edit',
+            },
+            res_id: 1,
+        });
+
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+        assert.verifySteps(["[]"]);
+
+        await testUtils.fields.editAndTrigger(form.$('.o_domain_debug_input'), "[['abc']]", ["change"]);
+        // the count should not be re-computed when editing with the textarea
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+        assert.verifySteps([]);
+
+        await testUtils.form.clickSave(form);
+        assert.hasClass(form.$(".o_field_domain"), "o_field_invalid", "the field is marked as invalid");
+        assert.hasClass(form.$(".o_form_view"), "o_form_editable", "the view is still in edit mode");
+        assert.verifySteps(["[[\"abc\"]]"]);
+
+        form.destroy();
+        odoo.debug = originalDebug;
+    });
+
+    QUnit.test('domain field: reload count by clicking on the refresh button', async function (assert) {
+        assert.expect(7);
+
+        const originalDebug = odoo.debug;
+        odoo.debug = true;
+
+        this.data.partner.records[0].foo = "[]";
+        this.data.partner.fields.bar.type = "char";
+        this.data.partner.records[0].bar = "product";
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <field name="bar"/>
+                    <field name="foo" widget="domain" options="{'model': 'bar'}"/>
+                </form>`,
+            async mockRPC(route, args) {
+                if (args.method === 'search_count') {
+                    assert.step(JSON.stringify(args.args[0]));
+                }
+                return this._super.apply(this, arguments);
+            },
+            viewOptions: {
+                mode: 'edit',
+            },
+            res_id: 1,
+        });
+
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+
+        await testUtils.fields.editAndTrigger(form.$('.o_domain_debug_input'), "[['id', '<', 40]]", ["change"]);
+        // the count should not be re-computed when editing with the textarea
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+        assert.verifySteps(["[]"]);
+
+        // click on the refresh button
+        await testUtils.dom.click(form.$(".o_refresh_count"));
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "1 record(s)");
+        assert.verifySteps(["[[\"id\",\"<\",40]]"]);
+
+        form.destroy();
+        odoo.debug = originalDebug;
+    });
+
+    QUnit.test('domain field: does not wait for the count to render', async function (assert) {
+        assert.expect(5);
+
+        this.data.partner.records[0].foo = "[]";
+        this.data.partner.fields.bar.type = "char";
+        this.data.partner.records[0].bar = "product";
+
+        const def = testUtils.makeTestPromise();
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <field name="bar"/>
+                    <field name="foo" widget="domain" options="{'model': 'bar'}"/>
+                </form>`,
+            async mockRPC(route, args) {
+                const result = this._super.apply(this, arguments);
+                if (args.method === 'search_count') {
+                    await def;
+                }
+                return result;
+            },
+            res_id: 1,
+        });
+
+        assert.containsOnce(form, ".o_field_domain_panel .fa-circle-o-notch.fa-spin");
+        assert.containsNone(form, ".o_field_domain_panel .o_domain_show_selection_button");
+
+        def.resolve();
+        await testUtils.nextTick();
+
+        assert.containsNone(form, ".o_field_domain_panel .fa-circle-o-notch .fa-spin");
+        assert.containsOnce(form, ".o_field_domain_panel .o_domain_show_selection_button");
+        assert.strictEqual(form.$(".o_domain_show_selection_button").text().trim(), "2 record(s)");
+
+        form.destroy();
+    });
+
+    QUnit.test('domain field: edit domain with dynamic content', async function (assert) {
+        assert.expect(2);
+
+        const originalDebug = odoo.debug;
+        odoo.debug = true;
+        let rawDomain = `
+            [
+                ["date", ">=", datetime.datetime.combine(context_today() + relativedelta(days = -365), datetime.time(0, 0, 0)).to_utc().strftime("%Y-%m-%d %H:%M:%S")]
+            ]
+        `;
+        this.data.partner.records[0].foo = rawDomain;
+        this.data.partner.fields.bar.type = "char";
+        this.data.partner.records[0].bar = "partner";
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <field name="bar"/>
+                    <field name="foo" widget="domain" options="{'model': 'bar'}"/>
+                </form>`,
+            async mockRPC(route, args) {
+                if (args.method === 'write') {
+                    assert.strictEqual(args.args[1].foo, rawDomain);
+                }
+                return this._super.apply(this, arguments);
+            },
+            res_id: 1,
+            viewOptions: {
+                mode: 'edit',
+            },
+        });
+
+        assert.strictEqual(form.$(".o_domain_debug_input").val(), rawDomain);
+
+        rawDomain = `
+            [
+                ["date", ">=", datetime.datetime.combine(context_today() + relativedelta(days = -1), datetime.time(0, 0, 0)).to_utc().strftime("%Y-%m-%d %H:%M:%S")]
+            ]
+        `;
+        await testUtils.fields.editAndTrigger(form.$('.o_domain_debug_input'), rawDomain, ["change"]);
+        await testUtils.form.clickSave(form);
+
+        form.destroy();
+        odoo.debug = originalDebug;
     });
 
     QUnit.module('FieldProgressBar');

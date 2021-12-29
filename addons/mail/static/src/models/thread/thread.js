@@ -847,6 +847,16 @@ function factory(dependencies) {
         }
 
         /**
+         * Returns the name of the given partner in the context of this thread.
+         *
+         * @param {mail.partner} partner
+         * @returns {string}
+         */
+        getMemberName(partner) {
+            return partner.nameOrDisplayName;
+        }
+
+        /**
          * Returns the text that identifies this thread in a mention.
          *
          * @returns {string}
@@ -994,9 +1004,9 @@ function factory(dependencies) {
          *
          * @param {Object} [param0]
          * @param {boolean} [param0.expanded=false]
-         * @param {boolean} [param0.focus=true]
+         * @param {boolean} [param0.focus]
          */
-        async open({ expanded = false, focus = true } = {}) {
+        async open({ expanded = false, focus } = {}) {
             const discuss = this.messaging.discuss;
             // check if thread must be opened in form view
             if (!['mail.box', 'mail.channel'].includes(this.model)) {
@@ -1018,7 +1028,9 @@ function factory(dependencies) {
                 (!device.isMobile && (discuss.isOpen || expanded)) ||
                 this.model === 'mail.box'
             ) {
-                return discuss.openThread(this, { focus });
+                return discuss.openThread(this, {
+                    focus: focus !== undefined ? focus : !this.messaging.device.isMobileDevice,
+                });
             }
             // thread must be opened in chat window
             return this.messaging.chatWindowManager.openThread(this, {
@@ -1349,6 +1361,24 @@ function factory(dependencies) {
 
         /**
          * @private
+         * @returns {FieldCommand}
+         */
+        _computeDiscussSidebarCategoryItem() {
+            if (this.model !== 'mail.channel') {
+                return clear();
+            }
+            if (!this.isPinned) {
+                return clear();
+            }
+            const discussSidebarCategory = this._getDiscussSidebarCategory();
+            if (!discussSidebarCategory) {
+                return clear();
+            }
+            return insertAndReplace({ category: replace(discussSidebarCategory) });
+        }
+
+        /**
+         * @private
          * @returns {string}
          */
         _computeDisplayName() {
@@ -1645,6 +1675,30 @@ function factory(dependencies) {
 
         /**
          * @private
+         * @returns {FieldCommand}
+         */
+        _computeMessagingAsRingingThread() {
+            if (this.rtcInvitingSession) {
+                return replace(this.messaging);
+            }
+            return clear();
+        }
+
+        /**
+         * @private
+         * @returns {FieldCommand}
+         */
+        _computeMessagingMenuAsPinnedAndUnreadChannel() {
+            if (!this.messaging.messagingMenu) {
+                return clear();
+            }
+            return (this.model === 'mail.channel' && this.isPinned && this.localMessageUnreadCounter > 0)
+                ? replace(this.messaging.messagingMenu)
+                : clear();
+        }
+
+        /**
+         * @private
          * @returns {mail.message[]}
          */
         _computeNeedactionMessagesAsOriginThread() {
@@ -1757,20 +1811,20 @@ function factory(dependencies) {
             if (this.orderedOtherTypingMembers.length === 1) {
                 return _.str.sprintf(
                     this.env._t("%s is typing..."),
-                    this.orderedOtherTypingMembers[0].nameOrDisplayName
+                    this.getMemberName(this.orderedOtherTypingMembers[0])
                 );
             }
             if (this.orderedOtherTypingMembers.length === 2) {
                 return _.str.sprintf(
                     this.env._t("%s and %s are typing..."),
-                    this.orderedOtherTypingMembers[0].nameOrDisplayName,
-                    this.orderedOtherTypingMembers[1].nameOrDisplayName
+                    this.getMemberName(this.orderedOtherTypingMembers[0]),
+                    this.getMemberName(this.orderedOtherTypingMembers[1])
                 );
             }
             return _.str.sprintf(
                 this.env._t("%s, %s and more are typing..."),
-                this.orderedOtherTypingMembers[0].nameOrDisplayName,
-                this.orderedOtherTypingMembers[1].nameOrDisplayName
+                this.getMemberName(this.orderedOtherTypingMembers[0]),
+                this.getMemberName(this.orderedOtherTypingMembers[1])
             );
         }
 
@@ -1802,6 +1856,23 @@ function factory(dependencies) {
          */
         _computeVideoCount() {
             return this.rtcSessions.filter(session => session.videoStream).length;
+        }
+
+        /**
+         * Returns the discuss sidebar category that corresponds to this channel
+         * type.
+         *
+         * @private
+         * @returns {mail.discuss_sidebar_category}
+         */
+        _getDiscussSidebarCategory() {
+            switch (this.channel_type) {
+                case 'channel':
+                    return this.messaging.discuss.categoryChannel;
+                case 'chat':
+                case 'group':
+                    return this.messaging.discuss.categoryChat;
+            }
         }
 
         /**
@@ -2056,9 +2127,15 @@ function factory(dependencies) {
          * States the description of this thread. Only applies to channels.
          */
         description: attr(),
-        discussSidebarCategoryItem: one2many('mail.discuss_sidebar_category_item', {
+        /**
+         * Determines the discuss sidebar category item that displays this
+         * thread (if any). Only applies to channels.
+         */
+        discussSidebarCategoryItem: one2one('mail.discuss_sidebar_category_item', {
+            compute: '_computeDiscussSidebarCategoryItem',
             inverse: 'channel',
             isCausal: true,
+            readonly: true,
         }),
         displayName: attr({
             compute: '_computeDisplayName',
@@ -2299,6 +2376,16 @@ function factory(dependencies) {
             inverse: 'thread',
             isCausal: true,
         }),
+        messagingAsRingingThread: many2one('mail.messaging', {
+            compute: '_computeMessagingAsRingingThread',
+            inverse: 'ringingThreads',
+            readonly: true,
+        }),
+        messagingMenuAsPinnedAndUnreadChannel: many2one('mail.messaging_menu', {
+            compute: '_computeMessagingMenuAsPinnedAndUnreadChannel',
+            inverse: 'pinnedAndUnreadChannels',
+            readonly: true,
+        }),
         model: attr({
             readonly: true,
             required: true,
@@ -2438,6 +2525,7 @@ function factory(dependencies) {
          */
         suggestedRecipientInfoList: one2many('mail.suggested_recipient_info', {
             inverse: 'thread',
+            isCausal: true,
         }),
         /**
          * Determines the last content of the last composer related to this

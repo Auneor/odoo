@@ -46,6 +46,7 @@ import {
     YOUTUBE_URL_GET_VIDEO_ID,
     unwrapContents,
     peek,
+    rightPos,
 } from './utils/utils.js';
 import { editorCommands } from './commands/commands.js';
 import { Powerbox } from './powerbox/Powerbox.js';
@@ -115,6 +116,8 @@ const CLIPBOARD_WHITELISTS = {
         'img-thumbnail',
         'rounded',
         'rounded-circle',
+        'table',
+        'table-bordered',
         /^padding-/,
         /^shadow/,
         // Odoo colors
@@ -162,6 +165,7 @@ export class OdooEditor extends EventTarget {
                     }
                 },
                 isHintBlacklisted: () => false,
+                filterMutationRecords: (records) => records,
                 _t: string => string,
             },
             options,
@@ -174,6 +178,7 @@ export class OdooEditor extends EventTarget {
         this.document = options.document || document;
 
         this.isMobile = matchMedia('(max-width: 767px)').matches;
+        this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
         // Keyboard type detection, happens only at the first keydown event.
         this.keyboardType = KEYBOARD_TYPES.UNKNOWN;
@@ -422,8 +427,9 @@ export class OdooEditor extends EventTarget {
         this._observerUnactiveLabels.add(label);
         if (this.observer) {
             clearTimeout(this.observerTimeout);
-            this.observer.disconnect();
             this.observerFlush();
+            this.dispatchEvent(new Event('observerUnactive'));
+            this.observer.disconnect();
         }
     }
     observerFlush() {
@@ -454,6 +460,7 @@ export class OdooEditor extends EventTarget {
             characterData: true,
             characterDataOldValue: true,
         });
+        this.dispatchEvent(new Event('observerActive'));
     }
 
     observerApply(records) {
@@ -552,6 +559,9 @@ export class OdooEditor extends EventTarget {
             if (record.type === 'attributes') {
                 // Skip the attributes change on the dom.
                 if (record.target === this.editable) continue;
+                if (record.attributeName === 'contenteditable') {
+                    continue;
+                }
 
                 attributeCache.set(record.target, attributeCache.get(record.target) || {});
                 if (
@@ -567,7 +577,7 @@ export class OdooEditor extends EventTarget {
             }
             filteredRecords.push(record);
         }
-        return filteredRecords;
+        return this.options.filterMutationRecords(filteredRecords);
     }
 
     // History
@@ -632,7 +642,7 @@ export class OdooEditor extends EventTarget {
     }
 
     // One step completed: apply to vDOM, setup next history step
-    historyStep(skipRollback = false) {
+    historyStep(skipRollback = false, { stepId } = {}) {
         if (!this._historyStepsActive) {
             return;
         }
@@ -649,7 +659,7 @@ export class OdooEditor extends EventTarget {
             return false;
         }
 
-        currentStep.id = this._generateId();
+        currentStep.id = stepId || this._generateId();
         const previousStep = peek(this._historySteps);
         currentStep.clientId = this._collabClientId;
         currentStep.previousStepId = previousStep.id;
@@ -678,7 +688,11 @@ export class OdooEditor extends EventTarget {
             } else if (record.type === 'attributes') {
                 const node = this.idFind(record.id);
                 if (node) {
-                    this._safeSetAttribute(node, record.attributeName, record.value);
+                    if (this._collabClientId) {
+                        this._safeSetAttribute(node, record.attributeName, record.value);
+                    } else {
+                        node.setAttribute(record.attributeName, record.value);
+                    }
                 }
             } else if (record.type === 'remove') {
                 const toremove = this.idFind(record.id);
@@ -687,13 +701,16 @@ export class OdooEditor extends EventTarget {
                 }
             } else if (record.type === 'add') {
                 let node = this.idFind(record.oid) || this.unserializeNode(record.node);
-                const fakeNode = document.createElement('fake-el');
-                fakeNode.appendChild(node);
-                DOMPurify.sanitize(fakeNode, { IN_PLACE: true });
-                node = fakeNode.childNodes[0];
-                if (!node) {
-                    continue;
+                if (this._collabClientId) {
+                    const fakeNode = document.createElement('fake-el');
+                    fakeNode.appendChild(node);
+                    DOMPurify.sanitize(fakeNode, { IN_PLACE: true });
+                    node = fakeNode.childNodes[0];
+                    if (!node) {
+                        continue;
+                    }
                 }
+
                 this.idSet(node, true);
 
                 if (record.append && this.idFind(record.append)) {
@@ -740,10 +757,10 @@ export class OdooEditor extends EventTarget {
             // Consider the position consumed.
             this._historyStepsStates.set(this._historySteps[pos].id, 'consumed');
             this.historyRevert(this._historySteps[pos]);
-            this.historyStep(true);
             // Consider the last position of the history as an undo.
-            const undoStep = this._historySteps[this._historySteps.length - 1];
-            this._historyStepsStates.set(undoStep.id, 'undo');
+            const stepId = this._generateId();
+            this._historyStepsStates.set(stepId, 'undo');
+            this.historyStep(true, { stepId });
             this.dispatchEvent(new Event('historyUndo'));
         }
     }
@@ -758,9 +775,9 @@ export class OdooEditor extends EventTarget {
             this._historyStepsStates.set(this._historySteps[pos].id, 'consumed');
             this.historyRevert(this._historySteps[pos]);
             this.historySetSelection(this._historySteps[pos]);
-            this.historyStep(true);
-            const lastStep = this._historySteps[this._historySteps.length - 1];
-            this._historyStepsStates.set(lastStep.id, 'redo');
+            const stepId = this._generateId();
+            this._historyStepsStates.set(stepId, 'redo');
+            this.historyStep(true, { stepId });
             this.dispatchEvent(new Event('historyRedo'));
         }
     }
@@ -797,7 +814,11 @@ export class OdooEditor extends EventTarget {
                     const node = this.idFind(mutation.id);
                     if (node) {
                         if (mutation.oldValue) {
-                            this._safeSetAttribute(node, mutation.attributeName, mutation.oldValue);
+                            if (this._collabClientId) {
+                                this._safeSetAttribute(node, mutation.attributeName, mutation.oldValue);
+                            } else {
+                                node.setAttribute(mutation.attributeName, mutation.oldValue);
+                            }
                         } else {
                             node.removeAttribute(mutation.attributeName);
                         }
@@ -1318,7 +1339,8 @@ export class OdooEditor extends EventTarget {
             const el = closestElement(joinWith);
             const { zws } = fillEmpty(el);
             if (zws) {
-                setSelection(zws, 0, zws, nodeSize(zws));
+                // ZWS selection in OdooEditor is not working in current version of firefox (since v93.0)
+                setSelection(zws, 0, zws, this.isFirefox ? 0 : nodeSize(zws));
             }
         }
     }
@@ -1489,6 +1511,7 @@ export class OdooEditor extends EventTarget {
         }
     }
     _activateContenteditable() {
+        this.observerUnactive('_activateContenteditable');
         this.editable.setAttribute('contenteditable', this.options.isRootEditable);
 
         for (const node of this.options.getContentEditableAreas()) {
@@ -1496,8 +1519,10 @@ export class OdooEditor extends EventTarget {
                 node.setAttribute('contenteditable', true);
             }
         }
+        this.observerActive('_activateContenteditable');
     }
     _stopContenteditable() {
+        this.observerUnactive('_stopContenteditable');
         if (this.options.isRootEditable) {
             this.editable.setAttribute('contenteditable', !this.options.isRootEditable);
         }
@@ -1506,6 +1531,7 @@ export class OdooEditor extends EventTarget {
                 node.setAttribute('contenteditable', false);
             }
         }
+        this.observerActive('_stopContenteditable');
     }
 
     // HISTORY
@@ -1599,27 +1625,6 @@ export class OdooEditor extends EventTarget {
 
     _createCommandBar() {
         this.options.noScrollSelector = this.options.noScrollSelector || 'body';
-
-        const revertHistoryBeforeCommandbar = () => {
-            const lastStep = this._currentStep;
-            this.historyRevert(lastStep);
-            let stepIndex = this._historySteps.length - 1;
-            while (stepIndex > this._beforeCommandbarStepIndex) {
-                const step = this._historySteps[stepIndex];
-                const stepState = this._historyStepsStates.get(step.id);
-                if (step.clientId === this._collabClientId && stepState !== 'consumed') {
-                    this.historyRevert(this._historySteps[stepIndex]);
-                    this._historyStepsStates.set(step.id, 'consumed');
-                }
-                stepIndex--;
-            }
-            this.historyStep(true);
-            setTimeout(() => {
-                this.editable.focus();
-                getDeepRange(this.editable, { select: true });
-            });
-        };
-
         this.commandbarTablePicker = new TablePicker({
             document: this.document,
             floating: true,
@@ -1637,8 +1642,8 @@ export class OdooEditor extends EventTarget {
         const mainCommands = [
             {
                 groupName: 'Basic blocks',
-                title: 'Heading 1',
-                description: 'Big section heading.',
+                title: this.options._t('Heading 1'),
+                description: this.options._t('Big section heading.'),
                 fontawesome: 'fa-header',
                 callback: () => {
                     this.execCommand('setTag', 'H1');
@@ -1646,8 +1651,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Heading 2',
-                description: 'Medium section heading.',
+                title: this.options._t('Heading 2'),
+                description: this.options._t('Medium section heading.'),
                 fontawesome: 'fa-header',
                 callback: () => {
                     this.execCommand('setTag', 'H2');
@@ -1655,8 +1660,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Heading 3',
-                description: 'Small section heading.',
+                title: this.options._t('Heading 3'),
+                description: this.options._t('Small section heading.'),
                 fontawesome: 'fa-header',
                 callback: () => {
                     this.execCommand('setTag', 'H3');
@@ -1664,8 +1669,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Text',
-                description: 'Paragraph block.',
+                title: this.options._t('Text'),
+                description: this.options._t('Paragraph block.'),
                 fontawesome: 'fa-paragraph',
                 callback: () => {
                     this.execCommand('setTag', 'P');
@@ -1673,8 +1678,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Bulleted list',
-                description: 'Create a simple bulleted list.',
+                title: this.options._t('Bulleted list'),
+                description: this.options._t('Create a simple bulleted list.'),
                 fontawesome: 'fa-list-ul',
                 callback: () => {
                     this.execCommand('toggleList', 'UL');
@@ -1682,8 +1687,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Numbered list',
-                description: 'Create a list with numbering.',
+                title: this.options._t('Numbered list'),
+                description: this.options._t('Create a list with numbering.'),
                 fontawesome: 'fa-list-ol',
                 callback: () => {
                     this.execCommand('toggleList', 'OL');
@@ -1691,8 +1696,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Checklist',
-                description: 'Track tasks with a checklist.',
+                title: this.options._t('Checklist'),
+                description: this.options._t('Track tasks with a checklist.'),
                 fontawesome: 'fa-check-square-o',
                 callback: () => {
                     this.execCommand('toggleList', 'CL');
@@ -1700,8 +1705,8 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Separator',
-                description: 'Insert an horizontal rule separator.',
+                title: this.options._t('Separator'),
+                description: this.options._t('Insert an horizontal rule separator.'),
                 fontawesome: 'fa-minus',
                 callback: () => {
                     this.execCommand('insertHorizontalRule');
@@ -1709,20 +1714,14 @@ export class OdooEditor extends EventTarget {
             },
             {
                 groupName: 'Basic blocks',
-                title: 'Table',
-                description: 'Insert a table.',
+                title: this.options._t('Table'),
+                description: this.options._t('Insert a table.'),
                 fontawesome: 'fa-table',
                 callback: () => {
                     this.commandbarTablePicker.show();
                 },
             },
         ];
-        // Translate the command title and description if a translate function
-        // is provided.
-        for (const command of mainCommands) {
-            command.title = this.options._t(command.title);
-            command.description = this.options._t(command.description);
-        }
         this.commandBar = new Powerbox({
             editable: this.editable,
             document: this.document,
@@ -1746,7 +1745,12 @@ export class OdooEditor extends EventTarget {
                 this.observerActive();
             },
             preValidate: () => {
-                revertHistoryBeforeCommandbar();
+                this._historyRevertUntil(this._beforeCommandbarStepIndex);
+                this.historyStep(true);
+                setTimeout(() => {
+                    this.editable.focus();
+                    getDeepRange(this.editable, { select: true });
+                });
             },
             postValidate: () => {
                 this.historyStep(true);
@@ -1764,6 +1768,21 @@ export class OdooEditor extends EventTarget {
             commands: [...mainCommands, ...(this.options.commands || [])],
         });
     }
+
+    _historyRevertUntil (toStepIndex) {
+        const lastStep = this._currentStep;
+        this.historyRevert(lastStep);
+        let stepIndex = this._historySteps.length - 1;
+        while (stepIndex > toStepIndex) {
+            const step = this._historySteps[stepIndex];
+            const stepState = this._historyStepsStates.get(step.id);
+            if (step.clientId === this._collabClientId && stepState !== 'consumed') {
+                this.historyRevert(this._historySteps[stepIndex]);
+                this._historyStepsStates.set(''+step.id, 'consumed');
+            }
+            stepIndex--;
+        }
+    };
 
     // TOOLBAR
     // =======
@@ -1876,14 +1895,18 @@ export class OdooEditor extends EventTarget {
                 listDropdownButton.closest('button').classList.toggle('active', block.tagName === 'LI');
             }
         }
-        if (!activeLabel) {
-            // If no element from the text style dropdown was marked as active,
-            // mark the paragraph one as active and use its label.
-            const firstButtonEl = this.toolbar.querySelector('#paragraph');
-            firstButtonEl.classList.add('active');
-            activeLabel = firstButtonEl.textContent;
+
+        const styleSection = this.toolbar.querySelector('#style');
+        if (styleSection) {
+            if (!activeLabel) {
+                // If no element from the text style dropdown was marked as active,
+                // mark the paragraph one as active and use its label.
+                const firstButtonEl = styleSection.querySelector('#paragraph');
+                firstButtonEl.classList.add('active');
+                activeLabel = firstButtonEl.textContent;
+            }
+            styleSection.querySelector('button span').textContent = activeLabel;
         }
-        this.toolbar.querySelector('#style button span').textContent = activeLabel;
 
         const linkNode = getInSelection(this.document, 'a');
         const linkButton = this.toolbar.querySelector('#createLink');
@@ -2116,7 +2139,21 @@ export class OdooEditor extends EventTarget {
                 this.historyRollback();
                 ev.preventDefault();
                 if (this._applyCommand('oEnter') === UNBREAKABLE_ROLLBACK_CODE) {
-                    this._applyCommand('oShiftEnter');
+                    const brs = this._applyCommand('oShiftEnter');
+                    const anchor = brs[0].parentElement;
+                    if (anchor.nodeName === 'A') {
+                        if (brs.includes(anchor.firstChild)) {
+                            brs.forEach(br => anchor.before(br));
+                            setSelection(...rightPos(brs[brs.length - 1]));
+                            this.sanitize();
+                            this.historyStep();
+                        } else if (brs.includes(anchor.lastChild)) {
+                            brs.forEach(br => anchor.after(br));
+                            setSelection(...rightPos(brs[0]));
+                            this.sanitize();
+                            this.historyStep();
+                        }
+                    }
                 }
             } else if (['insertText', 'insertCompositionText'].includes(ev.inputType)) {
                 // insertCompositionText, courtesy of Samsung keyboard.
@@ -2258,7 +2295,7 @@ export class OdooEditor extends EventTarget {
 
     clean() {
         this.observerUnactive();
-        for (const hint of document.querySelectorAll('.oe-hint')) {
+        for (const hint of this.document.querySelectorAll('.oe-hint')) {
             hint.classList.remove('oe-hint', 'oe-command-temporary-hint');
             hint.removeAttribute('placeholder');
         }
@@ -2286,7 +2323,7 @@ export class OdooEditor extends EventTarget {
             'CL LI': 'To-do',
         };
 
-        for (const hint of document.querySelectorAll('.oe-hint')) {
+        for (const hint of this.editable.querySelectorAll('.oe-hint')) {
             if (hint.classList.contains('oe-command-temporary-hint') || !isEmptyBlock(hint)) {
                 this.observerUnactive();
                 hint.classList.remove('oe-hint', 'oe-command-temporary-hint');
@@ -2305,7 +2342,7 @@ export class OdooEditor extends EventTarget {
 
         const block = this.options.getPowerboxElement();
         if (block) {
-            this._makeHint(block, 'Type "/" for commands', true);
+            this._makeHint(block, this.options._t('Type "/" for commands'), true);
         }
 
         // placeholder hint
@@ -2642,7 +2679,18 @@ export class OdooEditor extends EventTarget {
                         },
                     ];
 
+                    const execCommandAtStepIndex = (index, callback) => {
+                        this._historyRevertUntil(index);
+                        this.historyStep(true);
+                        this._historyStepsStates.set(peek(this._historySteps).id, 'consumed');
+
+                        callback();
+
+                        this.historyStep(true);
+                    }
+
                     if (['jpg', 'jpeg', 'png', 'gif'].includes(urlFileExtention)) {
+                        const stepIndexBeforeInsert = this._historySteps.length - 1;
                         this.execCommand('insertText', splitAroundUrl[i]);
                         this.commandBar.open({
                             commands: [
@@ -2651,20 +2699,23 @@ export class OdooEditor extends EventTarget {
                                     title: 'Embed Image',
                                     description: 'Embed the image in the document.',
                                     fontawesome: 'fa-image',
+                                    shouldPreValidate: () => false,
                                     callback: () => {
-                                        this.historyUndo();
-                                        const img = document.createElement('IMG');
-                                        img.setAttribute('src', url);
-                                        const sel = this.document.getSelection();
-                                        if (sel.rangeCount) {
-                                            sel.getRangeAt(0).insertNode(img);
-                                            sel.collapseToEnd();
-                                        }
+                                        execCommandAtStepIndex(stepIndexBeforeInsert, () => {
+                                            const img = document.createElement('IMG');
+                                            img.setAttribute('src', url);
+                                            const sel = this.document.getSelection();
+                                            if (sel.rangeCount) {
+                                                sel.getRangeAt(0).insertNode(img);
+                                                sel.collapseToEnd();
+                                            }
+                                        });
                                     },
                                 },
                             ].concat(baseEmbedCommand),
                         });
                     } else if (youtubeUrl) {
+                        const stepIndexBeforeInsert = this._historySteps.length - 1;
                         this.execCommand('insertText', splitAroundUrl[i]);
                         this.commandBar.open({
                             commands: [
@@ -2673,27 +2724,34 @@ export class OdooEditor extends EventTarget {
                                     title: 'Embed Youtube Video',
                                     description: 'Embed the youtube video in the document.',
                                     fontawesome: 'fa-youtube-play',
+                                    shouldPreValidate: () => false,
                                     callback: () => {
-                                        this.historyUndo();
-                                        const video = document.createElement('iframe');
-                                        video.setAttribute('width', '560');
-                                        video.setAttribute('height', '315');
-                                        video.setAttribute(
-                                            'src',
-                                            `https://www.youtube.com/embed/${youtubeUrl[1]}`,
-                                        );
-                                        video.setAttribute('title', 'YouTube video player');
-                                        video.setAttribute('frameborder', '0');
-                                        video.setAttribute(
-                                            'allow',
-                                            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
-                                        );
-                                        video.setAttribute('allowfullscreen', '1');
-                                        const sel = this.document.getSelection();
-                                        if (sel.rangeCount) {
-                                            sel.getRangeAt(0).insertNode(video);
-                                            sel.collapseToEnd();
-                                        }
+                                        execCommandAtStepIndex(stepIndexBeforeInsert, () => {
+                                            let videoElement;
+                                            if (this.options.getYoutubeVideoElement) {
+                                                videoElement = this.options.getYoutubeVideoElement(youtubeUrl[0]);
+                                            } else {
+                                                videoElement = document.createElement('iframe');
+                                                videoElement.setAttribute('width', '560');
+                                                videoElement.setAttribute('height', '315');
+                                                videoElement.setAttribute(
+                                                    'src',
+                                                    `https://www.youtube.com/embed/${youtubeUrl[1]}`,
+                                                );
+                                                videoElement.setAttribute('title', 'YouTube video player');
+                                                videoElement.setAttribute('frameborder', '0');
+                                                videoElement.setAttribute(
+                                                    'allow',
+                                                    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+                                                );
+                                                videoElement.setAttribute('allowfullscreen', '1');
+                                            }
+                                            const sel = this.document.getSelection();
+                                            if (sel.rangeCount) {
+                                                sel.getRangeAt(0).insertNode(videoElement);
+                                                sel.collapseToEnd();
+                                            }
+                                        });
                                     },
                                 },
                             ].concat(baseEmbedCommand),
@@ -2774,7 +2832,7 @@ export class OdooEditor extends EventTarget {
         if (cursorDestination) {
             setSelection(...startPos(cursorDestination), ...endPos(cursorDestination), true);
         } else if (direction === DIRECTIONS.RIGHT) {
-            this._addRowBelow();
+            this.execCommand('addRowBelow');
             this._onTabulationInTable(ev);
         }
     }
@@ -2846,7 +2904,7 @@ export class OdooEditor extends EventTarget {
         }
     }
     _pluginAdd(Plugin) {
-        this._plugins.push(new Plugin(this));
+        this._plugins.push(new Plugin({ editor: this }));
     }
     _pluginCall(method, args) {
         for (const plugin of this._plugins) {

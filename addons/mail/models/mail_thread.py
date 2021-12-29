@@ -999,7 +999,7 @@ class MailThread(models.AbstractModel):
                     email_from, email_to, message_id, fallback_model, thread_id, custom_values, user_id)
                 return [route]
 
-        # ValueError if no routes found and if no bounce occured
+        # ValueError if no routes found and if no bounce occurred
         raise ValueError(
             'No possible route found for incoming message from %s to %s (Message-Id %s:). '
             'Create an appropriate mail.alias or force the destination model.' %
@@ -1888,6 +1888,8 @@ class MailThread(models.AbstractModel):
             raise exceptions.UserError(_("Only logged notes can have their content updated on model '%s'", self._name))
         if message.tracking_value_ids:
             raise exceptions.UserError(_("Messages with tracking values cannot be modified"))
+        if not message.message_type == 'comment':
+            raise exceptions.UserError(_("Only messages type comment can have their content updated"))
 
     # ------------------------------------------------------
     # MESSAGE POST TOOLS
@@ -2169,10 +2171,8 @@ class MailThread(models.AbstractModel):
 
             message_format_values = message.message_format()[0]
             for partner_id in inbox_pids:
-                bus_notifications.append([(self._cr.dbname, 'ir.needaction', partner_id), dict(message_format_values)])
-
-        if bus_notifications:
-            self.env['bus.bus'].sudo().sendmany(bus_notifications)
+                bus_notifications.append((self.env['res.partner'].browse(partner_id), 'mail.message/inbox', dict(message_format_values)))
+        self.env['bus.bus'].sudo()._sendmany(bus_notifications)
 
     def _notify_record_by_email(self, message, recipients_data, msg_vals=False,
                                 model_description=False, mail_auto_delete=True, check_existing=False,

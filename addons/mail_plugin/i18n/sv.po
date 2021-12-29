@@ -7,6 +7,7 @@
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2021
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2021
 # Jakob Krabbe <jakob.krabbe@vertel.se>, 2021
+# Kim Asplund <kim.asplund@gmail.com>, 2021
 # Simon S, 2021
 # 
 msgid ""
@@ -349,7 +350,7 @@ msgstr ""
 #: code:addons/mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "From:"
-msgstr ""
+msgstr "Från:"
 
 #. module: mail_plugin
 #. openerp-web
@@ -644,7 +645,7 @@ msgstr ""
 #: code:addons/mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "Revenues"
-msgstr ""
+msgstr "Intäkter"
 
 #. module: mail_plugin
 #. openerp-web

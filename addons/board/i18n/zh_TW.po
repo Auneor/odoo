@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/board/static/src/add_to_board/add_to_board.js:0
 #, python-format
 msgid "\"%s\" added to dashboard"
-msgstr ""
+msgstr "“%s”已添加到儀表板"
 
 #. module: board
 #. openerp-web
@@ -73,7 +73,7 @@ msgstr "添加到我的儀表板"
 #: code:addons/board/static/src/legacy/xml/board.xml:0
 #, python-format
 msgid "Add to my dashboard"
-msgstr ""
+msgstr "添加到我的儀表板"
 
 #. module: board
 #. openerp-web
@@ -173,7 +173,7 @@ msgstr "要將第一份報告添加到儀表板，請轉到任意位置 選單�
 msgid ""
 "You can filter and group data before inserting into the\n"
 "                dashboard using the search options."
-msgstr "您可以在插入之前對數據進行過濾和分組儀表板使用搜尋選項。"
+msgstr "您可以在插入之前對資料進行過濾和分組儀表板使用搜尋選項。"
 
 #. module: board
 #. openerp-web

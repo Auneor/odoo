@@ -12,19 +12,21 @@
 # שהאב חוסיין <shhab89@gmail.com>, 2021
 # hed shefetr <hed@laylinetech.com>, 2021
 # דודי מלכה <Dudimalka6@gmail.com>, 2021
-# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2021
 # Amit Spilman <amit@laylinetech.com>, 2021
 # Ofir Blum <ofir.blum@gmail.com>, 2021
-# Lilach Gilliam <lilach.gilliam@gmail.com>, 2021
 # Lilach Gilliam <lilach@apprcase.com>, 2021
+# Lilach Gilliam <lilach.gilliam@gmail.com>, 2021
+# david danilov, 2021
+# Jonathan Spier, 2021
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:53+0000\n"
+"POT-Creation-Date: 2021-11-16 13:18+0000\n"
 "PO-Revision-Date: 2021-09-14 12:23+0000\n"
-"Last-Translator: Lilach Gilliam <lilach@apprcase.com>, 2021\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2021\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,6 +118,13 @@ msgstr ""
 #: code:addons/mail/static/src/models/message_reaction_group/message_reaction_group.js:0
 #, python-format
 msgid "%s and %s have reacted with %s"
+msgstr ""
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/models/messaging_notification_handler/messaging_notification_handler.js:0
+#, python-format
+msgid "%s connected"
 msgstr ""
 
 #. module: mail
@@ -283,6 +292,7 @@ msgid ""
 msgstr ""
 
 #. module: mail
+#: code:addons/mail/models/mail_channel.py:0
 #: code:addons/mail/models/mail_channel.py:0
 #, python-format
 msgid "<div class=\"o_mail_notification\">joined the channel</div>"
@@ -632,7 +642,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_type_view_form
 msgid "Activity Settings"
-msgstr ""
+msgstr "הגדרות פעילות"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_state
@@ -765,6 +775,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/components/chat_window_header/chat_window_header.xml:0
 #: code:addons/mail/static/src/components/thread_view_topbar/thread_view_topbar.xml:0
 #, python-format
 msgid "Add users"
@@ -864,17 +875,17 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/message_list/message_list.xml:0
-#: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
+#: code:addons/mail/static/src/components/notification_group/notification_group.xml:0
 #, python-format
-msgid "An error occured while fetching messages."
+msgid "An error occurred when sending an email."
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/notification_group/notification_group.xml:0
+#: code:addons/mail/static/src/components/message_list/message_list.xml:0
+#: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
 #, python-format
-msgid "An error occurred when sending an email."
+msgid "An error occurred while fetching messages."
 msgstr ""
 
 #. module: mail
@@ -900,8 +911,8 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/models/mail_channel.py:0
 #: code:addons/mail/static/src/components/message/message.xml:0
+#: code:addons/mail/static/src/models/message/message.js:0
 #, python-format
 msgid "Anonymous"
 msgstr "אנונימי"
@@ -1099,6 +1110,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/message/message.xml:0
 #: code:addons/mail/static/src/components/rtc_call_participant_card/rtc_call_participant_card.xml:0
 #: code:addons/mail/static/src/components/rtc_invitation_card/rtc_invitation_card.xml:0
+#: code:addons/mail/static/src/components/thread_view_topbar/thread_view_topbar.xml:0
 #: model:ir.model.fields,field_description:mail.field_mail_channel__avatar_128
 #: model:ir.model.fields,field_description:mail.field_mail_guest__avatar_1920
 #, python-format
@@ -1108,22 +1120,22 @@ msgstr "אווטר"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_guest__avatar_1024
 msgid "Avatar 1024"
-msgstr ""
+msgstr "אווטר 1024"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_guest__avatar_128
 msgid "Avatar 128"
-msgstr ""
+msgstr "אווטר 128"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_guest__avatar_256
 msgid "Avatar 256"
-msgstr ""
+msgstr "אווטר 256"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_guest__avatar_512
 msgid "Avatar 512"
-msgstr ""
+msgstr "אווטר 512"
 
 #. module: mail
 #. openerp-web
@@ -1347,7 +1359,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_mail_activity__chaining_type
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__chaining_type
 msgid "Chaining Type"
-msgstr ""
+msgstr "סוג שרשור"
 
 #. module: mail
 #. openerp-web
@@ -1499,14 +1511,14 @@ msgstr ""
 #: code:addons/mail/static/src/components/chat_window_header/chat_window_header.xml:0
 #, python-format
 msgid "Close chat window"
-msgstr ""
+msgstr "סגור חלון צ'אט"
 
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/chat_window_header/chat_window_header.xml:0
 #, python-format
 msgid "Close conversation"
-msgstr ""
+msgstr "סגור שיחה"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_channel_partner__fold_state__closed
@@ -1585,7 +1597,7 @@ msgstr "קבע את תצורת סוגי הפעולות שלך"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Configure your own email servers"
-msgstr ""
+msgstr "הגדר את שרתי הדוא\"ל שלך"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_blacklist_remove_view_form
@@ -1809,7 +1821,7 @@ msgstr "נוצר ב-"
 #: code:addons/mail/static/src/models/chatter/chatter.js:0
 #, python-format
 msgid "Creating a new record..."
-msgstr ""
+msgstr "יוצר רשומה חדשה"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
@@ -1900,7 +1912,7 @@ msgstr "מצב תצוגה ברירת מחדל"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__default_note
 msgid "Default Note"
-msgstr ""
+msgstr "הערת ברירת מחדל"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__summary
@@ -2415,7 +2427,7 @@ msgstr "שרשור דוא\"ל"
 #. module: mail
 #: model:ir.model.constraint,message:mail.constraint_mail_blacklist_unique_email
 msgid "Email address already exists!"
-msgstr ""
+msgstr "כתובת האימייל קיימת כבר!"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__email_from
@@ -2924,6 +2936,12 @@ msgid "Guest's name cannot be empty."
 msgstr ""
 
 #. module: mail
+#: code:addons/mail/models/mail_guest.py:0
+#, python-format
+msgid "Guest's name is too long."
+msgstr ""
+
+#. module: mail
 #: model:ir.ui.menu,name:mail.mail_guest_menu
 msgid "Guests"
 msgstr "אורחים"
@@ -2962,7 +2980,7 @@ msgstr "אזכורים"
 #: model:ir.model.fields,field_description:mail.field_res_partner__has_message
 #: model:ir.model.fields,field_description:mail.field_res_users__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "יש הודעה"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel_rtc_session__is_deaf
@@ -3765,7 +3783,7 @@ msgstr "טוען..."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/composer/composer.xml:0
+#: code:addons/mail/static/src/models/composer_view/composer_view.js:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
@@ -4323,7 +4341,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mail.field_res_partner__my_activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_res_users__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "מועד אחרון לפעילות שלי"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__name
@@ -4940,6 +4958,13 @@ msgid ""
 "Original Discussion: Answers go in the original document discussion thread. \n"
 " Another Email Address: Answers go to the email address mentioned in the tracking message-id instead of original document discussion thread. \n"
 " This has an impact on the generated message-id."
+msgstr ""
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/components/message_in_reply_to_view/message_in_reply_to_view.xml:0
+#, python-format
+msgid "Original message was deleted"
 msgstr ""
 
 #. module: mail
@@ -5654,6 +5679,13 @@ msgid "Reply-To"
 msgstr "השב ל-"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/components/composer/composer.xml:0
+#, python-format
+msgid "Replying to"
+msgstr ""
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__report_name
 msgid "Report Filename"
 msgstr ""
@@ -5714,7 +5746,7 @@ msgstr "משתמש אחראי"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__restrict_template_rendering
 msgid "Restrict Template Rendering"
-msgstr ""
+msgstr "הגבל את עיבוד התבניות"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -5942,7 +5974,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/composer/composer.xml:0
+#: code:addons/mail/static/src/models/composer_view/composer_view.js:0
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 #, python-format
 msgid "Send"
@@ -6043,6 +6075,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/rtc_option_list/rtc_option_list.xml:0
+#: code:addons/mail/static/src/models/rtc_call_viewer/rtc_call_viewer.js:0
 #, python-format
 msgid "Settings"
 msgstr "הגדרות"
@@ -6232,7 +6265,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/discuss_sidebar/discuss_sidebar.xml:0
 #, python-format
 msgid "Start a meeting"
-msgstr ""
+msgstr "התחל פגישה "
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__state
@@ -6266,9 +6299,23 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/components/chat_window_header/chat_window_header.xml:0
+#, python-format
+msgid "Stop adding users"
+msgstr ""
+
+#. module: mail
+#. openerp-web
 #: code:addons/mail/static/src/components/rtc_controller/rtc_controller.xml:0
 #, python-format
 msgid "Stop camera"
+msgstr ""
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/components/composer/composer.xml:0
+#, python-format
+msgid "Stop replying"
 msgstr ""
 
 #. module: mail
@@ -6352,12 +6399,12 @@ msgstr "תתי סוגים"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__suggested_next_type_ids
 msgid "Suggest"
-msgstr ""
+msgstr "הצעה"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__chaining_type__suggest
 msgid "Suggest Next Activity"
-msgstr ""
+msgstr "הצע את הפעילות הבאה"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity_type__suggested_next_type_ids
@@ -6483,6 +6530,13 @@ msgstr ""
 #, python-format
 msgid "The FullScreen mode was denied by the browser"
 msgstr ""
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/models/rtc_call_viewer/rtc_call_viewer.js:0
+#, python-format
+msgid "Change Layout"
+msgstr "שנה פריסה"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_res_partner__vat
@@ -6669,6 +6723,13 @@ msgid ""
 msgstr ""
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/models/messaging_notification_handler/messaging_notification_handler.js:0
+#, python-format
+msgid "This is their first connection. Wish them luck."
+msgstr ""
+
+#. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__auto_delete
 #: model:ir.model.fields,help:mail.field_mail_mail__auto_delete
 #: model:ir.model.fields,help:mail.field_mail_template__auto_delete
@@ -6810,7 +6871,7 @@ msgstr "מעקב"
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tracking_value_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tracking_value_tree
 msgid "Tracking Value"
-msgstr ""
+msgstr "מספר מעקב"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_tracking_value
@@ -7513,13 +7574,6 @@ msgid "You have been invited to #%s"
 msgstr ""
 
 #. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/messaging_notification_handler/messaging_notification_handler.js:0
-#, python-format
-msgid "You have been invited to: %s"
-msgstr ""
-
-#. module: mail
 #: model:ir.model.fields,help:mail.field_mail_template__attachment_ids
 msgid ""
 "You may attach files to this template, to be added to all emails created "
@@ -7530,14 +7584,21 @@ msgstr ""
 #. openerp-web
 #: code:addons/mail/static/src/models/messaging_notification_handler/messaging_notification_handler.js:0
 #, python-format
-msgid "You unpinned your conversation with <b>%s</b>."
+msgid "You unpinned your conversation with %s."
 msgstr ""
 
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/models/messaging_notification_handler/messaging_notification_handler.js:0
 #, python-format
-msgid "You unsubscribed from <b>%s</b>."
+msgid "You unsubscribed from %s."
+msgstr ""
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/components/welcome_view/welcome_view.xml:0
+#, python-format
+msgid "You've been invited to a chat!"
 msgstr ""
 
 #. module: mail
@@ -7636,7 +7697,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__delay_from__current_date
 msgid "after completion date"
-msgstr ""
+msgstr "לאחר תאריך הסיום"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__delay_from__previous_activity

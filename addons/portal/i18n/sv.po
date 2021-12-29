@@ -10,10 +10,10 @@
 # Christelle Wehbe <libanon_cristelle@hotmail.com>, 2021
 # Haojun Zou <apollo_zhj@msn.com>, 2021
 # Martin Wilderoth <martin.wilderoth@linserv.se>, 2021
-# Kim Asplund <kim.asplund@gmail.com>, 2021
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2021
 # Daniel Osser <danielosser@gmail.com>, 2021
 # Jakob Krabbe <jakob.krabbe@vertel.se>, 2021
+# Kim Asplund <kim.asplund@gmail.com>, 2021
 # Simon S, 2021
 # 
 msgid ""
@@ -266,6 +266,8 @@ msgid ""
 "Changing company name is not allowed once document(s) have been issued for "
 "your account. Please contact us directly for this operation."
 msgstr ""
+"Det är inte tillåtet att ändra företagsnamn när dokument har utfärdats för "
+"ditt konto. Kontakta oss direkt för denna åtgärd."
 
 #. module: portal
 #. openerp-web
@@ -492,7 +494,7 @@ msgstr "ID"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Internal User"
-msgstr ""
+msgstr "Intern användare"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0

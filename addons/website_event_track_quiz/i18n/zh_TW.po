@@ -107,7 +107,7 @@ msgstr "正確的"
 #. module: website_event_track_quiz
 #: model:ir.model.fields,field_description:website_event_track_quiz.field_event_quiz_question__correct_answer_id
 msgid "Correct Answer"
-msgstr ""
+msgstr "正確答案"
 
 #. module: website_event_track_quiz
 #. openerp-web
@@ -198,7 +198,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_event_track_quiz.event_quiz_question_view_search
 #: model_terms:ir.ui.view,arch_db:website_event_track_quiz.event_quiz_view_search
 msgid "Group By"
-msgstr "分組按"
+msgstr "分組依據"
 
 #. module: website_event_track_quiz
 #: model:event.quiz.answer,text_value:website_event_track_quiz.event_7_track_5_question_1_0
@@ -280,7 +280,7 @@ msgstr ""
 #. module: website_event_track_quiz
 #: model:event.quiz.answer,text_value:website_event_track_quiz.event_7_track_1_question_0_1
 msgid "Music"
-msgstr ""
+msgstr "音樂"
 
 #. module: website_event_track_quiz
 #: model:ir.model.fields,field_description:website_event_track_quiz.field_event_quiz__name
@@ -587,7 +587,7 @@ msgstr "是"
 #: model_terms:ir.ui.view,arch_db:website_event_track_quiz.all_visitor_card
 #: model_terms:ir.ui.view,arch_db:website_event_track_quiz.top3_visitor_card
 msgid "You"
-msgstr ""
+msgstr "您"
 
 #. module: website_event_track_quiz
 #: model:event.quiz.answer,comment:website_event_track_quiz.event_7_track_1_question_0_0

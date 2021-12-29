@@ -39,12 +39,12 @@ msgstr "正在上載"
 #. module: pad
 #: model:ir.model.fields,field_description:pad.field_res_config_settings__pad_key
 msgid "Pad API Key"
-msgstr ""
+msgstr "Pad API 密鑰"
 
 #. module: pad
 #: model:ir.model,name:pad.model_pad_common
 msgid "Pad Common"
-msgstr ""
+msgstr "Pad 公用"
 
 #. module: pad
 #: model:ir.model.fields,field_description:pad.field_res_config_settings__pad_server
@@ -57,14 +57,14 @@ msgstr "Pad 伺服器"
 msgid ""
 "Pad creation failed, either there is a problem with your pad server URL or "
 "with your connection."
-msgstr "Pad的創建失敗了，估您的Pad 網址有問題或者您的連接有問題。"
+msgstr "Pad的建立失敗了，估您的Pad 網址有問題或者您的連接有問題。"
 
 #. module: pad
 #. openerp-web
 #: code:addons/pad/static/src/xml/pad.xml:0
 #, python-format
 msgid "Please, enter your Etherpad credentials through the Settings."
-msgstr ""
+msgstr "請通過“設置”輸入您的 Etherpad 認證"
 
 #. module: pad
 #: model_terms:ir.ui.view,arch_db:pad.res_config_settings_view_form

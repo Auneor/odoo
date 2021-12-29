@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import markupsafe
 from PIL import Image
 from markupsafe import Markup
 
@@ -35,19 +36,11 @@ class BaseDocumentLayout(models.TransientModel):
     @api.model
     def _default_company_details(self):
         company = self.env.company
-        default_address_format = "%(company_name)s\n%(street)s\n%(city)s %(state_code)s %(zip)s\n%(country_name)s"
-        address_format = company.country_id.address_format or default_address_format
+        address_format, company_data = company.partner_id._prepare_display_address()
+        # company_name may *still* be missing from prepared address in case commercial_company_name is falsy
         if 'company_name' not in address_format:
             address_format = '%(company_name)s\n' + address_format
-        company_data = {
-            "company_name": company.name or "",
-            "street": company.street or "",
-            "street2": "",
-            "city": company.city or "",
-            "state_code": company.state_id.name or "",
-            "zip": company.zip or "",
-            "country_name": company.country_id.name or "",
-        }
+            company_data['company_name'] = company_data['company_name'] or company.name
         return Markup(nl2br(address_format)) % company_data
 
     company_id = fields.Many2one(
@@ -125,7 +118,7 @@ class BaseDocumentLayout(models.TransientModel):
                     wizard_with_logo = wizard.with_context(bin_size=False)
                 else:
                     wizard_with_logo = wizard
-                preview_css = self._get_css_for_preview(styles, wizard_with_logo.id)
+                preview_css = markupsafe.Markup(self._get_css_for_preview(styles, wizard_with_logo.id))
                 ir_ui_view = wizard_with_logo.env['ir.ui.view']
                 wizard.preview = ir_ui_view._render_template('web.report_invoice_wizard_preview', {'company': wizard_with_logo, 'preview_css': preview_css})
             else:

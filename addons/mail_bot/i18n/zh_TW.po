@@ -49,6 +49,8 @@ msgid ""
 "Great! 👍<br/>To access special commands, <b>start your sentence with</b> "
 "<span class=\"o_odoobot_command\">/</span>. Try getting help."
 msgstr ""
+"太棒了！ 👍<br/>若要使用特殊命令，<b>請以</b><span "
+"class=\"o_odoobot_command\">/</span>開頭。嘗試/help。"
 
 #. module: mail_bot
 #: model:ir.model,name:mail_bot.model_ir_http
@@ -63,6 +65,8 @@ msgid ""
 "help you discover its features.<br/><b>Try to send me an emoji</b> <span "
 "class=\"o_odoobot_command\">:)</span>"
 msgstr ""
+"你好，<br/> Odoo 的聊天功能可幫助員工高效協作。我是來幫助您發現它的功能的。<br/><b>試著給我發一個表情符號</b><span "
+"class=\"o_odoobot_command\">:)</span>"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -78,6 +82,8 @@ msgid ""
 "<br/>Congratulations, you finished this tour. You can now <b>close this chat"
 " window</b>. Enjoy discovering Odoo."
 msgstr ""
+"我是一個簡單的機器人，但如果那是一隻狗，他是最可愛的😊<br/>恭喜你，你完成了這次導覽。您現在可以<b>關閉此聊天窗口</b>。享受發現 Odoo "
+"的樂趣。"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -92,6 +98,8 @@ msgid ""
 "I'm not smart enough to answer your question.<br/>To follow my guide, ask: "
 "<span class=\"o_odoobot_command\">start the tour</span>."
 msgstr ""
+"我不夠聰明，無法回答你的問題。<br/>要跟隨我的嚮導，請詢問：<span class=\"o_odoobot_command\">start the "
+"tour</span>。"
 
 #. module: mail_bot
 #: model:ir.model.fields.selection,name:mail_bot.selection__res_users__odoobot_state__idle
@@ -110,6 +118,8 @@ msgid ""
 "Not exactly. To continue the tour, send an emoji: <b>type</b> <span "
 "class=\"o_odoobot_command\">:)</span> and press enter."
 msgstr ""
+"不完全是。要繼續導覽，請發送表情符號：<b>輸入</b><span class=\"o_odoobot_command\">:)</span>並按 "
+"Enter。"
 
 #. module: mail_bot
 #: model:ir.model.fields.selection,name:mail_bot.selection__res_users__odoobot_state__not_initialized
@@ -124,6 +134,8 @@ msgid ""
 "class=\"o_odoobot_command\">/</span> and wait for the propositions. Select "
 "<span class=\"o_odoobot_command\">help</span> and press enter"
 msgstr ""
+"不確定你在做什麼。請輸入<span class=\"o_odoobot_command\">/</span>並等待提議。選擇<span "
+"class=\"o_odoobot_command\">幫助</span>並按 enter"
 
 #. module: mail_bot
 #: model:ir.model.fields,field_description:mail_bot.field_res_users__odoobot_state
@@ -133,7 +145,7 @@ msgstr "OdooBot 狀態"
 #. module: mail_bot
 #: model:ir.model.fields,field_description:mail_bot.field_res_users__odoobot_failed
 msgid "Odoobot Failed"
-msgstr ""
+msgstr "Odoobot Failed"
 
 #. module: mail_bot
 #: model:ir.model.fields.selection,name:mail_bot.selection__res_users__odoobot_state__onboarding_attachement
@@ -163,6 +175,8 @@ msgid ""
 "human language...<br/>I can show you features if you write: <span "
 "class=\"o_odoobot_command\">start the tour</span>."
 msgstr ""
+"對不起，我睡著了。歐不！也許我只是想掩飾我對人類語言的不了解...<br/><span "
+"class=\"o_odoobot_command\">如果您寫：開始導覽，</span>我可以向您展示功能。"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -171,6 +185,8 @@ msgid ""
 "Sorry, I am not listening. To get someone's attention, <b>ping him</b>. "
 "Write <span class=\"o_odoobot_command\">@OdooBot</span> and select me."
 msgstr ""
+"對不起，我不聽。要引起某人的注意，請<b>ping 他</b>。寫<span "
+"class=\"o_odoobot_command\">@OdooBot</span>並選擇我。"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -185,6 +201,8 @@ msgid ""
 "To <b>send an attachment</b>, click on the <i class=\"fa fa-paperclip\" "
 "aria-hidden=\"true\"></i> icon and select a file."
 msgstr ""
+"要<b>發送附件</b>，請點選<i class=\"fa fa-paperclip\" aria-"
+"hidden=\"true\"></i>圖示並選擇一個文件。"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -202,6 +220,9 @@ msgid ""
 "documentation</a> or <a href=\"https://www.odoo.com/slides\" "
 "target=\"_blank\">our videos</a>."
 msgstr ""
+"不幸的是，我只是一個機器人😞我不明白！如果您在發現我們的產品時需要幫助，請查看<a "
+"href=\"https://www.odoo.com/documentation\" target=\"_blank\">我們的檔案</a>或<a "
+"href=\"https://www.odoo.com/slides\" target=\"_blank\">影片教學</a>。"
 
 #. module: mail_bot
 #: model:ir.model,name:mail_bot.model_res_users
@@ -216,6 +237,8 @@ msgid ""
 "attention. <b>Try to ping me using</b> <span "
 "class=\"o_odoobot_command\">@OdooBot</span> in a sentence."
 msgstr ""
+"哇，你是個天才！<br/>用@username 某人以引起他們的注意。嘗試在一個句子中<span "
+"class=\"o_odoobot_command\">使用 @OdooBot</span> <b>ping 我。</b>"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -223,7 +246,7 @@ msgstr ""
 msgid ""
 "Yep, I am here! 🎉 <br/>Now, try <b>sending an attachment</b>, like a picture"
 " of your cute dog..."
-msgstr ""
+msgstr "沒錯，我來了！ 🎉<br/>現在，嘗試<b>發送附件</b>，例如您可愛的狗的照片..."
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
@@ -241,16 +264,16 @@ msgstr "幫助"
 #: code:addons/mail_bot/models/mail_bot.py:0
 #, python-format
 msgid "i love you"
-msgstr "愛老虎油"
+msgstr "愛老虎油(i love you)"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
 #, python-format
 msgid "love"
-msgstr "愛"
+msgstr "愛(love)"
 
 #. module: mail_bot
 #: code:addons/mail_bot/models/mail_bot.py:0
 #, python-format
 msgid "start the tour"
-msgstr "開始遊覽"
+msgstr "開始導覽"

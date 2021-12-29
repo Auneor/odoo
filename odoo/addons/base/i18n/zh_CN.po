@@ -6,15 +6,19 @@
 # Martin Trigaux, 2021
 # Eddie Lim <bhweelim@yahoo.com>, 2021
 # 黎伟杰 <674416404@qq.com>, 2021
+# Etren Leo <475851879@qq.com>, 2021
+# Chris H, 2021
+# 深圳市耀影科技有限公司QQ1006399173 <web@yaoying.vip>, 2021
 # Jeffery CHEN <jeffery9@gmail.com>, 2021
+# 深圳市耀影科技有限公司_QQ1006399173, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 11:22+0000\n"
+"POT-Creation-Date: 2021-11-16 13:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:18+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2021\n"
+"Last-Translator: 深圳市耀影科技有限公司_QQ1006399173, 2021\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -777,6 +781,22 @@ msgid ""
 msgstr ""
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_be_reports_base_address_extended
+msgid ""
+"\n"
+"        Bridge module between belgian accounting and Base address extended\n"
+"    "
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_be_reports_sms
+msgid ""
+"\n"
+"        Bridge module between belgian accounting and SMS\n"
+"    "
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,summary:base.module_pos_account_reports
 msgid ""
 "\n"
@@ -929,7 +949,7 @@ msgid ""
 "        Define default sales journal on the warehouse"
 msgstr ""
 "\n"
-"        在仓库上定义销售分录"
+"        在仓库上定义销售日记账"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_in_sale_stock
@@ -1566,6 +1586,13 @@ msgstr ""
 "    给质量控制添加工作中心\n"
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_gcc_invoice
+msgid ""
+"\n"
+"    Arabic/English for GCC\n"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,description:base.module_mrp_workorder_iot
 msgid ""
 "\n"
@@ -1600,6 +1627,13 @@ msgstr ""
 "\n"
 "    甘特视图休假仪表板\n"
 "    "
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_sa_invoice
+msgid ""
+"\n"
+"    Invoices for the Kingdom of Saudi Arabia\n"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,description:base.module_account_lock
@@ -2159,6 +2193,16 @@ msgstr ""
 "比利时薪酬规则的会计数据.\n"
 "==========================================\n"
 "    "
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_sa_hr_payroll_account
+msgid ""
+"\n"
+"Accounting Data for KSA Payroll Rules.\n"
+"=======================================================\n"
+"\n"
+"    "
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ae_hr_payroll_account
@@ -3580,7 +3624,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"包含CRM的高级功能，例如新视图\n"
+"包含客户关系管理系统的高级功能，例如新视图\n"
 "    "
 
 #. module: base
@@ -3690,7 +3734,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"通过帮助台创建退款单 "
+"通过帮助台创建退款通知 "
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_slides
@@ -4093,7 +4137,7 @@ msgstr ""
 #: model:ir.module.module,description:base.module_l10n_no_edi
 msgid ""
 "\n"
-"EHF 3 is the Norvegian implementation of EN 16931 norm.\n"
+"EHF 3 is the Norwegian implementation of EN 16931 norm.\n"
 "    "
 msgstr ""
 
@@ -4359,7 +4403,7 @@ msgid ""
 "Functional\n"
 "----------\n"
 "\n"
-"Be able to create journals in Odoo to create electronic customer invoices and report then to AFIP (via webserices).\n"
+"Be able to create journals in Odoo to create electronic customer invoices and report then to AFIP (via webservices).\n"
 "The options available are:\n"
 "\n"
 "    * Electronic Invoice - Web Service\n"
@@ -4846,10 +4890,10 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"在许多国家/地区，借方票据用作现有结算单金额的增加\n"
-"或在某些情况下取消贷方通知单。\n"
+"在许多国家/地区，借记单用作现有结算单金额的增加\n"
+"或在某些情况下取消退款通知。\n"
 "它就像普通结算单，但我们需要跟踪与原始结算单的链接。 \n"
-"使用的向导与贷方通知单的向导类似。\n"
+"使用起来与退款通知的向导类似。\n"
 "    "
 
 #. module: base
@@ -5044,6 +5088,16 @@ msgstr ""
 msgid ""
 "\n"
 "It allows for comparing products from the wishlist\n"
+"    "
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_sa_hr_payroll
+msgid ""
+"\n"
+"Kingdom of Saudi Arabia Payroll and End of Service rules.\n"
+"===========================================================\n"
+"\n"
 "    "
 msgstr ""
 
@@ -5466,7 +5520,7 @@ msgstr ""
 "* 按部门休假\n"
 "* 休假分析\n"
 "\n"
-" 通过设置休假中的休假类型，在休假批准时自动创建休假中日程，以使休假与内部日历（CRM 模块的日程）同步。\n"
+" 通过设置休假中的休假类型，在休假批准时自动创建休假中日程，以使休假与内部日历（客户关系管理系统 模块的日程）同步。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_mass_mailing_slides
@@ -6531,8 +6585,8 @@ msgstr ""
 "\n"
 "可用其为许多启用电子邮件的 Odoo 文档轻松创建基于电子邮件的工作流，例如：\n"
 "----------------------------------------------------------------------------------------------------------\n"
-"    * CRM 线索/商机\n"
-"    * CRM 索赔\n"
+"    * 客户关系管理系统 线索/商机\n"
+"    * 客户关系管理系统 索赔\n"
 "    * 工程问题\n"
 "    * 工程任务\n"
 "    * 人力资源 招聘（应用程序）\n"
@@ -6685,7 +6739,7 @@ msgid ""
 "Shorten URLs and use them to track clicks and UTMs\n"
 msgstr ""
 "\n"
-"缩短url并使用它们来跟踪单击和utms\n"
+"缩短网址并使用它们来跟踪点击 和 UTMs跟踪模块\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_google_map
@@ -7145,7 +7199,7 @@ msgstr ""
 "    - 约会排程\n"
 "    - 重复性事件\n"
 "\n"
-"如果你需要管理你的会议，你应该安装 CRM 模块。\n"
+"如果你需要管理你的会议，你应该安装 客户关系管理系统 模块。\n"
 "    "
 
 #. module: base
@@ -7768,7 +7822,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"此模块在 CRM 中的一个或多个商机案例上添加快捷方式。\n"
+"此模块在 客户关系管理系统 中的一个或多个商机案例上添加快捷方式。\n"
 "===========================================================================\n"
 "\n"
 "此快捷方式允许您根据所选案例生成租赁订单。\n"
@@ -7790,7 +7844,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-" 此模块会在 CRM 的一个或多个商机案例中添加快捷方式。\n"
+" 此模块会在 客户关系管理系统 的一个或多个商机案例中添加快捷方式。\n"
 "===========================================================================\n"
 "\n"
 " 此模块允许您生成基于所选案例的销售订单。\n"
@@ -8506,6 +8560,14 @@ msgstr ""
 "    "
 
 #. module: base
+#: model:ir.module.module,description:base.module_timesheet_grid_holidays
+msgid ""
+"\n"
+"This module prevents taking time offs into account when computing employee overtime.\n"
+"    "
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,description:base.module_purchase_mrp
 msgid ""
 "\n"
@@ -8876,7 +8938,7 @@ msgid ""
 " "
 msgstr ""
 "\n"
-"使用这个模块可以在CRM和销售模块管理销售团队\n"
+"使用这个模块可以在客户关系管理系统和销售模块管理销售团队\n"
 "===================================================\n"
 "    "
 
@@ -9140,7 +9202,7 @@ msgid ""
 msgstr ""
 " 用于将多个公司之间的文档同步的模块。例如，该模块可以实现您在验证一个采购单时候自动生成一个销售订单（需为系统内用户），反之亦然。\n"
 "\n"
-"支持的文档为销售订单、采购单以及结算单/信用凭证。\n"
+"支持的文档为销售订单、采购单以及结算单/退款通知。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_approvals_purchase_stock
@@ -9235,8 +9297,8 @@ msgstr "%(xmlid)s属于类型 %(xmlid_model)s，应该是 ir.actions.actions的�
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
-msgid "%A - Full weekday name."
-msgstr "%A - 星期几全称。"
+msgid "%A - Full day of the week."
+msgstr ""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
@@ -9270,8 +9332,8 @@ msgstr "%Y - 四位数的年份.\""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
-msgid "%a - Abbreviated weekday name."
-msgstr "%a - 星期天缩写。"
+msgid "%a - Abbreviated day of the week."
+msgstr ""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_lang_form
@@ -9554,9 +9616,7 @@ msgstr "9. %w              ==&gt; 5 ( 星期五是第6天)"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
-msgid ""
-"<b class=\"position-absolute\" attrs=\"{'invisible': [('is_company', '=', "
-"False)]}\">Address</b>"
+msgid "<b attrs=\"{'invisible': [('is_company', '=', False)]}\">Address</b>"
 msgstr ""
 
 #. module: base
@@ -9895,7 +9955,7 @@ msgstr "<strong>电话</strong>"
 #: model_terms:ir.ui.view,arch_db:base.identity_check_wizard
 msgid ""
 "<strong>Please enter your password to confirm you own this account</strong>"
-msgstr ""
+msgstr "<strong>请输入您的密码以确认您拥有此帐户</strong>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.report_irmodeloverview
@@ -10253,7 +10313,7 @@ msgstr "验证资源打包机制的模块。"
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_inherit_depends
-msgid "A module to verify the inheritance using _inherit accross modules."
+msgid "A module to verify the inheritance using _inherit across modules."
 msgstr ""
 
 #. module: base
@@ -10853,7 +10913,7 @@ msgstr "在讨论中加入OdooBot"
 #. module: base
 #: model:ir.module.module,summary:base.module_crm_sms
 msgid "Add SMS capabilities to CRM"
-msgstr "在CRM中增加 SMS 额度控制"
+msgstr "在客户关系管理系统中增加 SMS 额度控制"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_transifex
@@ -10908,7 +10968,7 @@ msgstr "为员工简历增加完整课程"
 #. module: base
 #: model:ir.module.module,summary:base.module_social_crm
 msgid "Add crm UTM info on social"
-msgstr "在社交媒体中增加CRM的来源渠道信息"
+msgstr "在社交媒体中增加客户关系管理系统的来源渠道信息"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_sale_delivery
@@ -12532,6 +12592,16 @@ msgid "Belgium - Accounting Reports"
 msgstr "比利时 - 会计报告"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_reports_base_address_extended
+msgid "Belgium - Accounting Reports - Base address extended"
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_reports_sms
+msgid "Belgium - Accounting Reports - SMS"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_disallowed_expenses
 msgid "Belgium - Disallowed Expenses Data"
 msgstr "比利时 - 禁止支出数据"
@@ -12550,6 +12620,11 @@ msgstr "比利时进口银行尾报表"
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll
 msgid "Belgium - Payroll"
 msgstr "比利时-工资"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_december
+msgid "Belgium - Payroll - December Slip"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_fleet
@@ -12719,7 +12794,7 @@ msgstr "巴西-会计"
 #: model:ir.module.module,description:base.module_iap_crm
 #: model:ir.module.module,summary:base.module_iap_crm
 msgid "Bridge between IAP and CRM"
-msgstr "TAP和CRM之间的桥梁"
+msgstr "TAP和客户关系管理系统之间的桥梁"
 
 #. module: base
 #: model:ir.module.module,description:base.module_iap_mail
@@ -12942,37 +13017,37 @@ msgstr "C5E 24 163 x 229 毫米"
 #: model:ir.module.category,name:base.module_category_sales_crm
 #: model:ir.module.module,shortdesc:base.module_crm
 msgid "CRM"
-msgstr "CRM"
+msgstr "客户关系管理系统"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_data_merge_crm
 msgid "CRM Deduplication"
-msgstr "CRM重复数据删除"
+msgstr "客户关系管理系统重复数据删除"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_gamification_sale_crm
 msgid "CRM Gamification"
-msgstr "CRM游戏化"
+msgstr "客户关系管理系统游戏化"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_livechat
 msgid "CRM Livechat"
-msgstr "CRM 在线客服"
+msgstr "客户关系管理系统 在线客服"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_mail_plugin
 msgid "CRM Mail Plugin"
-msgstr ""
+msgstr "客户关系管理系统 邮件插件 "
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_enterprise
 msgid "CRM enterprise"
-msgstr "CRM 企业版"
+msgstr "客户关系管理系统 企业版"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_social_crm
 msgid "CRM statistics on social"
-msgstr "社交媒体中的CRM状态"
+msgstr "社交媒体中的 客户关系管理系统 状态"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__base_language_export__format__csv
@@ -13289,8 +13364,8 @@ msgstr "若客户性质属公司客户请打勾，个人客户请勿勾选"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_check_printing
-msgid "Check printing commons"
-msgstr "支票打印备注"
+msgid "Check printing basic features"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_accountant_check_printing
@@ -14309,7 +14384,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_partner_form
 msgid "Create a Contact in your address book"
-msgstr ""
+msgstr "在通讯簿中创建联系人"
 
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_country_group
@@ -16150,12 +16225,12 @@ msgstr "启用产品缓存来减少POS加载时间。"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.enable_profiling_wizard
 msgid "Enable profiling"
-msgstr ""
+msgstr "启用性能分析"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__duration
 msgid "Enable profiling for"
-msgstr ""
+msgstr "启用性能分析于"
 
 #. module: base
 #: model:ir.model,name:base.model_base_enable_profiling_wizard
@@ -16165,7 +16240,7 @@ msgstr ""
 #. module: base
 #: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__expiration
 msgid "Enable profiling until"
-msgstr ""
+msgstr "启用性能分析结束于"
 
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_D
@@ -16243,7 +16318,7 @@ msgstr "娱乐"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_profile__entry_count
 msgid "Entry count"
-msgstr ""
+msgstr "项目数"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_epson_printer_restaurant
@@ -16361,12 +16436,12 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_event_crm
 msgid "Event CRM"
-msgstr "CRM活动"
+msgstr "客户关系管理系统 活动"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_event_crm_sale
 msgid "Event CRM Sale"
-msgstr "CRM销售活动"
+msgstr "客户关系管理系统 销售活动"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_exhibitor
@@ -16444,7 +16519,7 @@ msgstr "Python 代码示例"
 msgid ""
 "Example of goal definitions and challenges that can be used related to the "
 "usage of the CRM Sale module."
-msgstr "使用的规定目标与挑战的示例，这可以用来关联到CRM销售模块进行使用。"
+msgstr "使用的规定目标与挑战的示例，这可以用来关联到客户关系管理系统销售模块进行使用。"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_rule_form
@@ -17491,7 +17566,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:base.action_res_partner_bank_account_form
 msgid ""
 "From here you can manage all bank accounts linked to you and your contacts."
-msgstr ""
+msgstr "在这里，您可以管理与您和您的联系人相关联的所有银行帐户。"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_management
@@ -17539,6 +17614,11 @@ msgstr "功能"
 #: model:res.partner.industry,full_name:base.res_partner_industry_G
 msgid "G WHOLESALE AND RETAIL TRADE;REPAIR OF MOTOR VEHICLES AND MOTORCYCLES"
 msgstr "G 批发和零售业；汽车和摩托车修理"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_gcc_invoice
+msgid "G.C.C. - Arabic/English Invoice"
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_module_module__license__gpl-2
@@ -18063,6 +18143,11 @@ msgid "Guinea-Bissau"
 msgstr "几内亚比绍"
 
 #. module: base
+#: model:res.country.group,name:base.gulf_cooperation_council
+msgid "Gulf Cooperation Council (GCC)"
+msgstr ""
+
+#. module: base
 #: model:res.country,name:base.gy
 msgid "Guyana"
 msgstr "圭亚那"
@@ -18188,7 +18273,7 @@ msgstr "服务台"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_helpdesk
 msgid "Helpdesk - CRM"
-msgstr ""
+msgstr "服务台 - 客户关系管理系统"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_helpdesk_account
@@ -18524,7 +18609,7 @@ msgstr "I 住宿和餐饮服务"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_iap_crm
 msgid "IAP / CRM"
-msgstr "IAP / CRM"
+msgstr "IAP / 客户关系管理系统"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_iap_mail
@@ -19835,6 +19920,21 @@ msgid "K FINANCIAL AND INSURANCE ACTIVITIES"
 msgstr "K 金融和保险"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_sa_invoice
+msgid "K.S.A - Invoice"
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_sa_hr_payroll
+msgid "K.S.A. - Payroll"
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_sa_hr_payroll_account
+msgid "K.S.A. - Payroll with Accounting"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_digest
 msgid "KPI Digests"
 msgstr "KPI 摘要"
@@ -20510,12 +20610,17 @@ msgstr "链接字段"
 #: model:ir.module.module,shortdesc:base.module_link_tracker
 #: model:ir.module.module,shortdesc:base.module_website_links
 msgid "Link Tracker"
-msgstr "统计"
+msgstr "链接跟踪统计"
+
+#. module: base
+#: model:ir.module.module,summary:base.module_timesheet_grid_holidays
+msgid "Link between timesheet and time off"
+msgstr "时间表和休假之间的链接 "
 
 #. module: base
 #: model:ir.module.module,summary:base.module_voip_crm
 msgid "Link between voip and crm"
-msgstr "连接器 - VOIP/CRM"
+msgstr "连接器 - VOIP/客户关系管理系统"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_pos_hr
@@ -20761,7 +20866,7 @@ msgstr "手机邮件"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_mail_plugin
 msgid "Mail Plugin"
-msgstr ""
+msgstr "邮件插件"
 
 #. module: base
 #: model:ir.model,name:base.model_ir_mail_server
@@ -23637,7 +23742,7 @@ msgstr "Odoo帮助您轻松跟踪与供应商相关的所有活动。"
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_partner_form
 msgid "Odoo helps you track all activities related to your contacts."
-msgstr ""
+msgstr "Odoo可帮助您跟踪与您的联系人相关的所有活动。"
 
 #. module: base
 #: code:addons/base/models/ir_module.py:0
@@ -23735,8 +23840,8 @@ msgstr "一个你试图访问的文档已经被删除，请刷新后重试。"
 #. module: base
 #: code:addons/base/models/ir_actions_report.py:0
 #, python-format
-msgid "One of the documents, you try to merge is encrypted"
-msgstr "您尝试合并的文档，其中一个文档是加密的"
+msgid "One of the documents you are trying to merge is encrypted"
+msgstr ""
 
 #. module: base
 #: code:addons/models.py:0
@@ -23780,7 +23885,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_booth
 msgid "Online Event Booths"
-msgstr ""
+msgstr "在线活动门票"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_sale
@@ -24716,7 +24821,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
 msgid "Password Management"
-msgstr ""
+msgstr "密码管理"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_auth_password_policy
@@ -25313,11 +25418,15 @@ msgid ""
 "                    Enabling the profiling here allows all users to activate profiling on their session.\n"
 "                    Profiling can be disabled at any moment in the settings."
 msgstr ""
+"分析是一项开发人员功能，应在生产数据库上谨慎使用。\n"
+"                    它可能会在服务器上增加一些负载，并可能使其响应速度降低。\n"
+"                    在此处启用性能分析允许所有用户在其会话上激活性能分析。\n"
+"                    可以随时在设置中禁用性能分析。"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.enable_profiling_wizard
 msgid "Profiling is currently disabled."
-msgstr ""
+msgstr "分析当前处于禁用状态。"
 
 #. module: base
 #: code:addons/base/models/ir_profile.py:0
@@ -26269,7 +26378,7 @@ msgstr "从'打印'菜单中移走"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.act_report_xml_view
 msgid "Remove the contextual action related to this report"
-msgstr ""
+msgstr "删除与此报告相关的操作"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_renting
@@ -26635,7 +26744,7 @@ msgstr "短信息网关"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_crm_sms
 msgid "SMS in CRM"
-msgstr "CRM中的短信"
+msgstr "客户关系管理系统中的短信"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_event_sms
@@ -26758,6 +26867,11 @@ msgid "Salary Configurator (Belgium)"
 msgstr "薪酬配置器（比利时）"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_be_hr_payroll_canteen
+msgid "Salary Configurator (Belgium) - Canteen Cost"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_be_hr_contract_salary_group_insurance
 msgid "Salary Configurator (Belgium) - Group Insurance"
 msgstr ""
@@ -26776,6 +26890,11 @@ msgstr "薪资设置-Payroll"
 #: model:ir.module.module,summary:base.module_l10n_be_hr_contract_salary
 msgid "Salary Package Configurator"
 msgstr "薪资待遇配置"
+
+#. module: base
+#: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_canteen
+msgid "Salary Package Configurator - Canteen Cost"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_be_hr_contract_salary_group_insurance
@@ -27029,7 +27148,7 @@ msgstr "安排的动作"
 #: model:ir.actions.act_window,name:base.ir_cron_trigger_action
 #: model:ir.ui.menu,name:base.ir_cron_trigger_menu
 msgid "Scheduled Actions Triggers"
-msgstr ""
+msgstr "安排的动作 执行"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_cron__user_id
@@ -27937,13 +28056,13 @@ msgstr "电子表格 - 会计模板"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_documents_spreadsheet_crm
 msgid "Spreadsheet CRM Templates"
-msgstr "CRM电子表格模板"
+msgstr "客户关系管理系统电子表格模板"
 
 #. module: base
 #: model:ir.module.module,description:base.module_documents_spreadsheet_crm
 #: model:ir.module.module,summary:base.module_documents_spreadsheet_crm
 msgid "Spreadsheet CRM templates"
-msgstr "CRM电子表格模板"
+msgstr "客户关系管理系统电子表格模板"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_profile__sql
@@ -28033,7 +28152,7 @@ msgstr "状态"
 #: code:addons/base/static/src/js/res_config_settings.js:0
 #, python-format
 msgid "Stay Here"
-msgstr ""
+msgstr "请待在原地"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_sequence__number_increment
@@ -28100,7 +28219,7 @@ msgstr "在文档模块中存储员工合同"
 #. module: base
 #: model:ir.module.module,summary:base.module_documents_hr_holidays
 msgid "Store employee's time off documents in the Document app"
-msgstr ""
+msgstr "将雇员休假记录保存至“文档”应用"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_fields__store
@@ -28128,7 +28247,7 @@ msgstr "街道"
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 #: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
 msgid "Street 2..."
-msgstr "街道2..."
+msgstr "详细地址..."
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_partner_view_form_private
@@ -28198,7 +28317,7 @@ msgstr "订阅"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_subscription_timesheet
 msgid "Subscription and Timesheet"
-msgstr ""
+msgstr "订阅和排班表"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_sales_subscriptions
@@ -28331,7 +28450,7 @@ msgstr "与外部的计工单应用同步"
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_subscription_timesheet
 msgid "Synchronize data between timesheet and subscriptions"
-msgstr ""
+msgstr "在排班表和订阅之间同步数据"
 
 #. module: base
 #: model:res.country,name:base.sy
@@ -28470,7 +28589,7 @@ msgstr "任务日志"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__vat
 msgid "Tax ID"
-msgstr "税号"
+msgstr "纳税人识别号"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale_taxcloud_delivery
@@ -29660,6 +29779,11 @@ msgid "Timesheets"
 msgstr "计工单"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_timesheet_grid_holidays
+msgid "Timesheets And Timeoff"
+msgstr ""
+
+#. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_timesheet_attendance
 msgid "Timesheets/attendances reporting"
 msgstr "计工单/出勤报告"
@@ -30206,7 +30330,7 @@ msgstr "批量邮寄线索机会"
 #. module: base
 #: model:ir.module.module,description:base.module_mass_mailing_sale
 msgid "UTM and mass mailing on sale orders"
-msgstr "UTM和批量邮寄销售订单"
+msgstr "UTM跟踪和批量邮寄销售订单"
 
 #. module: base
 #: model:ir.module.module,description:base.module_social_sale
@@ -30216,7 +30340,7 @@ msgstr "销售的来源渠道支持"
 #. module: base
 #: model:ir.module.module,description:base.module_social_crm
 msgid "UTM and posts on crm"
-msgstr "CRM的来源渠道支持"
+msgstr "客户关系管理的来源渠道支持"
 
 #. module: base
 #: model:res.country,name:base.ug
@@ -31255,12 +31379,12 @@ msgstr "网站企业版"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_crm_questions
 msgid "Website Event CRM Questions"
-msgstr "网站事件和CRM问题"
+msgstr "网站事件和客户关系管理系统问题"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_crm
 msgid "Website Events CRM"
-msgstr "网站CRM事件"
+msgstr "网站客户关系管理系统事件"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_helpdesk
@@ -31559,7 +31683,7 @@ msgstr "Worldline SIPS"
 #: code:addons/base/static/src/js/res_config_settings.js:0
 #, python-format
 msgid "Would you like to save your changes?"
-msgstr ""
+msgstr "需要保存更改吗?"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_access__perm_write
@@ -32108,7 +32232,7 @@ msgstr "例如：更新订单数量"
 #: model_terms:ir.ui.view,arch_db:base.view_users_form
 #: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
 msgid "e.g. email@yourcompany.com"
-msgstr ""
+msgstr "例如電子郵件： email@yourcompany.com"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_import_language

@@ -10,11 +10,22 @@ var core = require('web.core');
 var Wysiwyg = require('web_editor.wysiwyg');
 var MediaDialog = require('wysiwyg.widgets.MediaDialog');
 var LinkDialog = require('wysiwyg.widgets.LinkDialog');
+var FieldHtml = require('web_editor.field.html');
 
 const { registerCleanup } = require("@web/../tests/helpers/cleanup");
 const { legacyExtraNextTick, patchWithCleanup } = require("@web/../tests/helpers/utils");
 
 var _t = core._t;
+
+let _formResolveTestPromise;
+FormController.include({
+    _setEditMode: async function () {
+        await this._super.apply(this, arguments);
+        if (_formResolveTestPromise) {
+            _formResolveTestPromise();
+        }
+    }
+});
 
 QUnit.module('web_editor', {}, function () {
 
@@ -170,8 +181,9 @@ QUnit.module('web_editor', {}, function () {
             assert.strictEqual($field.attr('style'), 'height: 100px',
                 "should have applied the style correctly");
 
+            const promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             $field = form.$('.oe_form_field[name="body"]');
             assert.strictEqual($field.find('.note-editable').html(),
                 '<p>toto toto toto</p><p>tata</p>',
@@ -193,8 +205,9 @@ QUnit.module('web_editor', {}, function () {
                 res_id: 6,
             });
             // check that there is no error on clicking Edit
+            const promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             assert.containsOnce(form, '.o_form_editable');
 
             form.destroy();
@@ -221,8 +234,9 @@ QUnit.module('web_editor', {}, function () {
                 }
             }, true);
 
+            const promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             await testUtils.dom.click(form.$('.o_form_button_save'));
 
             form.destroy();
@@ -439,8 +453,9 @@ QUnit.module('web_editor', {}, function () {
                 '<p><a href="https://www.external.com" target="_blank">External website</a></p>',
                 "should have rendered a div with correct content in readonly");
 
+            const promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             $field = form.$('.oe_form_field[name="body"]');
             // the dialog load some xml assets
             const defLinkDialog = testUtils.makeTestPromise();
@@ -487,8 +502,9 @@ QUnit.module('web_editor', {}, function () {
                 '<p><a href="' + window.location.href.replace(/&/g, "&amp;") + '/test">This website</a></p>',
                 "should have rendered a div with correct content in readonly");
 
+            const promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             $field = form.$('.oe_form_field[name="body"]');
             // the dialog load some xml assets
             const defLinkDialog = testUtils.makeTestPromise();
@@ -535,8 +551,9 @@ QUnit.module('web_editor', {}, function () {
             assert.strictEqual($field.children('.o_readonly').html(), '<p>New external link</p>',
                 "should have rendered a div with correct content in readonly");
 
+            const promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             $field = form.$('.oe_form_field[name="body"]');
             // the dialog load some xml assets
             const defLinkDialog = testUtils.makeTestPromise();
@@ -584,8 +601,9 @@ QUnit.module('web_editor', {}, function () {
             assert.strictEqual($field.children('.o_readonly').html(), '<p>New internal link</p>',
                 "should have rendered a div with correct content in readonly");
 
+            let promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
             $field = form.$('.oe_form_field[name="body"]');
             // the dialog load some xml assets
             const defLinkDialog = testUtils.makeTestPromise();
@@ -614,8 +632,9 @@ QUnit.module('web_editor', {}, function () {
                 '<p><a href="' + window.location.href.replace(/&/g, "&amp;") + '/test">New internal link</a></p>',
                 "the link should be created with the right format");
 
+            promise = new Promise((resolve) => _formResolveTestPromise = resolve);
             await testUtils.form.clickEdit(form);
-            await new Promise((resolve)=>setTimeout(resolve, 100));
+            await promise;
 
             $field = form.$('.oe_form_field[name="body"]');
             pText = $field.find('.note-editable a').eq(0).contents()[0];

@@ -101,9 +101,11 @@ class IrTranslationImport(object):
                            WHERE type = 'code'
                            AND noupdate IS NOT TRUE
                            ON CONFLICT (type, lang, md5(src)) WHERE type = 'code'
-                            DO UPDATE SET (name, lang, res_id, src, type, value, module, state, comments) = (EXCLUDED.name, EXCLUDED.lang, EXCLUDED.res_id, EXCLUDED.src, EXCLUDED.type, EXCLUDED.value, EXCLUDED.module, EXCLUDED.state, EXCLUDED.comments)
+                            DO UPDATE SET (name, lang, res_id, src, type, value, module, state, comments) = (EXCLUDED.name, EXCLUDED.lang, EXCLUDED.res_id, EXCLUDED.src, EXCLUDED.type, EXCLUDED.value, EXCLUDED.module, EXCLUDED.state,
+                                                                                                             CASE WHEN %s.comments = 'openerp-web' THEN 'openerp-web' ELSE EXCLUDED.comments END
+                                                                                                            )
                             WHERE EXCLUDED.value IS NOT NULL AND EXCLUDED.value != '';
-                       """ % (self._model_table, self._table))
+                       """ % (self._model_table, self._table, self._model_table))
             count += cr.rowcount
             cr.execute(""" INSERT INTO %s(name, lang, res_id, src, type, value, module, state, comments)
                            SELECT name, lang, res_id, src, type, value, module, state, comments
@@ -861,7 +863,7 @@ class IrTranslation(models.Model):
             mods = [x['name'] for x in self.env['ir.module.module'].sudo().search_read(
                 [('state', '=', 'installed')], ['name'])]
         if not lang:
-            lang = self._context["lang"]
+            lang = self._context.get("lang")
         langs = self.env['res.lang']._lang_get(lang)
         lang_params = None
         if langs:

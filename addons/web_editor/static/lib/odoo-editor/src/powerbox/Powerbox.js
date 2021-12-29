@@ -161,7 +161,6 @@ export class Powerbox {
     open(openOptions) {
         this.options.onActivate && this.options.onActivate();
         this._currentOpenOptions = openOptions;
-        console.log('op', openOptions);
 
         const openOnKeyupTarget =
             this._currentOpenOptions.openOnKeyupTarget || this.options.editable;
@@ -261,6 +260,7 @@ export class Powerbox {
             );
             if (command) {
                 !command.isIntermediateStep &&
+                    (!command.shouldPreValidate || command.shouldPreValidate()) &&
                     this.options.preValidate &&
                     this.options.preValidate();
                 command.callback();

@@ -7,6 +7,7 @@ const Dialog = require('web.Dialog');
 const {scrollTo} = require('web.dom');
 const rpc = require('web.rpc');
 const time = require('web.time');
+const utils = require('web.utils');
 var Widget = require('web.Widget');
 var ColorPaletteWidget = require('web_editor.ColorPalette').ColorPaletteWidget;
 const weUtils = require('web_editor.utils');
@@ -300,6 +301,16 @@ const UserValueWidget = Widget.extend({
             // and just be ignored.
             return;
         }
+        if (!this.el.classList.contains('o_we_widget_opened')) {
+            // Small optimization: it would normally not matter asking to
+            // remove a class of an element if it does not already have it but
+            // in this case we do more: we trigger_up an event and ask to close
+            // all sub widgets. When we ask the editor to close all widgets...
+            // it makes sense not letting every sub button of every select
+            // trigger_up an event. This allows to avoid tens of thousands of
+            // instructions being done at each click in the editor.
+            return;
+        }
         this.trigger_up('user_value_widget_closing');
         this.el.classList.remove('o_we_widget_opened');
         this._userValueWidgets.forEach(widget => widget.close());
@@ -497,12 +508,6 @@ const UserValueWidget = Widget.extend({
      * @param {boolean} [isSimulatedEvent=false]
      */
     notifyValueChange: function (previewMode, isSimulatedEvent) {
-        // If the widget has no associated method, it should not notify user
-        // value changes
-        if (!this._methodsNames.length) {
-            console.warn('UserValueWidget with no methods notifying value change');
-        }
-
         // In the case we notify a change update, force a preview update if it
         // was not already previewed
         const isPreviewed = this.isPreviewed();
@@ -2740,14 +2745,14 @@ const Many2manyUserValueWidget = UserValueWidget.extend({
         });
         const selectedRecordIds = record[m2oField];
         // TODO: handle no record
-        const [modelData] = await this._rpc({
-            model: 'ir.model.fields',
-            method: 'search_read',
-            args: [[['model', '=', model], ['name', '=', m2oField]], ['relation', 'field_description']],
+        const modelData = await this._rpc({
+            model: model,
+            method: 'fields_get',
+            args: [[m2oField]],
         });
         // TODO: simultaneously fly both RPCs
-        this.m2oModel = modelData.relation;
-        this.m2oName = modelData.field_description; // Use as string attr?
+        this.m2oModel = modelData[m2oField].relation;
+        this.m2oName = modelData[m2oField].field_description; // Use as string attr?
 
         const selectedRecords = await this._rpc({
             model: this.m2oModel,
@@ -3227,7 +3232,7 @@ const SnippetOptionWidget = Widget.extend({
         hasUserValue = applyCSS.call(this, cssProps[0], values.join(' '), styles) || hasUserValue;
 
         function applyCSS(cssProp, cssValue, styles) {
-            if (!weUtils.areCssValuesEqual(styles[cssProp], cssValue)) {
+            if (!weUtils.areCssValuesEqual(styles[cssProp], cssValue, cssProp, this.$target[0])) {
                 this.$target[0].style.setProperty(cssProp, cssValue, 'important');
                 return true;
             }
@@ -4401,16 +4406,55 @@ registry.Box = SnippetOptionWidget.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * TODO this should be reviewed in master to avoid the need of using the
+     * 'reset' previewMode and having to remember the previous box-shadow value.
+     * We are forced to remember the previous box shadow before applying a new
+     * one as the whole box-shadow value is handled by multiple widgets.
+     *
      * @see this.selectClass for parameters
      */
-    setShadow(previewMode, widgetValue, params) {
-        this.$target.toggleClass(params.shadowClass, !!widgetValue);
-        const defaultShadow = this._getDefaultShadow(widgetValue, params.shadowClass);
-        this.$target[0].style.setProperty('box-shadow', defaultShadow, 'important');
-        if (widgetValue === 'outset') {
-            // In this case, the shadowClass is enough
-            this.$target[0].style.setProperty('box-shadow', '');
+    async setShadow(previewMode, widgetValue, params) {
+        // Check if the currently configured shadow is not using the same shadow
+        // mode, in which case nothing has to be done.
+        const styles = window.getComputedStyle(this.$target[0]);
+        const currentBoxShadow = styles['box-shadow'] || 'none';
+        const currentMode = currentBoxShadow === 'none'
+            ? ''
+            : currentBoxShadow.includes('inset') ? 'inset' : 'outset';
+        if (currentMode === widgetValue) {
+            return;
         }
+
+        if (previewMode === true) {
+            this._prevBoxShadow = currentBoxShadow;
+        }
+
+        // Add/remove the shadow class
+        this.$target.toggleClass(params.shadowClass, !!widgetValue);
+
+        // Change the mode of the old box shadow. If no shadow was currently
+        // set then get the shadow value that is supposed to be set according
+        // to the shadow mode. Try to apply it via the selectStyle method so
+        // that it is either ignored because the shadow class had its effect or
+        // forced (to the shadow value or none) if toggling the class is not
+        // enough (e.g. if the item has a default shadow coming from CSS rules,
+        // removing the shadow class won't be enough to remove the shadow but in
+        // most other cases it will).
+        let shadow = 'none';
+        if (previewMode === 'reset') {
+            shadow = this._prevBoxShadow;
+        } else {
+            if (currentBoxShadow === 'none') {
+                shadow = this._getDefaultShadow(widgetValue, params.shadowClass) || 'none';
+            } else {
+                if (widgetValue === 'outset') {
+                    shadow = currentBoxShadow.replace('inset', '').trim();
+                } else if (widgetValue === 'inset') {
+                    shadow = currentBoxShadow + ' inset';
+                }
+            }
+        }
+        await this.selectStyle(previewMode, shadow, Object.assign({cssProperty: 'box-shadow'}, params));
     },
 
     //--------------------------------------------------------------------------
@@ -4460,7 +4504,7 @@ registry.Box = SnippetOptionWidget.extend({
             }
         }
         el.remove();
-        return '';
+        return ''; // TODO in master this should be changed to 'none'
     }
 });
 
@@ -4663,126 +4707,6 @@ registry.ReplaceMedia = SnippetOptionWidget.extend({
     },
 });
 
-/**
- * General options of an image.
- */
-registry.ImageTools = SnippetOptionWidget.extend({
-
-    //--------------------------------------------------------------------------
-    // Options
-    //--------------------------------------------------------------------------
-
-    /**
-     * Displays the image cropping tools
-     *
-     * @see this.selectClass for parameters
-     */
-    async crop() {
-        this.trigger_up('hide_overlay');
-        this.trigger_up('disable_loading_effect');
-        new weWidgets.ImageCropWidget(this, this.$target[0]).appendTo(this.options.wysiwyg.$editable);
-
-        await new Promise(resolve => {
-            this.$target.one('image_cropper_destroyed', resolve);
-        });
-        this.trigger_up('enable_loading_effect');
-    },
-    /**
-     * Displays the image transformation tools
-     *
-     * @see this.selectClass for parameters
-     */
-    async transform() {
-        this.trigger_up('hide_overlay');
-        this.trigger_up('disable_loading_effect');
-
-        const document = this.$target[0].ownerDocument;
-        this.$target.transfo({document});
-        const mousedown = mousedownEvent => {
-            if (!$(mousedownEvent.target).closest('.transfo-container').length) {
-                this.$target.transfo('destroy');
-                $(document).off('mousedown', mousedown);
-            }
-        };
-        $(document).on('mousedown', mousedown);
-
-        await new Promise(resolve => {
-            document.addEventListener('mouseup', resolve, {once: true});
-        });
-        this.trigger_up('enable_loading_effect');
-    },
-    /**
-     * Resets the image cropping
-     *
-     * @see this.selectClass for parameters
-     */
-    async resetCrop() {
-        const cropper = new weWidgets.ImageCropWidget(this, this.$target[0]);
-        await cropper.appendTo(this.options.wysiwyg.$editable);
-        await cropper.reset();
-    },
-    /**
-     * Resets the image rotation and translation
-     *
-     * @see this.selectClass for parameters
-     */
-    async resetTransform() {
-        this.$target
-            .attr('style', (this.$target.attr('style') || '')
-            .replace(/[^;]*transform[\w:]*;?/g, ''));
-    },
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /**
-￼    * @private
-￼    */
-    _isTransformed() {
-        return this.$target.is('[style*="transform"]');
-    },
-    /**
-￼    * @private
-￼    */
-    _isCropped() {
-        return this.$target.hasClass('o_we_image_cropped');
-    },
-    /**
-     * @override
-     */
-    async _computeWidgetState(methodName, params) {
-        if (methodName === 'selectStyle' && params.cssProperty === 'width') {
-            // TODO check how to handle this the right way (here using inline
-            // style instead of computed because of the messy %-px convertion
-            // and the messy auto keyword).
-            const width = this.$target[0].style.width.trim();
-            if (width[width.length - 1] === '%') {
-                return `${parseInt(width)}%`;
-            } else {
-                return '';
-            }
-        } else if (methodName === 'transform') {
-            return this._isTransformed() ? 'true' : '';
-        } else if (methodName === 'crop') {
-            return this._isCropped() ? 'true' : '';
-        }
-        return this._super(...arguments);
-    },
-    /**
-     * @override
-     */
-    _computeWidgetVisibility(widgetName, params) {
-        if (params.optionsPossibleValues.resetTransform) {
-            return this._isTransformed();
-        }
-        if (params.optionsPossibleValues.resetCrop) {
-            return this._isCropped();
-        }
-        return this._super(...arguments);
-    },
-});
-
 /*
  * Abstract option to be extended by the ImageOptimize and BackgroundOptimize
  * options that handles all the common parts.
@@ -4891,6 +4815,7 @@ const ImageHandlerOption = SnippetOptionWidget.extend({
      */
     async _computeWidgetState(methodName, params) {
         const img = this._getImg();
+        const _super = this._super.bind(this);
 
         // Make sure image is loaded because we need its naturalWidth
         await new Promise((resolve, reject) => {
@@ -4918,7 +4843,7 @@ const ImageHandlerOption = SnippetOptionWidget.extend({
                 return options[filterProperty] || defaultValue;
             }
         }
-        return this._super(...arguments);
+        return _super(...arguments);
     },
     /**
      * @abstract
@@ -4929,6 +4854,9 @@ const ImageHandlerOption = SnippetOptionWidget.extend({
      */
     async _renderCustomXML(uiFragment) {
         const img = this._getImg();
+        if (this._isAllowedOnAllImages()) {
+            return;
+        }
         if (!this.originalSrc || !this._isImageSupportedForProcessing(img)) {
             [...uiFragment.childNodes].forEach(node => node.remove());
             return;
@@ -4939,7 +4867,10 @@ const ImageHandlerOption = SnippetOptionWidget.extend({
         });
 
         if (this._getImageMimetype(img) !== 'image/jpeg') {
-            uiFragment.querySelector('we-range[data-set-quality]').remove();
+            const optQuality = uiFragment.querySelector('we-range[data-set-quality]');
+            if (optQuality) {
+                optQuality.remove();
+            }
         }
     },
     /**
@@ -5069,6 +5000,15 @@ const ImageHandlerOption = SnippetOptionWidget.extend({
     _isImageSupportedForProcessing(img) {
         return isImageSupportedForProcessing(this._getImageMimetype(img));
     },
+    /**
+     * TODO: adapt in master (used to keep ImageTools related options available
+     * for all images).
+     *
+     * @returns {Boolean}
+     */
+    _isAllowedOnAllImages() {
+        return false;
+    },
 });
 
 /**
@@ -5091,7 +5031,9 @@ const _addAnimatedShapeLabel = function addAnimatedShapeLabel(containerEl) {
 /**
  * Controls image width and quality.
  */
-registry.ImageOptimize = ImageHandlerOption.extend({
+registry.ImageTools = ImageHandlerOption.extend({
+    MAX_SUGGESTED_WIDTH: 1920,
+
     /**
      * @constructor
      */
@@ -5119,6 +5061,69 @@ registry.ImageOptimize = ImageHandlerOption.extend({
     // Options
     //--------------------------------------------------------------------------
 
+    /**
+     * Displays the image cropping tools
+     *
+     * @see this.selectClass for parameters
+     */
+    async crop() {
+        this.trigger_up('hide_overlay');
+        this.trigger_up('disable_loading_effect');
+        new weWidgets.ImageCropWidget(this, this.$target[0]).appendTo(this.options.wysiwyg.odooEditor.document.body);
+
+        await new Promise(resolve => {
+            this.$target.one('image_cropper_destroyed', async () => {
+                await this._reapplyCurrentShape();
+                resolve();
+            });
+        });
+        this.trigger_up('enable_loading_effect');
+    },
+    /**
+     * Displays the image transformation tools
+     *
+     * @see this.selectClass for parameters
+     */
+    async transform() {
+        this.trigger_up('hide_overlay');
+        this.trigger_up('disable_loading_effect');
+
+        const document = this.$target[0].ownerDocument;
+        this.$target.transfo({document});
+        const mousedown = mousedownEvent => {
+            if (!$(mousedownEvent.target).closest('.transfo-container').length) {
+                this.$target.transfo('destroy');
+                $(document).off('mousedown', mousedown);
+            }
+        };
+        $(document).on('mousedown', mousedown);
+
+        await new Promise(resolve => {
+            document.addEventListener('mouseup', resolve, {once: true});
+        });
+        this.trigger_up('enable_loading_effect');
+    },
+    /**
+     * Resets the image cropping
+     *
+     * @see this.selectClass for parameters
+     */
+    async resetCrop() {
+        const cropper = new weWidgets.ImageCropWidget(this, this.$target[0]);
+        await cropper.appendTo(this.options.wysiwyg.odooEditor.document.body);
+        await cropper.reset();
+        await this._reapplyCurrentShape();
+    },
+    /**
+     * Resets the image rotation and translation
+     *
+     * @see this.selectClass for parameters
+     */
+    async resetTransform() {
+        this.$target
+            .attr('style', (this.$target.attr('style') || '')
+            .replace(/[^;]*transform[\w:]*;?/g, ''));
+    },
     /**
      * @see this.selectClass for parameters
      */
@@ -5173,6 +5178,18 @@ registry.ImageOptimize = ImageHandlerOption.extend({
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+￼    * @private
+￼    */
+    _isTransformed() {
+        return this.$target.is('[style*="transform"]');
+    },
+    /**
+￼    * @private
+￼    */
+    _isCropped() {
+        return this.$target.hasClass('o_we_image_cropped');
+    },
     /**
      * @override
      */
@@ -5275,20 +5292,36 @@ registry.ImageOptimize = ImageHandlerOption.extend({
      * @override
      */
     _computeMaxDisplayWidth() {
-        // TODO: read widths from computed style in case container widths are not default
-        const displayWidth = this._getImg().clientWidth;
-        // If the image is in a column, it might get bigger on smaller screens.
-        // We use col-lg for this in snippets, so they get bigger on the md breakpoint
-        if (this.$target.closest('[class*="col-lg"]').length) {
-            // container and o_container_small have maximum inner width of 690px on the md breakpoint
-            if (this.$target.closest('.container, .o_container_small').length) {
-                return Math.min(1920, Math.max(displayWidth, 690));
-            }
-            // A container-fluid's max inner width is 962px on the md breakpoint
-            return Math.min(1920, Math.max(displayWidth, 962));
+        const img = this._getImg();
+        const computedStyles = window.getComputedStyle(img);
+        const displayWidth = parseFloat(computedStyles.getPropertyValue('width'));
+        const gutterWidth = parseFloat(computedStyles.getPropertyValue('--o-grid-gutter-width')) || 30;
+
+        // For the logos we don't want to suggest a width too small.
+        if (this.$target[0].closest('nav')) {
+            return Math.round(Math.min(displayWidth * 3, this.MAX_SUGGESTED_WIDTH));
+        // If the image is in a container(-small), it might get bigger on
+        // smaller screens. So we suggest the width of the current image unless
+        // it is smaller than the size of the container on the md breapoint
+        // (which is where our bootstrap columns fallback to full container
+        // width since we only use col-lg-* in Odoo).
+        } else if (img.closest('.container, .o_container_small')) {
+            const mdContainerMaxWidth = parseFloat(computedStyles.getPropertyValue('--o-md-container-max-width')) || 720;
+            const mdContainerInnerWidth = mdContainerMaxWidth - gutterWidth;
+            return Math.round(utils.confine(displayWidth, mdContainerInnerWidth, this.MAX_SUGGESTED_WIDTH));
+        // If the image is displayed in a container-fluid, it might also get
+        // bigger on smaller screens. The same way, we suggest the width of the
+        // current image unless it is smaller than the max size of the container
+        // on the md breakpoint (which is the LG breakpoint since the container
+        // fluid is full-width).
+        } else if (img.closest('.container-fluid')) {
+            const lgBp = parseFloat(computedStyles.getPropertyValue('--breakpoint-lg')) || 992;
+            const mdContainerFluidMaxInnerWidth = lgBp - gutterWidth;
+            return Math.round(utils.confine(displayWidth, mdContainerFluidMaxInnerWidth, this.MAX_SUGGESTED_WIDTH));
         }
-        // If it's not in a col-lg, it's probably not going to change size depending on breakpoints
-        return displayWidth;
+        // If it's not in a container, it's probably not going to change size
+        // depending on breakpoints. We still keep a margin safety.
+        return Math.round(Math.min(displayWidth * 1.5, this.MAX_SUGGESTED_WIDTH));
     },
     /**
      * @override
@@ -5302,6 +5335,10 @@ registry.ImageOptimize = ImageHandlerOption.extend({
     _relocateWeightEl() {
         const leftPanelEl = this.$overlay.data('$optionsSection')[0];
         const titleTextEl = leftPanelEl.querySelector('we-title > span');
+        const weightEl = titleTextEl.querySelector('.o_we_image_weight');
+        if (weightEl) {
+            weightEl.remove();
+        }
         this.$weight.appendTo(titleTextEl);
     },
     /**
@@ -5317,6 +5354,12 @@ registry.ImageOptimize = ImageHandlerOption.extend({
             const colors = img.dataset.shapeColors.split(';');
             return colors[parseInt(params.colorId)];
         }
+        if (params.optionsPossibleValues.resetTransform) {
+            return this._isTransformed();
+        }
+        if (params.optionsPossibleValues.resetCrop) {
+            return this._isCropped();
+        }
         return this._super();
     },
     /**
@@ -5324,8 +5367,28 @@ registry.ImageOptimize = ImageHandlerOption.extend({
      */
     _computeWidgetState(methodName, params) {
         switch (methodName) {
-            case 'setImgShape':
+            case 'selectStyle': {
+                if (params.cssProperty === 'width') {
+                    // TODO check how to handle this the right way (here using
+                    // inline style instead of computed because of the messy
+                    // %-px convertion and the messy auto keyword).
+                    const width = this.$target[0].style.width.trim();
+                    if (width[width.length - 1] === '%') {
+                        return `${parseInt(width)}%`;
+                    }
+                    return '';
+                }
+                break;
+            }
+            case 'transform': {
+                return this._isTransformed() ? 'true' : '';
+            }
+            case 'crop': {
+                return this._isCropped() ? 'true' : '';
+            }
+            case 'setImgShape': {
                 return this._getImg().dataset.shape || '';
+            }
             case 'setImgShapeColor': {
                 const img = this._getImg();
                 return (img.dataset.shapeColors && img.dataset.shapeColors.split(';')[parseInt(params.colorId)]) || '';
@@ -5410,6 +5473,22 @@ registry.ImageOptimize = ImageHandlerOption.extend({
             img.dataset.mimetype = 'image/svg+xml';
         }
     },
+    /**
+     * @private
+     */
+    async _reapplyCurrentShape() {
+        const img = this._getImg();
+        if (img.dataset.shape) {
+            await this._loadShape(img.dataset.shape);
+            await this._applyShapeAndColors(true, (img.dataset.shapeColors && img.dataset.shapeColors.split(';')));
+        }
+    },
+    /**
+     * @override
+     */
+    _isAllowedOnAllImages() {
+        return true;
+    },
 
     //--------------------------------------------------------------------------
     // Handlers
@@ -5434,12 +5513,22 @@ registry.ImageOptimize = ImageHandlerOption.extend({
      * @param {Event} ev
      */
     async _onImageCropped(ev) {
-        const img = this._getImg();
-        if (img.dataset.shape) {
-            await this._loadShape(img.dataset.shape);
-            await this._applyShapeAndColors(true, (img.dataset.shapeColors && img.dataset.shapeColors.split(';')));
-        }
         await this._rerenderXML();
+    },
+});
+
+// TODO: adapt in master to only use ImageTools.
+registry.ImageOptimize = registry.ImageTools.extend({
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    _isAllowedOnAllImages() {
+        return false;
     },
 });
 
