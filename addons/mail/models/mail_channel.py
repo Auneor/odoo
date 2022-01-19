@@ -95,6 +95,14 @@ class Channel(models.Model):
         ('uuid_unique', 'UNIQUE(uuid)', 'The channel UUID must be unique'),
     ]
 
+    # CHAT CONSTRAINT
+
+    @api.constrains('channel_last_seen_partner_ids', 'channel_partner_ids')
+    def _constraint_partners_chat(self):
+        for ch in self.filtered(lambda ch: ch.channel_type == 'chat'):
+            if len(ch.channel_last_seen_partner_ids) > 2 or len(ch.channel_partner_ids) > 2:
+                raise ValidationError(_("A channel of type 'chat' cannot have more than two users."))
+
     # COMPUTE / INVERSE
 
     @api.depends('channel_type')
@@ -352,6 +360,11 @@ class Channel(models.Model):
                     'id': channel_partner.guest_id.id,
                     'name': channel_partner.guest_id.name,
                 })
+                guest = channel_partner.guest_id
+                if guest:
+                    self.env['bus.bus']._sendone(guest, 'mail.channel/joined', {
+                        'channel': channel_partner.channel_id.sudo().channel_info()[0],
+                    })
             self.env['bus.bus']._sendone(channel, 'mail.channel/insert', {
                 'id': channel.id,
                 'guestMembers': [('insert', guest_members_data)],
