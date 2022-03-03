@@ -1,5 +1,4 @@
 /** @odoo-module **/
-const INVISIBLE_REGEX = /\u200c/g;
 
 export const DIRECTIONS = {
     LEFT: false,
@@ -259,6 +258,20 @@ export function closestElement(node, selector, restrictToEditable=false) {
 export function ancestors(node, editable) {
     if (!node || !node.parentElement || node === editable) return [];
     return [node.parentElement, ...ancestors(node.parentElement, editable)];
+}
+
+/**
+ * Take a node, return all of its descendants, in depth-first order.
+ *
+ * @param {Node} node
+ * @returns {Node[]}
+ */
+export function descendants(node) {
+    const posterity = [];
+    for (const child of (node.childNodes || [])) {
+        posterity.push(child, ...descendants(child));
+    }
+    return posterity;
 }
 
 export function closestBlock(node) {
@@ -910,6 +923,12 @@ export function isFontAwesome(node) {
         ['fa', 'fab', 'fad', 'far'].some(faClass => node.classList.contains(faClass))
     );
 }
+export function isZWS(node) {
+    return (
+        node &&
+        node.textContent === '\u200B'
+    );
+}
 export function isMediaElement(node) {
     return (
         isFontAwesome(node) ||
@@ -1062,6 +1081,7 @@ export function isContentTextNode(node) {
  * will always return 'true' while it is sometimes invisible.
  *
  * @param {Node} node
+ * @param {boolean} areBlocksAlwaysVisible
  * @returns {boolean}
  */
 export function isVisible(node, areBlocksAlwaysVisible = true) {
@@ -1211,7 +1231,7 @@ export function isFakeLineBreak(brEl) {
  * @returns {boolean}
  */
 export function isEmptyBlock(blockEl) {
-    if (blockEl.nodeType !== Node.ELEMENT_NODE) {
+    if (!blockEl || blockEl.nodeType !== Node.ELEMENT_NODE) {
         return false;
     }
     if (isVisibleStr(blockEl.textContent)) {
@@ -1320,6 +1340,44 @@ export function splitElement(element, offset) {
     return [before, after];
 }
 
+/**
+ * Split around the given elements, until a given ancestor (included). Elements
+ * will be removed in the process so caution is advised in dealing with their
+ * references. Returns a tuple containing the new elements on both sides of the
+ * split.
+ *
+ * @see splitElement
+ * @param {Node[] | Node} elements
+ * @param {Node} limitAncestor
+ * @returns {[Node, Node]}
+ */
+export function splitAroundUntil(elements, limitAncestor) {
+    elements = Array.isArray(elements) ? elements : [elements];
+    let after = elements[elements.length - 1].nextSibling;
+    let newUntil = limitAncestor;
+    let beforeSplit, afterSplit;
+    // Split up ancestors up to font
+    while (after && after.parentElement !== limitAncestor) {
+        afterSplit = splitElement(after.parentElement, childNodeIndex(after))[0];
+        newUntil = afterSplit;
+        after = newUntil.nextSibling;
+    }
+    if (after) {
+        afterSplit = splitElement(limitAncestor, childNodeIndex(after))[0];
+        limitAncestor = afterSplit;
+    }
+    let before = elements[0].previousSibling;
+    while (before && before.parentElement !== limitAncestor) {
+        beforeSplit = splitElement(before.parentElement, childNodeIndex(before) + 1)[1];
+        newUntil = beforeSplit;
+        before = newUntil.previousSibling;
+    }
+    if (before) {
+        beforeSplit = splitElement(limitAncestor, childNodeIndex(before) + 1)[1];
+    }
+    return [beforeSplit, afterSplit];
+}
+
 export function insertText(sel, content) {
     if (sel.anchorNode.nodeType == Node.TEXT_NODE) {
         const pos = [sel.anchorNode.parentElement, splitTextNode(sel.anchorNode, sel.anchorOffset)];
@@ -1364,10 +1422,23 @@ export function fillEmpty(el) {
         blockEl.appendChild(br);
         fillers.br = br;
     }
-    if (!el.textContent.length && isUnremovable(el) && !isBlock(el)) {
+    if (
+        !el.textContent.length &&
+        !isBlock(el) &&
+        el.nodeName !== 'BR' &&
+        !el.hasAttribute("oe-zws-empty-inline")
+    ) {
+        // As soon as there is actual content in the node, the zero-width space
+        // is removed by the sanitize function.
         const zws = document.createTextNode('\u200B');
         el.appendChild(zws);
+        el.setAttribute("oe-zws-empty-inline", "");
         fillers.zws = zws;
+        const previousSibling = el.previousSibling;
+        if (previousSibling && previousSibling.nodeName === "BR") {
+            previousSibling.remove();
+        }
+        setSelection(zws, 0, zws, 0);
     }
     return fillers;
 }
@@ -1387,7 +1458,7 @@ export function clearEmpty(node) {
 }
 
 export function setTagName(el, newTagName) {
-    if (el.tagName == newTagName) {
+    if (el.tagName === newTagName) {
         return el;
     }
     var n = document.createElement(newTagName);
@@ -1526,6 +1597,7 @@ export function prepareUpdate(...args) {
  * @param {HTMLElement} el
  * @param {number} offset
  * @param {number} direction @see DIRECTIONS.LEFT @see DIRECTIONS.RIGHT
+ * @param {CTYPES} leftCType
  * @returns {Object}
  */
 export function getState(el, offset, direction, leftCType) {
@@ -1561,7 +1633,7 @@ export function getState(el, offset, direction, leftCType) {
     let lastSpace = null;
     for (const node of domPath) {
         if (node.nodeType === Node.TEXT_NODE) {
-            const value = node.nodeValue.replace(INVISIBLE_REGEX, '');
+            const value = node.nodeValue;
             // If we hit a text node, the state depends on the path direction:
             // any space encountered backwards is a visible space if we hit
             // visible content afterwards. If going forward, spaces are only

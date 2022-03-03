@@ -89,6 +89,13 @@ class StockMove(models.Model):
         vals['purchase_line_id'] = self.purchase_line_id.id
         return vals
 
+    def _prepare_procurement_values(self):
+        proc_values = super()._prepare_procurement_values()
+        if self.restrict_partner_id:
+            proc_values['supplierinfo_name'] = self.restrict_partner_id
+            self.restrict_partner_id = False
+        return proc_values
+
     def _clean_merged(self):
         super(StockMove, self)._clean_merged()
         self.write({'created_purchase_line_id': False})
@@ -293,7 +300,8 @@ class Orderpoint(models.Model):
 
     def _get_orderpoint_procurement_date(self):
         date = super()._get_orderpoint_procurement_date()
-        date -= relativedelta(days=self.company_id.po_lead)
+        if any(rule.action == 'buy' for rule in self.rule_ids):
+            date -= relativedelta(days=self.company_id.po_lead)
         return date
 
 
