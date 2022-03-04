@@ -155,6 +155,7 @@ var BarcodeEvents = core.Class.extend(mixins.PropertiesMixin, {
     // repeat. When preventDefault() is called on a keydown event
     // the keypress that normally follows is cancelled.
     keydown_handler: function(e){
+        console.log('down handler')
         if (this.key_pressed[e.which]) {
             e.preventDefault();
         } else {
@@ -163,11 +164,16 @@ var BarcodeEvents = core.Class.extend(mixins.PropertiesMixin, {
     },
 
     keyup_handler: function(e){
+        console.log('up handler')
         this.key_pressed[e.which] = false;
     },
 
     handler: function(e){
         // Don't catch events we resent
+        console.log('handler')
+        console.log(e.keyCode)
+        if (e.keyCode == 9)
+            e.preventDefault();
         if (e.dispatched_by_barcode_reader)
             return;
         // Don't catch non-printable keys for which Firefox triggers a keypress

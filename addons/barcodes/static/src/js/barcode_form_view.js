@@ -163,6 +163,18 @@ FormController.include({
     _barcodeStartListening: function () {
         core.bus.on('barcode_scanned', this, this._barcodeScanned);
         core.bus.on('keypress', this, this._quantityListener);
+        console.log('yesieskjfk');
+        console.log($('.modal-dialog:has(.disable-tab)'));
+        var modal = $('.modal-dialog:has(.disable-tab)');
+        if (modal.size()) {
+            modal[0].addEventListener('keydown', function(e) {
+                console.log('1');
+                if (e.keyCode == 9) {
+                    e.preventDefault();
+                    console.log('2');
+                }
+            });
+        };
     },
     /**
      * @private
@@ -277,6 +289,7 @@ FormController.include({
      * @returns {Deferred}
      */
     _barcodeScanned: function (barcode, target) {
+    console.log('_barcodeScanned')
         var self = this;
         return this.barcodeMutex.exec(function () {
             var prefixed = _.any(BarcodeEvents.ReservedBarcodePrefixes,
@@ -321,15 +334,16 @@ FormController.include({
      */
     _quantityListener: function (event) {
         var character = String.fromCharCode(event.which);
+        console.log('_quantityListener')
 
         if (! $.contains(event.target, this.el)) {
             return;
         }
         // only catch the event if we're not focused in
         // another field and it's a number
-        if (!$(event.target).is('body, .modal') || !/[0-9]/.test(character)) {
-            return;
-        }
+//        if (!$(event.target).is('body, .modal') || !/[0-9]/.test(character)) {
+//            return;
+//        }
 
         var barcodeInfos = _.filter(this.activeBarcode, 'setQuantityWithKeypress');
         if (!barcodeInfos.length) {
