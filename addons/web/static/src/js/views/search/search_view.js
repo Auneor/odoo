@@ -885,6 +885,7 @@ var SearchView = Widget.extend({
 
             return _.last(self.query.models);
         });
+        console.log(filtersToRemove);
 
         _.each(filtersToRemove, function (filter) {
             self.query.remove(filter, {silent: true});
