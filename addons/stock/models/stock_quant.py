@@ -405,8 +405,11 @@ class StockQuant(models.Model):
         if lot_id and quantity > 0:
             quants = quants.filtered(lambda q: q.lot_id)
 
-        incoming_dates = [d for d in quants.mapped('in_date') if d]
-        incoming_dates = [fields.Datetime.from_string(incoming_date) for incoming_date in incoming_dates]
+        if location_id.should_bypass_reservation():
+            incoming_dates = []
+        else:
+            incoming_dates = [quant.in_date for quant in quants if quant.in_date and
+                              float_compare(quant.quantity, 0, precision_rounding=quant.product_uom_id.rounding) > 0]
         if in_date:
             incoming_dates += [in_date]
         # If multiple incoming dates are available for a given lot_id/package_id/owner_id, we
@@ -534,15 +537,17 @@ The correction could unreserve some operations with problematics products.""", p
                             SELECT min(id) as to_update_quant_id,
                                 (array_agg(id ORDER BY id))[2:array_length(array_agg(id), 1)] as to_delete_quant_ids,
                                 SUM(reserved_quantity) as reserved_quantity,
-                                SUM(quantity) as quantity
+                                SUM(quantity) as quantity,
+                                MIN(in_date) as in_date
                             FROM stock_quant
-                            GROUP BY product_id, company_id, location_id, lot_id, package_id, owner_id, in_date
+                            GROUP BY product_id, company_id, location_id, lot_id, package_id, owner_id
                             HAVING count(id) > 1
                         ),
                         _up AS (
                             UPDATE stock_quant q
                                 SET quantity = d.quantity,
-                                    reserved_quantity = d.reserved_quantity
+                                    reserved_quantity = d.reserved_quantity,
+                                    in_date = d.in_date
                             FROM dupes d
                             WHERE d.to_update_quant_id = q.id
                         )
@@ -722,7 +727,7 @@ class QuantPackage(models.Model):
         else:
             packs = self.search([('quant_ids', operator, value)])
         if packs:
-            return [('id', 'parent_of', packs.ids)]
+            return [('id', 'in', packs.ids)]
         else:
             return [('id', '=', False)]
 
