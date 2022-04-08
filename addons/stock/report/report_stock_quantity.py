@@ -65,7 +65,13 @@ FROM (
         m.product_qty != 0 AND
         (whs.id IS NULL or whd.id IS NULL OR whs.id != whd.id) AND
         m.state NOT IN ('cancel', 'draft', 'done')
+        
+        
+        
     UNION
+    
+    
+    
     SELECT
         -q.id as id,
         q.product_id,
@@ -82,7 +88,13 @@ FROM (
     LEFT JOIN stock_warehouse wh ON l.parent_path like concat('%/', wh.view_location_id, '/%')
     WHERE
         l.usage = 'internal'
+        
+        
+        
     UNION
+    
+    
+    
     SELECT
         m.id,
         m.product_id,
@@ -95,7 +107,9 @@ FROM (
         CASE
             WHEN m.state != 'done' THEN (now() at time zone 'utc')::date + interval '3 month'
             ELSE m.date::date - interval '1 day'
-        END, '1 day'::interval)::date date,
+        END, 
+        '1 day'::interval
+        )::date date,
         CASE
             WHEN ((whs.id IS NOT NULL AND whd.id IS NULL) OR ls.usage = 'transit') AND m.state = 'done' THEN m.product_qty
             WHEN ((whs.id IS NULL AND whd.id IS NOT NULL) OR ld.usage = 'transit') AND m.state = 'done' THEN -m.product_qty
