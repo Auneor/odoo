@@ -742,8 +742,7 @@ class PoFileWriter:
         for module, type, name, res_id, src, trad, comments in rows:
             row = grouped_rows.setdefault(src, {})
             row.setdefault('modules', set()).add(module)
-            if not row.get('translation') and trad != src:
-                row['translation'] = trad
+            row['translation'] = trad
             row.setdefault('tnrs', []).append((type, name, res_id))
             row.setdefault('comments', set()).update(comments)
 
@@ -753,7 +752,7 @@ class PoFileWriter:
                 row['translation'] = ''
             elif not row.get('translation'):
                 row['translation'] = ''
-            self.add_entry(row['modules'], row['tnrs'], src, row['translation'], row['comments'])
+            self.add_entry(sorted(row['modules']), row['tnrs'], src, row['translation'], row['comments'])
 
         # buffer expects bytes
         self.buffer.write(str(self.po).encode())
@@ -820,7 +819,7 @@ class TarFileWriter:
 def trans_export(lang, modules, buffer, format, cr):
 
     translations = trans_generate(lang, modules, cr)
-    modules = set(t[0] for t in translations)
+    modules = sorted(set(t[0] for t in translations))
     writer = TranslationFileWriter(buffer, fileformat=format, lang=lang, modules=modules)
     writer.write_rows(translations)
     del translations
@@ -950,13 +949,14 @@ def trans_generate(lang, modules, cr):
 
     if 'all_installed' in modules:
         query += ' WHERE module IN ( SELECT name FROM ir_module_module WHERE state = \'installed\') '
-
-    if 'all' not in modules:
-        query += ' WHERE module IN %s'
-        query_param = (tuple(modules),)
+        query_param = ()
     else:
-        query += ' WHERE module != %s'
-        query_param = ('__export__',)
+        if 'all' not in modules:
+            query += ' WHERE module IN %s'
+            query_param = (tuple(modules),)
+        else:
+            query += ' WHERE module != %s'
+            query_param = ('__export__',)
 
     query += ' GROUP BY model, res_id, module ORDER BY module, model, min(name)'
 
@@ -992,7 +992,7 @@ def trans_generate(lang, modules, cr):
 
     installed_modules = [
         m['name']
-        for m in env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'])
+        for m in env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'], order='name')
     ]
 
     path_list = [(path, True) for path in odoo.addons.__path__]
@@ -1018,7 +1018,7 @@ def trans_generate(lang, modules, cr):
         frelativepath = fabsolutepath[len(path):]
         display_path = "addons%s" % frelativepath
         module = get_module_from_path(fabsolutepath)
-        if ('all' in modules or module in modules) and module in installed_modules:
+        if ('all' in modules or 'all_installed' in modules or module in modules) and module in installed_modules:
             if os.path.sep != '/':
                 display_path = display_path.replace(os.path.sep, '/')
             return module, fabsolutepath, frelativepath, display_path
