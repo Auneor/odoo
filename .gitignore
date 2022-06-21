@@ -43,3 +43,5 @@ setup/win32/static/postgresql*.exe
 data_dir
 venv
 odoo-conf*
+odoo12-venv
+ngrok-stable-linux-amd64
