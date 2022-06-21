@@ -6,6 +6,7 @@ import itertools
 import json
 import textwrap
 import uuid
+from contextlib import closing
 from datetime import datetime
 from subprocess import Popen, PIPE
 from odoo import fields, tools, SUPERUSER_ID
@@ -18,6 +19,7 @@ from odoo.tools import func, misc
 import logging
 _logger = logging.getLogger(__name__)
 
+EXTENSIONS = (".js", ".css", ".scss", ".sass", ".less")
 MAX_CSS_RULES = 4095
 
 
@@ -480,7 +482,9 @@ class WebAsset(object):
         try:
             self.stat()
             if self._filename:
-                with open(self._filename, 'rb') as fp:
+                if not self._filename.lower().endswith(EXTENSIONS):
+                    raise ValueError("Unsupported path: %s" % self._filename)
+                with closing(tools.file_open(self._filename, 'rb')) as fp:
                     return fp.read().decode('utf-8')
             else:
                 return self._ir_attach['datas'].decode('base64').decode('utf-8')
