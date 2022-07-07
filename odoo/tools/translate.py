@@ -745,8 +745,7 @@ class PoFileWriter:
         for module, type, name, res_id, src, trad, comments in rows:
             row = grouped_rows.setdefault(src, {})
             row.setdefault('modules', set()).add(module)
-            if not row.get('translation') and trad != src:
-                row['translation'] = trad
+            row['translation'] = trad
             row.setdefault('tnrs', []).append((type, name, res_id))
             row.setdefault('comments', set()).update(comments)
             modules.add(module)
