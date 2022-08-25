@@ -23,11 +23,36 @@ export const CTGROUPS = {
     BLOCK: CTYPES.BLOCK_OUTSIDE | CTYPES.BLOCK_INSIDE,
     BR: CTYPES.BR,
 };
+const tldWhitelist = [
+    'com', 'net', 'org', 'ac', 'ad', 'ae', 'af', 'ag', 'ai', 'al', 'am', 'an',
+    'ao', 'aq', 'ar', 'as', 'at', 'au', 'aw', 'ax', 'az', 'ba', 'bb', 'bd',
+    'be', 'bf', 'bg', 'bh', 'bi', 'bj', 'bl', 'bm', 'bn', 'bo', 'br', 'bq',
+    'bs', 'bt', 'bv', 'bw', 'by', 'bz', 'ca', 'cc', 'cd', 'cf', 'cg', 'ch',
+    'ci', 'ck', 'cl', 'cm', 'cn', 'co', 'cr', 'cs', 'cu', 'cv', 'cw', 'cx',
+    'cy', 'cz', 'dd', 'de', 'dj', 'dk', 'dm', 'do', 'dz', 'ec', 'ee', 'eg',
+    'eh', 'er', 'es', 'et', 'eu', 'fi', 'fj', 'fk', 'fm', 'fo', 'fr', 'ga',
+    'gb', 'gd', 'ge', 'gf', 'gg', 'gh', 'gi', 'gl', 'gm', 'gn', 'gp', 'gq',
+    'gr', 'gs', 'gt', 'gu', 'gw', 'gy', 'hk', 'hm', 'hn', 'hr', 'ht', 'hu',
+    'id', 'ie', 'il', 'im', 'in', 'io', 'iq', 'ir', 'is', 'it', 'je', 'jm',
+    'jo', 'jp', 'ke', 'kg', 'kh', 'ki', 'km', 'kn', 'kp', 'kr', 'kw', 'ky',
+    'kz', 'la', 'lb', 'lc', 'li', 'lk', 'lr', 'ls', 'lt', 'lu', 'lv', 'ly',
+    'ma', 'mc', 'md', 'me', 'mf', 'mg', 'mh', 'mk', 'ml', 'mm', 'mn', 'mo',
+    'mp', 'mq', 'mr', 'ms', 'mt', 'mu', 'mv', 'mw', 'mx', 'my', 'mz', 'na',
+    'nc', 'ne', 'nf', 'ng', 'ni', 'nl', 'no', 'np', 'nr', 'nu', 'nz', 'om',
+    'pa', 'pe', 'pf', 'pg', 'ph', 'pk', 'pl', 'pm', 'pn', 'pr', 'ps', 'pt',
+    'pw', 'py', 'qa', 're', 'ro', 'rs', 'ru', 'rw', 'sa', 'sb', 'sc', 'sd',
+    'se', 'sg', 'sh', 'si', 'sj', 'sk', 'sl', 'sm', 'sn', 'so', 'sr', 'ss',
+    'st', 'su', 'sv', 'sx', 'sy', 'sz', 'tc', 'td', 'tf', 'tg', 'th', 'tj',
+    'tk', 'tl', 'tm', 'tn', 'to', 'tp', 'tr', 'tt', 'tv', 'tw', 'tz', 'ua',
+    'ug', 'uk', 'um', 'us', 'uy', 'uz', 'va', 'vc', 've', 'vg', 'vi', 'vn',
+    'vu', 'wf', 'ws', 'ye', 'yt', 'yu', 'za', 'zm', 'zr', 'zw', 'co\\.uk'];
 
-export const URL_REGEX =
-    /((?:(?:https?:\/\/)|(?:[-a-zA-Z0-9@:%._\+~#=]{1,64}\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b(?:[^\s]*))/gi;
-export const URL_REGEX_WITH_INFOS =
-    /((?:(https?:\/\/)|(?:[-a-zA-Z0-9@:%._\+~#=]{1,64}\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b(?:[^\s]*))/gi;
+const urlRegexBase = `|(?:[-a-zA-Z0-9@:%._\\+~#=]{1,64}\\.))[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-zA-Z][a-zA-Z0-9]{1,62}|(?:[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.(?:${tldWhitelist.join('|')})))\\b(?:(?!\\.)[^\\s]*`;
+const httpRegex = `(?:https?:\\/\\/)`;
+const httpCapturedRegex= `(https?:\\/\\/)`;
+
+export const URL_REGEX = new RegExp(`((?:(?:${httpRegex}${urlRegexBase}))`, 'gi');
+export const URL_REGEX_WITH_INFOS = new RegExp(`((?:(?:${httpCapturedRegex}${urlRegexBase}))`, 'gi');
 export const YOUTUBE_URL_GET_VIDEO_ID =
     /^(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:youtube\.com|youtu\.be)(?:\/(?:[\w-]+\?v=|embed\/|v\/)?)([^\s?&#]+)(?:\S+)?$/i;
 
@@ -557,9 +582,8 @@ export function getCursorDirection(anchorNode, anchorOffset, focusNode, focusOff
  * @param {Node} editable
  * @returns {Node[]}
  */
-export function getTraversedNodes(editable) {
+export function getTraversedNodes(editable, range = getDeepRange(editable)) {
     const document = editable.ownerDocument;
-    const range = getDeepRange(editable);
     if (!range) return [];
     const iterator = document.createNodeIterator(range.commonAncestorContainer);
     let node;
@@ -655,6 +679,7 @@ export function getDeepRange(editable, { range, sel, splitText, select, correctT
     if (
         correctTripleClick &&
         !endOffset &&
+        (start !== end || startOffset !== endOffset) &&
         (!beforeEnd || (beforeEnd.nodeType === Node.TEXT_NODE && !isVisibleStr(beforeEnd)))
     ) {
         const previous = previousLeaf(end, editable, true);
@@ -867,6 +892,87 @@ export function isBold(node) {
     const fontWeight = +getComputedStyle(closestElement(node)).fontWeight;
     return fontWeight > 500 || fontWeight > +getComputedStyle(closestBlock(node)).fontWeight;
 }
+/**
+ * Return true if the given node appears italic.
+ *
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export function isItalic(node) {
+    return getComputedStyle(closestElement(node)).fontStyle === 'italic';
+}
+/**
+ * Return true if the given node appears underlined.
+ *
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export function isUnderline(node) {
+    let parent = closestElement(node);
+    while (parent) {
+        if (getComputedStyle(parent).textDecorationLine === 'underline') {
+            return true;
+        }
+        parent = parent.parentElement;
+    }
+    return false;
+}
+/**
+ * Return true if the given node appears struck through.
+ *
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export function isStrikeThrough(node) {
+    let parent = closestElement(node);
+    while (parent) {
+        if (getComputedStyle(parent).textDecorationLine === 'line-through') {
+            return true;
+        }
+        parent = parent.parentElement;
+    }
+    return false;
+}
+/**
+ * Return true if the given node appears in a different direction than that of
+ * the editable ('ltr' or 'rtl').
+ *
+ * Note: The direction of the editable is set on its "dir" attribute, to the
+ * value of the "direction" option on instantiation of the editor.
+ *
+ * @param {Node} node
+ * @param {Element} editable
+ * @returns {boolean}
+ */
+ export function isDirectionSwitched(node, editable) {
+    const defaultDirection = editable.getAttribute('dir');
+    return getComputedStyle(closestElement(node)).direction !== defaultDirection;
+}
+export const isFormat = {
+    bold: isBold,
+    italic: isItalic,
+    underline: isUnderline,
+    strikeThrough: isStrikeThrough,
+    switchDirection: isDirectionSwitched,
+};
+/**
+ * Return true if the current selection on the editable appears as the given
+ * format. The selection is considered to appear as that format if every text
+ * node in it appears as that format.
+ *
+ * @param {Element} editable
+ * @param {String} format 'bold'|'italic'|'underline'|'strikeThrough'|'switchDirection'
+ * @returns {boolean}
+ */
+export function isSelectionFormat(editable, format) {
+    const selectedText = getSelectedNodes(editable)
+        .filter(n => n.nodeType === Node.TEXT_NODE && n.nodeValue.trim().length);
+    if (selectedText.length) {
+        return selectedText.every(n => isFormat[format](n.parentElement, editable))
+    } else {
+        return isFormat[format](closestElement(editable.ownerDocument.getSelection().anchorNode), editable);
+    }
+}
 
 export function isUnbreakable(node) {
     if (!node || node.nodeType === Node.TEXT_NODE) {
@@ -897,15 +1003,10 @@ export function isUnremovable(node) {
     if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.TEXT_NODE) {
         return true;
     }
-    const isEditableRoot =
-        node.isContentEditable &&
-        node.parentElement &&
-        !node.parentElement.isContentEditable &&
-        node.nodeName !== 'A'; // links can be their own contenteditable but should be removable by default.
     return (
-        isEditableRoot ||
+        node.oid === 'root' ||
         (node.nodeType === Node.ELEMENT_NODE &&
-            (node.getAttribute('t-set') || node.getAttribute('t-call'))) ||
+            (node.classList.contains('o_editable') || node.getAttribute('t-set') || node.getAttribute('t-call'))) ||
         (node.classList && node.classList.contains('oe_unremovable'))
     );
 }
@@ -1379,7 +1480,7 @@ export function splitAroundUntil(elements, limitAncestor) {
 }
 
 export function insertText(sel, content) {
-    if (sel.anchorNode.nodeType == Node.TEXT_NODE) {
+    if (sel.anchorNode.nodeType === Node.TEXT_NODE) {
         const pos = [sel.anchorNode.parentElement, splitTextNode(sel.anchorNode, sel.anchorOffset)];
         setSelection(...pos, ...pos, false);
     }
@@ -1388,6 +1489,7 @@ export function insertText(sel, content) {
     sel.getRangeAt(0).insertNode(txt);
     restore();
     setSelection(...boundariesOut(txt), false);
+    return txt;
 }
 
 /**
@@ -1441,6 +1543,20 @@ export function fillEmpty(el) {
         setSelection(zws, 0, zws, 0);
     }
     return fillers;
+}
+/**
+ * Takes a selection (assumed to be collapsed) and insert a zero-width space at
+ * its anchor point. Then, select that zero-width space.
+ *
+ * @param {Selection} selection
+ * @returns {Node} the inserted zero-width space
+ */
+export function insertAndSelectZws(selection) {
+    const offset = selection.anchorOffset;
+    const zws = insertText(selection, '\u200B');
+    splitTextNode(zws, offset);
+    selection.getRangeAt(0).selectNode(zws);
+    return zws;
 }
 /**
  * Removes the given node if invisible and all its invisible ancestors.

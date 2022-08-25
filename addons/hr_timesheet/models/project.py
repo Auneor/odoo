@@ -41,7 +41,7 @@ class Project(models.Model):
     timesheet_count = fields.Boolean(compute="_compute_timesheet_count")
     timesheet_encode_uom_id = fields.Many2one('uom.uom', related='company_id.timesheet_encode_uom_id')
     total_timesheet_time = fields.Integer(
-        compute='_compute_total_timesheet_time',
+        compute='_compute_total_timesheet_time', groups='hr_timesheet.group_hr_timesheet_user',
         help="Total number of time (in the proper UoM) recorded in the project, rounded to the unit.")
     encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')
     is_internal_project = fields.Boolean(compute='_compute_is_internal_project', search='_search_is_internal_project')
@@ -133,12 +133,14 @@ class Project(models.Model):
 
     @api.depends('timesheet_ids')
     def _compute_timesheet_count(self):
-        timesheet_read_group = self.env['account.analytic.line'].read_group(
-            [('project_id', 'in', self.ids)],
-            ['project_id'],
-            ['project_id']
-        )
-        timesheet_project_map = {project_info['project_id'][0]: project_info['project_id_count'] for project_info in timesheet_read_group}
+        timesheet_project_map = {}
+        if self.env['account.analytic.line'].check_access_rights('read', raise_exception=False):
+            timesheet_read_group = self.env['account.analytic.line'].read_group(
+                [('project_id', 'in', self.ids)],
+                ['project_id'],
+                ['project_id']
+            )
+            timesheet_project_map = {project_info['project_id'][0]: project_info['project_id_count'] for project_info in timesheet_read_group}
         for project in self:
             project.timesheet_count = timesheet_project_map.get(project.id, 0)
 
@@ -365,15 +367,20 @@ class Task(models.Model):
         In this case, a warning message is displayed through a RedirectWarning
         and allows the user to see timesheets entries to unlink.
         """
-        tasks_with_timesheets = self.filtered(lambda t: t.timesheet_ids)
-        if tasks_with_timesheets:
-            if len(tasks_with_timesheets) > 1:
+        timesheet_data = self.env['account.analytic.line'].sudo().read_group(
+            [('task_id', 'in', self.ids)],
+            ['task_id'],
+            ['task_id'],
+        )
+        task_with_timesheets_ids = [res['task_id'][0] for res in timesheet_data]
+        if task_with_timesheets_ids:
+            if len(task_with_timesheets_ids) > 1:
                 warning_msg = _("These tasks have some timesheet entries referencing them. Before removing these tasks, you have to remove these timesheet entries.")
             else:
                 warning_msg = _("This task has some timesheet entries referencing it. Before removing this task, you have to remove these timesheet entries.")
             raise RedirectWarning(
                 warning_msg, self.env.ref('hr_timesheet.timesheet_action_task').id,
-                _('See timesheet entries'), {'active_ids': tasks_with_timesheets.ids})
+                _('See timesheet entries'), {'active_ids': task_with_timesheets_ids})
 
     @api.model
     def _convert_hours_to_days(self, time):

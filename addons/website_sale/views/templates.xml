@@ -310,7 +310,7 @@
                                 </table>
                             </div>
                             <t t-else="">
-                                <div class="text-center text-muted">
+                                <div class="text-center text-muted mt128 mb256">
                                     <t t-if="not search">
                                         <h3 class="mt8">No product defined</h3>
                                         <p t-if="category">No product defined in category "<strong t-esc="category.display_name"/>".</p>
@@ -481,6 +481,7 @@
                 <form class="js_attributes mb-2" method="get">
                     <input t-if="category" type="hidden" name="category" t-att-value="category.id" />
                     <input type="hidden" name="search" t-att-value="search" />
+                    <input type="hidden" name="order" t-att-value="order"/>
                     <a t-if="attrib_values" t-att-href="keep('/shop'+ ('/category/'+slug(category)) if category else None, attrib=0)" class="btn btn-link p-0">
                         <i class="fa fa-eraser mr-1"/><u>Clear filters</u>
                     </a>
@@ -1174,7 +1175,7 @@
         </t>
     </template>
 
-    <template id="suggested_products_list" inherit_id="website_sale.cart_lines" customize_show="True" name="Alternative Products in my cart">
+    <template id="suggested_products_list" inherit_id="website_sale.cart_lines" customize_show="True" name="Accessory Products in my cart">
         <xpath expr="//table[@id='cart_products']" position="after">
             <h5 class='text-muted js_cart_lines' t-if="suggested_products">Suggested Accessories:</h5>
             <table t-if="suggested_products" id="suggested_products" class="js_cart_lines table table-striped table-sm">
@@ -1849,7 +1850,7 @@
                         <b>Communication: </b><span t-esc='order.reference'/>
                     </div>
                     <div t-if="payment_tx_id.acquirer_id.sudo().qr_code">
-                        <t t-set="qr_code" t-value="payment_tx_id.acquirer_id.sudo().journal_id.bank_account_id.build_qr_code_base64(order.amount_total,payment_tx_id.reference, None, payment_tx_id.currency_id, payment_tx_id.partner_id)"/>
+                        <t t-set="qr_code" t-value="payment_tx_id.company_id.partner_id.bank_ids[:1].build_qr_code_base64(order.amount_total,payment_tx_id.reference, None, payment_tx_id.currency_id, payment_tx_id.partner_id)"/>
                         <div class="card-body" t-if="qr_code">
                             <h3>Or scan me with your banking app.</h3>
                             <img class="border border-dark rounded" t-att-src="qr_code"/>
