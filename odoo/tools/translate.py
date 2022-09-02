@@ -949,13 +949,14 @@ def trans_generate(lang, modules, cr):
 
     if 'all_installed' in modules:
         query += ' WHERE module IN ( SELECT name FROM ir_module_module WHERE state = \'installed\') '
-
-    if 'all' not in modules:
-        query += ' WHERE module IN %s'
-        query_param = (tuple(modules),)
+        query_param = ()
     else:
-        query += ' WHERE module != %s'
-        query_param = ('__export__',)
+        if 'all' not in modules:
+            query += ' WHERE module IN %s'
+            query_param = (tuple(modules),)
+        else:
+            query += ' WHERE module != %s'
+            query_param = ('__export__',)
 
     query += ' GROUP BY model, res_id, module ORDER BY module, model, min(name)'
 
