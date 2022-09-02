@@ -736,7 +736,8 @@ class PoFileWriter:
         for module, type, name, res_id, src, trad, comments in rows:
             row = grouped_rows.setdefault(src, {})
             row.setdefault('modules', set()).add(module)
-            row['translation'] = trad
+            if not row.get('translation') and trad != src:
+                row['translation'] = trad
             row.setdefault('tnrs', []).append((type, name, res_id))
             row.setdefault('comments', set()).update(comments)
             modules.add(module)
@@ -747,7 +748,7 @@ class PoFileWriter:
                 row['translation'] = ''
             elif not row.get('translation'):
                 row['translation'] = ''
-            self.add_entry(row['modules'], sorted(row['tnrs']), src, row['translation'], row['comments'])
+            self.add_entry(sorted(row['modules']), sorted(row['tnrs']), src, row['translation'], row['comments'])
 
         import odoo.release as release
         self.po.header = "Translation of %s.\n" \
@@ -980,7 +981,7 @@ class TranslationModuleReader:
         self._path_list = [(path, True) for path in odoo.addons.__path__]
         self._installed_modules = [
             m['name']
-            for m in self.env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'])
+            for m in self.env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'], order='name')
         ]
 
         self._export_translatable_records()
