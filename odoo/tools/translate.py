@@ -752,7 +752,7 @@ class PoFileWriter:
                 row['translation'] = ''
             elif not row.get('translation'):
                 row['translation'] = ''
-            self.add_entry(row['modules'], row['tnrs'], src, row['translation'], row['comments'])
+            self.add_entry(sorted(row['modules']), row['tnrs'], src, row['translation'], row['comments'])
 
         # buffer expects bytes
         self.buffer.write(str(self.po).encode())
@@ -819,7 +819,7 @@ class TarFileWriter:
 def trans_export(lang, modules, buffer, format, cr):
 
     translations = trans_generate(lang, modules, cr)
-    modules = set(t[0] for t in translations)
+    modules = sorted(set(t[0] for t in translations))
     writer = TranslationFileWriter(buffer, fileformat=format, lang=lang, modules=modules)
     writer.write_rows(translations)
     del translations
@@ -992,7 +992,7 @@ def trans_generate(lang, modules, cr):
 
     installed_modules = [
         m['name']
-        for m in env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'])
+        for m in env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'], order='name')
     ]
 
     path_list = [(path, True) for path in odoo.addons.__path__]
