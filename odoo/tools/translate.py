@@ -1018,7 +1018,7 @@ def trans_generate(lang, modules, cr):
         frelativepath = fabsolutepath[len(path):]
         display_path = "addons%s" % frelativepath
         module = get_module_from_path(fabsolutepath)
-        if ('all' in modules or module in modules) and module in installed_modules:
+        if ('all' in modules or 'all_installed' in modules or module in modules) and module in installed_modules:
             if os.path.sep != '/':
                 display_path = display_path.replace(os.path.sep, '/')
             return module, fabsolutepath, frelativepath, display_path
