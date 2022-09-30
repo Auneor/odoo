@@ -2157,6 +2157,8 @@ var FieldMany2ManyBinaryMultiFiles = AbstractField.extend({
     fieldsToFetch: {
         name: {type: 'char'},
         mimetype: {type: 'char'},
+        res_id: {type: 'number'},
+        access_token: {type: 'char'},
     },
     events: {
         'click .o_attach': '_onAttach',
@@ -3095,6 +3097,14 @@ var FieldRadio = FieldSelection.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * @override
+     * @returns {boolean} always true
+     */
+    isSet: function () {
+        return true;
+    },
+
+    /**
      * Returns the currently-checked radio button, or the first one if no radio
      * button is checked.
      *
@@ -3103,14 +3113,6 @@ var FieldRadio = FieldSelection.extend({
     getFocusableElement: function () {
         var checked = this.$("[checked='true']");
         return checked.length ? checked : this.$("[data-index='0']");
-    },
-
-    /**
-     * @override
-     * @returns {boolean} always true
-     */
-    isSet: function () {
-        return true;
     },
 
     /**

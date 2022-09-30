@@ -350,7 +350,8 @@ class AccountReconcileModel(models.Model):
                 if match:
                     sign = 1 if residual_balance > 0.0 else -1
                     try:
-                        extracted_balance = float(re.sub(r'\D' + self.decimal_separator, '', match.group(1)).replace(self.decimal_separator, '.'))
+                        extracted_match_group = re.sub(r'[^\d' + self.decimal_separator + ']', '', match.group(1))
+                        extracted_balance = float(extracted_match_group.replace(self.decimal_separator, '.'))
                         balance = copysign(extracted_balance * sign, residual_balance)
                     except ValueError:
                         balance = 0
@@ -370,13 +371,14 @@ class AccountReconcileModel(models.Model):
                 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)],
                 'reconcile_model_id': self.id,
                 'journal_id': line.journal_id.id,
+                'tax_ids': [],
             }
             lines_vals_list.append(writeoff_line)
 
             residual_balance -= balance
 
             if line.tax_ids:
-                writeoff_line['tax_ids'] = [(6, None, line.tax_ids.ids)]
+                writeoff_line['tax_ids'] += [(6, None, line.tax_ids.ids)]
                 tax = line.tax_ids
                 # Multiple taxes with force_tax_included results in wrong computation, so we
                 # only allow to set the force_tax_included field if we have one tax selected
@@ -460,20 +462,14 @@ class AccountReconcileModel(models.Model):
         return lines_vals_list + writeoff_vals_list
 
     def _prepare_widget_writeoff_vals(self, st_line_id, write_off_vals):
-        fixed_write_off_vals = dict(write_off_vals, currency_id=st_line_id.company_id.currency_id.id)
-        counterpart_vals = st_line_id._prepare_counterpart_move_line_vals(fixed_write_off_vals)
-
+        counterpart_vals = st_line_id._prepare_counterpart_move_line_vals({
+                **write_off_vals,
+                'currency_id': st_line_id.company_id.currency_id.id,
+            })
         return {
-            'name': counterpart_vals['name'],
+            **counterpart_vals,
             'balance': counterpart_vals['amount_currency'],
-            'debit': counterpart_vals['debit'],
-            'credit': counterpart_vals['credit'],
-            'account_id': counterpart_vals['account_id'],
-            'currency_id': counterpart_vals['currency_id'],
-            'analytic_account_id': counterpart_vals.get('analytic_account_id'),
-            'analytic_tag_ids': counterpart_vals.get('analytic_tag_ids', []),
             'reconcile_model_id': self.id,
-            'journal_id': counterpart_vals['journal_id']
         }
 
     ####################################################

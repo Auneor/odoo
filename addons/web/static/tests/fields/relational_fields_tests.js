@@ -2536,11 +2536,14 @@ QUnit.module('relational_fields', {
             fields: {
                 name: {string:"Name", type: "char"},
                 mimetype: {string: "Mimetype", type: "char"},
+                res_id: {type: "number"},
+                access_token: {type: "char"},
             },
             records: [{
                 id: 17,
                 name: 'Marley&Me.jpg',
                 mimetype: 'jpg',
+                res_id: 1,
             }],
         };
         this.data.turtle.fields.picture_ids = {
@@ -2564,7 +2567,7 @@ QUnit.module('relational_fields', {
             mockRPC: function (route, args) {
                 assert.step(route);
                 if (route === '/web/dataset/call_kw/ir.attachment/read') {
-                    assert.deepEqual(args.args[1], ['name', 'mimetype']);
+                    assert.deepEqual(args.args[1], ['name', 'mimetype', 'res_id', 'access_token']);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -3672,6 +3675,56 @@ QUnit.module('relational_fields', {
         assert.strictEqual(document.activeElement, form.$('.o_field_widget[name="int_field"]')[0],
             "last input should now be focused");
 
+        form.destroy();
+    });
+    QUnit.test('Check onchange with two consecutive many2one', async function (assert) {
+        assert.expect(2);
+        this.data.product.fields.product_partner_ids = { string: "User", type: 'one2many', relation: 'partner' };
+        this.data.product.records[0].product_partner_ids = [1];
+        this.data.product.records[1].product_partner_ids = [2];
+        this.data.turtle.fields.product_ids = { string: "Product", type: "one2many", relation: 'product' };
+        this.data.turtle.fields.user_ids = { string: "Product", type: "one2many", relation: 'user' };
+        this.data.turtle.onchanges = {
+            turtle_trululu: function (record) {
+                record.product_ids = [37];
+                record.user_ids = [17, 19];
+            },
+        };
+        var form = await createView({
+            View: FormView,
+            model: 'turtle',
+            data: this.data,
+            arch: 
+                '<form string="Turtles">' +
+                    '<field string="Product" name="turtle_trululu"/>' +
+                    '<field readonly="1" string="Related field" name="product_ids">' +
+                        '<tree>' +
+                            '<field widget="many2many_tags" name="product_partner_ids"/>' +
+                        '</tree>' +
+                    '</field>' +
+                    '<field readonly="1" string="Second related field" name="user_ids">' +
+                        '<tree>' +
+                            '<field widget="many2many_tags" name="partner_ids"/>' +
+                        '</tree>' +
+                    '</field>' +
+                '</form>',
+            res_id: 1,
+        });
+
+        await testUtils.form.clickEdit(form);
+        await testUtils.fields.many2one.clickOpenDropdown("turtle_trululu");
+        await testUtils.fields.many2one.searchAndClickItem('turtle_trululu', {search: 'first record'});
+
+        const getElementTextContent = name => [...document.querySelectorAll(`.o_field_many2manytags[name="${name}"] .badge.o_tag_color_0 > span`)]
+            .map(x=>x.textContent);
+        assert.deepEqual(
+            getElementTextContent('product_partner_ids'),
+            ['first record'],
+            "should have the correct value in the many2many tag widget");
+        assert.deepEqual(
+            getElementTextContent('partner_ids'),
+            ['first record', 'second record'],
+            "should have the correct values in the many2many tag widget");
         form.destroy();
     });
 });
