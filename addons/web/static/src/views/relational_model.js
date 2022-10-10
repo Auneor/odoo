@@ -81,6 +81,31 @@ function orderByToString(orderBy) {
 }
 
 /**
+ * @param {RawContext} rawContext
+ * @param {Context} defaultContext
+ * @returns {Context}
+ */
+function processRawContext(rawContext, defaultContext) {
+    const contexts = [];
+    if (!rawContext) {
+        return Object.assign({}, defaultContext);
+    }
+    contexts.push({ ...defaultContext, ...rawContext.make() });
+    while (rawContext.parent) {
+        rawContext = rawContext.parent;
+        const context = rawContext.make();
+        for (const key in context) {
+            if (key.startsWith("default_")) {
+                delete context[key];
+            }
+        }
+        contexts.push(context);
+    }
+
+    return Object.assign({}, ...contexts.reverse());
+}
+
+/**
  * FIXME: don't know where this function should be:
  *   - on a dataPoint: don't want to make it accessible everywhere (e.g. in Fields)
  *   - on the model: would still be accessible by views + I like the current light API of the model
@@ -255,25 +280,7 @@ class DataPoint {
     // -------------------------------------------------------------------------
 
     get context() {
-        const contexts = [];
-        let rawContext = this.rawContext;
-        if (!rawContext) {
-            return Object.assign({}, this.defaultContext);
-        }
-        contexts.push({ ...this.defaultContext, ...rawContext.make() });
-
-        while (rawContext.parent) {
-            rawContext = rawContext.parent;
-            const context = rawContext.make();
-            for (const key in context) {
-                if (key.startsWith("default_")) {
-                    delete context[key];
-                }
-            }
-            contexts.push(context);
-        }
-
-        return Object.assign({}, ...contexts.reverse());
+        return processRawContext(this.rawContext, this.defaultContext);
     }
 
     get fieldNames() {
@@ -439,7 +446,7 @@ export class Record extends DataPoint {
                 evalContext[fieldName] = false;
             } else if (isX2Many(this.fields[fieldName])) {
                 const list = this._cache[fieldName];
-                evalContext[fieldName] = list.getContext();
+                evalContext[fieldName] = list.currentIds;
                 // ---> implied to initialize (resIds, commands) currentIds before loading static list
             } else if (value && this.fields[fieldName].type === "date") {
                 evalContext[fieldName] = serializeDate(value);
@@ -650,6 +657,8 @@ export class Record extends DataPoint {
                 this.data[fieldName] = this._values[fieldName];
             }
         }
+        this._invalidFields.clear();
+
         if (!this.isVirtual) {
             this.switchMode("readonly");
         }
@@ -807,7 +816,7 @@ export class Record extends DataPoint {
             const changes = params.changes || (await this._onChange());
             await this._load({ changes });
         } else {
-            let values = params.values || {};
+            let values = this._parseServerValues(params.values);
             const missingFields = this.fieldNames.filter((fieldName) => !(fieldName in values));
             if (missingFields.length) {
                 values = Object.assign({}, values, await this._read(missingFields));
@@ -999,7 +1008,15 @@ export class Record extends DataPoint {
         if (!id && label) {
             // only display_name given -> do a name_create
             const res = await this.model.orm.call(relation, "name_create", [label], {
-                context: this.context,
+                context: processRawContext({
+                    parent: this.rawContext,
+                    make: () => {
+                        return makeContext(
+                            [this.activeFields[fieldName].context],
+                            this.evalContext
+                        );
+                    },
+                }),
             });
             // Check if a record is really created. Models without defined
             // _rec_name cannot create record based on name_create.
@@ -1363,6 +1380,7 @@ export class Record extends DataPoint {
                 )
             ) {
                 const changes = await this._onChange(fieldNames);
+                this._removeInvalidFields(Object.keys(changes));
                 for (const [fieldName, value] of Object.entries(changes)) {
                     const field = this.fields[fieldName];
                     // for x2many fields, the onchange returns commands, not ids, so we need to process them
@@ -1400,7 +1418,7 @@ class DynamicList extends DataPoint {
 
         this.editedRecord = null;
         this.onCreateRecord = params.onCreateRecord || (() => {});
-        this.onRecordWillSwitchMode = async (record, mode) => {
+        this.onRecordWillSwitchMode = async (record, mode, options) => {
             const editedRecord = this.editedRecord;
             this.editedRecord = null;
             if (!params.onRecordWillSwitchMode && editedRecord) {
@@ -1408,7 +1426,13 @@ class DynamicList extends DataPoint {
                 if (editedRecord !== record && editedRecord.canBeAbandoned) {
                     this.abandonRecord(editedRecord.id);
                 } else {
-                    const isSaved = await editedRecord.save();
+                    let isSaved;
+                    try {
+                        isSaved = await editedRecord.save();
+                    } catch (e) {
+                        this.editedRecord = editedRecord;
+                        throw e;
+                    }
                     if (!isSaved) {
                         this.editedRecord = editedRecord;
                         return false;
@@ -1419,7 +1443,7 @@ class DynamicList extends DataPoint {
                 this.editedRecord = record;
             }
             if (params.onRecordWillSwitchMode) {
-                await params.onRecordWillSwitchMode(record, mode);
+                await params.onRecordWillSwitchMode(record, mode, options);
             }
         };
     }
@@ -1773,10 +1797,6 @@ export class DynamicRecordList extends DynamicList {
         return this.records.find((r) => r.isInQuickCreation);
     }
 
-    get quickCreateRecordIndex() {
-        return this.records.findIndex((r) => r.isInQuickCreation);
-    }
-
     // -------------------------------------------------------------------------
     // Public
     // -------------------------------------------------------------------------
@@ -1927,7 +1947,7 @@ export class DynamicRecordList extends DynamicList {
         }
     }
 
-    async quickCreate(activeFields, context, atFirstPosition = true) {
+    async quickCreate(activeFields, context) {
         await this.model.mutex.getUnlockedDef();
         const record = this.quickCreateRecord;
         if (record) {
@@ -1937,10 +1957,7 @@ export class DynamicRecordList extends DynamicList {
             parent: this.rawContext,
             make: () => makeContext([context, {}]),
         };
-        return this.createRecord(
-            { activeFields, rawContext, isInQuickCreation: true },
-            atFirstPosition
-        );
+        return this.createRecord({ activeFields, rawContext, isInQuickCreation: true }, true);
     }
 
     /**
@@ -2019,7 +2036,6 @@ export class DynamicRecordList extends DynamicList {
 
         const records = await Promise.all(
             rawRecords.map(async (data) => {
-                data = this._parseServerValues(data);
                 const record = this.model.createDataPoint("record", {
                     resModel: this.resModel,
                     resId: data.id,
@@ -2208,9 +2224,14 @@ export class DynamicGroupList extends DynamicList {
         return false;
     }
 
+    hasAggregate(fieldName) {
+        const group = this.groups[0];
+        return group && fieldName in group.aggregates;
+    }
+
     async load(params = {}) {
-        this.limit = params.limit || this.limit;
-        this.offset = params.offset || this.offset;
+        this.limit = params.limit === undefined ? this.limit : params.limit;
+        this.offset = params.offset === undefined ? this.offset : params.offset;
         /** @type {[Group, number][]} */
         const previousGroups = this.groups.map((g, i) => [g, i]);
         this.groups = await this._loadGroups();
@@ -2230,7 +2251,7 @@ export class DynamicGroupList extends DynamicList {
         return this.groups.reduce((acc, group) => acc + group.count, 0);
     }
 
-    async quickCreate(group, atFirstPosition = true) {
+    async quickCreate(group) {
         group = group || this.groups[0];
         if (this.model.useSampleModel) {
             // Empty the groups because they contain sample data
@@ -2246,7 +2267,7 @@ export class DynamicGroupList extends DynamicList {
         if (isFolded) {
             await group.toggle();
         }
-        await group.quickCreate(this.quickCreateInfo.activeFields, this.context, atFirstPosition);
+        await group.quickCreate(this.quickCreateInfo.activeFields, this.context);
     }
 
     /**
@@ -2282,6 +2303,20 @@ export class DynamicGroupList extends DynamicList {
         this.model.notify();
     }
 
+    async sortBy(fieldName) {
+        if (!this.groups.length) {
+            return;
+        }
+        const everyGroupIsClosed = this.groups.every((group) => group.isFolded);
+        if (
+            everyGroupIsClosed &&
+            !(this.groupBy.includes(fieldName) || this.hasAggregate(fieldName))
+        ) {
+            return;
+        }
+        super.sortBy(fieldName);
+    }
+
     // ------------------------------------------------------------------------
     // Protected
     // ------------------------------------------------------------------------
@@ -2305,6 +2340,7 @@ export class DynamicGroupList extends DynamicList {
             displayName,
             aggregates: {},
             groupByField: this.groupByField,
+            groupDomain: Domain.and([this.domain, [[this.groupByField.name, "=", id]]]).toList(),
             rawContext: this.rawContext,
         });
         group.isFolded = false;
@@ -2352,6 +2388,7 @@ export class DynamicGroupList extends DynamicList {
                 orderby,
                 lazy: true,
                 expand: this.expand,
+                expand_orderby: this.expand ? orderByToString(this.orderBy) : null,
                 offset: this.offset,
                 limit: this.limit,
                 context: this.context,
@@ -2385,6 +2422,10 @@ export class DynamicGroupList extends DynamicList {
                         }
                         break;
                     }
+                    // When group_by_no_leaf key is present FIELD_ID_count doesn't exist
+                    // we have to get the count from `__count` instead
+                    // see _read_group_raw in models.py
+                    case `__count`:
                     case `${groupByField.name}_count`: {
                         groupParams.count = value;
                         break;
@@ -2559,8 +2600,9 @@ export class Group extends DataPoint {
     /**
      * @see DynamicRecordList.deleteRecords
      */
-    async deleteRecords() {
-        return this.list.deleteRecords(...arguments);
+    async deleteRecords(records) {
+        this.count = this.count - records.length;
+        return this.list.deleteRecords(records);
     }
 
     empty() {
@@ -2635,12 +2677,12 @@ export class Group extends DataPoint {
         });
     }
 
-    quickCreate(activeFields, context, atFirstPosition = false) {
+    quickCreate(activeFields, context) {
         const ctx = {
             ...context,
             [`default_${this.groupByField.name}`]: this.getServerValue(),
         };
-        return this.list.quickCreate(activeFields, ctx, atFirstPosition);
+        return this.list.quickCreate(activeFields, ctx);
     }
 
     /**
@@ -2706,17 +2748,25 @@ export class StaticList extends DataPoint {
         this.getParentRecordContext = params.getParentRecordContext;
 
         this.editedRecord = null;
-        this.onRecordWillSwitchMode = async (record, mode) => {
+        this.onRecordWillSwitchMode = async (record, mode, options) => {
             const editedRecord = this.editedRecord;
-            if (editedRecord && editedRecord.id === record.id && mode === "readonly") {
-                const valid = await record.checkValidity();
-                if (valid) {
-                    this.editedRecord = null;
-                }
-                return valid;
-            }
+            this.editedRecord = null;
             if (editedRecord) {
-                await editedRecord.switchMode("readonly");
+                // Validity is checked if one of the following is true:
+                // - "switchMode" has been called with explicit "checkValidity"
+                // - the record is dirty
+                // - the record is new and can be abandonned
+                const shouldCheckValidity =
+                    options.checkValidity || editedRecord.isDirty || editedRecord.canBeAbandoned;
+                const isValid = !shouldCheckValidity || (await editedRecord.checkValidity());
+                if (isValid) {
+                    await editedRecord.switchMode("readonly");
+                } else if (editedRecord.id !== record.id && editedRecord.canBeAbandoned) {
+                    this.abandonRecord(editedRecord.id);
+                } else {
+                    this.editedRecord = editedRecord;
+                    return false;
+                }
             }
             if (mode === "edit") {
                 this.editedRecord = record;
@@ -3206,7 +3256,7 @@ export class StaticList extends DataPoint {
                     if (!this._initialValues) {
                         this._initialValues = {};
                     }
-                    this._initialValues[id] = this._parseServerValues(command[2]);
+                    this._initialValues[id] = command[2];
                 }
                 command[2] = symbolValues;
             }
@@ -3398,7 +3448,10 @@ export class RelationalModel extends Model {
                 return makeContext([rootParams.context], {});
             },
         };
-        const state = this.root ? this.root.exportState() : this.initialRootState;
+        const state = this.root
+            ? Object.assign(this.root.exportState(), { offset: 0 })
+            : this.initialRootState;
+
         const newRoot = this.createDataPoint(this.rootType, rootParams, state);
         await this.keepLast.add(newRoot.load({ values: this.initialValues }));
         this.root = newRoot;

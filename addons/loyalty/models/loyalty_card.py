@@ -32,7 +32,7 @@ class LoyaltyCard(models.Model):
     point_name = fields.Char(related='program_id.portal_point_name', readonly=True)
     points_display = fields.Char(compute='_compute_points_display')
 
-    code = fields.Char(default=lambda self: self._generate_code(), required=True, readonly=True)
+    code = fields.Char(default=lambda self: self._generate_code(), required=True)
     expiration_date = fields.Date()
 
     use_count = fields.Integer(compute='_compute_use_count')
@@ -68,6 +68,9 @@ class LoyaltyCard(models.Model):
         """To be overriden"""
         self.ensure_one()
         return None
+
+    def _has_source_order(self):
+        return False
 
     def action_coupon_send(self):
         """ Open a window to compose an email, with the default template returned by `_get_default_template`

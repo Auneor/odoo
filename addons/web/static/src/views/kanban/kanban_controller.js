@@ -35,7 +35,10 @@ export class KanbanController extends Component {
         });
 
         const rootRef = useRef("root");
-        useViewButtons(this.model, rootRef);
+        useViewButtons(this.model, rootRef, {
+            beforeExecuteAction: this.beforeExecuteActionButton.bind(this),
+            afterExecuteAction: this.afterExecuteActionButton.bind(this),
+        });
         useSetupView({
             rootRef,
             getGlobalState: () => {
@@ -103,13 +106,17 @@ export class KanbanController extends Component {
     }
 
     get canCreate() {
-        const { create, groupCreate } = this.props.archInfo.activeActions;
+        const { create, createGroup } = this.props.archInfo.activeActions;
         const list = this.model.root;
         if (!create) {
             return false;
         }
-        return list.isGrouped ? list.groups.length > 0 || !groupCreate : true;
+        return list.isGrouped ? list.groups.length > 0 || !createGroup : true;
     }
+
+    async beforeExecuteActionButton(clickParams) {}
+
+    async afterExecuteActionButton(clickParams) {}
 }
 
 KanbanController.template = `web.KanbanView`;

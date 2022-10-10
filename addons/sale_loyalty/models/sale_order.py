@@ -82,9 +82,9 @@ class SaleOrder(models.Model):
             coupon.points -= changes
         # Remove any rewards
         self.order_line.filtered(lambda l: l.is_reward_line).unlink()
-        self.coupon_point_ids.coupon_id.filtered(
+        self.coupon_point_ids.coupon_id.sudo().filtered(
             lambda c: not c.program_id.is_nominative and c.order_id in self and not c.use_count)\
-            .sudo().unlink()
+            .unlink()
         self.coupon_point_ids.unlink()
         return res
 
@@ -360,7 +360,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return [('active', '=', True), ('program_id.sale_ok', '=', True),
                 ('company_id', 'in', (self.company_id.id, False)),
-                '|', ('program_id.date_to', '=', False), ('program_id.date_to', '<=', fields.Date.context_today(self))]
+                '|', ('program_id.date_to', '=', False), ('program_id.date_to', '>=', fields.Date.context_today(self))]
 
     def _get_applicable_program_points(self, domain=None):
         """

@@ -976,6 +976,9 @@ class Website(models.Model):
         if website_id:
             return self.browse(website_id)
 
+        if not request and not fallback:
+            return self.browse(False)
+
         # The format of `httprequest.host` is `domain:port`
         domain_name = request and request.httprequest.host or ''
 
@@ -1758,12 +1761,3 @@ class Website(models.Model):
                         for word in re.findall(match_pattern, value):
                             if word[0] == search[0]:
                                 yield word.lower()
-
-    # ----------------------------------------------------------
-    # ORM overrides
-    # ----------------------------------------------------------
-    def _neutralize(self):
-        super()._neutralize()
-        self.flush_model()
-        self.invalidate_model()
-        self.env.cr.execute("UPDATE website SET domain=NULL")

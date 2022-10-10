@@ -53,9 +53,9 @@ export class Many2OneField extends Component {
 
         const computeActiveActions = (props) => {
             this.state.activeActions = {
-                canCreate: props.canCreate,
-                canCreateEdit: props.canCreateEdit,
-                canWrite: props.canWrite,
+                create: props.canCreate,
+                createEdit: props.canCreateEdit,
+                write: props.canWrite,
             };
         };
 
@@ -149,7 +149,7 @@ export class Many2OneField extends Component {
             nameCreateField: this.props.nameCreateField,
             setInputFloats: this.setFloating,
             autocomplete_container: this.autocompleteContainerRef,
-        }
+        };
     }
     getDomain() {
         return this.domain.toList(this.context);
@@ -188,7 +188,11 @@ export class Many2OneField extends Component {
         }
     }
     onExternalBtnClick() {
-        this.openDialog(this.resId);
+        if (this.props.openTarget === "current") {
+            this.openAction();
+        } else {
+            this.openDialog(this.resId);
+        }
     }
     async onBarcodeBtnClick() {
         const barcode = await BarcodeScanner.scanBarcode();
@@ -259,6 +263,7 @@ Many2OneField.props = {
     relation: { type: String, optional: true },
     string: { type: String, optional: true },
     canScanBarcode: { type: Boolean, optional: true },
+    openTarget: { type: String, validate: (v) => ["current", "new"].includes(v), optional: true },
 };
 Many2OneField.defaultProps = {
     canOpen: true,
@@ -270,6 +275,7 @@ Many2OneField.defaultProps = {
     searchLimit: 7,
     string: "",
     canScanBarcode: false,
+    openTarget: "current",
 };
 
 Many2OneField.displayName = _lt("Many2one");
@@ -295,8 +301,11 @@ Many2OneField.extractProps = ({ attrs, field }) => {
         string: attrs.string || field.string,
         createNameField: attrs.options.create_name_field,
         canScanBarcode: canScanBarcode,
+        openTarget: attrs.open_target,
     };
 };
 
 registry.category("fields").add("many2one", Many2OneField);
+// the two following lines are there to prevent the fallback on legacy widgets
 registry.category("fields").add("list.many2one", Many2OneField);
+registry.category("fields").add("kanban.many2one", Many2OneField);

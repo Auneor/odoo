@@ -28,17 +28,17 @@ export class KanbanCompiler extends ViewCompiler {
         this.compilers.push(
             { selector: ".oe_kanban_colorpicker", fn: this.compileColorPicker },
             {
-                selector: ".dropdown,.o_kanban_manage_button_section",
+                selector: ".dropdown:not(.kanban_ignore_dropdown),.o_kanban_manage_button_section",
                 fn: this.compileDropdown,
                 doNotCopyAttributes: true,
             },
             {
-                selector: ".dropdown-menu",
+                selector: ".dropdown-menu:not(.kanban_ignore_dropdown)",
                 fn: this.compileDropdownMenu,
                 doNotCopyAttributes: true,
             },
             {
-                selector: ".dropdown-toggle,.o_kanban_manage_toggle_button",
+                selector: ".dropdown-toggle:not(.kanban_ignore_dropdown),.o_kanban_manage_toggle_button",
                 fn: this.compileDropdownToggler,
                 doNotCopyAttributes: true,
             },
@@ -234,7 +234,7 @@ export class KanbanCompiler extends ViewCompiler {
         if (!el.hasAttribute("widget")) {
             // fields without a specified widget are rendered as simple spans in kanban records
             const fieldName = el.getAttribute("name");
-            compiled = createElement("span", { "t-esc": `record["${fieldName}"].value` });
+            compiled = createElement("span", { "t-out": `record["${fieldName}"].value` });
         } else {
             compiled = super.compileField(el, params);
             const fieldId = el.getAttribute("field_id") || el.getAttribute("name");

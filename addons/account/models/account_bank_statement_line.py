@@ -364,6 +364,23 @@ class AccountBankStatementLine(models.Model):
         moves.unlink()
         return res
 
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        # Add latest running_balance in the read_group
+        result = super(AccountBankStatementLine, self).read_group(
+            domain, fields, groupby, offset=offset,
+            limit=limit, orderby=orderby, lazy=lazy)
+        show_running_balance = False
+        # We loop over the content of groupby because the groupby date is in the form of "date:granularity"
+        for el in groupby:
+            if (el == 'statement_id' or el == 'journal_id' or el.startswith('date')) and 'running_balance' in fields:
+                show_running_balance = True
+                break
+        if show_running_balance:
+            for group_line in result:
+                group_line['running_balance'] = self.search(group_line.get('__domain'), limit=1).running_balance or 0.0
+        return result
+
     # -------------------------------------------------------------------------
     # ACTION METHODS
     # -------------------------------------------------------------------------
@@ -630,26 +647,31 @@ class AccountBankStatementLine(models.Model):
             sub_queries.append(rf'''
                 {unaccent("%s")} ~* ('^' || (
                    SELECT STRING_AGG(CONCAT('(?=.*\m', chunk[1], '\M)'), '')
-                   FROM regexp_matches({unaccent('name')}, '\w{{3,}}', 'g') AS chunk
+                   FROM regexp_matches({unaccent('partner.name')}, '\w{{3,}}', 'g') AS chunk
                 ))
             ''')
             params.append(text_value)
 
         if sub_queries:
             self.env['res.partner'].flush_model(['company_id', 'name'])
+            self.env['account.move.line'].flush_model(['partner_id', 'company_id'])
             self._cr.execute(
                 '''
-                    SELECT id
-                    FROM res_partner
-                    WHERE (company_id IS NULL OR company_id = %s)
-                        AND name IS NOT NULL
+                    SELECT aml.partner_id
+                    FROM account_move_line aml
+                    JOIN res_partner partner ON
+                        aml.partner_id = partner.id
+                        AND partner.name IS NOT NULL
+                        AND partner.active
                         AND (''' + ') OR ('.join(sub_queries) + ''')
+                    WHERE aml.company_id = %s
+                    LIMIT 1
                 ''',
-                [self.company_id.id] + params,
+                params + [self.company_id.id],
             )
-            rows = self._cr.fetchall()
-            if len(rows) == 1:
-                return self.env['res.partner'].browse(rows[0][0])
+            row = self._cr.fetchone()
+            if row:
+                return self.env['res.partner'].browse(row[0])
 
         return self.env['res.partner']
 

@@ -1,4 +1,4 @@
-// ------- Kanban View Layout -------
+// ------- Kanban renderer -------
 .o_kanban_renderer {
     // ----------------------------------------------------------------------------
     // Default KanbanView values
@@ -45,7 +45,7 @@
         margin-top: calc(var(--KanbanRecord-margin-h) * 2);
         padding: 8px;
 
-        .o_form_view .o_group.o_inner_group {
+        .o_form_view .o_inner_group {
             margin: 0;
         }
     }
@@ -222,6 +222,8 @@
             // (eg. Company logo badge inside a contact picture)
             .o_kanban_image_fill_left,
             .o_kanban_image {
+                background-color: var(--KanbanRecord__image-bg-color, none);
+
                 .o_kanban_image_inner_pic {
                     @include o-position-absolute($right: 0, $bottom: 0);
                     max: {
@@ -445,7 +447,7 @@
         }
 
         .oe_kanban_text_red {
-            color: #a61300;
+            color: o-text-color('danger');
             font-weight: $font-weight-bold;
         }
 
@@ -472,9 +474,11 @@
         .o_kanban_record {
             width: 100%;
         }
-
-        &.o_kanban_small_column .o_kanban_group:not(.o_column_folded) {
-            flex-basis: calc(var(--KanbanRecord--small-width) + (2 * var(--KanbanGroup-padding-h)));
+        
+        @include media-breakpoint-up(md) {
+            &.o_kanban_small_column .o_kanban_group:not(.o_column_folded) {
+                flex-basis: calc(var(--KanbanRecord--small-width) + (2 * var(--KanbanGroup-padding-h)));
+            }
         }
     }
 
@@ -505,12 +509,6 @@
             box-shadow: -1px 0px 0px 0px var(--KanbanColumn__highlight-border) inset,
                 1px 0px 0px 0px var(--KanbanColumn__highlight-border) inset;
         }
-        .o_kanban_quick_add_bottom {
-            font-size: 0.94791667rem;
-            font-weight: $font-weight-bold;
-            @include o-hover-opacity(.7);
-            @include o-hover-text-color($text-muted, $body-color);
-        }
     }
 
     .o_group_draggable .o_column_title {
@@ -519,10 +517,15 @@
 
     // Kanban Grouped Layout - Column Folded
     .o_kanban_group.o_column_folded {
+        // don't fill the width of record for a folded column
+        .o_kanban_record.o_record_draggable {
+            display: none !important;
+        }
         // don't visually fold on smaller screens (aka. mobile)
         @include media-breakpoint-up(md) {
             @include o-kanban-slim-col;
-            background-color: $gray-200;
+
+            background-color: var(--KanbanGroup-grouped-bg, #{$gray-200});
 
             & + .o_kanban_group.o_column_folded {
                 margin-left: 1px;
@@ -601,7 +604,21 @@
     }
 }
 
-// ----------------- Set Cover Dialog -----------------
+// ------- Sample mode -------
+.o_kanban_view .o_view_sample_data {
+    // all records
+    .o_kanban_record,
+    // progress bars and counters
+    .o_kanban_counter,
+    // column actions
+    .o_kanban_toggle_fold,
+    .o_column_archive_records,
+    .o_column_unarchive_records {
+        @include o-sample-data-disabled;
+    }
+}
+
+// ------- Set cover dialog -------
 .modal .o_kanban_cover_container .o_kanban_cover_image {
     height: 120px;
     width: 120px;

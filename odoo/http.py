@@ -208,20 +208,19 @@ CSRF_TOKEN_SALT = 60 * 60 * 24 * 365
 DEFAULT_LANG = 'en_US'
 
 # The dictionnary to initialise a new session with.
-DEFAULT_SESSION = {
-    'context': {
-        #'lang': request.default_lang()  # must be set at runtime
-    },
-    'db': None,
-    'debug': '',
-    'login': None,
-    'uid': None,
-    'session_token': None,
-    # profiling
-    'profile_session': None,
-    'profile_collectors': None,
-    'profile_params': None,
-}
+def get_default_session():
+    return {
+        'context': {},  # 'lang': request.default_lang()  # must be set at runtime
+        'db': None,
+        'debug': '',
+        'login': None,
+        'uid': None,
+        'session_token': None,
+        # profiling
+        'profile_session': None,
+        'profile_collectors': None,
+        'profile_params': None,
+    }
 
 # The request mimetypes that transport JSON in their body.
 JSON_MIMETYPES = ('application/json', 'application/json-rpc')
@@ -957,10 +956,10 @@ class Session(collections.abc.MutableMapping):
         })
 
     def logout(self, keep_db=False):
-        db = self.db if keep_db else DEFAULT_SESSION['db']  # None
+        db = self.db if keep_db else get_default_session()['db']  # None
         debug = self.debug
         self.clear()
-        self.update(DEFAULT_SESSION, db=db, debug=debug)
+        self.update(get_default_session(), db=db, debug=debug)
         self.context['lang'] = request.default_lang() if request else DEFAULT_LANG
         self.should_rotate = True
 
@@ -1060,6 +1059,12 @@ class Response(werkzeug.wrappers.Response):
             self.response.append(self.render())
             self.template = None
 
+    def set_cookie(self, key, value='', max_age=None, expires=None, path='/', domain=None, secure=False, httponly=False, samesite=None, cookie_type='required'):
+        if request.db and not request.env['ir.http']._is_allowed_cookie(cookie_type):
+            expires = 0
+            max_age = 0
+        super().set_cookie(key, value=value, max_age=max_age, expires=expires, path=path, domain=domain, secure=secure, httponly=httponly, samesite=samesite)
+
 
 class FutureResponse:
     """
@@ -1074,8 +1079,11 @@ class FutureResponse:
         self.headers = werkzeug.datastructures.Headers()
 
     @functools.wraps(werkzeug.Response.set_cookie)
-    def set_cookie(self, *args, **kwargs):
-        werkzeug.Response.set_cookie(self, *args, **kwargs)
+    def set_cookie(self, key, value='', max_age=None, expires=None, path='/', domain=None, secure=False, httponly=False, samesite=None, cookie_type='required'):
+        if request.db and not request.env['ir.http']._is_allowed_cookie(cookie_type):
+            expires = 0
+            max_age = 0
+        werkzeug.Response.set_cookie(self, key, value=value, max_age=max_age, expires=expires, path=path, domain=domain, secure=secure, httponly=httponly, samesite=samesite)
 
 
 class Request:
@@ -1115,7 +1123,7 @@ class Request:
             session.sid = sid  # in case the session was not persisted
         session.is_explicit = is_explicit
 
-        for key, val in DEFAULT_SESSION.items():
+        for key, val in get_default_session().items():
             session.setdefault(key, val)
         if not session.context.get('lang'):
             session.context['lang'] = self.default_lang()
@@ -1258,7 +1266,7 @@ class Request:
         return consteq(hm, hm_expected)
 
     def default_context(self):
-        return dict(DEFAULT_SESSION['context'], lang=self.default_lang())
+        return dict(get_default_session()['context'], lang=self.default_lang())
 
     def default_lang(self):
         """Returns default user language according to request specification

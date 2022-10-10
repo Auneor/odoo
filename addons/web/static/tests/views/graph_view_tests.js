@@ -2947,25 +2947,6 @@ QUnit.module("Views", (hooks) => {
         assert.strictEqual(getYAxeLabel(graph), "Product");
     });
 
-    QUnit.test(
-        "a many2one field can be added as measure in additionalMeasures",
-        async function (assert) {
-            assert.expect(2);
-
-            const graph = await makeView({
-                serverData,
-                type: "graph",
-                resModel: "foo",
-                arch: `<graph/>`,
-                additionalMeasures: ["product_id"],
-            });
-            await toggleMenu(target, "Measures");
-            await toggleMenuItem(target, "Product");
-            checkLegend(assert, graph, "Product");
-            assert.strictEqual(getYAxeLabel(graph), "Product");
-        }
-    );
-
     QUnit.test('graph view "graph_measure" field in context', async function (assert) {
         assert.expect(6);
         const graph = await makeView({
@@ -3041,34 +3022,7 @@ QUnit.module("Views", (hooks) => {
     );
 
     QUnit.test(
-        "an invisible field in additional measure can be found in the 'Measures' menu",
-        async function (assert) {
-            assert.expect(8);
-            const graph = await makeView({
-                serverData,
-                type: "graph",
-                resModel: "foo",
-                arch: `
-                    <graph>
-                        <field name="revenue" invisible="1"/>
-                    </graph>
-                `,
-                additionalMeasures: ["revenue"],
-            });
-            checkTooltip(assert, graph, { lines: [{ label: "Total", value: "8" }] }, 0);
-            await toggleMenu(target, "Measures");
-            await toggleMenuItem(target, "Revenue");
-            checkTooltip(
-                assert,
-                graph,
-                { title: "Revenue", lines: [{ label: "Total", value: "23" }] },
-                0
-            );
-        }
-    );
-
-    QUnit.test(
-        "an invisible field not in additional measure can not be found in the 'Measures' menu",
+        "an invisible field can not be found in the 'Measures' menu",
         async function (assert) {
             assert.expect(5);
             const graph = await makeView({
@@ -3586,7 +3540,6 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("empty graph view with sample data", async function (assert) {
-        assert.expect(8);
         await makeView({
             serverData,
             type: "graph",
@@ -3609,24 +3562,19 @@ QUnit.module("Views", (hooks) => {
         assert.hasClass(target.querySelector(".o_graph_view .o_content"), "o_view_sample_data");
         assert.containsOnce(target, ".o_view_nocontent");
         assert.containsOnce(target, ".o_graph_canvas_container canvas");
-        assert.hasClass(target.querySelector(".o_graph_renderer"), "o_sample_data_disabled");
 
         await toggleFilterMenu(target);
         await toggleMenuItem(target, "False Domain");
+
         assert.doesNotHaveClass(
             target.querySelector(".o_graph_view .o_content"),
             "o_view_sample_data"
         );
         assert.containsNone(target, ".o_view_nocontent");
         assert.containsOnce(target, ".o_graph_canvas_container canvas");
-        assert.doesNotHaveClass(
-            target.querySelector(".o_graph_renderer"),
-            "o_sample_data_disabled"
-        );
     });
 
     QUnit.test("non empty graph view with sample data", async function (assert) {
-        assert.expect(8);
         await makeView({
             serverData,
             type: "graph",
@@ -3647,18 +3595,12 @@ QUnit.module("Views", (hooks) => {
         assert.doesNotHaveClass(target, "o_view_sample_data");
         assert.containsNone(target, ".o_view_nocontent");
         assert.containsOnce(target, ".o_graph_canvas_container canvas");
-        assert.doesNotHaveClass(
-            target.querySelector(".o_graph_canvas_container"),
-            "o_sample_data_disabled"
-        );
+
         await toggleFilterMenu(target);
         await toggleMenuItem(target, "False Domain");
+
         assert.doesNotHaveClass(target, "o_view_sample_data");
         assert.containsOnce(target, ".o_graph_canvas_container canvas");
-        assert.doesNotHaveClass(
-            target.querySelector(".o_graph_canvas_container"),
-            "o_sample_data_disabled"
-        );
         assert.containsNone(target, ".o_view_nocontent");
     });
 
@@ -4117,5 +4059,26 @@ QUnit.module("Views", (hooks) => {
             data: [1, 1, 2, 2, 2],
             label: "Count",
         });
+    });
+
+    QUnit.test("renders banner_route", async (assert) => {
+        await makeView({
+            type: "graph",
+            resModel: "foo",
+            serverData,
+            arch: `
+                <graph banner_route="/mybody/isacage">
+                    <field name="foo"/>
+                </graph>`,
+            async mockRPC(route) {
+                if (route === "/mybody/isacage") {
+                    assert.step(route);
+                    return { html: `<div class="setmybodyfree">myBanner</div>` };
+                }
+            },
+        });
+
+        assert.verifySteps(["/mybody/isacage"]);
+        assert.containsOnce(target, ".setmybodyfree");
     });
 });

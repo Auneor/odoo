@@ -35,7 +35,12 @@ export class X2ManyField extends Component {
             this.isMany2Many
         );
 
-        const archInfo = this.activeField.views[this.viewMode];
+        let archInfo;
+        if (this.viewMode) {
+            archInfo = this.activeField.views[this.viewMode];
+        } else {
+            archInfo = {};
+        }
         const subViewActiveActions = archInfo.activeActions;
         this.activeActions = useActiveActions({
             crudOptions: Object.assign({}, this.activeField.options, {
@@ -62,6 +67,7 @@ export class X2ManyField extends Component {
             getList: () => this.list,
             saveRecord,
             updateRecord,
+            withParentId: this.activeField.widget !== "many2many",
         });
         this._openRecord = (params) => {
             const activeElement = document.activeElement;
@@ -89,10 +95,9 @@ export class X2ManyField extends Component {
     }
 
     get displayAddButton() {
-        const { canCreate, canLink } = this.activeActions;
         return (
             this.viewMode === "kanban" &&
-            (canLink !== undefined ? canLink : canCreate) &&
+            ("link" in this.activeActions ? this.activeActions.link : this.activeActions.create) &&
             !this.props.readonly
         );
     }
@@ -151,7 +156,6 @@ export class X2ManyField extends Component {
             return props;
         }
 
-        const mode = this.props.record.mode;
         // handle column_invisible modifiers
         const columns = archInfo.columns
             .map((col) => {
@@ -172,24 +176,6 @@ export class X2ManyField extends Component {
                     return col.buttons.length > 0;
                 }
                 return true;
-            })
-            .filter((col) => {
-                // filter out oe_read_only/oe_edit_only columns
-                // note: remove this oe_read/edit_only logic when form view
-                // will always be in edit mode
-                if (col.type === "field") {
-                    if (mode === "readonly") {
-                        return !/\boe_edit_only\b/.test(col.className);
-                    } else {
-                        return !/\boe_read_only\b/.test(col.className);
-                    }
-                } else if (col.type === "button_group") {
-                    if (mode === "readonly") {
-                        return col.buttons.some((btn) => !/\boe_edit_only\b/.test(btn.className));
-                    } else {
-                        return col.buttons.some((btn) => !/\boe_read_only\b/.test(btn.className));
-                    }
-                }
             });
 
         const editable = archInfo.editable || this.props.editable;
@@ -227,7 +213,7 @@ export class X2ManyField extends Component {
                 const proms = [];
                 this.list.model.env.bus.trigger("RELATIONAL_MODEL:NEED_LOCAL_CHANGES", { proms });
                 await Promise.all([...proms, this.list.editedRecord._updatePromise]);
-                await this.list.editedRecord.switchMode("readonly");
+                await this.list.editedRecord.switchMode("readonly", { checkValidity: true });
             }
             if (!this.list.editedRecord) {
                 return this.addInLine({ context, editable });

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:02+0000\n"
-"PO-Revision-Date: 2022-09-20 09:02+0000\n"
+"POT-Creation-Date: 2022-10-04 09:26+0000\n"
+"PO-Revision-Date: 2022-10-04 09:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -59,13 +59,6 @@ msgstr ""
 
 #. module: spreadsheet
 #. openerp-web
-#: code:addons/spreadsheet/static/src/chart/odoo_menu/chart_figure.xml:0
-#, python-format
-msgid "() => this.onClick()"
-msgstr ""
-
-#. module: spreadsheet
-#. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "+ Add another rule"
@@ -87,6 +80,34 @@ msgid ""
 " *  http://fontawesome.io/\n"
 " *  https://fontawesome.com/license\n"
 " */"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "1 column"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "1 row"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "2 columns"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "2 rows"
 msgstr ""
 
 #. module: spreadsheet
@@ -458,6 +479,13 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Cannot find workbook relations file"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Cannot paste merged cells over a frozen pane."
 msgstr ""
 
 #. module: spreadsheet
@@ -1418,6 +1446,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Freeze"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid ""
 "Function ${name} has an argument that has been declared with more than one "
 "type whose type 'META'. The 'META' type can only be declared alone."
@@ -1548,6 +1583,13 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/pivot/pivot_functions.js:0
 #, python-format
 msgid "Get the header of a pivot."
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/translation.js:0
+#, python-format
+msgid "Get the translated value of the given string"
 msgstr ""
 
 #. module: spreadsheet
@@ -1910,7 +1952,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Invalid function name %s. Function names can exclusively contain "
-"alphanumerical values separated by dots (.)"
+"alphanumerical values separated by dots (.) or underscore (_)"
 msgstr ""
 
 #. module: spreadsheet
@@ -2414,7 +2456,6 @@ msgstr ""
 #. module: spreadsheet
 #. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
 "Merged cells are preventing this operation. Unmerge those cells and try "
@@ -2599,7 +2640,21 @@ msgstr ""
 #. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "No columns"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "No match."
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "No rows"
 msgstr ""
 
 #. module: spreadsheet
@@ -3326,6 +3381,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
+msgid "Stacked linechart"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
 msgid "Standard"
 msgstr ""
 
@@ -3563,6 +3625,15 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The criteria range contains %s row, it must be at least 2 rows."
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"The current window is too small to display this sheet properly. Consider "
+"resizing your browser window or adjusting frozen rows and columns."
 msgstr ""
 
 #. module: spreadsheet
@@ -4322,6 +4393,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Unfreeze"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Unhide all columns"
 msgstr ""
 
@@ -4330,6 +4408,13 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Unhide all rows"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Unknown function: \"%s\""
 msgstr ""
 
 #. module: spreadsheet
@@ -4351,6 +4436,20 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/helpers/constants.js:0
 #, python-format
 msgid "Untitled spreadsheet"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Up to current column"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Up to current row"
 msgstr ""
 
 #. module: spreadsheet
@@ -4584,6 +4683,13 @@ msgstr ""
 #. module: spreadsheet
 #. openerp-web
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Wrapping"
+msgstr ""
+
+#. module: spreadsheet
+#. openerp-web
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Wrong function call"
@@ -4698,13 +4804,6 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "by default"
-msgstr ""
-
-#. module: spreadsheet
-#. openerp-web
-#: code:addons/spreadsheet/static/src/chart/odoo_menu/chart_figure.xml:0
-#, python-format
-msgid "env.isDashboard() and hasOdooMenu ? \"button\" : \"\""
 msgstr ""
 
 #. module: spreadsheet

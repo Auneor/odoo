@@ -72,7 +72,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Order",
+                    "content": "=_t(\"Order\")",
                     "border": 2
                 },
                 "A21": {
@@ -240,7 +240,7 @@
                 },
                 "B20": {
                     "style": 2,
-                    "content": "Ordered on",
+                    "content": "=_t(\"Ordered on\")",
                     "border": 2
                 },
                 "B21": {
@@ -448,7 +448,7 @@
                 },
                 "C20": {
                     "style": 2,
-                    "content": "Buyer",
+                    "content": "=_t(\"Buyer\")",
                     "border": 2
                 },
                 "C21": {
@@ -596,7 +596,7 @@
                 },
                 "D20": {
                     "style": 2,
-                    "content": "Source",
+                    "content": "=_t(\"Source\")",
                     "border": 2
                 },
                 "D21": {
@@ -744,7 +744,7 @@
                 },
                 "E20": {
                     "style": 2,
-                    "content": "Vendor",
+                    "content": "=_t(\"Vendor\")",
                     "border": 2
                 },
                 "E21": {
@@ -892,7 +892,7 @@
                 },
                 "F20": {
                     "style": 9,
-                    "content": "Amount",
+                    "content": "=_t(\"Amount\")",
                     "border": 2
                 },
                 "F21": {
@@ -1100,7 +1100,7 @@
                 },
                 "H20": {
                     "style": 2,
-                    "content": "Country",
+                    "content": "=_t(\"Country\")",
                     "border": 2
                 },
                 "H21": {
@@ -1152,7 +1152,7 @@
                 },
                 "H34": {
                     "style": 2,
-                    "content": "Vendor"
+                    "content": "=_t(\"Vendor\")"
                 },
                 "H35": {
                     "style": 2
@@ -1207,7 +1207,7 @@
                 },
                 "H49": {
                     "style": 2,
-                    "content": "Buyer",
+                    "content": "=_t(\"Buyer\")",
                     "border": 2
                 },
                 "H50": {
@@ -1259,7 +1259,7 @@
                 },
                 "I20": {
                     "style": 9,
-                    "content": "Orders",
+                    "content": "=_t(\"Orders\")",
                     "border": 2
                 },
                 "I21": {
@@ -1305,7 +1305,7 @@
                 },
                 "I34": {
                     "style": 9,
-                    "content": "Orders"
+                    "content": "=_t(\"Orders\")"
                 },
                 "I35": {
                     "style": 9
@@ -1354,7 +1354,7 @@
                 },
                 "I49": {
                     "style": 9,
-                    "content": "Orders",
+                    "content": "=_t(\"Orders\")",
                     "border": 2
                 },
                 "I50": {
@@ -1401,7 +1401,7 @@
                 },
                 "J20": {
                     "style": 9,
-                    "content": "Amount",
+                    "content": "=_t(\"Amount\")",
                     "border": 2
                 },
                 "J21": {
@@ -1457,7 +1457,7 @@
                 },
                 "J34": {
                     "style": 9,
-                    "content": "Amount"
+                    "content": "=_t(\"Amount\")"
                 },
                 "J35": {
                     "style": 9
@@ -1516,7 +1516,7 @@
                 },
                 "J49": {
                     "style": 9,
-                    "content": "Amount",
+                    "content": "=_t(\"Amount\")",
                     "border": 2
                 },
                 "J50": {
@@ -1786,26 +1786,26 @@
             "cells": {
                 "A1": {
                     "style": 2,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
-                    "content": "Untaxed total"
+                    "content": "=_t(\"Untaxed total\")"
                 },
                 "A3": {
-                    "content": "Lines"
+                    "content": "=_t(\"Lines\")"
                 },
                 "A4": {
-                    "content": "Orders"
+                    "content": "=_t(\"Orders\")"
                 },
                 "A5": {
-                    "content": "Qty ordered"
+                    "content": "=_t(\"Qty ordered\")"
                 },
                 "A6": {
-                    "content": "Days to receive"
+                    "content": "=_t(\"Days to receive\")"
                 },
                 "B1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
                     "content": "=ODOO.PIVOT(4,\"untaxed_total\")"
@@ -1824,7 +1824,7 @@
                 },
                 "C1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "content": "=ODOO.PIVOT(5,\"untaxed_total\")"
@@ -1843,7 +1843,7 @@
                 },
                 "D1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "D2": {
                     "style": 8,
@@ -1863,11 +1863,11 @@
                 },
                 "D6": {
                     "style": 13,
-                    "content": "=CONCATENATE(ROUNDUP(B6),\" days\")"
+                    "content": "=CONCATENATE(ROUNDUP(B6),_t(\" days\"))"
                 },
                 "E1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "E2": {
                     "style": 8,
@@ -1966,10 +1966,15 @@
             ]
         }
     },
-    "revisionId": "START_REVISION",
+    "revisionId": "ebff854f-062d-403f-9f92-a495d68f3b39",
     "chartOdooMenusReferences": {
         "8b6dfcc3-d418-4b74-80ea-f6bdcdc3b229": "purchase.menu_purchase_root",
-        "155096a3-ad7f-4e64-bf38-051fcfc90ee0": "purchase.menu_purchase_root"
+        "155096a3-ad7f-4e64-bf38-051fcfc90ee0": "purchase.menu_purchase_root",
+        "53bdb059-e5ce-47d9-bb63-d5f2e665c05f": "purchase.purchase_report",
+        "1e548a1e-ef9f-47f8-a9c7-b42709559c74": "purchase.menu_purchase_form_action",
+        "d161aa79-1991-4d86-9b51-df4e66f9ae7e": "purchase.menu_purchase_form_action",
+        "7bd14ede-d636-44cc-ac07-bc3fe6c565c0": "purchase.purchase_report",
+        "3b318ab5-0677-4790-8446-d37a0b4c6ac6": "purchase.purchase_report"
     },
     "odooVersion": 4,
     "lists": {
@@ -2035,10 +2040,7 @@
                     []
                 ],
                 "measure": "untaxed_total",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "2": {
@@ -2065,10 +2067,7 @@
                     []
                 ],
                 "measure": "untaxed_total",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "3": {
@@ -2101,10 +2100,7 @@
                     []
                 ],
                 "measure": "untaxed_total",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "4": {
@@ -2138,10 +2134,7 @@
                     []
                 ],
                 "measure": "untaxed_total",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "5": {
@@ -2175,10 +2168,7 @@
                     []
                 ],
                 "measure": "untaxed_total",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         }
     },

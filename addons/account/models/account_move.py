@@ -683,13 +683,12 @@ class AccountMove(models.Model):
                 # In the form view, we need to compute a default sequence so that the user can edit
                 # it. We only check the first move as an approximation (enough for new in form view)
                 pass
-            elif (not move.name or move.name == '/') and move.quick_edit_mode:
+            elif move.quick_edit_mode and not move.posted_before:
                 # We always suggest the next sequence as the default name of the new move
                 pass
             elif (move.name and move.name != '/') or move.state != 'posted':
                 try:
-                    if not move.posted_before:
-                        move._constrains_date_sequence()
+                    move._constrains_date_sequence()
                     # Has already a name or is not posted, we don't add to a batch
                     continue
                 except ValidationError:
@@ -745,6 +744,7 @@ class AccountMove(models.Model):
         self.env.cr.execute("""
             SELECT this.id
               FROM account_move this
+              JOIN res_company company ON company.id = this.company_id
          LEFT JOIN account_move other ON this.journal_id = other.journal_id
                                      AND this.sequence_prefix = other.sequence_prefix
                                      AND this.sequence_number = other.sequence_number + 1
@@ -752,6 +752,7 @@ class AccountMove(models.Model):
                AND this.sequence_number != 1
                AND this.name != '/'
                AND this.id = ANY(%(move_ids)s)
+               AND (company.fiscalyear_lock_date IS NULL OR this.date >= company.fiscalyear_lock_date)
         """, {
             'move_ids': self.ids,
         })
@@ -1291,8 +1292,8 @@ class AccountMove(models.Model):
                 accounting_date = move._get_accounting_date(invoice_date, affects_tax_report)
                 lock_date, lock_type = lock_dates[-1]
                 tax_lock_date_message = _(
-                    "The accounting date being set prior to the %(lock_type)s lock date %(lock_date)s,"
-                    " it will be changed to %(accounting_date)s upon posting.",
+                    "The date is being set prior to the %(lock_type)s lock date %(lock_date)s. "
+                    "The Journal Entry will be accounted on %(accounting_date)s upon posting.",
                     lock_type=lock_type,
                     lock_date=format_date(move.env, lock_date),
                     accounting_date=format_date(move.env, accounting_date))
@@ -1572,7 +1573,7 @@ class AccountMove(models.Model):
 
     @api.onchange('name', 'highest_name')
     def _onchange_name_warning(self):
-        if self.name and self.name != '/' and self.name <= (self.highest_name or ''):
+        if self.name and self.name != '/' and self.name <= (self.highest_name or '') and not self.quick_edit_mode:
             self.show_name_warning = True
         else:
             self.show_name_warning = False
@@ -1667,42 +1668,46 @@ class AccountMove(models.Model):
             if disabled:
                 return
 
+        unbalanced_moves = self._get_unbalanced_moves(container)
+        if unbalanced_moves:
+            error_msg = _("An error has occurred.")
+            for move_id, sum_debit, sum_credit in unbalanced_moves:
+                move = self.browse(move_id)
+                error_msg += _(
+                    "\n\n"
+                    "The move (%s) is not balanced.\n"
+                    "The total of debits equals %s and the total of credits equals %s.\n"
+                    "You might want to specify a default account on journal \"%s\" to automatically balance each move.",
+                    move.display_name,
+                    format_amount(self.env, sum_debit, move.currency_id),
+                    format_amount(self.env, sum_credit, move.currency_id),
+                    move.journal_id.name)
+            raise UserError(error_msg)
+
+    def _get_unbalanced_moves(self, container):
+
         moves = container['records'].filtered(lambda move: move.line_ids)
         if not moves:
             return
 
         # /!\ As this method is called in create / write, we can't make the assumption the computed stored fields
-        # are already done. Then, this query MUST NOT depend of computed stored fields (e.g. balance).
-        # It happens as the ORM makes the create with the 'no_recompute' statement.
-        self.env['account.move.line'].flush_model(['balance', 'currency_id', 'move_id'])
-        self.env['account.move'].flush_model(['journal_id'])
+        # are already done. Then, this query MUST NOT depend on computed stored fields.
+        # It happens as the ORM calls create() with the 'no_recompute' statement.
+        self.env['account.move.line'].flush_model(['debit', 'credit', 'balance', 'currency_id', 'move_id'])
         self._cr.execute('''
-            WITH error_moves AS (
-                SELECT line.move_id,
-                       ROUND(SUM(line.balance), currency.decimal_places) balance
-                  FROM account_move_line line
-                  JOIN account_move move ON move.id = line.move_id
-                  JOIN account_journal journal ON journal.id = move.journal_id
-                  JOIN res_company company ON company.id = journal.company_id
-                  JOIN res_currency currency ON currency.id = company.currency_id
-                 WHERE line.move_id IN %s
-              GROUP BY line.move_id, currency.decimal_places
-            )
-            SELECT *
-              FROM error_moves
-             WHERE balance !=0
+            SELECT line.move_id,
+                   ROUND(SUM(line.debit), currency.decimal_places) debit,
+                   ROUND(SUM(line.credit), currency.decimal_places) credit
+              FROM account_move_line line
+              JOIN account_move move ON move.id = line.move_id
+              JOIN res_company company ON company.id = move.company_id
+              JOIN res_currency currency ON currency.id = company.currency_id
+             WHERE line.move_id IN %s
+          GROUP BY line.move_id, currency.decimal_places
+            HAVING ROUND(SUM(line.balance), currency.decimal_places) != 0
         ''', [tuple(moves.ids)])
 
-        query_res = self._cr.fetchall()
-        if query_res:
-            error_msg = _("There was a problem with the following move(s):\n")
-            for move in query_res:
-                id_, balance = move
-                error_msg += _("- Move with id %i\n", id_)
-                if balance != 0.0:
-                    error_msg += _("\tCannot create unbalanced journal entry. The balance is equal to %s\n",
-                                   format_amount(self.env, balance, self.env['account.move'].browse(id_).currency_id))
-            raise UserError(error_msg)
+        return self._cr.fetchall()
 
     def _check_fiscalyear_lock_date(self):
         for move in self:
@@ -1903,6 +1908,34 @@ class AccountMove(models.Model):
         _apply_cash_rounding(self, diff_balance, diff_amount_currency, existing_cash_rounding_line)
 
     @contextmanager
+    def _sync_unbalanced_lines(self, container):
+        yield
+
+        # Unlink tax lines if all tax tags have been removed.
+        if not container['records'].line_ids.tax_ids:
+            container['records'].line_ids.filtered('tax_line_id').unlink()
+
+        # Unlink the automatic balancing line, if any, to prevent having multiple ones.
+        balance_name = _('Automatic Balancing Line')
+        container['records'].line_ids.filtered(lambda line: line.name == balance_name).unlink()
+
+        # Create an automatic balancing line to make sure the entry can be saved.
+        vals_list = []
+        unbalanced_moves = self._get_unbalanced_moves(container)
+        if unbalanced_moves:
+            for move_id, debit, credit in unbalanced_moves:
+                move = self.browse(move_id)
+                balance = debit - credit
+                vals_list.append({
+                    'name': balance_name,
+                    'move_id': move.id,
+                    'account_id': move.company_id.account_journal_suspense_account_id.id,
+                    'debit': -balance if balance < 0.0 else 0.0,
+                    'credit': balance if balance > 0.0 else 0.0,
+                })
+        container['records'].env['account.move.line'].create(vals_list)
+
+    @contextmanager
     def _sync_rounding_lines(self, container):
         yield
         for invoice in container['records']:
@@ -2049,8 +2082,10 @@ class AccountMove(models.Model):
             # Only invoice-like and journal entries in "auto tax mode" are synced
             tax_filter = lambda m: (m.is_invoice(True) or m.line_ids.tax_ids and not m.tax_cash_basis_origin_move_id)
             invoice_filter = lambda m: (m.is_invoice(True))
+            misc_filter = lambda m: (m.move_type == 'entry' and not m.tax_cash_basis_origin_move_id)
             tax_container = {'records': container['records'].filtered(tax_filter)}
             invoice_container = {'records': container['records'].filtered(invoice_filter)}
+            misc_container = {'records': container['records'].filtered(misc_filter)}
 
             with ExitStack() as stack:
                 stack.enter_context(self._sync_dynamic_line(
@@ -2060,6 +2095,7 @@ class AccountMove(models.Model):
                     line_type='payment_term',
                     container=invoice_container,
                 ))
+                stack.enter_context(self._sync_unbalanced_lines(misc_container))
                 stack.enter_context(self._sync_rounding_lines(invoice_container))
                 stack.enter_context(self._sync_dynamic_line(
                     existing_key_fname='tax_key',
@@ -2082,6 +2118,7 @@ class AccountMove(models.Model):
                     line_container['records'] = self.line_ids
                 tax_container['records'] = container['records'].filtered(tax_filter)
                 invoice_container['records'] = container['records'].filtered(invoice_filter)
+                misc_container['records'] = container['records'].filtered(misc_filter)
 
             # Delete the tax lines if the journal entry is not in "auto tax mode" anymore
             for move in container['records']:
@@ -2178,8 +2215,11 @@ class AccountMove(models.Model):
             if (move.name and move.name != '/' and move.sequence_number not in (0, 1) and 'journal_id' in vals and move.journal_id.id != vals['journal_id']):
                 raise UserError(_('You cannot edit the journal of an account move if it already has a sequence number assigned.'))
 
-            # You can't change the date of a move being inside a locked period.
-            if move.state == "posted" and 'date' in vals and move.date != vals['date']:
+            # You can't change the date or name of a move being inside a locked period.
+            if move.state == "posted" and (
+                    ('name' in vals and move.name != vals['name'])
+                    or ('date' in vals and move.date != vals['date'])
+            ):
                 move._check_fiscalyear_lock_date()
                 move.line_ids._check_tax_lock_date()
 
@@ -2348,6 +2388,9 @@ class AccountMove(models.Model):
     # SEQUENCE MIXIN
     # -------------------------------------------------------------------------
 
+    def _must_check_constrains_date_sequence(self):
+        return not self.posted_before and not self.quick_edit_mode
+
     def _get_last_sequence_domain(self, relaxed=False):
         # EXTENDS account sequence.mixin
         self.ensure_one()
@@ -2474,6 +2517,8 @@ class AccountMove(models.Model):
         Returns the most used accounts and taxes for a given partner and company,
         eventually filtered according to the move type.
         """
+        if not partner_id:
+            return 0, False, False
         where_internal_group = ""
         if move_type in self.env['account.move'].get_inbound_types(include_receipts=True):
             where_internal_group = "AND account.internal_group = 'income'"
@@ -2540,6 +2585,21 @@ class AccountMove(models.Model):
             self.quick_edit_total_amount - self.amount_total)['total_excluded']
         return {'account_id': account_id, 'tax_ids': taxes.ids, 'price_unit': price_untaxed}
 
+    @api.onchange('quick_edit_mode', 'journal_id', 'company_id')
+    def _quick_edit_mode_suggest_invoice_date(self):
+        """Suggest the Customer Invoice/Vendor Bill date based on previous invoice and lock dates"""
+        for record in self:
+            if record.quick_edit_mode and not record.invoice_date:
+                invoice_date = fields.Date.context_today(self)
+                prev_move = self.search([('state', '=', 'posted'),
+                                         ('journal_id', '=', record.journal_id.id),
+                                         ('company_id', '=', record.company_id.id),
+                                         ('invoice_date', '!=', False)],
+                                        limit=1)
+                if prev_move:
+                    invoice_date = self._get_accounting_date(prev_move.invoice_date, False)
+                record.invoice_date = invoice_date
+
     @api.onchange('quick_edit_total_amount', 'partner_id')
     def _onchange_quick_edit_total_amount(self):
         """
@@ -2547,8 +2607,7 @@ class AccountMove(models.Model):
         and the tax) such that the total amount matches the quick total amount.
         """
         if (
-            not self.partner_id
-            or not self.quick_edit_total_amount
+            not self.quick_edit_total_amount
             or not self.quick_edit_mode
             or len(self.invoice_line_ids) > 0
         ):
@@ -3231,7 +3290,7 @@ class AccountMove(models.Model):
                 move.date = move._get_accounting_date(move.invoice_date or move.date, affects_tax_report)
 
         # Create the analytic lines in batch is faster as it leads to less cache invalidation.
-        to_post.mapped('line_ids')._create_analytic_lines()
+        to_post.line_ids._create_analytic_lines()
         to_post.write({
             'state': 'posted',
             'posted_before': True,
@@ -3303,25 +3362,33 @@ class AccountMove(models.Model):
     def open_reconcile_view(self):
         return self.line_ids.open_reconcile_view()
 
-    def open_move(self):
+    def action_open_business_doc(self):
+        self.ensure_one()
         if self.payment_id:
-            return self.open_payment_view()
+            name = _("Payment")
+            res_model = 'account.payment'
+            res_id = self.payment_id.id
+        elif self.statement_line_id:
+            name = _("Bank Transaction")
+            res_model = 'account.bank.statement.line'
+            res_id = self.statement_line_id.id
         else:
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'account.move',
-                'view_mode': 'form',
-                'res_id': self.id,
-                'views': [(False, 'form')],
-            }
+            name = _("Journal Entry")
+            res_model = 'account.move'
+            res_id = self.id
 
-    def open_payment_view(self):
         return {
+            'name': name,
             'type': 'ir.actions.act_window',
-            'res_model': 'account.payment',
             'view_mode': 'form',
-            'res_id': self.payment_id.id,
             'views': [(False, 'form')],
+            'res_model': res_model,
+            'res_id': res_id,
+            'context': {
+                'create': False,
+                'delete': False,
+            },
+            'target': 'current',
         }
 
     def open_created_caba_entries(self):
@@ -3351,15 +3418,14 @@ class AccountMove(models.Model):
                 'partner_bank_id': False,
                 'currency_id': move.currency_id.id,
             })
-            move.write({
-                'line_ids': [
-                    Command.update(line.id, {
-                        'quantity': -line.quantity,
-                    })
-                    for line in move.line_ids
-                    if line.display_type == 'product' and line.quantity < 0
-                ]
-            })
+            if move.amount_total < 0:
+                move.write({
+                    'line_ids': [
+                        Command.update(line.id, {'quantity': -line.quantity})
+                        for line in move.line_ids
+                        if line.display_type == 'product'
+                    ]
+                })
 
     def action_register_payment(self):
         ''' Open the account.payment.register wizard to pay the selected journal entries.
@@ -3446,8 +3512,10 @@ class AccountMove(models.Model):
             default_email_layout_xmlid="mail.mail_notification_layout_with_responsible_signature",
             model_description=self.with_context(lang=lang).type_name,
             force_email=True,
+            active_ids=self.ids,
         )
-        return {
+
+        report_action = {
             'name': _('Send Invoice'),
             'type': 'ir.actions.act_window',
             'view_type': 'form',
@@ -3458,6 +3526,11 @@ class AccountMove(models.Model):
             'target': 'new',
             'context': ctx,
         }
+
+        if self.env.is_admin() and not self.env.company.external_report_layout_id and not self.env.context.get('discard_logo_check'):
+            return self.env['ir.actions.report']._action_configure_external_report_layout(report_action)
+
+        return report_action
 
     def preview_invoice(self):
         self.ensure_one()

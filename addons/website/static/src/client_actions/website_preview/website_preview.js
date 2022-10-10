@@ -86,13 +86,45 @@ export class WebsitePreview extends Component {
             // OdooFrameContentLoaded event to unblock the iframe, as it is
             // triggered faster than the load event.
             this.iframe.el.addEventListener('OdooFrameContentLoaded', () => this.websiteService.unblockPreview('load-iframe'), { once: true });
+            this.env.services.messaging.modelManager.messagingCreatedPromise.then(() => {
+                this.env.services.messaging.modelManager.messaging.update({ isWebsitePreviewOpen: true });
+            });
         });
 
         onWillUnmount(() => {
+            this.env.services.messaging.modelManager.messagingCreatedPromise.then(() => {
+                this.env.services.messaging.modelManager.messaging.update({ isWebsitePreviewOpen: false });
+            });
             this.websiteService.currentWebsiteId = null;
             this.websiteService.websiteRootInstance = undefined;
             this.websiteService.pageDocument = null;
         });
+
+        /**
+         * This removes the 'Odoo' prefix of the title service to display
+         * cleanly the frontend's document title (see _replaceBrowserUrl), and
+         * replaces the backend favicon with the frontend's one.
+         * These changes are reverted when the component is unmounted.
+         */
+        useEffect(() => {
+            const backendIconEl = document.querySelector("link[rel~='icon']");
+            // Save initial backend values.
+            const backendIconHref = backendIconEl.href;
+            const { zopenerp } = this.title.getParts();
+            this.iframe.el.addEventListener('load', () => {
+                // Replace backend values with frontend's ones.
+                this.title.setParts({ zopenerp: null });
+                const frontendIconEl = this.iframe.el.contentDocument.querySelector("link[rel~='icon']");
+                if (frontendIconEl) {
+                    backendIconEl.href = frontendIconEl.href;
+                }
+            }, { once: true });
+            return () => {
+                // Restore backend initial values when leaving.
+                this.title.setParts({ zopenerp, action: null });
+                backendIconEl.href = backendIconHref;
+            };
+        }, () => []);
 
         useEffect(() => {
             // When reaching a "regular" url of the webclient's router, an
@@ -229,7 +261,11 @@ export class WebsitePreview extends Component {
      */
     _isTopWindowURL({ host, pathname }) {
         const backendRoutes = ['/web', '/web/session/logout'];
-        return host !== window.location.host || (pathname && (backendRoutes.includes(pathname) || pathname.startsWith('/@/')));
+        return host !== window.location.host
+            || (pathname
+                && (backendRoutes.includes(pathname)
+                    || pathname.startsWith('/@/')
+                    || pathname.startsWith('/web/content/')));
     }
 
     /**

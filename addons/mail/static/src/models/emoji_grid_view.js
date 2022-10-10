@@ -43,7 +43,7 @@ registerModel({
         },
         _onChangeScrollRecomputeCount() {
             for (const viewCategory of this.emojiPickerViewOwner.categories) {
-                const rowIndex = this.firstRenderedRowIndex + this.topBufferAmount;
+                const rowIndex = this.firstRenderedRowIndex;
                 if (
                     viewCategory.emojiGridRowView &&
                     rowIndex >= viewCategory.emojiGridRowView.index &&
@@ -109,7 +109,12 @@ registerModel({
             default: 0,
         }),
         height: attr({
-            default: "275px",
+            compute() {
+                return this.rowHeight * 9.5;
+            },
+        }),
+        hoveredEmojiView: one('EmojiView', {
+            inverse: 'emojiGridViewAsHovered',
         }),
         itemWidth: attr({
             default: 30,
@@ -158,11 +163,7 @@ registerModel({
                     .filter(row => row !== undefined) // some corner cases where very briefly it doesn't sync with rows and it's bigger
                 );
             },
-            sort() {
-                return [
-                    ['smaller-first', 'index'],
-                ];
-            },
+            sort: [['smaller-first', 'index']],
         }),
         rowHeight: attr({
             default: 30,
@@ -211,13 +212,10 @@ registerModel({
             default: {},
             inverse: 'emojiGridViewOwnerAsSearch',
         }),
-        topBufferAmount: attr({
-            default: 2,
-        }),
         viewBlockRef: attr(),
         width: attr({
             compute() {
-                return `${this.itemWidth * this.amountOfItemsPerRow + this.scrollbarThresholdWidth}px`;
+                return this.itemWidth * this.amountOfItemsPerRow + this.scrollbarThresholdWidth;
             },
         }),
     },

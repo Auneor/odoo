@@ -16,7 +16,7 @@ tour.register('sale_timesheet_tour', {
     content: 'Add the customer for this quotation (e.g. Brandon Freeman)',
     run: 'text Brandon Freeman',
 }, {
-    trigger: 'ul.o_partner_autocomplete_dropdown > li:first-child > a:contains(Freeman)',
+    trigger: 'div[name="partner_id"] ul > li:first-child > a:contains(Freeman)',
     content: 'Select the first item on the autocomplete dropdown',
 },
 {
@@ -27,10 +27,10 @@ tour.register('sale_timesheet_tour', {
     content: Markup('Select a prepaid service product <i>(e.g. Service Product (Prepaid Hours))</i>'),
     run: 'text Service Product (Prepaid Hours)',
 }, {
-    trigger: 'ul.ui-menu.ui-widget.ui-autocomplete > li:first-child > a:contains(Service Product (Prepaid Hours))',
+    trigger: 'ul.ui-autocomplete a:contains(Service Product (Prepaid Hours))',
     content: 'Select the prepaid service product in the autocomplete dropdown',
 }, {
-    trigger: 'input[name="product_uom_qty"]',
+    trigger: 'div[name="product_uom_qty"] input',
     content: "Add 10 hours as ordered quantity for this product.",
     run: 'text 10',
 }, {
@@ -38,10 +38,10 @@ tour.register('sale_timesheet_tour', {
     content: 'Click on Confirm button to create a sale order with this quotation.',
 }, {
     trigger: 'button.o_form_button_save',
-    extra_trigger: '.o_field_widget[name=state] button[data-value=sale].btn-primary',
+    extra_trigger: '.o_field_widget[name=state] button[data-value=sale].o_arrow_button_current',
     content: 'Click on Save button to save the Sales Order.',
 }, {
-    trigger: '.o_form_readonly',
+    trigger: '.o_form_saved',
     content: 'Save is done and form is reloaded.',
 }, tour.stepUtils.toggleHomeMenu(),
 ...tour.stepUtils.goToAppSteps("project.menu_main_pm", 'Go to the Project app.'),
@@ -78,7 +78,7 @@ tour.register('sale_timesheet_tour', {
     content: Markup('Select the customer of your Sales Order <i>(e.g. Brandon Freeman)</i>. Since we have a Sales Order for this customer with a prepaid service product which the remaining hours to deliver is greater than 0, the Sales Order Item in the task should be contain the Sales Order Item containing this prepaid service product.'),
     run: 'text Brandon Freeman',
 }, {
-    trigger: 'ul.o_partner_autocomplete_dropdown > li:first-child > a:contains(Freeman)',
+    trigger: 'div[name="partner_id"] ul > li:first-child > a:contains(Freeman)',
     content: 'Select the customer in the autocomplete dropdown.',
 }, {
     trigger: 'a.nav-link:contains(Timesheets)',
@@ -149,7 +149,7 @@ tour.register('sale_timesheet_tour', {
     content: Markup('Add the customer for this project to select an SO and SOL for this customer <i>(e.g. Brandon Freeman)</i>.'),
     run: 'text Brandon Freeman',
 }, {
-    trigger: 'ul.o_partner_autocomplete_dropdown > li:first-child > a:contains(Freeman)',
+    trigger: 'div[name="partner_id"] ul > li:first-child > a:contains(Freeman)',
     content: 'Select the customer in the autocomplete dropdown',
 }, {
     trigger: 'a.nav-link[name="billing_employee_rate"]',
@@ -202,7 +202,7 @@ tour.register('sale_timesheet_tour', {
     content: Markup('Add the customer for this project to select an SO and SOL for this customer <i>(e.g. Brandon Freeman)</i>.'),
     run: 'text Brandon Freeman',
 }, {
-    trigger: 'ul.o_partner_autocomplete_dropdown > li:first-child > a:contains(Freeman)',
+    trigger: 'div[name="partner_id"] ul > li:first-child > a:contains(Freeman)',
     content: 'Select the customer in the autocomplete dropdown',
 }, {
     trigger: 'a.nav-link[name="billing_employee_rate"]',

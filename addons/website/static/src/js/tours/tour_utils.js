@@ -13,6 +13,18 @@ function addMedia(position = "right") {
         run: "click",
     };
 }
+function assertCssVariable(variableName, variableValue, trigger = 'iframe body') {
+    return {
+        content: `Check CSS variable ${variableName}=${variableValue}`,
+        trigger: trigger,
+        run: function () {
+            const styleValue = getComputedStyle(this.$anchor[0]).getPropertyValue(variableName);
+            if ((styleValue && styleValue.trim()) !== variableValue.trim()) {
+                throw new Error(`Failed precondition: ${variableName}=${styleValue} (should be ${variableValue})`);
+            }
+        },
+    };
+}
 function assertPathName(pathName, trigger) {
     return {
         content: `Check if we have been redirected to ${pathName}`,
@@ -56,7 +68,7 @@ function selectColorPalette(position = "left") {
 
 function changeColumnSize(position = "right") {
     return {
-        trigger: `.oe_overlay.ui-draggable.o_we_overlay_sticky.oe_active .o_handle.e`,
+        trigger: `iframe .oe_overlay.ui-draggable.o_we_overlay_sticky.oe_active .o_handle.e`,
         content: Markup(_t("<b>Slide</b> this button to change the column size.")),
         position: position,
     };
@@ -119,7 +131,7 @@ function changePaddingSize(direction) {
         position = "bottom";
     }
     return {
-        trigger: `.oe_overlay.ui-draggable.o_we_overlay_sticky.oe_active .o_handle.${paddingDirection}`,
+        trigger: `iframe .oe_overlay.ui-draggable.o_we_overlay_sticky.oe_active .o_handle.${paddingDirection}`,
         content: Markup(_.str.sprintf(_t("<b>Slide</b> this button to change the %s padding"), direction)),
         consumeEvent: 'mousedown',
         position: position,
@@ -172,7 +184,14 @@ function clickOnSnippet(snippet, position = "bottom") {
 function clickOnSave(position = "bottom") {
     return [{
         trigger: "div:not(.o_loading_dummy) > #oe_snippets button[data-action=\"save\"]:not([disabled])",
-        extra_trigger: "body:not(:has(.o_dialog))",
+        // TODO this should not be needed but for now it better simulates what
+        // an human does. By the time this was added, it's technically possible
+        // to drag and drop a snippet then immediately click on save and have
+        // some problem. Worst case probably is a traceback during the redirect
+        // after save though so it's not that big of an issue. The problem will
+        // of course be solved (or at least prevented in stable). More details
+        // in related commit message.
+        extra_trigger: "body:not(:has(.o_dialog)) #oe_snippets:not(:has(.o_we_already_dragging))",
         in_modal: false,
         content: Markup(_t("Good job! It's time to <b>Save</b> your work.")),
         position: position,
@@ -372,6 +391,7 @@ function selectElementInWeSelectWidget(widgetName, elementName, searchNeeded = f
 
 return {
     addMedia,
+    assertCssVariable,
     assertPathName,
     changeBackground,
     changeBackgroundColor,

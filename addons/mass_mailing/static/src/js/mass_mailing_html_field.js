@@ -12,9 +12,12 @@ import { buildQuery } from "web.rpc";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { getWysiwygClass } from 'web_editor.loader';
 import { device } from 'web.config';
+import { MassMailingMobilePreviewDialog } from "./mass_mailing_mobile_preview";
+import { getRangePosition } from '@web_editor/js/editor/odoo-editor/src/utils/utils';
 
 const {
     useEffect,
+    useSubEnv,
     onWillUpdateProps,
 } = owl;
 
@@ -22,8 +25,12 @@ export class MassMailingHtmlField extends HtmlField {
     setup() {
         super.setup();
 
+        useSubEnv({
+            onWysiwygReset: this._resetIframe.bind(this),
+        });
         this.action = useService('action');
         this.rpc = useService('rpc');
+        this.dialog = useService('dialog');
 
         onWillUpdateProps(() => {
             if (this.props.record.data.mailing_model_id && this.wysiwyg) {
@@ -48,33 +55,32 @@ export class MassMailingHtmlField extends HtmlField {
             snippets: 'mass_mailing.email_designer_snippets',
             resizable: false,
             defaultDataForLinkTools: { isNewWindow: true },
-            // Add the powerbox option to open the Dynamic Placeholder
-            // generator.
-            powerboxCommands: [
-                {
-                    category: this.env._t('Marketing Tools'),
-                    name: this.env._t('Dynamic Placeholder'),
-                    priority: 10,
-                    description: this.env._t('Insert personalized content'),
-                    fontawesome: 'fa-magic',
-                    callback: () => {
-                        const baseModel =
-                            this.recordData && this.recordData.mailing_model_real
-                                ? this.recordData.mailing_model_real
-                                : undefined;
-                        if (baseModel) {
-                            // The method openDynamicPlaceholder need to be triggered
-                            // after the focus from powerBox prevalidate.
-                            setTimeout(() => {
-                                this.openDynamicPlaceholder(baseModel);
-                            });
-                        }
-                    },
-                }
-            ],
-            powerboxFilters: [this._filterPowerBoxCommands.bind(this)],
+            toolbarTemplate: 'mass_mailing.web_editor_toolbar',
             ...this.props.wysiwygOptions,
         };
+    }
+
+    /**
+     * @param {HTMLElement} popover
+     * @param {Object} position
+     * @override
+     */
+    positionDynamicPlaceholder(popover, position) {
+        const editable = this.wysiwyg.$iframe ? this.wysiwyg.$iframe[0] : this.wysiwyg.$editable[0];
+        const relativeParentPosition = editable.getBoundingClientRect();
+
+        let topPosition = relativeParentPosition.top;
+        let leftPosition = relativeParentPosition.left;
+
+        const rangePosition = getRangePosition(popover, this.wysiwyg.options.document);
+        topPosition += rangePosition.top;
+        // Offset the popover to ensure the arrow is pointing at
+        // the precise range location.
+        leftPosition += rangePosition.left - 14;
+
+        // Apply the position back to the element.
+        popover.style.top = topPosition + 'px';
+        popover.style.left = leftPosition + 'px';
     }
 
     async commitChanges() {
@@ -119,6 +125,11 @@ export class MassMailingHtmlField extends HtmlField {
                 '/mass_mailing/static/src/snippets/s_rating/options.js',
             ],
         });
+
+        await this._resetIframe();
+    }
+
+    async _resetIframe() {
         await this._onSnippetsLoaded();
 
         // Data is removed on save but we need the mailing and its body to be
@@ -212,43 +223,58 @@ export class MassMailingHtmlField extends HtmlField {
             this.onIframeUpdated();
         });
 
-        if ($themes.length === 0) {
+        $snippetsSideBar.on('click', '.o_mobile_preview_btn', () => {
+            let mailingHtml = new DOMParser().parseFromString(this.wysiwyg.getValue(), 'text/html');
+            [...mailingHtml.querySelectorAll('a')].forEach(el => {
+                el.style.setProperty('pointer-events', 'none');
+            });
+            this.mobilePreview = this.dialog.add(MassMailingMobilePreviewDialog, {
+                title: this.env._t("Mobile Preview"),
+                preview: mailingHtml.body.innerHTML,
+            });
+        });
+
+        if (!this._themeParams) {
+            // Initialize theme parameters.
+            this._themeClassNames = "";
+            this._themeParams = _.map($themes, (theme) => {
+                const $theme = $(theme);
+                const name = $theme.data("name");
+                const classname = "o_" + name + "_theme";
+                this._themeClassNames += " " + classname;
+                const imagesInfo = _.defaults($theme.data("imagesInfo") || {}, {
+                    all: {}
+                });
+                for (const info of Object.values(imagesInfo)) {
+                    _.defaults(info, imagesInfo.all, {
+                        module: "mass_mailing",
+                        format: "jpg"
+                    });
+                }
+                return {
+                    name: name,
+                    title: $theme.attr("title") || "",
+                    className: classname || "",
+                    img: $theme.data("img") || "",
+                    template: $theme.html().trim(),
+                    nowrap: !!$theme.data('nowrap'),
+                    get_image_info: function (filename) {
+                        if (imagesInfo[filename]) {
+                            return imagesInfo[filename];
+                        }
+                        return imagesInfo.all;
+                    },
+                    layoutStyles: $theme.data('layout-styles'),
+                };
+            });
+            $themes.parent().remove();
+        }
+
+        if (!this._themeParams.length) {
             return;
         }
 
-        // Initialize theme parameters.
-        this._themeClassNames = "";
-        const themesParams = _.map($themes, (theme) => {
-            const $theme = $(theme);
-            const name = $theme.data("name");
-            const classname = "o_" + name + "_theme";
-            this._themeClassNames += " " + classname;
-            const imagesInfo = _.defaults($theme.data("imagesInfo") || {}, {
-                all: {}
-            });
-            for (const info of Object.values(imagesInfo)) {
-                _.defaults(info, imagesInfo.all, {
-                    module: "mass_mailing",
-                    format: "jpg"
-                });
-            }
-            return {
-                name: name,
-                title: $theme.attr("title") || "",
-                className: classname || "",
-                img: $theme.data("img") || "",
-                template: $theme.html().trim(),
-                nowrap: !!$theme.data('nowrap'),
-                get_image_info: function (filename) {
-                    if (imagesInfo[filename]) {
-                        return imagesInfo[filename];
-                    }
-                    return imagesInfo.all;
-                },
-                layoutStyles: $theme.data('layout-styles'),
-            };
-        });
-        $themes.parent().remove();
+        const themesParams = [...this._themeParams];
 
         // Create theme selection screen and check if it must be forced opened.
         // Reforce it opened if the last snippet is removed.
@@ -522,28 +548,6 @@ export class MassMailingHtmlField extends HtmlField {
         // another field, ensure that the value is properly set.
         return this.commitChanges();
     }
-    /**
-     * Prevent usage of the dynamic placeholder command inside widgets
-     * containing background images ( cover & masonry ).
-     *
-     * We cannot use dynamic placeholder in block containing background images
-     * because the email processing will flatten the text into the background
-     * image and this case the dynamic placeholder cannot be dynamic anymore.
-     *
-     * @param {Array} commands commands available in this wysiwyg
-     * @returns {Array} commands which can be used after the filter was applied
-     */
-    _filterPowerBoxCommands(commands) {
-        let selectionIsInForbidenSnippet = false;
-        if (this.wysiwyg && this.wysiwyg.odooEditor) {
-            const selection = this.wysiwyg.odooEditor.document.getSelection();
-            selectionIsInForbidenSnippet = this.wysiwyg.closestElement(
-                selection.anchorNode,
-                'div[data-snippet="s_cover"], div[data-snippet="s_masonry_block"]'
-            );
-        }
-        return selectionIsInForbidenSnippet ? commands.filter((o) => o.title !== "Dynamic Placeholder") : commands;
-    }
     async _getWysiwygClass() {
         return getWysiwygClass({moduleName: 'mass_mailing.wysiwyg'});
     }
@@ -559,6 +563,7 @@ MassMailingHtmlField.props = {
     ...HtmlField.props,
     filterTemplates: { type: Boolean, optional: true },
     inlineField: { type: String, optional: true },
+    iframeHtmlClass: { type: String, optional: true },
 };
 
 MassMailingHtmlField.displayName = _lt("Email");
@@ -569,6 +574,7 @@ MassMailingHtmlField.extractProps = (...args) => {
         ...htmlProps,
         filterTemplates: attrs.options.filterTemplates,
         inlineField: attrs.options['inline-field'],
+        iframeHtmlClass: attrs['iframeHtmlClass'],
     };
 };
 

@@ -677,7 +677,7 @@ patch(MockServer.prototype, 'mail', {
             res_model: 'mail.activity',
             views: [[false, 'form']],
             type: 'ir.actions.act_window',
-        }
+        };
     },
     /**
      * Simulates `get_activity_data` on `mail.activity`.
@@ -1558,6 +1558,10 @@ patch(MockServer.prototype, 'mail', {
                     ['id', '=', message.subtype_id],
                 ])[0];
                 response.subtype_description = subtype.description;
+            }
+            if (message.author_guest_id) {
+                const [guest] = this.pyEnv['mail.guest'].searchRead([['id', '=', message.author_guest_id]]);
+                response['guestAuthor'] = { id: guest.id, name: guest.name };
             }
             return response;
         });

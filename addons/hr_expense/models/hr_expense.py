@@ -58,7 +58,7 @@ class HrExpense(models.Model):
     product_id = fields.Many2one('product.product', string='Category', tracking=True, states={'done': [('readonly', True)]}, domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
     product_description = fields.Html(compute='_compute_product_description')
     product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure', compute='_compute_from_product_id_company_id',
-        store=True, precompute=True, copy=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]},
+        store=True, precompute=True, copy=True, readonly=True,
         domain="[('category_id', '=', product_uom_category_id)]")
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True, string="UoM Category")
     unit_amount = fields.Float("Unit Price", compute='_compute_from_product_id_company_id', readonly=False, store=True, precompute=True, required=True, copy=True,
@@ -129,7 +129,7 @@ class HrExpense(models.Model):
         date_today = fields.Date.context_today(self.env.user)
         for expense in self:
             target_currency = expense.currency_id or self.env.company.currency_id
-            expense.currency_rate = self.env['res.currency']._get_conversion_rate(
+            expense.currency_rate = expense.company_id and self.env['res.currency']._get_conversion_rate(
                 from_currency=target_currency,
                 to_currency=expense.company_currency_id,
                 company=expense.company_id,
@@ -602,7 +602,7 @@ Or send your receipts at <a href="mailto:%(email)s?subject=Lunch%%20with%%20cust
                     Command.create({
                         'name': expense.employee_id.name + ': ' + expense.name.split('\n')[0][:64],
                         'quantity': expense.quantity or 1,
-                        'price_unit': expense.total_amount,
+                        'price_unit': expense.unit_amount if expense.unit_amount != 0 else expense.total_amount,
                         'product_id': expense.product_id.id,
                         'product_uom_id': expense.product_uom_id.id,
                         'analytic_distribution': expense.analytic_distribution,

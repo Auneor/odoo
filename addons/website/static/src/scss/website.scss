@@ -8,6 +8,12 @@ $-seen-urls: ();
     @if $-url and index($-seen-urls, $-url) == null {
         $-seen-urls: append($-seen-urls, $-url);
         @import url("https://fonts.googleapis.com/css?family=#{unquote($-url)}&display=swap");
+    } @else {
+        $-name: o-get-font-info($alias, 'name');
+        $-attachment: o-get-font-info($alias, 'attachment');
+        @if $-attachment {
+            @import url("/web/content/#{$-attachment}/google-font-#{unquote($-name)}");
+        }
     }
 }
 
@@ -22,6 +28,11 @@ $-seen-urls: ();
 
     // 1) Handle default values
     @include print-variable('header-font-size', $font-size-base);
+
+    $-font-website-value: o-website-value('font');
+    @include print-variable('headings-font', $-font-website-value);
+    @include print-variable('navbar-font', $-font-website-value);
+    @include print-variable('buttons-font', $-font-website-value);
 
     // 2) The values in the $theme-colors map are already printed by Bootstrap.
 
@@ -746,7 +757,7 @@ $-transition-duration: 200ms;
 .o_header_affixed {
     display: block;
     @include o-position-absolute(0, 0, auto, 0);
-    position: sticky;
+    position: fixed;
 
     &:not(.o_header_no_transition) {
         transition: transform $-transition-duration;
@@ -1474,17 +1485,6 @@ $ribbon-padding: 100px;
 // Search results
 .o_search_result_item_detail {
     flex: 1;
-}
-
-// Cookies Bar
-#website_cookies_bar {
-    .o_cookies_discrete {
-        .js_close_popup.o_cookies_bar_text_button, .o_cookies_bar_text_policy {
-            @include media-breakpoint-down(lg) {
-                margin-bottom: 1rem;
-            }
-        }
-    }
 }
 
 .o_website_btn_loading {

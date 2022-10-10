@@ -78,7 +78,7 @@ export class ActionMenus extends Component {
     //---------------------------------------------------------------------
 
     async executeAction(action) {
-        let activeIds = this.props.activeIds;
+        let activeIds = this.props.getActiveIds();
         if (this.props.isDomainSelected) {
             activeIds = await this.orm.search(this.props.resModel, this.props.domain, {
                 limit: session.active_ids_limit,
@@ -111,7 +111,10 @@ export class ActionMenus extends Component {
      * @private
      * @param {Object} item
      */
-    onItemSelected(item) {
+    async onItemSelected(item) {
+        if (!(await this.props.shouldExecuteAction(item))) {
+            return;
+        }
         if (item.callback) {
             item.callback([item]);
         } else if (item.action) {
@@ -128,7 +131,7 @@ ActionMenus.components = {
     DropdownItem,
 };
 ActionMenus.props = {
-    activeIds: { type: Array, element: [Number, String] }, // virtual IDs are strings.
+    getActiveIds: Function,
     context: Object,
     resModel: String,
     domain: { type: Array, optional: true },
@@ -142,8 +145,10 @@ ActionMenus.props = {
         },
     },
     onActionExecuted: { type: Function, optional: true },
+    shouldExecuteAction: { type: Function, optional: true },
 };
 ActionMenus.defaultProps = {
     onActionExecuted: () => {},
+    shouldExecuteAction: () => true,
 };
 ActionMenus.template = "web.ActionMenus";

@@ -14,7 +14,7 @@ export class Dialog extends Component {
             this.data.close();
         });
         this.id = `dialog_${this.data.id}`;
-        useChildSubEnv({ inDialog: true, dialogId: this.id });
+        useChildSubEnv({ inDialog: true, dialogId: this.id, closeDialog: this.data.close });
 
         owl.onWillDestroy(() => {
             if (this.env.isSmall) {
@@ -30,6 +30,7 @@ export class Dialog extends Component {
 Dialog.template = "web.Dialog";
 Dialog.props = {
     contentClass: { type: String, optional: true },
+    bodyClass: { type: String, optional: true },
     fullscreen: { type: Boolean, optional: true },
     footer: { type: Boolean, optional: true },
     header: { type: Boolean, optional: true },
@@ -48,6 +49,7 @@ Dialog.props = {
 };
 Dialog.defaultProps = {
     contentClass: "",
+    bodyClass: "",
     fullscreen: false,
     footer: true,
     header: true,

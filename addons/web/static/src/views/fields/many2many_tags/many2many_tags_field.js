@@ -347,10 +347,15 @@ Many2ManyTagsFieldColorEditable.defaultProps = {
 Many2ManyTagsFieldColorEditable.extractProps = (params) => {
     const props = Many2ManyTagsField.extractProps(params);
     const attrs = params.attrs;
+    const noEditColor = Boolean(attrs.options.no_edit_color);
+    const hasColorField = Boolean(attrs.options.color_field);
     return {
         ...props,
-        canEditColor: !attrs.options.no_edit_color,
+        canEditColor: !noEditColor && hasColorField,
     };
 };
 
 registry.category("fields").add("form.many2many_tags", Many2ManyTagsFieldColorEditable);
+
+registry.category("fields").add("calendar.one2many", Many2ManyTagsField);
+registry.category("fields").add("calendar.many2many", Many2ManyTagsField);

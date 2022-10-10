@@ -64,7 +64,7 @@ const UrlPickerUserValueWidget = InputUserValueWidget.extend({
         this.inputEl.classList.add('text-start');
         const options = {
             position: {
-                collision: 'flip fit',
+                collision: 'flip flipfit',
             },
             classes: {
                 "ui-autocomplete": 'o_website_ui_autocomplete'
@@ -116,6 +116,9 @@ const FontFamilyPickerUserValueWidget = SelectUserValueWidget.extend({
         const googleFontsProperty = weUtils.getCSSVariableValue('google-fonts', style);
         this.googleFonts = googleFontsProperty ? googleFontsProperty.split(/\s*,\s*/g) : [];
         this.googleFonts = this.googleFonts.map(font => font.substring(1, font.length - 1)); // Unquote
+        const googleLocalFontsProperty = weUtils.getCSSVariableValue('google-local-fonts', style);
+        this.googleLocalFonts = googleLocalFontsProperty ?
+            googleLocalFontsProperty.slice(1, -1).split(/\s*,\s*/g) : [];
 
         await this._super(...arguments);
 
@@ -124,23 +127,37 @@ const FontFamilyPickerUserValueWidget = SelectUserValueWidget.extend({
         const variable = this.el.dataset.variable;
         _.times(nbFonts, fontNb => {
             const realFontNb = fontNb + 1;
+            const fontKey = weUtils.getCSSVariableValue(`font-number-${realFontNb}`, style);
+            const fontName = fontKey === "'SYSTEM_FONTS'" ? _t("System Fonts") : fontKey.slice(1, -1);
             const fontEl = document.createElement('we-button');
             fontEl.classList.add(`o_we_option_font_${realFontNb}`);
+            fontEl.setAttribute('string', fontName);
             fontEl.dataset.variable = variable;
-            fontEl.dataset[methodName] = weUtils.getCSSVariableValue(`font-number-${realFontNb}`, style);
+            fontEl.dataset[methodName] = fontKey;
             fontEl.dataset.font = realFontNb;
             fontEls.push(fontEl);
             this.menuEl.appendChild(fontEl);
         });
 
+        if (this.googleLocalFonts.length) {
+            const googleLocalFontsEls = fontEls.splice(-this.googleLocalFonts.length);
+            googleLocalFontsEls.forEach((el, index) => {
+                $(el).append(core.qweb.render('website.delete_google_font_btn', {
+                    index: index,
+                    local: true,
+                }));
+            });
+        }
+
         if (this.googleFonts.length) {
-            const googleFontsEls = fontEls.slice(-this.googleFonts.length);
+            const googleFontsEls = fontEls.splice(-this.googleFonts.length);
             googleFontsEls.forEach((el, index) => {
                 $(el).append(core.qweb.render('website.delete_google_font_btn', {
                     index: index,
                 }));
             });
         }
+
         $(this.menuEl).append($(core.qweb.render('website.add_google_font_btn', {
             variable: variable,
         })));
@@ -214,10 +231,16 @@ const FontFamilyPickerUserValueWidget = SelectUserValueWidget.extend({
                         }
 
                         const font = m[1].replace(/\+/g, ' ');
-                        this.googleFonts.push(font);
+                        const googleFontServe = dialog.el.querySelector('#google_font_serve').checked;
+                        if (googleFontServe) {
+                            this.googleFonts.push(font);
+                        } else {
+                            this.googleLocalFonts.push(`'${font}': ''`);
+                        }
                         this.trigger_up('google_fonts_custo_request', {
                             values: {[variable]: `'${font}'`},
                             googleFonts: this.googleFonts,
+                            googleLocalFonts: this.googleLocalFonts,
                         });
                     },
                 },
@@ -235,6 +258,7 @@ const FontFamilyPickerUserValueWidget = SelectUserValueWidget.extend({
      */
     _onDeleteGoogleFontClick: async function (ev) {
         ev.preventDefault();
+        const values = {};
 
         const save = await new Promise(resolve => {
             Dialog.confirm(this, _t("Deleting a font requires a reload of the page. This will save all your changes and reload the page, are you sure you want to proceed?"), {
@@ -248,15 +272,23 @@ const FontFamilyPickerUserValueWidget = SelectUserValueWidget.extend({
 
         // Remove Google font
         const googleFontIndex = parseInt(ev.target.dataset.fontIndex);
-        const googleFont = this.googleFonts[googleFontIndex];
-        this.googleFonts.splice(googleFontIndex, 1);
+        const isLocalFont = ev.target.dataset.localFont;
+        let googleFontName;
+        if (isLocalFont) {
+            const googleFont = this.googleLocalFonts[googleFontIndex].split(':');
+            googleFontName = googleFont[0];
+            values['delete-font-attachment-id'] = googleFont[1];
+            this.googleLocalFonts.splice(googleFontIndex, 1);
+        } else {
+            googleFontName = this.googleFonts[googleFontIndex];
+            this.googleFonts.splice(googleFontIndex, 1);
+        }
 
         // Adapt font variable indexes to the removal
-        const values = {};
         const style = window.getComputedStyle(document.documentElement);
         _.each(FontFamilyPickerUserValueWidget.prototype.fontVariables, variable => {
             const value = weUtils.getCSSVariableValue(variable, style);
-            if (value.substring(1, value.length - 1) === googleFont) {
+            if (value.substring(1, value.length - 1) === googleFontName) {
                 // If an element is using the google font being removed, reset
                 // it to the theme default.
                 values[variable] = 'null';
@@ -266,6 +298,7 @@ const FontFamilyPickerUserValueWidget = SelectUserValueWidget.extend({
         this.trigger_up('google_fonts_custo_request', {
             values: values,
             googleFonts: this.googleFonts,
+            googleLocalFonts: this.googleLocalFonts,
         });
     },
 });
@@ -719,10 +752,16 @@ options.Class.include({
     _onGoogleFontsCustoRequest: function (ev) {
         const values = ev.data.values ? _.clone(ev.data.values) : {};
         const googleFonts = ev.data.googleFonts;
+        const googleLocalFonts = ev.data.googleLocalFonts;
         if (googleFonts.length) {
             values['google-fonts'] = "('" + googleFonts.join("', '") + "')";
         } else {
             values['google-fonts'] = 'null';
+        }
+        if (googleLocalFonts.length) {
+            values['google-local-fonts'] = "(" + googleLocalFonts.join(", ") + ")";
+        } else {
+            values['google-local-fonts'] = 'null';
         }
         this.trigger_up('snippet_edition_request', {exec: async () => {
             return this._makeSCSSCusto('/website/static/src/scss/options/user_values.scss', values);
@@ -2291,36 +2330,61 @@ options.registry.topMenuColor = options.Class.extend({
 });
 
 /**
- * Manage the visibility of snippets on mobile.
+ * Manage the visibility of snippets on mobile/desktop.
  */
-options.registry.MobileVisibility = options.Class.extend({
-    isTopOption: true,
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-
-    /**
-     * @override
-     */
-    async updateUI() {
-        await this._super(...arguments);
-        const $button = this.$el.find('we-button');
-        $button.attr('title', $button.hasClass('active') ? _t("Visible on mobile") : _t("Hidden on mobile"));
-    },
+options.registry.DeviceVisibility = options.Class.extend({
 
     //--------------------------------------------------------------------------
     // Options
     //--------------------------------------------------------------------------
 
     /**
-     * Allows to show or hide the associated snippet in mobile display mode.
+     * Toggles the device visibility.
      *
      * @see this.selectClass for parameters
      */
-    showOnMobile(previewMode, widgetValue, params) {
-        const classes = `d-none d-md-${this.$target.css('display')}`;
-        this.$target.toggleClass(classes, !widgetValue);
+    async toggleDeviceVisibility(previewMode, widgetValue, params) {
+        this.$target[0].classList.remove('d-none', 'd-md-none',
+            'o_snippet_mobile_invisible', 'o_snippet_desktop_invisible',
+            'o_snippet_override_invisible',
+        );
+        const style = getComputedStyle(this.$target[0]);
+        this.$target[0].classList.remove(`d-md-${style['display']}`);
+        if (widgetValue === 'no_desktop') {
+            this.$target[0].classList.add('d-md-none', 'o_snippet_desktop_invisible');
+        } else if (widgetValue === 'no_mobile') {
+            this.$target[0].classList.add(`d-md-${style['display']}`, 'd-none', 'o_snippet_mobile_invisible');
+        }
+
+        // Update invisible elements.
+        let isMobile;
+        this.trigger_up('service_context_get', {
+            callback: (ctx) => {
+                isMobile = ctx['isMobile'];
+            },
+        });
+        this.trigger_up('snippet_option_visibility_update', {show: widgetValue !== (isMobile ? 'no_mobile' : 'no_desktop')});
+    },
+    /**
+     * @override
+     */
+    async onTargetHide() {
+        this.$target[0].classList.remove('o_snippet_override_invisible');
+    },
+    /**
+     * @override
+     */
+    async onTargetShow() {
+        if (this.$target[0].classList.contains('o_snippet_mobile_invisible')
+                || this.$target[0].classList.contains('o_snippet_desktop_invisible')) {
+            this.$target[0].classList.add('o_snippet_override_invisible');
+        }
+    },
+    /**
+     * @override
+     */
+    cleanForSave() {
+        this.$target[0].classList.remove('o_snippet_override_invisible');
     },
 
     //--------------------------------------------------------------------------
@@ -2331,10 +2395,16 @@ options.registry.MobileVisibility = options.Class.extend({
      * @override
      */
     async _computeWidgetState(methodName, params) {
-        if (methodName === 'showOnMobile') {
+        if (methodName === 'toggleDeviceVisibility') {
             const classList = [...this.$target[0].classList];
-            return classList.includes('d-none') &&
-                classList.some(className => className.startsWith('d-md-')) ? '' : 'true';
+            if (classList.includes('d-none') &&
+                    classList.some(className => className.startsWith('d-md-'))) {
+                return 'no_mobile';
+            }
+            if (classList.includes('d-md-none')) {
+                return 'no_desktop';
+            }
+            return '';
         }
         return await this._super(...arguments);
     },
@@ -2547,6 +2617,7 @@ options.registry.CookiesBar = options.registry.SnippetPopup.extend({
         const $content = this.$target.find('.modal-content');
         const selectorsToKeep = [
             '.o_cookies_bar_text_button',
+            '.o_cookies_bar_text_button_essential',
             '.o_cookies_bar_text_policy',
             '.o_cookies_bar_text_title',
             '.o_cookies_bar_text_primary',
@@ -2839,7 +2910,7 @@ options.registry.ScrollButton = options.Class.extend({
     },
 });
 
-options.registry.ConditionalVisibility = options.Class.extend({
+options.registry.ConditionalVisibility = options.registry.DeviceVisibility.extend({
     /**
      * @constructor
      */
@@ -2871,24 +2942,31 @@ options.registry.ConditionalVisibility = options.Class.extend({
      * @override
      */
     async onTargetHide() {
-        this.$target[0].classList.add('o_conditional_hidden');
+        await this._super(...arguments);
+        if (this.$target[0].classList.contains('o_snippet_invisible')) {
+            this.$target[0].classList.add('o_conditional_hidden');
+        }
     },
     /**
      * @override
      */
     async onTargetShow() {
+        await this._super(...arguments);
         this.$target[0].classList.remove('o_conditional_hidden');
     },
     /**
      * @override
      */
-    cleanForSave() {
+    async cleanForSave() {
+        await this._super(...arguments);
         // Kinda hacky: the snippet is forced hidden via onTargetHide on save
         // but should be marked as visible as when entering edit mode later, the
         // snippet will be shown naturally (as the CSS rules won't apply).
         // Without this, the "eye" icon of the visibility panel would be shut
         // when entering edit mode.
-        this.trigger_up('snippet_option_visibility_update', { show: true });
+        if (this.$target[0].classList.contains('o_snippet_invisible')) {
+            this.trigger_up('snippet_option_visibility_update', { show: true });
+        }
     },
 
     //--------------------------------------------------------------------------
