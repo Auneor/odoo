@@ -12,7 +12,7 @@
             <t t-if="showNoContentHelper" t-call="web.ActionHelper">
                 <t t-set="noContentHelp" t-value="props.noContentHelp"/>
             </t>
-            <table t-if="showTable" t-attf-class="o_list_table table table-sm position-relative mb-0  {{props.list.isGrouped ? 'o_list_table_grouped' : 'o_list_table_ungrouped table-striped'}}" t-ref="table">
+            <table t-if="showTable" t-attf-class="o_list_table table table-sm table-hover position-relative mb-0  {{props.list.isGrouped ? 'o_list_table_grouped' : 'o_list_table_ungrouped table-striped'}}" t-ref="table">
                 <thead>
                     <tr>
                         <th t-if="hasSelectors" class="o_list_record_selector o_list_controller align-middle pe-1 cursor-pointer" tabindex="-1" t-on-keydown.synthetic="(ev) => this.onCellKeydown(ev)" t-on-click.stop="toggleSelection">
@@ -47,6 +47,7 @@
                             <Dropdown t-if="displayOptionalFields"
                                 class="'o_optional_columns_dropdown text-center border-top-0'"
                                 togglerClass="'btn p-0'"
+                                skipTogglerTabbing="true"
                                 position="'bottom-end'">
                                 <t t-set-slot="toggler">
                                     <i class="o_optional_columns_dropdown_toggle oi oi-fw oi-settings-adjust"/>
@@ -208,6 +209,10 @@
         <tr class="o_data_row"
             t-att-class="getRowClass(record)"
             t-att-data-id="record.id"
+            t-on-click.capture="(ev) => this.onClickCapture(record, ev)"
+            t-on-mouseover.capture="(ev) => this.ignoreEventInSelectionMode(ev)"
+            t-on-mouseout.capture="(ev) => this.ignoreEventInSelectionMode(ev)"
+            t-on-mouseenter.capture="(ev) => this.ignoreEventInSelectionMode(ev)"
             t-on-touchstart="(ev) => this.onRowTouchStart(record, ev)"
             t-on-touchend="() => this.onRowTouchEnd(record)"
             t-on-touchmove="() => this.onRowTouchMove(record)"
@@ -249,7 +254,9 @@
                     </td>
                 </t>
                 <t t-if="column.type === 'widget'">
-                    <Widget t-props="column.props" record="record"/>
+                    <td class="o_data_cell" t-att-class="getCellClass(column, record)">
+                        <Widget t-props="column.props" record="record"/>
+                    </td>
                 </t>
             </t>
 

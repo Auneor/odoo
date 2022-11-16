@@ -18,7 +18,7 @@ import { localization } from "@web/core/l10n/localization";
 import BasicModel from "web.BasicModel";
 import Context from "web.Context";
 
-const { markup, toRaw } = owl;
+import { markup, toRaw } from "@odoo/owl";
 
 const DEFAULT_HANDLE_FIELD = "sequence";
 
@@ -250,7 +250,7 @@ export class Record extends DataPoint {
                     break;
                 case "one2many":
                 case "many2many":
-                    if (!(await this.checkX2ManyValidity(fieldName))) {
+                    if (!(await this.checkX2ManyValidity(fieldName, urgent))) {
                         this._setInvalidField(fieldName);
                     }
                     break;
@@ -313,10 +313,10 @@ export class Record extends DataPoint {
         return evalDomain(required, this.evalContext);
     }
 
-    async checkX2ManyValidity(fieldName) {
+    async checkX2ManyValidity(fieldName, urgent = false) {
         const list = this.data[fieldName];
         const record = list.editedRecord;
-        if (record && !(await record.checkValidity())) {
+        if (record && !(await record.checkValidity(urgent))) {
             if (record.canBeAbandoned && !record.isDirty) {
                 list.abandonRecord(record.id);
             } else {
@@ -505,10 +505,14 @@ export class Record extends DataPoint {
             data[fieldName] = mapWowlValueToLegacy(value, fieldType);
         }
         if (this._urgentSave) {
-            return this.model.__bm__.notifyChanges(this.__bm_handle__, data, {
+            const fieldNames = await this.model.__bm__.notifyChanges(this.__bm_handle__, data, {
                 viewType: this.__viewType,
                 notifyChange: false,
             });
+            resolveUpdatePromise();
+            this._removeInvalidFields(fieldNames);
+            this.__syncData();
+            return;
         }
 
         const parentID = this.model.__bm__.localData[this.__bm_handle__].parentID;
@@ -653,10 +657,15 @@ export class Record extends DataPoint {
         this.model.env.bus.trigger("RELATIONAL_MODEL:WILL_SAVE_URGENTLY");
         await Promise.resolve();
         this.__syncData();
-        if (this.isDirty && (await this.checkValidity(true))) {
-            this.model.__bm__.save(this.__bm_handle__, { reload: false });
+        let isValid = true;
+        if (this.isDirty) {
+            isValid = await this.checkValidity(true);
+            if (isValid) {
+                this.model.__bm__.save(this.__bm_handle__, { reload: false });
+            }
         }
         this.model.__bm__.bypassMutex = false;
+        return isValid;
     }
 
     async archive() {
@@ -1089,6 +1098,8 @@ export class RelationalModel extends Model {
             throw "only record root type is supported";
         }
 
+        this.__component = params.component;
+
         this.root = null;
 
         this.__bm__ = new BasicModel(this, {
@@ -1310,7 +1321,25 @@ export class RelationalModel extends Model {
             if (payload.service === "ajax" && payload.method === "rpc") {
                 // ajax service uses an extra 'target' argument for rpc
                 args = args.concat(ev.target);
-                return payload.callback(owl.Component.env.session.rpc(...args));
+                if (owl.status(this.__component) === "destroyed") {
+                    console.warn("Component is destroyed");
+                    return payload.callback(Promise.resolve());
+                }
+                const prom = new Promise((resolve, reject) => {
+                    owl.Component.env.session
+                        .rpc(...args)
+                        .then((value) => {
+                            if (owl.status(this.__component) !== "destroyed") {
+                                resolve(value);
+                            }
+                        })
+                        .guardedCatch((reason) => {
+                            if (owl.status(this.__component) !== "destroyed") {
+                                reject(reason);
+                            }
+                        });
+                });
+                return payload.callback(prom);
             } else if (payload.service === "notification") {
                 return this.notificationService.add(payload.message, {
                     className: payload.className,
@@ -1342,7 +1371,11 @@ export class RelationalModel extends Model {
             const legacyOptions = mapDoActionOptionAPI(payload.options);
             return this.actionService.doAction(payload.action, legacyOptions);
         } else if (evType === "reload") {
-            return this.load();
+            return this.load().then(() => {
+                if (ev.data.onSuccess) {
+                    ev.data.onSuccess();
+                }
+            });
         }
         throw new Error(`trigger_up(${evType}) not handled in relational model`);
     }

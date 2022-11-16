@@ -40,7 +40,7 @@
         background-color: var(--daterangepicker__table-bg);
 
         .next span, .prev span {
-            border-color: currentColor;
+            border-color: var(--daterangepicker-color);
         }
 
         td, th {
@@ -98,7 +98,7 @@
             }
 
             &.off {
-                background-color: transparent;
+                background-color: var(--daterangepicker__cell-bg--off, #{rgba($secondary, .1)});
             }
 
         }
@@ -121,15 +121,19 @@
         }
     }
 
-    .calendar-time select {
-        &.hourselect, &.minuteselect, &.secondselect, &.ampmselect {
-            display: initial;
-            border-color: var(--daterangepicker__select-border-color);
-            background-color: var(--daterangepicker__select-bg);
-            color: var(--daterangepicker__select-color);
-            -webkit-appearance: menulist-button;
-            -moz-appearance: menulist-button;
-            appearance: menulist-button;
+    .calendar-time {
+        /*rtl:ignore*/
+        direction:ltr;
+        select {
+            &.hourselect, &.minuteselect, &.secondselect, &.ampmselect {
+                display: initial;
+                border-color: var(--daterangepicker__select-border-color);
+                background-color: var(--daterangepicker__select-bg);
+                color: var(--daterangepicker__select-color);
+                -webkit-appearance: menulist-button;
+                -moz-appearance: menulist-button;
+                appearance: menulist-button;
+            }
         }
     }
 

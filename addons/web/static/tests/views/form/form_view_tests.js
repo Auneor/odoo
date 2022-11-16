@@ -42,7 +42,7 @@ const fieldRegistry = registry.category("fields");
 const serviceRegistry = registry.category("services");
 const widgetRegistry = registry.category("view_widgets");
 
-const { Component, xml, EventBus } = owl;
+import { Component, xml, EventBus } from "@odoo/owl";
 
 let target;
 let serverData;
@@ -824,6 +824,35 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsOnce(target, "div.o_inner_group");
+    });
+
+    QUnit.test("group with formLabel", async function (assert) {
+        await makeView({
+            type: "form",
+            resModel: "partner",
+            serverData,
+            arch: `
+                <form>
+                    <sheet>
+                        <group>
+                            <!-- OuterGroup -->
+                            <field name="foo"/>
+                            <label for="foo" class="plop plop2"/>
+                            <group>
+                                <!-- InnerGroup -->
+                                <field name="display_name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>`,
+            resId: 1,
+        });
+        assert.hasClass(target.querySelector(".o_field_widget[name=foo]"), "o_field_char");
+        assert.hasClass(target.querySelector(".o_field_widget[name=foo]"), "col-lg-6");
+
+        assert.hasClass(target.querySelector(".o_form_label[for=foo]"), "plop");
+        assert.hasClass(target.querySelector(".o_form_label[for=foo]"), "plop2");
+        assert.hasClass(target.querySelector(".o_form_label[for=foo]"), "col-lg-6");
     });
 
     QUnit.test("group containing both a field and a group", async function (assert) {
@@ -1913,6 +1942,31 @@ QUnit.module("Views", (hooks) => {
     );
 
     QUnit.test(
+        "two mutually exclusive labels with a dynamic invisible attribute",
+        async function (assert) {
+            await makeView({
+                type: "form",
+                resModel: "partner",
+                serverData,
+                arch: `
+                <form>
+                    <sheet>
+                        <group>
+                            <label for="bar" string="label1" attrs='{"invisible": [["bar", "=", True]]}'/>
+                            <label for="bar" string="label2" attrs='{"invisible": [["bar", "=", False]]}'/>
+                            <field name="bar" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>`,
+                resId: 2,
+            });
+            assert.containsOnce(target, "label.o_form_label", "Only one label should be displayed");
+            assert.strictEqual(target.querySelector("label.o_form_label").textContent, "label2");
+            assert.containsOnce(target, ".o_inner_group > div", "This group should only contain one line");
+        }
+    );
+
+    QUnit.test(
         "label is not rendered when invisible and not at top-level in a group",
         async function (assert) {
             await makeView({
@@ -2756,6 +2810,37 @@ QUnit.module("Views", (hooks) => {
         await click(target.querySelector(".o_dialog .o_form_button_save"));
         assert.containsNone(target, ".o_dialog .o_form_view", "the dialog has been closed");
     });
+
+    QUnit.test(
+        "form views in dialogs closes on discard on existing record",
+        async function (assert) {
+            serverData.models.partner.records[0].foo = undefined;
+            delete serverData.models.partner.fields.foo.default;
+            serverData.views = {
+                "partner,false,form": `
+                <form>
+                    <field name="foo" required="1"/>
+                </form>`,
+            };
+            serverData.actions = {
+                1: {
+                    id: 1,
+                    name: "Partner",
+                    res_model: "partner",
+                    type: "ir.actions.act_window",
+                    views: [[false, "form"]],
+                    target: "new",
+                    res_id: 1,
+                },
+            };
+            const webClient = await createWebClient({ serverData });
+            await doAction(webClient, 1);
+            assert.containsOnce(target, ".o_dialog .o_form_view", "the dialog has been opened");
+
+            await click(target.querySelector(".o_dialog .o_form_button_cancel"));
+            assert.containsNone(target, ".o_dialog .o_form_view", "the dialog has been closed");
+        }
+    );
 
     QUnit.test("form views in dialogs do not have class o_xxl_form_view", async function (assert) {
         const bus = new EventBus();
@@ -9223,6 +9308,44 @@ QUnit.module("Views", (hooks) => {
         }
     );
 
+    QUnit.test('buttons with "confirm" attribute: click twice on "Ok"', async function (assert) {
+        const actionService = {
+            start() {
+                return {
+                    async doActionButton(args) {
+                        assert.step("execute_action"); // should be called only once
+                    },
+                };
+            },
+        };
+        registry.category("services").add("action", actionService, { force: true });
+
+        await makeView({
+            type: "form",
+            resModel: "partner",
+            serverData,
+            arch: `
+                <form>
+                    <header>
+                        <button name="post" class="p" string="Confirm" type="object" confirm="U sure?"/>
+                    </header>
+                </form>`,
+            mockRPC: function (route, args) {
+                assert.step(args.method);
+            },
+        });
+
+        assert.verifySteps(["get_views", "onchange"]);
+
+        await click(target.querySelector(".o_statusbar_buttons button"));
+        assert.verifySteps([]);
+
+        click(target.querySelector(".modal-footer button.btn-primary"));
+        await Promise.resolve();
+        await click(target.querySelector(".modal-footer button.btn-primary"));
+        assert.verifySteps(["create", "read", "execute_action"]);
+    });
+
     QUnit.test(
         "buttons are disabled until action is resolved (in dialogs)",
         async function (assert) {
@@ -11454,7 +11577,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Auto save: save on closing tab/browser", async function (assert) {
-        assert.expect(2);
+        assert.expect(4);
 
         await makeView({
             type: "form",
@@ -11469,6 +11592,7 @@ QUnit.module("Views", (hooks) => {
             resId: 1,
             mockRPC(route, { args, method, model }) {
                 if (method === "write" && model === "partner") {
+                    assert.step("save"); // should be called
                     assert.deepEqual(args, [[1], { display_name: "test" }]);
                 }
             },
@@ -11480,11 +11604,16 @@ QUnit.module("Views", (hooks) => {
         );
 
         await editInput(target, '.o_field_widget[name="display_name"] input', "test");
-        window.dispatchEvent(new Event("beforeunload"));
+        const evnt = new Event("beforeunload");
+        evnt.preventDefault = () => assert.step("prevented");
+        window.dispatchEvent(evnt);
         await nextTick();
+        assert.verifySteps(["save"], "should not prevent unload");
     });
 
     QUnit.test("Auto save: save on closing tab/browser (invalid field)", async function (assert) {
+        assert.expect(2);
+
         await makeView({
             type: "form",
             resModel: "partner",
@@ -11504,10 +11633,12 @@ QUnit.module("Views", (hooks) => {
         });
 
         await editInput(target, '.o_field_widget[name="display_name"] input', "");
-        window.dispatchEvent(new Event("beforeunload"));
+        const evnt = new Event("beforeunload");
+        evnt.preventDefault = () => assert.step("prevented");
+        window.dispatchEvent(evnt);
         await nextTick();
 
-        assert.verifySteps([], "should not save because of invalid field");
+        assert.verifySteps(["prevented"], "should not save because of invalid field");
     });
 
     QUnit.test("Auto save: save on closing tab/browser (not dirty)", async function (assert) {
@@ -12487,15 +12618,9 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        assert.strictEqual(
-            target.querySelector(".o_form_status_indicator").textContent,
-            ""
-        );
+        assert.strictEqual(target.querySelector(".o_form_status_indicator").textContent, "");
         await editInput(target, ".o_field_widget input", "");
-        assert.strictEqual(
-            target.querySelector(".o_form_status_indicator").textContent,
-            ""
-        );
+        assert.strictEqual(target.querySelector(".o_form_status_indicator").textContent, "");
         await clickSave(target);
         assert.strictEqual(
             target.querySelector(".o_form_status_indicator").textContent.trim(),

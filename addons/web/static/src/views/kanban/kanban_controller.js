@@ -9,7 +9,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { useViewButtons } from "@web/views/view_button/view_button_hook";
 import { KanbanRenderer } from "./kanban_renderer";
 
-const { Component, useRef } = owl;
+import { Component, useRef } from "@odoo/owl";
 
 // -----------------------------------------------------------------------------
 
@@ -28,6 +28,7 @@ export class KanbanController extends Component {
             onCreate: archInfo.onCreate,
             quickCreateView: archInfo.quickCreateView,
             defaultGroupBy,
+            defaultOrder: archInfo.defaultOrder,
             viewMode: "kanban",
             openGroupsByDefault: true,
             tooltipInfo: archInfo.tooltipInfo,

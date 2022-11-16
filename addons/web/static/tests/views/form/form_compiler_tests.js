@@ -54,7 +54,7 @@ QUnit.module("Form Compiler", (hooks) => {
             <t>
                 <div t-att-class="props.class" t-attf-class="{{props.record.isInEdition ? 'o_form_editable' : 'o_form_readonly'}} d-block {{ props.record.isDirty ? 'o_form_dirty' : !props.record.isVirtual ? 'o_form_saved' : '' }}" class="o_form_nosheet" t-ref="compiled_view_root">
                     <Field id="'test'" name="'test'" record="props.record" fieldInfo="props.archInfo.fieldNodes['test']" />
-                    <FormLabel t-props="{id:'test',fieldName:'test',record:props.record,fieldInfo:props.archInfo.fieldNodes['test'],className:&quot;&quot;}" string="\`\`" />
+                    <FormLabel id="'test'" fieldName="'test'" record="props.record" fieldInfo="props.archInfo.fieldNodes['test']" className="&quot;&quot;" string="\`\`" />
                 </div>
             </t>`;
             assert.areEquivalent(compileTemplate(arch), expected);
@@ -103,6 +103,40 @@ QUnit.module("Form Compiler", (hooks) => {
             </OuterGroup>`;
 
         assert.areContentEquivalent(compileTemplate(arch), expected);
+    });
+
+    QUnit.test("properly compile attributes with nested forms", async (assert) => {
+        const arch = /*xml*/ `
+            <form>
+                <group>
+                    <group>
+                        <form>
+                            <div>
+                                <field name="test"/>
+                            </div>
+                        </form>
+                    </group>
+                </group>
+            </form>`;
+        const expected = /*xml*/ `
+            <t>
+                <div t-att-class="props.class" t-attf-class="{{props.record.isInEdition ? 'o_form_editable' : 'o_form_readonly'}} d-block {{ props.record.isDirty ? 'o_form_dirty' : !props.record.isVirtual ? 'o_form_saved' : '' }}" class="o_form_nosheet" t-ref="compiled_view_root">
+                    <OuterGroup>
+                        <t t-set-slot="item_0" type="'item'" sequence="0" t-slot-scope="scope" isVisible="true" itemSpan="1">
+                            <InnerGroup class="scope &amp;&amp; scope.className">
+                                <t t-set-slot="item_0" type="'item'" sequence="0" t-slot-scope="scope" isVisible="true" itemSpan="1">
+                                    <div t-att-class="props.class" t-attf-class="{{props.record.isInEdition ? 'o_form_editable' : 'o_form_readonly'}} d-block {{ props.record.isDirty ? 'o_form_dirty' : !props.record.isVirtual ? 'o_form_saved' : '' }} {{scope &amp;&amp; scope.className || &quot;&quot; }}" class="o_form_nosheet">
+                                        <div><Field id="'test'" name="'test'" record="props.record" fieldInfo="props.archInfo.fieldNodes['test']"/></div>
+                                    </div>
+                                </t>
+                            </InnerGroup>
+                        </t>
+                    </OuterGroup>
+                </div>
+            </t>
+        `;
+
+        assert.areEquivalent(compileTemplate(arch), expected);
     });
 
     QUnit.test("properly compile notebook", async (assert) => {

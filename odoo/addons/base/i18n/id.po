@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:34+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Abe Manyo, 2022\n"
 "Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
@@ -136,55 +136,55 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Obrolan, gerbang surat, dan saluran pribadi.\n"
+"Chat, gerbang surat, dan channel pribadi.\n"
 "=======================================\n"
 "\n"
-"Berkomunikasi dengan kolega/pelanggan/tamu Anda dengan Odoo.\n"
+"Berkomunikasi dengan kolega/pelanggan/tamu Anda di dalam Odoo.\n"
 "\n"
 "Diskusi/Obrolan\n"
 "------------\n"
-"Fitur \"Diskusi\" yang mudah digunakan yang memungkinkan komunikasi satu 2 satu atau grup\n"
-"(obrolan teks/panggilan suara/panggilan video), undang tamu dan bagikan dokumen dengan\n"
+"Fitur \"Diskusi\" yang mudah digunakan memungkinkan komunikasi one-to-one atau grup\n"
+"(obrolan teks/voice call/video call), undang tamu dan bagikan dokumen dengan\n"
 "mereka, semua secara langsung.\n"
 "\n"
 "Gerbang surat\n"
 "------------\n"
-"Pengiriman informasi dan dokumen dibuat lebih sederhana. Anda dapat mengirim email\n"
-"dari Odoo sendiri, dan itu juga dengan kemungkinan besar. Sebagai contoh,\n"
-"desain template email yang indah untuk faktur, dan digunakan bersamaan\n"
-"untuk semua pelanggan anda, tidak perlu melakukan hal yang sama setiap saat.\n"
+"Pengiriman informasi dan dokumen dibuat sederhana. Anda dapat mengirim email\n"
+"dari Odoo sendiri, dan itu juga dengan banyak pilihan. Sebagai contoh,\n"
+"desain template email yang indah untuk faktur, dan gunakan desain yang sama\n"
+"untuk semua pelanggan anda, tanpa perlu mengulang hal yang sama lagi.\n"
 "\n"
 "Obrolan\n"
 "-------\n"
-"Melakukan semua percakapan kontekstual pada dokumen. Misalnya pada\n"
-"pemohon, langsung memposting pembaruan untuk mengirim email ke pemohon,\n"
-"jadwalkan panggilan wawancara berikutnya, melampirkan kontrak, tambah petugas SDM\n"
+"Lakukan semua percakapan kontekstual pada dokumen. Misalnya pada\n"
+"pelamar, langsung posting update untuk mengirim email ke pelamar,\n"
+"jadwalkan panggilan wawancara berikutnya, lampirkan kontrak, tambahkan petugas HR\n"
 "ke daftar pengikut untuk memberi tahu mereka tentang peristiwa penting (dengan bantuan dari\n"
 "subtipe),...\n"
 "\n"
 "\n"
-"Mengambil email masuk di POP/IMAP server.\n"
+"Mengambil email masuk di server POP/IMAP.\n"
 "============================================\n"
-"Masukkan parameter akun POP/IMAP Anda, dan email apapun yang masuk pada\n"
-"pada setiap akun akan otomatis di unduh ke dalam sistem Odoo. Semua\n"
-"POP3/IMAP-kompatibel server di dukung, termasuk hal-hal yang membutuhkan\n"
-"enkripsi koneksi SSL/TLS.\n"
-"Ini dapat digunakan untuk membuat alur kerja berbasis email dengan mudah untuk banyak dokumen Odoo yang mendukung email, seperti:\n"
+"Masukkan parameter akun POP/IMAP Anda, dan email apapun yang masuk ke\n"
+"akun itu akan otomatis di unduh ke dalam sistem Odoo. Semua\n"
+"server yang kompatibel dengan POP3/IMAP dapat digunakan, termasuk server-server yang membutuhkan\n"
+"enkripsi SSL/TLS.\n"
+"Ini dapat digunakan untuk membuat alur kerja berbasis email dengan mudah untuk banyak dokumen Odoo yang mendukung penggunaan email, seperti:\n"
 "----------------------------------------------------------------------------------------------------------\n"
 "    * Prospek/Peluang CRM\n"
 "    * Klaim CRM\n"
 "    * Masalah Proyek\n"
 "    * Tugas Proyek\n"
-"    * Rekrutmen Sumber Daya Manusia (Pemohon)\n"
+"    * Rekrutmen HR (Pelamar)\n"
 "Cukup pasang aplikasi yang relevan, dan Anda dapat menetapkan salah satu dari jenis \n"
 "dokumen ini (Prospek, Masalah Proyek) ke akun email masuk anda. Email baru akan\n"
-"secara otomatis memunculkan dokumen baru dari jenis yang dipilih, jadi akan sangat mudah untuk membuat\n"
-"intergrasi kotak surat ke Odoo. Bahkan lebih baik: dokumen-dokumen ini langsung bertindak sebagai\n"
-"percakapan mini yang disinkronkan melalui email. Anda bisa menjawabnya di dalam Odoo, dan\n"
+"secara otomatis membuat dokumen baru dari jenis yang dipilih, jadi akan sangat mudah untuk membuat\n"
+"intergrasi kotak surat ke Odoo. Bahkan lebih baik lagi: dokumen-dokumen ini langsung bertindak sebagai\n"
+"percakapan mini yang disinkronisasi melalui email. Anda bisa menjawabnya di dalam Odoo, dan\n"
 "jawaban akan secara otomatis dikumpulkan ketika meraka kembali, dan dilampirkan ke\n"
 "dokumen *percakapan* yang sama.\n"
-"Untuk kebutuhan yang lebih spesifik, Anda juga dapat menetapkan tindakan yang ditentukan khusus\n"
-"(Secara Teknis: Aksi Server) terpicu untuk setiap email masuk.\n"
+"Untuk kebutuhan yang lebih spesifik, Anda juga dapat menetapkan tindakan custom\n"
+"(Secara Teknis: Tindakan Server) yang terpicu untuk setiap email masuk.\n"
 "    "
 
 #. module: base
@@ -272,6 +272,87 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"\n"
+"\n"
+"Localization Module for Denmark\n"
+"===============================\n"
+"\n"
+"This is the module to manage the **accounting chart for Denmark**. Cover both one-man business as well as I/S, IVS, ApS and A/S\n"
+"\n"
+"**Modulet opsætter:**\n"
+"\n"
+"- **Dansk kontoplan**\n"
+"\n"
+"- Dansk moms\n"
+"        - 25% moms\n"
+"        - Resturationsmoms 6,25%\n"
+"        - Omvendt betalingspligt\n"
+"\n"
+"- Konteringsgrupper\n"
+"        - EU (Virksomhed)\n"
+"        - EU (Privat)\n"
+"        - 3.lande\n"
+"\n"
+"- Finans raporter\n"
+"        - Resulttopgørelse\n"
+"        - Balance\n"
+"        - Momsafregning\n"
+"            - Afregning\n"
+"            - Rubrik A, B og C\n"
+"\n"
+"- **Anglo-Saxon regnskabsmetode**\n"
+"\n"
+".\n"
+"\n"
+"Produkt setup:\n"
+"==============\n"
+"\n"
+"**Vare**\n"
+"\n"
+"**Salgsmoms:**      Salgmoms 25%\n"
+"\n"
+"**Salgskonto:**     1010 Salg af vare, m/moms\n"
+"\n"
+"**Købsmoms:**       Købsmoms 25%\n"
+"\n"
+"**Købskonto:**      2010 Direkte omkostninger vare, m/moms\n"
+"\n"
+".\n"
+"\n"
+"**Ydelse**\n"
+"\n"
+"**Salgsmoms:**      Salgmoms 25%, ydelser\n"
+"\n"
+"**Salgskonto:**     1011 Salg af ydelser, m/moms\n"
+"\n"
+"**Købsmoms:**       Købsmoms 25%, ydelser\n"
+"\n"
+"**Købskonto:**      2011 Direkte omkostninger ydelser, m/moms\n"
+"\n"
+".\n"
+"\n"
+"**Vare med omvendt betalingspligt**\n"
+"\n"
+"**Salgsmoms:**      Salg omvendt betalingspligt\n"
+"\n"
+"**Salgskonto:**     1012 Salg af vare, u/moms\n"
+"\n"
+"**Købsmoms:**       Køb omvendt betalingspligt\n"
+"\n"
+"**Købskonto:**      2012 Direkte omkostninger vare, u/moms\n"
+"\n"
+"\n"
+".\n"
+"\n"
+"**Restauration**\n"
+"\n"
+"**Købsmoms:**       Restaurationsmoms 6,25%, købsmoms\n"
+"\n"
+"**Købskonto:**      4010 Restaurationsbesøg\n"
+"\n"
+".\n"
+"\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_do
@@ -543,6 +624,9 @@ msgid ""
 "            Egyptian Tax Authority Invoice Integration\n"
 "        "
 msgstr ""
+"\n"
+"            Integrasi Faktur Otoritas Pajak Mesir\n"
+"        "
 
 #. module: base
 #: model:ir.module.module,description:base.module_helpdesk_timesheet
@@ -552,6 +636,10 @@ msgid ""
 "        - Track timesheet for a task from a ticket\n"
 "    "
 msgstr ""
+"\n"
+"        - Izinkan untuk mengatur proyek untuk tim Staf Dukungan\n"
+"        - Lacak lembar waktu kerja untuk tugas dari tiket\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_hu
@@ -595,6 +683,11 @@ msgid ""
 "        Also adds DATEV export options to general ledger\n"
 "    "
 msgstr ""
+"\n"
+"        Laporan Akuntansi untuk Jerman\n"
+"        Berisi Neraca, Laba Rugi, PPn dan Laporan PPn Mitra\n"
+"        Juga menambahkan opsi ekspor DATEV ke buku besar umum\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_hu_reports
@@ -616,6 +709,11 @@ msgid ""
 "        Contains Balance Sheet, Profit/Loss reports\n"
 "    "
 msgstr ""
+"\n"
+"        Laporan akuntansi untuk Lithuania\n"
+"\n"
+"        Berisi Neraca, Laporan Laba Rugi\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_nl_reports
@@ -775,6 +873,9 @@ msgid ""
 "        Avoid auto-enabling the documents feature on fsm projects.\n"
 "    "
 msgstr ""
+"\n"
+"        Hindari pengaktifan otomatis fitur dokumen pada proyek fsm.\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_bg_reports
@@ -1509,14 +1610,6 @@ msgid ""
 "\n"
 "    Configure IoT devices to be used in certain \n"
 "    steps for taking measures, taking pictures, ...\n"
-msgstr ""
-
-#. module: base
-#: model:ir.module.module,description:base.module_website_slides_enterprise
-msgid ""
-"\n"
-"    Contains advanced features for eLeaning such as new views\n"
-"    "
 msgstr ""
 
 #. module: base
@@ -3106,14 +3199,6 @@ msgid ""
 msgstr ""
 
 #. module: base
-#: model:ir.module.module,description:base.module_im_livechat_enterprise
-msgid ""
-"\n"
-"Contains advanced features for Live Chat such as new views\n"
-"    "
-msgstr ""
-
-#. module: base
 #: model:ir.module.module,description:base.module_purchase_enterprise
 msgid ""
 "\n"
@@ -3581,9 +3666,9 @@ msgid ""
 "respectively. UBL Bis 3 is only available for companies which country is present in the `EAS list \n"
 "<https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/>`_.\n"
 "\n"
-"Note also that you need to activate PDF A in order to be able to submit a Factur-X pdf on Chorus Pro: \n"
-"go to Settings > Technical (debug mode) > System Parameters > select/create one with Key: edi.use_pdfa, Value: true.\n"
-"With this setting, Chorus Pro will automatically detect the \"PDF/A-3 (Factur-X)\" format.\n"
+"Note also that in order for Chorus Pro to automatically detect the \"PDF/A-3 (Factur-X)\" format, you need to activate \n"
+"the \"Factur-X PDF/A-3\" option on the journal. This option will also validate the xml against the Factur-X and Chorus\n"
+"Pro rules and show the errors.\n"
 "    "
 msgstr ""
 
@@ -4906,18 +4991,6 @@ msgstr ""
 msgid ""
 "\n"
 "Odoo Arabic localization for most Saudi Arabia.\n"
-msgstr ""
-
-#. module: base
-#: model:ir.module.module,description:base.module_web_dashboard
-msgid ""
-"\n"
-"Odoo Dashboard View.\n"
-"========================\n"
-"\n"
-"This module defines the Dashboard view, a new type of reporting view. This view\n"
-"can embed graph and/or pivot views, and displays aggregate values.\n"
-"        "
 msgstr ""
 
 #. module: base
@@ -6942,7 +7015,6 @@ msgstr ""
 
 #. module: base
 #: model:ir.module.module,description:base.module_fleet
-#: model:ir.module.module,description:base.module_fleet_dashboard
 msgid ""
 "\n"
 "Vehicle, leasing, insurances, cost\n"
@@ -7813,7 +7885,9 @@ msgstr ""
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
-msgid "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
+msgid ""
+"<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
+"                                        Learn more"
 msgstr ""
 
 #. module: base
@@ -8428,12 +8502,20 @@ msgstr ""
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__api_key_ids
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
 msgid "API Keys"
 msgstr ""
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_apikeys_admin
 msgid "API Keys Listing"
+msgstr ""
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid ""
+"API Keys are used to connect to Odoo from external tools without the need "
+"for a password or Two-factor Authentication."
 msgstr ""
 
 #. module: base
@@ -8854,6 +8936,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:base.field_ir_ui_menu__active
 #: model:ir.model.fields,field_description:base.field_ir_ui_view__active
 #: model:ir.model.fields,field_description:base.field_res_bank__active
+#: model:ir.model.fields,field_description:base.field_res_company__active
 #: model:ir.model.fields,field_description:base.field_res_currency__active
 #: model:ir.model.fields,field_description:base.field_res_lang__active
 #: model:ir.model.fields,field_description:base.field_res_partner__active
@@ -9297,11 +9380,6 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_crm_enterprise
 msgid "Advanced features for CRM"
-msgstr ""
-
-#. module: base
-#: model:ir.module.module,summary:base.module_im_livechat_enterprise
-msgid "Advanced features for Live Chat"
 msgstr ""
 
 #. module: base
@@ -12992,11 +13070,6 @@ msgid "Customizations"
 msgstr "Kustomisasi"
 
 #. module: base
-#: model:ir.module.module,summary:base.module_purchase_stock_enterprise
-msgid "Customized Dashboard for Purchase Stock"
-msgstr ""
-
-#. module: base
 #: model:ir.actions.act_window,name:base.action_ui_view_custom
 #: model:ir.ui.menu,name:base.menu_action_ui_view_custom
 #: model_terms:ir.ui.view,arch_db:base.view_view_custom_form
@@ -13076,11 +13149,6 @@ msgstr "DLE (110 x 220 mm)"
 #: code:addons/base/models/ir_qweb_fields.py:0
 #, python-format
 msgid "Dash"
-msgstr ""
-
-#. module: base
-#: model:ir.module.module,summary:base.module_fleet_dashboard
-msgid "Dashboard for fleet"
 msgstr ""
 
 #. module: base
@@ -13535,11 +13603,6 @@ msgstr ""
 msgid ""
 "Determines where the customer/company name should be placed, i.e. after or "
 "before the address."
-msgstr ""
-
-#. module: base
-#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
-msgid "Developer API Keys"
 msgstr ""
 
 #. module: base
@@ -15480,11 +15543,6 @@ msgid "Fleet"
 msgstr "Armada kapal"
 
 #. module: base
-#: model:ir.module.module,shortdesc:base.module_fleet_dashboard
-msgid "Fleet Dashboard"
-msgstr ""
-
-#. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_fleet
 msgid "Fleet History"
 msgstr ""
@@ -16617,11 +16675,6 @@ msgid "Home Menu"
 msgstr ""
 
 #. module: base
-#: model:ir.module.module,shortdesc:base.module_hr_homeworking
-msgid "Homeworking"
-msgstr ""
-
-#. module: base
 #: model:res.country,name:base.hn
 msgid "Honduras"
 msgstr ""
@@ -17490,13 +17543,13 @@ msgid "Instant Messaging Bus allow you to send messages to users, in live."
 msgstr ""
 
 #. module: base
-#: code:addons/models.py:0
+#: code:addons/base/models/ir_ui_view.py:0
 #, python-format
 msgid "Insufficient fields for Calendar View!"
 msgstr ""
 
 #. module: base
-#: code:addons/models.py:0
+#: code:addons/base/models/ir_ui_view.py:0
 #, python-format
 msgid ""
 "Insufficient fields to generate a Calendar View for %s, missing a date_stop "
@@ -18801,11 +18854,6 @@ msgid "Live Event Tracks"
 msgstr ""
 
 #. module: base
-#: model:ir.module.module,shortdesc:base.module_im_livechat_enterprise
-msgid "Live chat enterprise"
-msgstr ""
-
-#. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_language_install
 msgid "Load a Translation"
 msgstr "Muat Terjemahan"
@@ -19072,7 +19120,7 @@ msgstr ""
 #: model:ir.module.category,name:base.module_category_manufacturing_maintenance
 #: model:ir.module.module,shortdesc:base.module_maintenance
 msgid "Maintenance"
-msgstr "Perawatan"
+msgstr "Maintenance"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_maintenance
@@ -19119,12 +19167,6 @@ msgstr ""
 msgid ""
 "Manage Contact Titles as well as their abbreviations (e.g. \"Mr.\", "
 "\"Mrs.\", etc)."
-msgstr ""
-
-#. module: base
-#: model:ir.module.module,description:base.module_hr_homeworking
-#: model:ir.module.module,summary:base.module_hr_homeworking
-msgid "Manage Homeworking policy"
 msgstr ""
 
 #. module: base
@@ -20553,7 +20595,7 @@ msgid "No Country Found!"
 msgstr ""
 
 #. module: base
-#: code:addons/models.py:0
+#: code:addons/base/models/ir_ui_view.py:0
 #, python-format
 msgid "No default view of type '%s' could be found !"
 msgstr ""
@@ -20964,7 +21006,7 @@ msgstr ""
 "----------------------------\n"
 "\n"
 "Dapatkan visibilitas jelas tentang corong penjualan Anda. Pelacak Google Analytic Odoo\n"
-"dikonfigurasi secara default untuk melacak semua event yang terkait dengan keranjang\n"
+"dikonfigurasi secara default untuk melacak semua acara yang terkait dengan keranjang\n"
 "belanja, call-to-action, dsb.\n"
 "\n"
 "Karena alat pemasaran Odoo (mailing massal, kampanye, dsb) juga terhubung dengan\n"
@@ -20979,7 +21021,7 @@ msgstr ""
 "untuk indeksing Google yang cepat, dsb.\n"
 "\n"
 "Sistem bahkan membuat konten terstruktur secara otomatis untuk mempromosikan produk\n"
-"dan event Anda secara efektif di Google.\n"
+"dan acara Anda secara efektif di Google.\n"
 "\n"
 "Tema Designer-Friendly\n"
 "------------------------\n"
@@ -20999,7 +21041,7 @@ msgstr ""
 "layout website, editors menyetujui konten dan penulis menulis konten tersebut.\n"
 "Ini memungkinkan Anda untuk mengorganisir proses publikasi Anda sesuai dengan kebutuhan Anda.\n"
 "\n"
-"Hak akses lainnya yang terkait dengan obyek bisnis (produk, orang, events,\n"
+"Hak akses lainnya yang terkait dengan obyek bisnis (produk, orang, acara,\n"
 "dsb) dan secara langsung mengikuti manajemen hak akses standar Odoo, jadi Anda tidak\n"
 "harus mengonfigurasi ulang segala sesuatu.\n"
 
@@ -21137,7 +21179,7 @@ msgstr ""
 "interaksi pelanggan dari peluang seperti email, panggilan telepon,\n"
 "catatan internal, pertemuan and surat penawaran.\n"
 "\n"
-"Ikuti peluang yang menarik perhatian Anda untuk mendapatkan notifikasi untuk event-event tertentu:\n"
+"Ikuti peluang yang menarik perhatian Anda untuk mendapatkan notifikasi untuk acara-acara tertentu:\n"
 "deal berhasil atau gagal, ganti tahapan, tuntutan baru pelanggan, dsb.\n"
 "\n"
 "Integration Email dan Otomatisasi\n"
@@ -21956,7 +21998,7 @@ msgid ""
 "\n"
 "Schedule, organize, promote or sell events online; conferences, trainings, webinars, etc.\n"
 msgstr ""
-"Pembuat Website Odoo\n"
+"Website Builder Odoo\n"
 "--------------------\n"
 "\n"
 "Dapatkan website yang luar biasa dan <a href=\"https://www.odoo.com/app/website\">gratis</a>,\n"
@@ -21965,7 +22007,7 @@ msgstr ""
 "Buat website kelas tinggi dengan pembuat website kami yang sangat gampang digunakan. Gunakan blok\n"
 "penyusun rancangan dan edit segala sesuatu secara inline.\n"
 "\n"
-"Dapatkan manfaat dari fitur bisnis siap pakai; e-Niaga, event, blog, pengumuman\n"
+"Dapatkan manfaat dari fitur bisnis siap pakai; eCommerce, acara, blog, pengumuman\n"
 "pekerjaan, rujukan pelanggan, call-to-actions, dsb.\n"
 "\n"
 "Edit Segala Sesuatu Secara Inline\n"
@@ -21991,10 +22033,10 @@ msgstr ""
 "Enterprise-Ready, Siap-Pakai\n"
 "--------------------------------\n"
 "\n"
-"Aktifkan fitur enterprise yang siap dipakai hanya dengan satu klik; e-niaga,\n"
-"call-to-actions, pengumuman pekerjaan, event, rujukan pelanggan, blog, dsb.\n"
+"Aktifkan fitur enterprise yang siap dipakai hanya dengan satu klik; eCommerce,\n"
+"call-to-actions, pengumuman pekerjaan, acara, rujukan pelanggan, blog, dsb.\n"
 "\n"
-"eNiaga tradisional dan CMS memiliki backend dengan desain jelek karena itu bukan\n"
+"eCommerce tradisional dan CMS memiliki backend dengan desain jelek karena itu bukan\n"
 "fokus utama mereka. Dengan integrasi Odoo, Anda akan memiliki manfaat dari software manajemen\n"
 "terbaik untuk follow-up pesanan, pelamar pekerjaan, leads Anda, dsb.\n"
 "\n"
@@ -22013,7 +22055,7 @@ msgstr ""
 "Alat Search Engine Optimization siap digunakan, tanpa memerlukan\n"
 "konfigurasi.\n"
 "\n"
-"Google Analytics melacak keranjang belanja event Anda secara default. Peta situs dan konten terstruktur dibuat secara otomatis untuk indeksasi Google.\n"
+"Google Analytics melacak keranjang belanja acara Anda secara default. Peta situs dan konten terstruktur dibuat secara otomatis untuk indeksasi Google.\n"
 "\n"
 "Multi-Bahasa Dibuat Gampang\n"
 "-------------------------\n"
@@ -22054,7 +22096,7 @@ msgstr ""
 "Terintegrasi Dengan Aplikasi Odoo\n"
 "-------------------------\n"
 "\n"
-"### e-Niaga\n"
+"### eCommerce\n"
 "\n"
 "Promosikan produk, jual online, optimalkan pengalaman belanja pengunjung.\n"
 "\n"
@@ -22064,9 +22106,9 @@ msgstr ""
 "Tulis berita, pikat pengunjung baru, tumbuhkan loyalitas pelanggan.\n"
 "\n"
 "\n"
-"### Event Online\n"
+"### Acara Online\n"
 "\n"
-"Jadwalkan, organisir, promosikan atau jual event online; konferensi, training, webinars, dsb.\n"
+"Jadwalkan, organisir, promosikan atau jual acara online; konferensi, training, webinars, dsb.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_sale
@@ -22226,13 +22268,13 @@ msgid ""
 "Schedule, organize, promote or sell events online; conferences, webinars, trainings, etc.\n"
 "\n"
 msgstr ""
-"Odoo e-Niaga\n"
+"Odoo eCommerce\n"
 "---------------\n"
 "\n"
 "### Optimalkan penjualan dengan toko online yang menakjubkan.\n"
 "\n"
-"Odoo adalah <a href=\"https://www.odoo.com/app/ecommerce\">eNiaga Open Source</a>\n"
-"unik yang belum pernah Anda lihat sebelumnya. Dapatkan katalog produk luar biasa\n"
+"Odoo adalah <a href=\"https://www.odoo.com/app/ecommerce\">eCommerce Open Source</a>\n"
+"dengan keunikan yang belum pernah Anda temukan sebelumnya. Dapatkan katalog produk luar biasa\n"
 "dan halaman keterangan produk yang hebat.\n"
 "\n"
 "Odoo memiliki fitur lengkap, terintegrasi dengan software manajemen Anda, sepenuhnya\n"
@@ -22801,7 +22843,7 @@ msgstr ""
 "\n"
 "Tambahkan sponsor pada event dan publikasikan sponsor pada setiap tingkat (misalnya perunggu, perak, emas) di bagian bawah setiap halaman event.\n"
 "\n"
-"Jual paket sponsorship online melalui eNiaga Odoo untuk mendapatkan integrasi penuh siklus penjualan.\n"
+"Jual paket sponsorship online melalui eCommerce Odoo untuk mendapatkan integrasi penuh siklus penjualan.\n"
 "\n"
 "Komunikasi yang Efisien\n"
 "-----------------------\n"
@@ -23031,7 +23073,7 @@ msgstr ""
 "### Dapatkan ratausan aplikasi open source secara gratis\n"
 "\n"
 "\n"
-"### eNiaga\n"
+"### eCommerce\n"
 "\n"
 "Promosikan produk, jual online, optimalkan pengalaman belanja pengunjung.\n"
 "\n"
@@ -24610,11 +24652,6 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_purchase_stock
 msgid "Purchase Stock"
-msgstr ""
-
-#. module: base
-#: model:ir.module.module,shortdesc:base.module_purchase_stock_enterprise
-msgid "Purchase Stock Enterprise"
 msgstr ""
 
 #. module: base
@@ -31445,11 +31482,6 @@ msgid "eLearning"
 msgstr ""
 
 #. module: base
-#: model:ir.module.module,shortdesc:base.module_website_slides_enterprise
-msgid "eLearning enterprise"
-msgstr ""
-
-#. module: base
 #: model:ir.module.category,name:base.module_category_services_expenses
 msgid "expenses"
 msgstr ""
@@ -31877,11 +31909,6 @@ msgstr "judul"
 #, python-format
 msgid "true"
 msgstr "benar"
-
-#. module: base
-#: model:ir.module.module,shortdesc:base.module_web_dashboard
-msgid "web_dashboard"
-msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale_delivery_mondialrelay

@@ -5,14 +5,15 @@
 # Translators:
 # Duy BQ <duybq86@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:23+0000\n"
+"POT-Creation-Date: 2022-10-10 10:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -311,7 +312,7 @@ msgstr "<i class=\"fa fa-fw fa-heart\"/> Tim"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_rating_options
 msgid "<i class=\"fa fa-fw fa-refresh me-1\"/> Replace Icon"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-refresh me-1\"/> Thay thế Icon"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_rating_options
@@ -774,12 +775,12 @@ msgid "Align Bottom"
 msgstr "Align Bottom"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Align Center"
 msgstr ""
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Align Left"
 msgstr ""
 
@@ -789,7 +790,7 @@ msgid "Align Middle"
 msgstr "Align Middle"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Align Right"
 msgstr ""
 
@@ -801,7 +802,6 @@ msgstr "Align Top"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Alignment"
 msgstr "Căn chỉnh"
 
@@ -1097,7 +1097,6 @@ msgstr "Sách"
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_border_widgets
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Border"
 msgstr "Viền"
 
@@ -1234,7 +1233,6 @@ msgstr ""
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Center"
 msgstr "Trung tâm"
 
@@ -1459,7 +1457,7 @@ msgstr "Liên hệ"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_media_list
 msgid "Continue reading <i class=\"fa fa-long-arrow-right align-middle ms-1\"/>"
-msgstr ""
+msgstr "Tiếp tục đọc <i class=\"fa fa-long-arrow-right align-middle ms-1\"/>"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.layout
@@ -1788,13 +1786,6 @@ msgstr "Sao chép khối và cột để thêm nhiều tính năng."
 #: model:ir.model.fields.selection,name:mass_mailing.selection__mailing_trace__failure_type__mail_dup
 msgid "Duplicated Email"
 msgstr "Email trùng lặp"
-
-#. module: mass_mailing
-#. openerp-web
-#: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
-#, python-format
-msgid "Dynamic Placeholder"
-msgstr ""
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_coupon_code
@@ -2278,13 +2269,6 @@ msgid "Inner Content"
 msgstr ""
 
 #. module: mass_mailing
-#. openerp-web
-#: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
-#, python-format
-msgid "Insert personalized content"
-msgstr ""
-
-#. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.social_links
 msgid "Instagram"
 msgstr "Instagram"
@@ -2423,7 +2407,6 @@ msgstr "Cập nhật lần cuối vào"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Left"
 msgstr "Trái"
 
@@ -2759,13 +2742,6 @@ msgid "Marketing Content"
 msgstr "Marketing Content"
 
 #. module: mass_mailing
-#. openerp-web
-#: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
-#, python-format
-msgid "Marketing Tools"
-msgstr ""
-
-#. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_mailing_trace_report__name
 msgid "Mass Mail"
 msgstr "Mail Hàng loạt"
@@ -2929,7 +2905,7 @@ msgstr ""
 #: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
 #, python-format
 msgid "Mobile Preview"
-msgstr ""
+msgstr "Xem trước Mobile"
 
 #. module: mass_mailing
 #: model:ir.model,name:mass_mailing.model_ir_model
@@ -3318,13 +3294,12 @@ msgid "Outgoing Mails"
 msgstr "Thư gửi đi"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Padding ↕"
 msgstr ""
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Padding ⭤"
 msgstr ""
 
@@ -3610,13 +3585,12 @@ msgstr "Thử lại"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Right"
 msgstr "Phải"
 
 #. module: mass_mailing
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_border_widgets
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Round Corners"
 msgstr "Round Corners"
 

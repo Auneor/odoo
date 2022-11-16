@@ -3,16 +3,17 @@
 # 	* mail
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2022-10-10 10:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,13 +66,6 @@ msgstr "\"%s\" vereist \"%s\" toegang"
 #, python-format
 msgid "\"%s\" requires microphone access"
 msgstr "\"%s\" vereist microfoontoegang"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "%(attachmentCount)s files"
-msgstr "%(attachmentCount)s bestanden"
 
 #. module: mail
 #. openerp-web
@@ -295,20 +289,6 @@ msgid "0 Today"
 msgstr "0 Vandaag"
 
 #. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "1 file"
-msgstr "1 bestand"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "2 files"
-msgstr "2 bestanden"
-
-#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_template_preview_view_form
 msgid ""
 "<b attrs=\"{'invisible': [('no_record', '=', False)]}\" class=\"text-"
@@ -445,12 +425,12 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "<span class=\"d-block w-75 py-2\">Button Color</span>"
-msgstr ""
+msgstr "<span class=\"d-block w-75 py-2\">Knopkleur</span>"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "<span class=\"d-block w-75 py-2\">Header Color</span>"
-msgstr ""
+msgstr "<span class=\"d-block w-75 py-2\">Koptekstkleur</span>"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -465,7 +445,7 @@ msgstr "<span class=\"o_form_label\">Aangepaste ICE-serverlijst</span>"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Email Templates</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">E-mailsjablonen</span>"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
@@ -677,7 +657,7 @@ msgstr "Volledig scherm activeren"
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__default
 msgid "Activated by default when subscribing."
-msgstr "Standaard activeren bij abonneren"
+msgstr "Standaard activeren bij abonneren."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__active
@@ -698,6 +678,7 @@ msgstr "Actief domein"
 #. openerp-web
 #: code:addons/mail/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #: code:addons/mail/static/src/components/activity_menu_view/activity_menu_view.xml:0
+#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #: model:ir.actions.act_window,name:mail.mail_activity_action
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_ids
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_ids
@@ -1139,8 +1120,6 @@ msgstr "Bijlage toevoegen"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/attachment_box/attachment_box.xml:0
-#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
 #, python-format
 msgid "Attach files"
 msgstr "Voeg bestanden toe"
@@ -1332,12 +1311,12 @@ msgstr "Basis"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_template__template_category__base_template
 msgid "Base Template"
-msgstr ""
+msgstr "Basissjabloon"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_email_template_search
 msgid "Base Templates"
-msgstr ""
+msgstr "Basissjablonen"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__is_blacklisted
@@ -1424,7 +1403,7 @@ msgstr "Browser standaard"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__secondary_color
 msgid "Button Color"
-msgstr ""
+msgstr "Knop kleur"
 
 #. module: mail
 #: code:addons/mail/models/mail_thread_cc.py:0
@@ -1561,7 +1540,7 @@ msgstr "CC"
 #: model:ir.model.fields,field_description:mail.field_mail_activity__chaining_type
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__chaining_type
 msgid "Chaining Type"
-msgstr "Soort "
+msgstr "Koppelingsoort"
 
 #. module: mail
 #. openerp-web
@@ -1959,6 +1938,15 @@ msgid "Content"
 msgstr "Inhoud"
 
 #. module: mail
+#: model:ir.model.fields,help:mail.field_mail_shortcode__substitution
+msgid ""
+"Content that will automatically replace the shortcut of your choosing. This "
+"content can still be adapted before sending your message."
+msgstr ""
+"Inhoud die automatisch de sneltoets van je keuze vervangt. Deze inhoud kan "
+"steeds worden aangepast voordat je je bericht verzendt."
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__body
 #: model:ir.model.fields,field_description:mail.field_mail_composer_mixin__body
 #: model:ir.model.fields,field_description:mail.field_mail_mail__body
@@ -2138,7 +2126,7 @@ msgstr "Aanmaakdatum"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_ice_server__credential
 msgid "Credential"
-msgstr "legitimatie"
+msgstr "Legitimatie"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_tracking_value__currency_id
@@ -2150,7 +2138,7 @@ msgstr "Valuta"
 #: model:ir.model.fields,help:mail.field_mail_message__starred
 msgid "Current user has a starred notification linked to this message"
 msgstr ""
-"De huidige gebruiker heeft een ster notificatie gekoppeld aan dit bericht."
+"De huidige gebruiker heeft een ster notificatie gekoppeld aan dit bericht"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_alias__alias_bounced_content
@@ -2160,12 +2148,12 @@ msgstr "Aangepast teruggestuurd bericht"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_template__template_category__custom_template
 msgid "Custom Template"
-msgstr ""
+msgstr "Aangepaste sjabloon"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_email_template_search
 msgid "Custom Templates"
-msgstr ""
+msgstr "Aangepaste sjablonen"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel_member__custom_channel_name
@@ -2180,7 +2168,7 @@ msgstr "Klant is verplicht voor inbox / e-mail notificatie"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Customize the look and feel of automated emails"
-msgstr ""
+msgstr "Pas het uiterlijk van geautomatiseerde e-mails aan"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__date
@@ -2266,7 +2254,7 @@ msgstr "Standaard weergavemodus"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__default_note
 msgid "Default Note"
-msgstr "Standaard Opmerking:"
+msgstr "Standaard Opmerking"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__summary
@@ -2370,6 +2358,7 @@ msgstr "Afleverfout"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__description
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_description
 #: model:ir.model.fields,field_description:mail.field_mail_message_subtype__description
 #: model:ir.model.fields,field_description:mail.field_mail_shortcode__description
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_message_subtype_form
@@ -3219,7 +3208,7 @@ msgstr "Alleen volgers"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/follow_button/follow_button.xml:0
+#: code:addons/mail/static/src/models/follow_button_view.js:0
 #, python-format
 msgid "Following"
 msgstr "Volgend"
@@ -3495,7 +3484,7 @@ msgstr "Verborgen"
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_template__template_category__hidden_template
 msgid "Hidden Template"
-msgstr ""
+msgstr "Verborgen sjabloon"
 
 #. module: mail
 #. openerp-web
@@ -3691,7 +3680,7 @@ msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 #: model:ir.model.fields,help:mail.field_res_partner__message_has_error
 #: model:ir.model.fields,help:mail.field_res_users__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr "indien aangevinkt hebben sommige leveringen een fout."
+msgstr "Indien aangevinkt hebben sommige leveringen een fout."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_wizard_invite__send_mail
@@ -3757,7 +3746,7 @@ msgid ""
 "mailing anymore, from any list"
 msgstr ""
 "Als het e-mail adres op de blacklist staat, zal het contact geen "
-"bulkmailingen ontvangen, van geen enkele lijst."
+"bulkmailingen ontvangen, van geen enkele lijst"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_mail__reply_to_force_new
@@ -3796,6 +3785,7 @@ msgstr "Negeer alle"
 #: code:addons/mail/static/src/components/attachment_viewer/attachment_viewer.xml:0
 #: model:ir.model.fields,field_description:mail.field_mail_channel__image_128
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_1920
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
 #, python-format
 msgid "Image"
 msgstr "Afbeelding"
@@ -3819,6 +3809,11 @@ msgstr "Afbeelding 256"
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_512
 msgid "Image 512"
 msgstr "Afbeelding 512"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__image_mimetype
+msgid "Image MIME type"
+msgstr "Afbeelding MIME type"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_document_file_kanban
@@ -4348,11 +4343,6 @@ msgid "Link copied!"
 msgstr "Link gekopieerd!"
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_thread_cc__email_cc
-msgid "List of cc from incoming emails."
-msgstr "cc lijst van binnenkomende e-mails."
-
-#. module: mail
 #: model:ir.model.fields,help:mail.field_mail_wizard_invite__partner_ids
 msgid ""
 "List of partners that will be added as follower of the current document."
@@ -4397,6 +4387,7 @@ msgstr "Laden"
 #: code:addons/mail/static/src/components/message_list/message_list.xml:0
 #: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
 #: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
+#: code:addons/mail/static/src/models/emoji_grid_loading_screen.js:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -4461,6 +4452,11 @@ msgid "Login Information"
 msgstr "Login Informatie"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
+msgid "MIME type"
+msgstr "MIME type"
+
+#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/mail_template/mail_template.xml:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
@@ -4522,7 +4518,7 @@ msgstr "E-mailgateway toegestaan"
 #: code:addons/mail/models/res_config_settings.py:0
 #, python-format
 msgid "Mail Layout"
-msgstr ""
+msgstr "E-maillay-out"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__mail_message_id_int
@@ -5341,7 +5337,7 @@ msgstr "E-mail voor kennisgeving"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_schedule__notification_parameters
 msgid "Notification Parameter"
-msgstr "Meldingsparameter:"
+msgstr "Meldingsparameter"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_notification__notification_type
@@ -5555,7 +5551,7 @@ msgstr "Alleen beheerders mogen het gegroepeerde lees-berichtmodel gebruiken"
 #: code:addons/mail/models/ir_model.py:0
 #, python-format
 msgid "Only custom models can be modified."
-msgstr "Alleen aangepaste modellen kunnen worden veranderd"
+msgstr "Alleen aangepaste modellen kunnen worden veranderd."
 
 #. module: mail
 #: model:ir.model.constraint,message:mail.constraint_res_users_notification_type
@@ -6207,7 +6203,7 @@ msgstr "Antw:"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_reaction__guest_id
 msgid "Reacting Guest"
-msgstr "reagerende gast"
+msgstr "Reagerende gast"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_reaction__partner_id
@@ -6219,7 +6215,7 @@ msgstr "Reactiepartner"
 #: model:ir.model.fields,field_description:mail.field_mail_message__reaction_ids
 #: model_terms:ir.ui.view,arch_db:mail.mail_message_reaction_view_tree
 msgid "Reactions"
-msgstr "reacties"
+msgstr "Reacties"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_notification__read_date
@@ -6438,6 +6434,13 @@ msgid "Remove email from blacklist wizard"
 msgstr "Verwijder email van blacklist wizard"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/models/message_action_view.js:0
+#, python-format
+msgid "Remove from Todo"
+msgstr "Verwijderen uit Te doen"
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 msgid "Remove the contextual action to use this template on related documents"
 msgstr ""
@@ -6589,7 +6592,7 @@ msgstr "Opnieuw proberen"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Review All Templates"
-msgstr ""
+msgstr "Bekijk alle sjablonen"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__body_html
@@ -6677,7 +6680,6 @@ msgstr "Plan activiteiten om je te helpen dingen voor elkaar te krijgen."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #: code:addons/mail/static/src/xml/activity_view.xml:0
 #, python-format
 msgid "Schedule activity"
@@ -6882,12 +6884,12 @@ msgstr "Stuur een bericht naar volgers ..."
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Send and receive emails through your Gmail account."
-msgstr "Verzend en ontvang e-mails via uw Gmail-account."
+msgstr "Verzend en ontvang e-mails via je Gmail-account."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Send and receive emails through your Outlook account."
-msgstr "Verzend en ontvang e-mails via uw Outlook-account."
+msgstr "Verzend en ontvang e-mails via je Outlook-account."
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__mail_post_method
@@ -7037,6 +7039,17 @@ msgstr "Shortcodes"
 #: model:ir.model.fields,field_description:mail.field_mail_shortcode__source
 msgid "Shortcut"
 msgstr "Afkorting"
+
+#. module: mail
+#: model:ir.model.fields,help:mail.field_mail_shortcode__source
+msgid ""
+"Shortcut that will automatically be substituted with longer content in your "
+"messages. Type ':' followed by the name of your shortcut (e.g. :hello) to "
+"use in your messages."
+msgstr ""
+"Sneltoest die automatisch wordt vervangen met een langere inhoud in je "
+"berichten. Schrijf ':' gevolgd door de naam van je sneltoets (bijv.: hello) "
+"om deze in je berichten te gebruiken."
 
 #. module: mail
 #. openerp-web
@@ -7393,7 +7406,7 @@ msgstr "Sjabloon"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__template_category
 msgid "Template Category"
-msgstr ""
+msgstr "Sjablooncategorie"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__template_fs
@@ -7419,7 +7432,7 @@ msgstr "Sjabloon Reset Mixin"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_template__description
 msgid "Template description"
-msgstr ""
+msgstr "Sjabloonbeschrijving"
 
 #. module: mail
 #: code:addons/mail/models/mail_render_mixin.py:0
@@ -7561,11 +7574,6 @@ msgid "The email sent to"
 msgstr "De e-mail verzonden naar"
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_shortcode__substitution
-msgid "The escaped html code replacing the shortcut"
-msgstr "De espaced html code ter vervanging van de snelkoppeling"
-
-#. module: mail
 #: code:addons/mail/models/mail_composer_mixin.py:0
 #, python-format
 msgid "The field %s does not exist on the model %s"
@@ -7651,11 +7659,6 @@ msgid "The server \"%s\" cannot be used because it is archived."
 msgstr "De server \"%s\" kan niet worden gebruikt omdat deze is gearchiveerd."
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_shortcode__source
-msgid "The shortcut which must be replaced in the Chat Messages"
-msgstr "De snelkoppeling die moet vervangen worden in de chat berichten"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/models/blur_manager.js:0
 #, python-format
@@ -7723,6 +7726,8 @@ msgstr "Dit veld is hoofdlettergevoelig."
 #: model:ir.model.fields,help:mail.field_mail_template__description
 msgid "This field is used for internal description of the template's usage."
 msgstr ""
+"Dit veld is gebruikt voor de interne beschrijving van het gebruik van het "
+"sjabloon."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_thread_blacklist__email_normalized
@@ -7746,7 +7751,7 @@ msgstr "Dit is hun eerste verbinding. Wens ze succes."
 #: code:addons/mail/models/res_config_settings.py:0
 #, python-format
 msgid "This layout seems to no longer exist."
-msgstr ""
+msgstr "Deze lay-out lijkt niet meer te bestaan."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__auto_delete
@@ -7793,6 +7798,11 @@ msgstr "Thread afbeelding"
 #: model:ir.model.fields,field_description:mail.field_mail_guest__timezone
 msgid "Timezone"
 msgstr "Tijdzone"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
+msgid "Title"
+msgstr "Titel"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__email_to
@@ -7978,6 +7988,7 @@ msgstr "Twilio-account SID"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__message_type
 #: model:ir.model.fields,field_description:mail.field_mail_ice_server__server_type
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_type
 #: model:ir.model.fields,field_description:mail.field_mail_mail__message_type
 #: model:ir.model.fields,field_description:mail.field_mail_message__message_type
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_type_view_tree
@@ -8033,6 +8044,11 @@ msgid "URI"
 msgstr "URL"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
+msgid "URL"
+msgstr "URL"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__uuid
 msgid "UUID"
 msgstr "UUID"
@@ -8078,7 +8094,7 @@ msgstr "ondoof"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/follow_button/follow_button.xml:0
+#: code:addons/mail/static/src/models/follow_button_view.js:0
 #, python-format
 msgid "Unfollow"
 msgstr "Ontvolgen"
@@ -8147,7 +8163,7 @@ msgstr "Niet ondersteunde rapport soort %s gevonden."
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Update Mail Layout"
-msgstr ""
+msgstr "Configureer e-mail lay-out"
 
 #. module: mail
 #. openerp-web
@@ -8157,6 +8173,13 @@ msgstr ""
 #, python-format
 msgid "Upload Document"
 msgstr "Document uploaden"
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/backend_components/activity_list_view_item/activity_list_view_item.xml:0
+#, python-format
+msgid "Upload File"
+msgstr "Upload bestand"
 
 #. module: mail
 #. openerp-web
@@ -8203,7 +8226,7 @@ msgstr "Twilio ICE-servers gebruiken"
 #, python-format
 msgid "Use a local script to fetch your emails and create new records."
 msgstr ""
-"Gebruik een lokaal script om uw e-mails op te halen en nieuwe records aan te"
+"Gebruik een lokaal script om je e-mails op te halen en nieuwe records aan te"
 " maken."
 
 #. module: mail
@@ -8467,7 +8490,7 @@ msgid ""
 msgstr ""
 "Of een volledige originele kopie van elke e-mail moet worden bewaard ter "
 "referentie en moet worden toegevoegd aan elk verwerkt bericht. Dit zal "
-"meestal de grootte van uw berichtendatabase verdubbelen."
+"meestal de grootte van je berichtendatabase verdubbelen."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_fetchmail_server__attach
@@ -8654,7 +8677,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 msgid "You do not have access to"
-msgstr "U heeft geen toegang tot"
+msgstr "Je hebt geen toegang tot"
 
 #. module: mail
 #: code:addons/mail/models/mail_thread_blacklist.py:0
@@ -8891,11 +8914,6 @@ msgid "deaf"
 msgstr "doof"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_description
-msgid "description"
-msgstr "Omschrijving"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/models/mail_thread.py:0
 #: code:addons/mail/static/src/components/message/message.xml:0
@@ -8927,6 +8945,8 @@ msgstr "bijv. \"Welkom e-mail\""
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 msgid "e.g. \"Welcome to MyCompany\" or \"Nice to meet you, {{ object.name }}\""
 msgstr ""
+"bijv. \"Welkom bij MyCompany\" or \"Aangenaam kennis te maken, {{ "
+"object.name }}\""
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -9004,16 +9024,6 @@ msgid "has just assigned you the following activity:"
 msgstr "heb je zojuist de volgende activiteit toegewezen:"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
-msgid "image"
-msgstr "afbeelding"
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__image_mimetype
-msgid "image_mimetype"
-msgstr "image_mimetype"
-
-#. module: mail
 #: code:addons/mail/models/models.py:0
 #, python-format
 msgid "incorrectly configured alias"
@@ -9066,11 +9076,6 @@ msgstr ""
 msgid "message_post partner_ids and must be integer list, not commands."
 msgstr ""
 "message_post partner_ids en moet een gehele lijst zijn, geen commando's."
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
-msgid "mimetype"
-msgstr "mime type"
 
 #. module: mail
 #: code:addons/mail/models/mail_thread.py:0
@@ -9210,11 +9215,6 @@ msgid "this document"
 msgstr "dit document"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
-msgid "title"
-msgstr "titel"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
@@ -9229,11 +9229,6 @@ msgid "turn:"
 msgstr "draai:"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_type
-msgid "type"
-msgstr "type"
-
-#. module: mail
 #: code:addons/mail/models/mail_thread.py:0
 #, python-format
 msgid "unknown error"
@@ -9244,11 +9239,6 @@ msgstr "onbekende fout"
 #, python-format
 msgid "unknown target model %s"
 msgstr "onbekend doel model %s"
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
-msgid "url"
-msgstr "url"
 
 #. module: mail
 #. openerp-web

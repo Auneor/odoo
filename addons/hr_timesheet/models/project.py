@@ -65,9 +65,9 @@ class Project(models.Model):
     @api.model
     def _search_is_internal_project(self, operator, value):
         if not isinstance(value, bool):
-            raise ValueError('Invalid value: %s' % (value))
+            raise ValueError(_('Invalid value: %s', value))
         if operator not in ['=', '!=']:
-            raise ValueError('Invalid operator: %s' % (operator))
+            raise ValueError(_('Invalid operator: %s', operator))
 
         query = """
             SELECT C.internal_project_id
@@ -300,7 +300,7 @@ class Task(models.Model):
 
     def _search_remaining_hours_percentage(self, operator, value):
         if operator not in OPERATOR_MAPPING:
-            raise NotImplementedError('This operator %s is not supported in this search method.' % operator)
+            raise NotImplementedError(_('This operator %s is not supported in this search method.', operator))
         query = f"""
             SELECT id
               FROM {self._table}
@@ -394,7 +394,7 @@ class Task(models.Model):
         # Use of sudo as the portal user doesn't have access to uom
         arch = self.env['account.analytic.line'].sudo()._apply_timesheet_label(arch)
 
-        if view_type in ['tree', 'pivot', 'graph'] and self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
+        if view_type in ['tree', 'pivot', 'graph', 'form'] and self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
             arch = self.env['account.analytic.line']._apply_time_label(arch, related_model=self._name)
 
         return arch, view

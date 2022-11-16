@@ -32,7 +32,12 @@ from .misc import file_open, get_iso_codes, SKIPPED_ELEMENT_TYPES
 
 _logger = logging.getLogger(__name__)
 
+PYTHON_TRANSLATION_COMMENT = 'odoo-python'
+
+# translation used for javascript code in web client
+JAVASCRIPT_TRANSLATION_COMMENT = 'odoo-javascript'
 # used to notify web client that these translations should be loaded in the UI
+# depreciated comment since Odoo 16.0
 WEB_TRANSLATION_COMMENT = "openerp-web"
 
 SKIPPED_ELEMENTS = ('script', 'style', 'title')
@@ -788,6 +793,8 @@ class PoFileWriter:
             else:
                 entry.occurrences.append((u"%s:%s:%s" % (typy, name, res_id), ''))
         if code:
+            # TODO 17.0: remove the flag python-format in all PO/POT files
+            # The flag is used in a wrong way. It marks all code translations even for javascript translations.
             entry.flags.append("python-format")
         self.po.append(entry)
 
@@ -1133,6 +1140,7 @@ class TranslationModuleReader:
             translations = code_translations.get_python_translations(module, self._lang)
         else:
             translations = code_translations.get_web_translations(module, self._lang)
+            translations = {tran['id']: tran['string'] for tran in translations['messages']}
         try:
             for extracted in extract.extract(extract_method, src_file, keywords=extract_keywords, options=options):
                 # Babel 0.9.6 yields lineno, message, comments
@@ -1168,22 +1176,23 @@ class TranslationModuleReader:
             _logger.debug("Scanning files of modules at %s", path)
             for root, dummy, files in os.walk(path, followlinks=True):
                 for fname in fnmatch.filter(files, '*.py'):
-                    self._babel_extract_terms(fname, path, root,
+                    self._babel_extract_terms(fname, path, root, 'python',
+                                              extra_comments=[PYTHON_TRANSLATION_COMMENT],
                                               extract_keywords={'_': None, '_lt': None})
                 if fnmatch.fnmatch(root, '*/static/src*'):
                     # Javascript source files
                     for fname in fnmatch.filter(files, '*.js'):
                         self._babel_extract_terms(fname, path, root, 'javascript',
-                                                  extra_comments=[WEB_TRANSLATION_COMMENT],
+                                                  extra_comments=[JAVASCRIPT_TRANSLATION_COMMENT],
                                                   extract_keywords={'_t': None, '_lt': None})
                     # QWeb template files
                     for fname in fnmatch.filter(files, '*.xml'):
                         self._babel_extract_terms(fname, path, root, 'odoo.tools.translate:babel_extract_qweb',
-                                                  extra_comments=[WEB_TRANSLATION_COMMENT])
+                                                  extra_comments=[JAVASCRIPT_TRANSLATION_COMMENT])
                 if fnmatch.fnmatch(root, '*/data/*'):
                     for fname in fnmatch.filter(files, '*_dashboard.json'):
                         self._babel_extract_terms(fname, path, root, 'odoo.tools.translate:extract_spreadsheet_terms',
-                                                  extra_comments=[WEB_TRANSLATION_COMMENT])
+                                                  extra_comments=[JAVASCRIPT_TRANSLATION_COMMENT])
                 if not recursive:
                     # due to topdown, first iteration is in first level
                     break
@@ -1423,7 +1432,8 @@ class CodeTranslations:
         # {(module_name, lang): {'message': [{'id': src, 'string': value}]}
         self.web_translations = {}
 
-    def _get_po_paths(self, mod, lang):
+    @staticmethod
+    def _get_po_paths(mod, lang):
         lang_base = lang.split('_')[0]
         po_paths = [get_resource_path(mod, 'i18n', lang_base + '.po'),
                     get_resource_path(mod, 'i18n', lang + '.po'),
@@ -1431,53 +1441,55 @@ class CodeTranslations:
                     get_resource_path(mod, 'i18n_extra', lang + '.po')]
         return [path for path in po_paths if path]
 
-    def _trans_load_code_python(self, fileobj, fileformat, lang):
-        python_translations = {}
-        fileobj.seek(0)
-        reader = TranslationFileReader(fileobj, fileformat=fileformat)
-        for row in reader:
-            if row.get('value') and row.get('src') and row.get('type') == 'code':
-                python_translations[row['src']] = row['value']
-        return python_translations
+    @staticmethod
+    def _read_code_translations_file(fileobj, filter_func):
+        """ read and return code translations from fileobj with filter filter_func
 
-    def _trans_load_code_webclient(self, fileobj, fileformat, lang):
+        :param func filter_func: a filter function to drop unnecessary code translations
+        """
         # current, we assume the fileobj is from the source code, which only contains the translation for the current module
         # don't use it in the import logic
-        webclient_translations = {}
+        translations = {}
         fileobj.seek(0)
-        reader = TranslationFileReader(fileobj, fileformat=fileformat)
+        reader = TranslationFileReader(fileobj, fileformat='po')
         for row in reader:
-            if row.get('value') and row.get('src') and row.get('type') == 'code' and WEB_TRANSLATION_COMMENT in row[
-                'comments']:
-                webclient_translations[row['src']] = row['value']
-        return webclient_translations
+            if row.get('type') == 'code' and row.get('src') and filter_func(row):
+                translations[row['src']] = row['value']
+        return translations
 
-    def _load_python_translations(self, module_name, lang):
-        po_paths = self._get_po_paths(module_name, lang)
+    @staticmethod
+    def _get_code_translations(module_name, lang, filter_func):
+        po_paths = CodeTranslations._get_po_paths(module_name, lang)
         translations = {}
         for po_path in po_paths:
             try:
                 with file_open(po_path, mode='rb') as fileobj:
-                    p = self._trans_load_code_python(fileobj, 'po', lang)
+                    p = CodeTranslations._read_code_translations_file(fileobj, filter_func)
                 translations.update(p)
             except IOError:
                 iso_lang = get_iso_codes(lang)
                 filename = '[lang: %s][format: %s]' % (iso_lang or 'new', 'po')
                 _logger.exception("couldn't read translation file %s", filename)
+        return translations
+
+    def _load_python_translations(self, module_name, lang):
+        def filter_func(row):
+            # In the pot files with new translations, a code translation should have either
+            # PYTHON_TRANSLATION_COMMENT or JAVASCRIPT_TRANSLATION_COMMENT for comments.
+            # If a comment has neither the above comments, the pot file uses the depreciated
+            # comments. And all code translations are stored as python translations.
+            return row.get('value') and (
+                    PYTHON_TRANSLATION_COMMENT in row['comments']
+                    or JAVASCRIPT_TRANSLATION_COMMENT not in row['comments'])
+        translations = CodeTranslations._get_code_translations(module_name, lang, filter_func)
         self.python_translations[(module_name, lang)] = translations
 
     def _load_web_translations(self, module_name, lang):
-        po_paths = self._get_po_paths(module_name, lang)
-        translations = {}
-        for po_path in po_paths:
-            try:
-                with file_open(po_path, mode='rb') as fileobj:
-                    p = self._trans_load_code_webclient(fileobj, 'po', lang)
-                translations.update(p)
-            except IOError:
-                iso_lang = get_iso_codes(lang)
-                filename = '[lang: %s][format: %s]' % (iso_lang or 'new', 'po')
-                _logger.exception("couldn't read translation file %s", filename)
+        def filter_func(row):
+            return row.get('value') and (
+                    JAVASCRIPT_TRANSLATION_COMMENT in row['comments']
+                    or WEB_TRANSLATION_COMMENT in row['comments'])
+        translations = CodeTranslations._get_code_translations(module_name, lang, filter_func)
         self.web_translations[(module_name, lang)] = {
             "messages": [{"id": src, "string": value} for src, value in translations.items()]
         }
@@ -1516,7 +1528,7 @@ def _get_translation_upgrade_queries(cr, field):
               GROUP BY res_id
             )
             UPDATE {Model._table} m
-               SET "{field.name}" = m."{field.name}" || t.value
+               SET "{field.name}" =  t.value || m."{field.name}"
               FROM t
              WHERE t.res_id = m.id
         """
@@ -1541,21 +1553,32 @@ def _get_translation_upgrade_queries(cr, field):
                   FROM t0
               GROUP BY res_id
             )
-            SELECT t.res_id, m."{field.name}"->>'en_US', t.value
+            SELECT t.res_id, m."{field.name}", t.value
               FROM t
               JOIN "{Model._table}" m ON t.res_id = m.id
         """, [translation_name])
-        for id_, source_value, translations in cr.fetchall():
-            if not source_value:
+        for id_, old_values, translations in cr.fetchall():
+            if not old_values:
                 continue
-            new_value = {
-                lang: field.translate(terms_mapping.get, source_value)
+            # 'old_values' contain terms possibly updated from PO files during
+            #  the upgrade of modules; prefer those terms over the ones from
+            #  the out-of-date 'translations' dict
+            src_value = old_values.pop('en_US')
+            src_terms = field.get_trans_terms(src_value)
+            for lang, dst_value in old_values.items():
+                terms_mapping = translations.setdefault(lang, {})
+                dst_terms = field.get_trans_terms(dst_value)
+                for src_term, dst_term in zip(src_terms, dst_terms):
+                    if src_term != dst_term:
+                        terms_mapping[src_term] = dst_term
+            new_values = {
+                lang: field.translate(terms_mapping.get, src_value)
                 for lang, terms_mapping in translations.items()
             }
-            if "en_US" not in new_value:
-                new_value["en_US"] = field.translate(lambda v: None, source_value)
+            if "en_US" not in new_values:
+                new_values["en_US"] = field.translate(lambda v: None, src_value)
             query = f'UPDATE "{Model._table}" SET "{field.name}" = %s WHERE id = %s'
-            migrate_queries.append(cr.mogrify(query, [Json(new_value), id_]).decode())
+            migrate_queries.append(cr.mogrify(query, [Json(new_values), id_]).decode())
 
         query = "DELETE FROM _ir_translation WHERE type = 'model_terms' AND name = %s"
         cleanup_queries.append(cr.mogrify(query, [translation_name]).decode())

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2022-10-10 10:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
@@ -59,13 +59,6 @@ msgstr ""
 #: code:addons/mail/static/src/models/rtc.js:0
 #, python-format
 msgid "\"%s\" requires microphone access"
-msgstr ""
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "%(attachmentCount)s files"
 msgstr ""
 
 #. module: mail
@@ -285,20 +278,6 @@ msgid "0 Today"
 msgstr "0 本日"
 
 #. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "1 file"
-msgstr ""
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "2 files"
-msgstr ""
-
-#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_template_preview_view_form
 msgid ""
 "<b attrs=\"{'invisible': [('no_record', '=', False)]}\" class=\"text-"
@@ -434,7 +413,7 @@ msgstr "<span class=\"o_form_label\">活動</span>"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Custom ICE server list</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">カスタムICEサーバーリスト</span>"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -655,6 +634,7 @@ msgstr "有効なドメイン"
 #. openerp-web
 #: code:addons/mail/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #: code:addons/mail/static/src/components/activity_menu_view/activity_menu_view.xml:0
+#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #: model:ir.actions.act_window,name:mail.mail_activity_action
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_ids
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_ids
@@ -799,7 +779,7 @@ msgstr "新しい%(document)sを追加するか、%(email_link)sにメールを�
 #. module: mail
 #: model_terms:ir.actions.act_window,help:mail.mail_blacklist_action
 msgid "Add an email address to the blacklist"
-msgstr ""
+msgstr "ブラックリストにメールアドレスを追加する"
 
 #. module: mail
 #. openerp-web
@@ -847,7 +827,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Add your twilio credentials for ICE servers"
-msgstr ""
+msgstr "ICEサーバ用のtwilioの認証情報を追加します。"
 
 #. module: mail
 #: code:addons/mail/models/mail_channel.py:0
@@ -1084,8 +1064,6 @@ msgstr "ファイル添付"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/attachment_box/attachment_box.xml:0
-#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
 #, python-format
 msgid "Attach files"
 msgstr ""
@@ -1774,7 +1752,7 @@ msgstr "設定"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Configure your ICE server list for webRTC"
-msgstr ""
+msgstr "webRTC用のICEサーバーリストを設定する"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -1875,6 +1853,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
 msgid "Content"
 msgstr "内容"
+
+#. module: mail
+#: model:ir.model.fields,help:mail.field_mail_shortcode__substitution
+msgid ""
+"Content that will automatically replace the shortcut of your choosing. This "
+"content can still be adapted before sending your message."
+msgstr ""
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__body
@@ -2284,6 +2269,7 @@ msgstr ""
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__description
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_description
 #: model:ir.model.fields,field_description:mail.field_mail_message_subtype__description
 #: model:ir.model.fields,field_description:mail.field_mail_shortcode__description
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_message_subtype_form
@@ -2735,7 +2721,7 @@ msgstr ""
 msgid ""
 "Email address to which replies will be redirected when sending emails in "
 "mass"
-msgstr ""
+msgstr "一括でメールを送信する際に、返信先となるメールアドレス"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_template__reply_to
@@ -2743,13 +2729,13 @@ msgid ""
 "Email address to which replies will be redirected when sending emails in "
 "mass; only used when the reply is not logged in the original discussion "
 "thread."
-msgstr ""
+msgstr "一括でメールを送信する際に、返信先となるメールアドレス；返信が元のスレッドに記録されていない場合にのみ使用されます。"
 
 #. module: mail
 #: model_terms:ir.actions.act_window,help:mail.mail_blacklist_action
 msgid ""
 "Email addresses that are blacklisted won't receive Email mailings anymore."
-msgstr ""
+msgstr "ブラックリストに登録されたメールアドレスには、今後メールが届かなくなります。"
 
 #. module: mail
 #: code:addons/mail/models/mail_alias.py:0
@@ -3102,7 +3088,7 @@ msgstr "フォロワーのみ"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/follow_button/follow_button.xml:0
+#: code:addons/mail/static/src/models/follow_button_view.js:0
 #, python-format
 msgid "Following"
 msgstr "フォロー中"
@@ -3266,7 +3252,7 @@ msgstr "グループ"
 #: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__guest_id
 #, python-format
 msgid "Guest"
-msgstr ""
+msgstr "ゲスト"
 
 #. module: mail
 #: code:addons/mail/models/mail_guest.py:0
@@ -3434,7 +3420,7 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "ICE Servers"
-msgstr ""
+msgstr "ICEサーバー"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_ice_server
@@ -3446,7 +3432,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:mail.action_ice_servers
 #: model:ir.ui.menu,name:mail.mail_channel_ice_servers_menu
 msgid "ICE servers"
-msgstr ""
+msgstr "ICEサーバー"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__id
@@ -3530,7 +3516,7 @@ msgstr "追従するリソースのID"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_channel_rtc_session_view_form
 msgid "Identity"
-msgstr ""
+msgstr "識別"
 
 #. module: mail
 #. openerp-web
@@ -3647,6 +3633,7 @@ msgstr ""
 #: code:addons/mail/static/src/components/attachment_viewer/attachment_viewer.xml:0
 #: model:ir.model.fields,field_description:mail.field_mail_channel__image_128
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_1920
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
 #, python-format
 msgid "Image"
 msgstr "画像"
@@ -3670,6 +3657,11 @@ msgstr "イメージ 256"
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_512
 msgid "Image 512"
 msgstr "イメージ 512"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__image_mimetype
+msgid "Image MIME type"
+msgstr ""
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_document_file_kanban
@@ -4189,11 +4181,6 @@ msgid "Link copied!"
 msgstr ""
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_thread_cc__email_cc
-msgid "List of cc from incoming emails."
-msgstr "受信メールからのccのリスト。"
-
-#. module: mail
 #: model:ir.model.fields,help:mail.field_mail_wizard_invite__partner_ids
 msgid ""
 "List of partners that will be added as follower of the current document."
@@ -4236,6 +4223,7 @@ msgstr "ロード中"
 #: code:addons/mail/static/src/components/message_list/message_list.xml:0
 #: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
 #: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
+#: code:addons/mail/static/src/models/emoji_grid_loading_screen.js:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -4298,6 +4286,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
 msgid "Login Information"
 msgstr "ログイン情報"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
+msgid "MIME type"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -5150,7 +5143,7 @@ msgstr "通知"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__is_notification
 msgid "Notification Email"
-msgstr ""
+msgstr "通知メール"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_message_schedule__notification_parameters
@@ -6215,6 +6208,13 @@ msgid "Remove email from blacklist wizard"
 msgstr "ブラックリストウィザードからメールを削除する"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/models/message_action_view.js:0
+#, python-format
+msgid "Remove from Todo"
+msgstr ""
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 msgid "Remove the contextual action to use this template on related documents"
 msgstr "関連するドキュメントでこのテンプレートを使用するコンテキストアクションを削除する"
@@ -6449,7 +6449,6 @@ msgstr "あなたが物事を成し遂げるのを助けるために活動をス
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #: code:addons/mail/static/src/xml/activity_view.xml:0
 #, python-format
 msgid "Schedule activity"
@@ -6804,6 +6803,14 @@ msgstr "ショートコード"
 #: model:ir.model.fields,field_description:mail.field_mail_shortcode__source
 msgid "Shortcut"
 msgstr "ショートカット"
+
+#. module: mail
+#: model:ir.model.fields,help:mail.field_mail_shortcode__source
+msgid ""
+"Shortcut that will automatically be substituted with longer content in your "
+"messages. Type ':' followed by the name of your shortcut (e.g. :hello) to "
+"use in your messages."
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -7303,11 +7310,6 @@ msgid "The email sent to"
 msgstr "に送信されたメール"
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_shortcode__substitution
-msgid "The escaped html code replacing the shortcut"
-msgstr "ショートカットを置き換えるエスケープされたhtmlコード"
-
-#. module: mail
 #: code:addons/mail/models/mail_composer_mixin.py:0
 #, python-format
 msgid "The field %s does not exist on the model %s"
@@ -7381,11 +7383,6 @@ msgstr ""
 #, python-format
 msgid "The server \"%s\" cannot be used because it is archived."
 msgstr ""
-
-#. module: mail
-#: model:ir.model.fields,help:mail.field_mail_shortcode__source
-msgid "The shortcut which must be replaced in the Chat Messages"
-msgstr "チャットメッセージで置換が必要なショートカット"
 
 #. module: mail
 #. openerp-web
@@ -7518,6 +7515,11 @@ msgstr "スレッド画像"
 #: model:ir.model.fields,field_description:mail.field_mail_guest__timezone
 msgid "Timezone"
 msgstr "タイムゾーン"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
+msgid "Title"
+msgstr "タイトル"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__email_to
@@ -7700,6 +7702,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__message_type
 #: model:ir.model.fields,field_description:mail.field_mail_ice_server__server_type
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_type
 #: model:ir.model.fields,field_description:mail.field_mail_mail__message_type
 #: model:ir.model.fields,field_description:mail.field_mail_message__message_type
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_type_view_tree
@@ -7746,6 +7749,11 @@ msgid "URI"
 msgstr "URI"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
+msgid "URL"
+msgstr "URL"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__uuid
 msgid "UUID"
 msgstr "UUID"
@@ -7788,7 +7796,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/follow_button/follow_button.xml:0
+#: code:addons/mail/static/src/models/follow_button_view.js:0
 #, python-format
 msgid "Unfollow"
 msgstr "フォロー解除"
@@ -7871,6 +7879,13 @@ msgstr "ドキュメントをアップロード"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/backend_components/activity_list_view_item/activity_list_view_item.xml:0
+#, python-format
+msgid "Upload File"
+msgstr "ファイルをアップロード"
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/backend_components/activity_list_view_item/activity_list_view_item.xml:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #, python-format
 msgid "Upload file"
@@ -7905,7 +7920,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_config_settings__use_twilio_rtc_servers
 msgid "Use Twilio ICE servers"
-msgstr ""
+msgstr "Twilio ICEサーバを使用する"
 
 #. module: mail
 #: code:addons/mail/models/fetchmail.py:0
@@ -8569,11 +8584,6 @@ msgid "deaf"
 msgstr ""
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_description
-msgid "description"
-msgstr ""
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/models/mail_thread.py:0
 #: code:addons/mail/static/src/components/message/message.xml:0
@@ -8682,16 +8692,6 @@ msgid "has just assigned you the following activity:"
 msgstr ""
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
-msgid "image"
-msgstr ""
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__image_mimetype
-msgid "image_mimetype"
-msgstr ""
-
-#. module: mail
 #: code:addons/mail/models/models.py:0
 #, python-format
 msgid "incorrectly configured alias"
@@ -8738,11 +8738,6 @@ msgstr ""
 #: code:addons/mail/models/mail_thread.py:0
 #, python-format
 msgid "message_post partner_ids and must be integer list, not commands."
-msgstr ""
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
-msgid "mimetype"
 msgstr ""
 
 #. module: mail
@@ -8879,11 +8874,6 @@ msgid "this document"
 msgstr "このドキュメント"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
-msgid "title"
-msgstr "タイトル"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
@@ -8898,11 +8888,6 @@ msgid "turn:"
 msgstr ""
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_type
-msgid "type"
-msgstr ""
-
-#. module: mail
 #: code:addons/mail/models/mail_thread.py:0
 #, python-format
 msgid "unknown error"
@@ -8913,11 +8898,6 @@ msgstr ""
 #, python-format
 msgid "unknown target model %s"
 msgstr "不明なターゲットモデル %s"
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
-msgid "url"
-msgstr "url"
 
 #. module: mail
 #. openerp-web

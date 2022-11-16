@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
@@ -35,7 +36,7 @@ msgstr ""
 "<div>\n"
 "                    Beste <t t-out=\"object.name or ''\">Abigail Peterson</t>,<br/><br/>\n"
 "                    In uitzondering als we een fout hebben gemaakt, maar het lijkt erop dat je niet op je kantoor bent en er geen verlof van je is.<br/>\n"
-"                    Neem a.u.b. passende maatregelen om dit werkverzuim uit te voeren.<br/>\n"
+"                    Neem a.je.b. passende maatregelen om dit werkverzuim uit te voeren.<br/>\n"
 "                    Aarzel niet om contact op te nemen met je manager of de afdeling personeelszaken.\n"
 "                    <br/>Met vriendelijke groet,<br/><br/>\n"
 "                </div>\n"
@@ -89,7 +90,7 @@ msgstr "E-mail verstuurd"
 #. module: hr_presence
 #: model:sms.template,name:hr_presence.sms_template_data_hr_presence
 msgid "Employee: Presence Reminder"
-msgstr "Werknemer: aanwezigheidsherinnering"
+msgstr "Werknemer: Aanwezigheidsherinnering"
 
 #. module: hr_presence
 #: model_terms:ir.ui.view,arch_db:hr_presence.hr_employee_view_presence_search
@@ -106,7 +107,7 @@ msgid ""
 "Do not hesitate to contact your manager or the human resource department."
 msgstr ""
 "Als er geen fout is gemaakt, het lijkt erop dat je niet op je kantoor bent en er geen verzoek om verlof van je is.\n"
-"Neem a.u.b. passende maatregelen om dit verzuim uit te voeren.\n"
+"Neem a.je.b. passende maatregelen om dit verzuim uit te voeren.\n"
 "Aarzel niet om contact op te nemen met je manager of de afdeling personeelszaken."
 
 #. module: hr_presence
@@ -119,7 +120,7 @@ msgstr "HR-aanwezigheid: cron"
 #. module: hr_presence
 #: model:mail.template,name:hr_presence.mail_template_presence
 msgid "HR: Employee Absence email"
-msgstr ""
+msgstr "HR: Werknemer afwezigheidsmail"
 
 #. module: hr_presence
 #: model:ir.model.fields,field_description:hr_presence.field_res_company__hr_presence_last_compute_date
@@ -182,6 +183,8 @@ msgid ""
 "Sent manually in presence module when an employee wasn't working despite not"
 " being off"
 msgstr ""
+"Handmatig verzonden in aanwezigheidsmodule als een werknemer niet aan het "
+"werk was ondanks dat hij niet in verlof was"
 
 #. module: hr_presence
 #: model_terms:ir.ui.view,arch_db:hr_presence.hr_employee_view_kanban

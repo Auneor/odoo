@@ -53,6 +53,7 @@ class AccountMove(models.Model):
     _mail_post_access = 'read'
     _check_company_auto = True
     _sequence_index = "journal_id"
+    _rec_names_search = ['name', 'partner_id.name', 'ref']
 
     @property
     def _sequence_monthly_regex(self):
@@ -136,6 +137,7 @@ class AccountMove(models.Model):
         comodel_name='res.company',
         string='Company',
         compute='_compute_company_id', inverse='_inverse_company_id', store=True, readonly=False, precompute=True,
+        index=True,
     )
     line_ids = fields.One2many(
         'account.move.line',
@@ -187,7 +189,7 @@ class AccountMove(models.Model):
 
     # used by cash basis taxes, telling the lines of the move are always
     # exigible. This happens if the move contains no payable or receivable line.
-    always_tax_exigible = fields.Boolean(compute='_compute_always_tax_exigible', store=True)
+    always_tax_exigible = fields.Boolean(compute='_compute_always_tax_exigible', store=True, readonly=False)
 
     # === Misc fields === #
     auto_post = fields.Selection(
@@ -333,7 +335,7 @@ class AccountMove(models.Model):
     )
     display_qr_code = fields.Boolean(
         string="Display QR-code",
-        related='company_id.qr_code',
+        compute='_compute_display_qr_code',
     )
     qr_code_method = fields.Selection(
         string="Payment QR-code", copy=False,
@@ -469,6 +471,7 @@ class AccountMove(models.Model):
         help='Use this field to encode the total amount of the invoice.\n'
              'Odoo will automatically create one invoice line with default values to match it.',
     )
+    quick_encoding_vals = fields.Binary(compute='_compute_quick_encoding_vals')
 
     # === Misc Information === #
     narration = fields.Html(
@@ -1117,12 +1120,16 @@ class AccountMove(models.Model):
                         reconciliation_ref = '%s (%s)' % (counterpart_line.move_id.name, counterpart_line.move_id.ref)
                     else:
                         reconciliation_ref = counterpart_line.move_id.name
+                    if counterpart_line.amount_currency and counterpart_line.currency_id != counterpart_line.company_id.currency_id:
+                        foreign_currency = counterpart_line.currency_id
+                    else:
+                        foreign_currency = False
 
                     reconciled_vals.append({
                         'name': counterpart_line.name,
                         'journal_name': counterpart_line.journal_id.name,
                         'amount': reconciled_partial['amount'],
-                        'currency_id': reconciled_partial['currency'].id,
+                        'currency_id': move.company_id.currency_id.id if reconciled_partial['is_exchange'] else reconciled_partial['currency'].id,
                         'date': counterpart_line.date,
                         'partial_id': reconciled_partial['partial_id'],
                         'account_payment_id': counterpart_line.payment_id.id,
@@ -1132,7 +1139,7 @@ class AccountMove(models.Model):
                         # these are necessary for the views to change depending on the values
                         'is_exchange': reconciled_partial['is_exchange'],
                         'amount_company_currency': formatLang(self.env, abs(counterpart_line.balance), currency_obj=counterpart_line.company_id.currency_id),
-                        'amount_foreign_currency': formatLang(self.env, abs(counterpart_line.amount_currency), currency_obj=counterpart_line.currency_id) if counterpart_line.currency_id != counterpart_line.company_id.currency_id else False
+                        'amount_foreign_currency': foreign_currency and formatLang(self.env, abs(counterpart_line.amount_currency), currency_obj=foreign_currency)
                     })
                 payments_widget_vals['content'] = reconciled_vals
 
@@ -1228,14 +1235,14 @@ class AccountMove(models.Model):
             if invoice.show_payment_term_details:
                 sign = 1 if invoice.is_inbound(include_receipts=True) else -1
                 payment_term_details = []
-                for line in invoice.line_ids.filtered(lambda l: l.display_type == 'payment_term'):
+                for line in invoice.line_ids.filtered(lambda l: l.display_type == 'payment_term').sorted('date_maturity'):
                     payment_term_details.append({
                         'date': format_date(self.env, line.date_maturity),
                         'amount': sign * line.amount_currency,
                         'discount_date': format_date(self.env, line.discount_date),
                         'discount_amount_currency': sign * line.discount_amount_currency,
                     })
-                invoice.payment_term_details = sorted(payment_term_details, key=lambda t: t.get('date'))
+                invoice.payment_term_details = payment_term_details
 
     @api.depends('move_type', 'payment_state', 'invoice_payment_term_id')
     def _compute_show_payment_term_details(self):
@@ -1250,6 +1257,7 @@ class AccountMove(models.Model):
                 invoice.show_discount_details = any(line.discount_date for line in payment_term_lines)
                 invoice.show_payment_term_details = len(payment_term_lines) > 1 or invoice.show_discount_details
             else:
+                invoice.show_discount_details = False
                 invoice.show_payment_term_details = False
 
     @api.depends('partner_id', 'invoice_source_email', 'partner_id.name')
@@ -1400,6 +1408,11 @@ class AccountMove(models.Model):
             else:
                 move.quick_edit_mode = False
 
+    @api.depends('quick_edit_total_amount', 'invoice_line_ids.price_total', 'tax_totals')
+    def _compute_quick_encoding_vals(self):
+        for move in self:
+            move.quick_encoding_vals = move._get_quick_edit_suggestions()
+
     @api.depends('ref', 'move_type', 'partner_id', 'invoice_date')
     def _compute_duplicated_ref_ids(self):
         move_to_duplicate_move = self._fetch_duplicate_supplier_reference()
@@ -1454,11 +1467,21 @@ class AccountMove(models.Model):
             for res in self.env.cr.dictfetchall()
         }
 
+    @api.depends('company_id')
+    def _compute_display_qr_code(self):
+        for record in self:
+            record.display_qr_code = (
+                record.move_type in ('out_invoice', 'out_receipt')
+                and record.company_id.qr_code
+            )
+
     # -------------------------------------------------------------------------
     # INVERSE METHODS
     # -------------------------------------------------------------------------
 
     def _inverse_tax_totals(self):
+        if self.env.context.get('skip_invoice_sync'):
+            return
         with self._sync_dynamic_line(
             existing_key_fname='term_key',
             needed_vals_fname='needed_terms',
@@ -1679,8 +1702,8 @@ class AccountMove(models.Model):
                     "The total of debits equals %s and the total of credits equals %s.\n"
                     "You might want to specify a default account on journal \"%s\" to automatically balance each move.",
                     move.display_name,
-                    format_amount(self.env, sum_debit, move.currency_id),
-                    format_amount(self.env, sum_credit, move.currency_id),
+                    format_amount(self.env, sum_debit, move.company_id.currency_id),
+                    format_amount(self.env, sum_credit, move.company_id.currency_id),
                     move.journal_id.name)
             raise UserError(error_msg)
 
@@ -1910,30 +1933,42 @@ class AccountMove(models.Model):
     @contextmanager
     def _sync_unbalanced_lines(self, container):
         yield
+        # Skip posted moves.
+        for invoice in (x for x in container['records'] if x.state != 'posted'):
 
-        # Unlink tax lines if all tax tags have been removed.
-        if not container['records'].line_ids.tax_ids:
-            container['records'].line_ids.filtered('tax_line_id').unlink()
+            # Unlink tax lines if all tax tags have been removed.
+            if not invoice.line_ids.tax_ids:
+                invoice.line_ids.filtered('tax_line_id').unlink()
 
-        # Unlink the automatic balancing line, if any, to prevent having multiple ones.
-        balance_name = _('Automatic Balancing Line')
-        container['records'].line_ids.filtered(lambda line: line.name == balance_name).unlink()
+            # Set the balancing line's balance and amount_currency to zero,
+            # so that it does not interfere with _get_unbalanced_moves() below.
+            balance_name = _('Automatic Balancing Line')
+            existing_balancing_line = invoice.line_ids.filtered(lambda line: line.name == balance_name)
+            if existing_balancing_line:
+                existing_balancing_line.balance = existing_balancing_line.amount_currency = 0.0
 
-        # Create an automatic balancing line to make sure the entry can be saved.
-        vals_list = []
-        unbalanced_moves = self._get_unbalanced_moves(container)
-        if unbalanced_moves:
-            for move_id, debit, credit in unbalanced_moves:
-                move = self.browse(move_id)
+            # Create an automatic balancing line to make sure the entry can be saved/posted.
+            # If such a line already exists, we simply update its amounts.
+            unbalanced_moves = self._get_unbalanced_moves({'records': invoice})
+            if isinstance(unbalanced_moves, list) and len(unbalanced_moves) == 1:
+                dummy, debit, credit = unbalanced_moves[0]
                 balance = debit - credit
-                vals_list.append({
-                    'name': balance_name,
-                    'move_id': move.id,
-                    'account_id': move.company_id.account_journal_suspense_account_id.id,
+
+                vals = {
                     'debit': -balance if balance < 0.0 else 0.0,
                     'credit': balance if balance > 0.0 else 0.0,
-                })
-        container['records'].env['account.move.line'].create(vals_list)
+                }
+
+                if existing_balancing_line:
+                    existing_balancing_line.write(vals)
+                else:
+                    vals.update({
+                        'name': balance_name,
+                        'move_id': invoice.id,
+                        'account_id': invoice.company_id.account_journal_suspense_account_id.id,
+                        'currency_id': invoice.currency_id.id,
+                    })
+                    container['records'].env['account.move.line'].create(vals)
 
     @contextmanager
     def _sync_rounding_lines(self, container):
@@ -2190,15 +2225,13 @@ class AccountMove(models.Model):
         if any('state' in vals and vals.get('state') == 'posted' for vals in vals_list):
             raise UserError(_('You cannot create a move already in the posted state. Please create a draft move and post it after.'))
         container = {'records': self, 'self': self}
-        with self._check_balanced(container),\
-             self._sync_dynamic_lines(container):
-            moves = super().create([self._sanitize_vals(vals) for vals in vals_list])
-            container['records'] = moves
-        for move, vals in zip(moves, vals_list):
-            if 'tax_totals' in vals:
-                move.tax_totals = vals['tax_totals']
-            else:
-                move._check_total_amount_on_new_line(vals)
+        with self._check_balanced(container):
+            with self._sync_dynamic_lines(container):
+                moves = super().create([self._sanitize_vals(vals) for vals in vals_list])
+                container['records'] = moves
+            for move, vals in zip(moves, vals_list):
+                if 'tax_totals' in vals:
+                    move.tax_totals = vals['tax_totals']
         return moves
 
     def write(self, vals):
@@ -2269,8 +2302,6 @@ class AccountMove(models.Model):
             for move in self:
                 if 'tax_totals' in vals:
                     super(AccountMove, move).write({'tax_totals': vals['tax_totals']})
-                else:
-                    move._check_total_amount_on_new_line(vals)
 
         return res
 
@@ -2582,7 +2613,7 @@ class AccountMove(models.Model):
                 )
             taxes = self.fiscal_position_id.map_tax(taxes)
         price_untaxed = taxes.with_context(force_price_include=True).compute_all(
-            self.quick_edit_total_amount - self.amount_total)['total_excluded']
+            self.quick_edit_total_amount - self.tax_totals['amount_total'])['total_excluded']
         return {'account_id': account_id, 'tax_ids': taxes.ids, 'price_unit': price_untaxed}
 
     @api.onchange('quick_edit_mode', 'journal_id', 'company_id')
@@ -2612,7 +2643,7 @@ class AccountMove(models.Model):
             or len(self.invoice_line_ids) > 0
         ):
             return
-        suggestions = self._get_quick_edit_suggestions()
+        suggestions = self.quick_encoding_vals
         self.invoice_line_ids = [Command.clear()]
         self.invoice_line_ids += self.env['account.move.line'].new({
             'partner_id': self.partner_id,
@@ -2621,6 +2652,19 @@ class AccountMove(models.Model):
             'price_unit': suggestions['price_unit'],
             'tax_ids': [Command.set(suggestions['tax_ids'])],
         })
+        self._check_total_amount(self.quick_edit_total_amount)
+
+    @api.onchange('invoice_line_ids')
+    def _onchange_quick_edit_line_ids(self):
+        quick_encode_suggestion = self.env.context.get('quick_encoding_vals')
+        if (
+            not self.quick_edit_total_amount
+            or not self.quick_edit_mode
+            or not self.invoice_line_ids
+            or not quick_encode_suggestion
+            or not quick_encode_suggestion['price_unit'] == self.invoice_line_ids[-1].price_unit
+        ):
+            return
         self._check_total_amount(self.quick_edit_total_amount)
 
     def _check_total_amount(self, amount_total):
@@ -2640,14 +2684,6 @@ class AccountMove(models.Model):
                 totals['groups_by_subtotal']['Untaxed Amount'][0]['tax_group_amount'] += tax_amount_rounding_error
                 totals['amount_total'] = amount_total
                 self.tax_totals = totals
-
-    def _check_total_amount_on_new_line(self, vals):
-        if (
-            self.quick_edit_total_amount
-            and self.quick_edit_mode
-            and any(command == Command.CREATE for command, *__ in vals.get('invoice_line_ids', []) + vals.get('line_ids', []))
-        ):
-            self._check_total_amount(self.quick_edit_total_amount)
 
     # -------------------------------------------------------------------------
     # HASH
@@ -3035,6 +3071,11 @@ class AccountMove(models.Model):
             name += '(* %s)' % str(self.id)
         else:
             name += self.name
+            if self.env.context.get('input_full_display_name'):
+                if self.partner_id:
+                    name += f', {self.partner_id.name}'
+                if self.date:
+                    name += f', {format_date(self.env, self.date)}'
         return name + (f" ({shorten(self.ref, width=50)})" if show_ref and self.ref else '')
 
     def _get_reconciled_amls(self):
@@ -3755,8 +3796,8 @@ class AccountMove(models.Model):
         """
         self.ensure_one()
 
-        if not self.is_invoice():
-            raise UserError(_("QR-codes can only be generated for invoice entries."))
+        if not self.display_qr_code:
+            return None
 
         qr_code_method = self.qr_code_method
         if qr_code_method:

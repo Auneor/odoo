@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
-# Martin Trigaux, 2022
 # marcescu, 2022
+# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
+# Daniel Salazar, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:23+0000\n"
+"POT-Creation-Date: 2022-10-10 10:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: marcescu, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,6 +35,13 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    No se han encontrado objetivos. ¡Creemos uno!\n"
+"                </p><p>\n"
+"                    Lleve un seguimiento de los principales puntos de progreso a alcanzar para lograr el éxito.\n"
+"                </p>\n"
+"            "
 
 #. module: project
 #. openerp-web
@@ -58,8 +67,11 @@ msgid "# Tasks"
 msgstr "Nº tareas"
 
 #. module: project
+#. openerp-web
+#: code:addons/project/static/src/views/burndown_chart/burndown_chart_model.js:0
 #: model:ir.model.fields,field_description:project.field_project_milestone__task_count
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__nbr
+#, python-format
 msgid "# of Tasks"
 msgstr "Nº de tareas"
 
@@ -505,11 +517,6 @@ msgid "<span class=\"fa fa-user me-2\" aria-label=\"Partner\" title=\"Partner\"/
 msgstr ""
 
 #. module: project
-#: model_terms:ir.ui.view,arch_db:project.view_task_form2
-msgid "<span class=\"o_form_label\"> Recurrent </span>"
-msgstr ""
-
-#. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
 msgid ""
 "<span class=\"o_stat_text\">\n"
@@ -628,7 +635,7 @@ msgstr ""
 #: code:addons/project/models/project.py:0
 #, python-format
 msgid "A new task will be created on the following dates:"
-msgstr ""
+msgstr "Una nueva tarea sera creada en las siguientes fechas:"
 
 #. module: project
 #: code:addons/project/models/project.py:0
@@ -637,6 +644,8 @@ msgid ""
 "A personal stage cannot be linked to a project because it is only visible to"
 " its corresponding user."
 msgstr ""
+"No se puede vincular una etapa personal a un proyecto porque solo es visible"
+" para su usuario correspondiente."
 
 #. module: project
 #: model:ir.model.constraint,message:project.constraint_project_tags_name_uniq
@@ -902,7 +911,6 @@ msgstr "Abril"
 
 #. module: project
 #. openerp-web
-#: code:addons/project/static/src/js/project_form.js:0
 #: code:addons/project/static/src/views/project_task_form/project_task_form_controller.js:0
 #: code:addons/project/static/src/views/project_task_list/project_task_list_controller.js:0
 #, python-format
@@ -967,7 +975,7 @@ msgstr "Montaje"
 #: code:addons/project/static/src/js/tours/project.js:0
 #, python-format
 msgid "Assign a responsible to your task"
-msgstr ""
+msgstr "Asigna a  un responsable a su tarea"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_form
@@ -1093,7 +1101,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_task__rating_avg
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Calificación promedio"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__rating_avg_percentage
@@ -1431,8 +1439,6 @@ msgid "Confirm"
 msgstr "Confirmar"
 
 #. module: project
-#. openerp-web
-#: code:addons/project/static/src/js/project_form.js:0
 #: code:addons/project/wizard/project_task_type_delete.py:0
 #, python-format
 msgid "Confirmation"
@@ -1462,7 +1468,6 @@ msgstr "Contacto"
 #. module: project
 #. openerp-web
 #: code:addons/project/static/src/components/project_stop_recurrence_confirmation_dialog/project_stop_recurrence_confirmation_dialog.xml:0
-#: code:addons/project/static/src/js/project_form.js:0
 #, python-format
 msgid "Continue Recurrence"
 msgstr "Continuar con la recurrencia"
@@ -1786,7 +1791,7 @@ msgstr "Fecha límite"
 #: code:addons/project/models/project.py:0
 #, python-format
 msgid "Deadline: %s"
-msgstr ""
+msgstr "Fecha límite: %s"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_message_user_assigned
@@ -1941,14 +1946,11 @@ msgid "Disabled Rating Warning"
 msgstr "Advertencia de clasificación deshabilitada"
 
 #. module: project
-#. openerp-web
-#: code:addons/project/static/src/js/project_form.js:0
 #: model_terms:ir.ui.view,arch_db:project.project_project_view_form_simplified_footer
 #: model_terms:ir.ui.view,arch_db:project.project_share_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_confirmation_wizard
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_wizard
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_unarchive_wizard
-#, python-format
 msgid "Discard"
 msgstr "Descartar"
 
@@ -2617,10 +2619,24 @@ msgstr ""
 " las incidencias si el módulo de seguimiento de incidencias está instalado)."
 
 #. module: project
+#. openerp-web
+#: code:addons/project/static/src/project_sharing/components/chatter/chatter_messages.xml:0
+#, python-format
+msgid "Internal notes are only displayed to internal users."
+msgstr "Las notas internas sólo se muestran a los usuarios internos."
+
+#. module: project
 #: code:addons/project/report/project_task_burndown_chart_report.py:0
 #, python-format
 msgid "Invalid aggregation function %r."
 msgstr "Función agregada inválida %r."
+
+#. module: project
+#: code:addons/project/report/project_task_burndown_chart_report.py:0
+#: code:addons/project/report/project_task_burndown_chart_report.py:0
+#, python-format
+msgid "Invalid field %r on model %r"
+msgstr ""
 
 #. module: project
 #: code:addons/project/report/project_task_burndown_chart_report.py:0
@@ -2733,7 +2749,6 @@ msgstr ""
 
 #. module: project
 #. openerp-web
-#: code:addons/project/static/src/js/project_form.js:0
 #: code:addons/project/static/src/services/project_task_recurrence.js:0
 #, python-format
 msgid "It seems that this task is part of a recurrence."
@@ -2741,7 +2756,6 @@ msgstr "Parece que esta tarea forma parte de una recurrencia."
 
 #. module: project
 #. openerp-web
-#: code:addons/project/static/src/js/project_form.js:0
 #: code:addons/project/static/src/services/project_task_recurrence.js:0
 #, python-format
 msgid ""
@@ -2974,11 +2988,6 @@ msgstr "Esperemos a que sus clientes se manifiesten."
 #: model:ir.model.fields,field_description:project.field_project_share_wizard__share_link
 msgid "Link"
 msgstr "Vínculo"
-
-#. module: project
-#: model:ir.model.fields,help:project.field_project_update__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Listado de cc en emails entrantes."
 
 #. module: project
 #. openerp-web
@@ -3471,6 +3480,12 @@ msgid "Not Blocking"
 msgstr ""
 
 #. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "Not Implemented."
+msgstr ""
+
+#. module: project
 #: model:ir.model.fields,field_description:project.field_project_share_wizard__note
 msgid "Note"
 msgstr "Nota"
@@ -3708,6 +3723,20 @@ msgid ""
 "\n"
 "In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
 msgstr ""
+"Personas que podrán ver este proyecto y sus tareas.\n"
+"\n"
+"- Usuarios internos invitados: al seguir un proyecto, los usuarios internos tendrán acceso a todas las tareas. De lo contrario, solo tendrán acceso a las tareas específicas que están siguiendo.\n"
+"Un usuario con el nivel de derecho de acceso de administrador del proyecto puede seguir teniendo acceso a este proyecto y a sus tareas, aunque no forme parte de los seguidores.\n"
+"\n"
+"- Todos los usuarios internos: todos los usuarios internos tienen acceso al proyecto y a todas sus tareas.\n"
+"\n"
+"- Usuarios invitados del portal y todos los usuarios internos: todos los usuarios internos tienen acceso al proyecto y a todas sus tareas.\n"
+"Al seguir un proyecto, los usuarios del portal tendrán acceso a todas sus tareas. De lo contrario, solo tendrán acceso a las tareas específicas que están siguiendo.\n"
+"\n"
+"Cuando se comparte un proyecto en modo de solo lectura, se dirigirá al usuario del portal a su portal. De esta manera, puede ver las tareas, pero no editarlas.\n"
+"Cuando se comparte un proyecto en modo de edición, se dirigirá al usuario del portal a las vistas de kanban y lista de las tareas. El usuario podrá modificar un número determinado de campos en las tareas.\n"
+"\n"
+"En cualquier caso, un usuario interno sin derechos de acceso al proyecto puede acceder a una tarea, siempre y cuando cuente con la URL correspondiente (y que forme parte de los seguidores si el proyecto es privado)."
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__rating_percentage_satisfaction
@@ -4072,6 +4101,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.portal_my_projects
 #: model_terms:ir.ui.view,arch_db:project.view_project
 #: model_terms:ir.ui.view,arch_db:project.view_project_calendar
+#, python-format
 msgid "Projects"
 msgstr "Proyectos"
 
@@ -4130,7 +4160,7 @@ msgstr "Valoración (/5)"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "Texto de calificación promedio"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task_type__rating_template_id
@@ -4176,7 +4206,7 @@ msgstr "Valoración de Satisfacción"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "Texto de calificación"
 
 #. module: project
 #. openerp-web
@@ -4267,11 +4297,6 @@ msgstr "Lista para la siguiente etapa"
 #: model:project.task.type,legend_done:project.project_stage_3
 msgid "Ready to reopen"
 msgstr "Listo para reabrir"
-
-#. module: project
-#: model:ir.model.fields,help:project.field_project_task__rating_last_feedback
-msgid "Reason of the rating"
-msgstr "Causa de la calificación"
 
 #. module: project
 #: model:mail.template,subject:project.mail_template_data_project_task
@@ -4520,6 +4545,13 @@ msgstr "Sábado"
 
 #. module: project
 #. openerp-web
+#: code:addons/project/static/src/js/tours/project.js:0
+#, python-format
+msgid "Schedule your activity once it is ready."
+msgstr ""
+
+#. module: project
+#. openerp-web
 #: code:addons/project/static/src/js/project_task_kanban_examples.js:0
 #, python-format
 msgid "Script"
@@ -4704,6 +4736,12 @@ msgid "Share Readonly"
 msgstr "Compartir con formato de solo lectura"
 
 #. module: project
+#: code:addons/project/models/project_task_recurrence.py:0
+#, python-format
+msgid "Should repeat at least once"
+msgstr ""
+
+#. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__is_favorite
 msgid "Show Project on Dashboard"
 msgstr "Mostrar el proyecto en el tablero"
@@ -4865,7 +4903,6 @@ msgstr ""
 #. module: project
 #. openerp-web
 #: code:addons/project/static/src/components/project_stop_recurrence_confirmation_dialog/project_stop_recurrence_confirmation_dialog.xml:0
-#: code:addons/project/static/src/js/project_form.js:0
 #, python-format
 msgid "Stop Recurrence"
 msgstr "Detener la recurrencia"
@@ -5146,14 +5183,10 @@ msgid "Tasks Due Today"
 msgstr ""
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.edit_project
 #: model_terms:ir.ui.view,arch_db:project.res_config_settings_view_form
 msgid "Tasks Management"
 msgstr "Gestión de Tareas"
-
-#. module: project
-#: model_terms:ir.ui.view,arch_db:project.edit_project
-msgid "Tasks Managment"
-msgstr ""
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__type_ids
@@ -5162,7 +5195,9 @@ msgid "Tasks Stages"
 msgstr "Etapas de tareas"
 
 #. module: project
+#: code:addons/project/models/project.py:0
 #: model:ir.model.fields,field_description:project.field_project_task__recurring_count
+#, python-format
 msgid "Tasks in Recurrence"
 msgstr "Tareas en recurrencia"
 
@@ -5191,6 +5226,18 @@ msgid "The current user's personal task stage."
 msgstr "La etapa de la tarea personal del usuario actual."
 
 #. module: project
+#: code:addons/project/models/project_task_recurrence.py:0
+#, python-format
+msgid "The end date should be after the day of the month"
+msgstr ""
+
+#. module: project
+#: code:addons/project/models/project_task_recurrence.py:0
+#, python-format
+msgid "The end date should be in the future"
+msgstr ""
+
+#. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_update_default_description
 msgid "The following milestone has been added:"
 msgstr "Se ha añadido el siguiente hito:"
@@ -5199,6 +5246,12 @@ msgstr "Se ha añadido el siguiente hito:"
 #: model_terms:ir.ui.view,arch_db:project.project_update_default_description
 msgid "The following milestones have been added:"
 msgstr "Se han añadido los siguientes hitos:"
+
+#. module: project
+#: code:addons/project/models/project_task_recurrence.py:0
+#, python-format
+msgid "The interval should be greater than 0"
+msgstr ""
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__alias_model_id
@@ -5255,11 +5308,9 @@ msgid "The project's start date must be before its end date."
 msgstr ""
 
 #. module: project
-#: model:ir.model.fields,help:project.field_project_project__stage_id
-msgid ""
-"The step, or stage, that your project is in. You can add, remove, and move stages around to adapt the pipeline to your own needs.\n"
-"Via the stage configuration you can set up email templates and automate the sending of emails when a project moves into the stage.\n"
-"Projects in a folded stage are considered as closed."
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "The search does not support the %s operator or %s value."
 msgstr ""
 
 #. module: project
@@ -5380,14 +5431,10 @@ msgid "Thursday"
 msgstr "Jueves"
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.edit_project
 #: model_terms:ir.ui.view,arch_db:project.res_config_settings_view_form
 msgid "Time Management"
 msgstr "Gestión del tiempo"
-
-#. module: project
-#: model_terms:ir.ui.view,arch_db:project.edit_project
-msgid "Time Managment"
-msgstr ""
 
 #. module: project
 #: model:digest.tip,name:project.digest_tip_project_1
@@ -5941,6 +5988,12 @@ msgid ""
 msgstr ""
 "Deberías tener al menos una etapa personal. Cree una nueva etapa a la que se"
 " puedan transferir las tareas después de eliminar ésta."
+
+#. module: project
+#: code:addons/project/models/project_task_recurrence.py:0
+#, python-format
+msgid "You should select a least one day"
+msgstr ""
 
 #. module: project
 #. openerp-web

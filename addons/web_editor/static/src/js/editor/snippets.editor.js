@@ -263,12 +263,6 @@ var SnippetEditor = Widget.extend({
         // a flickering when not needed.
         this.$target.on('transitionend.snippet_editor, animationend.snippet_editor', postAnimationCover);
 
-        // Set the `contenteditable` attribute to false for all the columns
-        // having the class `o_grid_item_image` (as it is removed when leaving
-        // the edit mode).
-        const imageColumnEls = this.$target[0].querySelectorAll('.o_grid_item_image');
-        imageColumnEls.forEach(imageColumnEl => imageColumnEl.contentEditable = false);
-
         return Promise.all(defs).then(() => {
             this.__isStartedResolveFunc(this);
         });
@@ -980,6 +974,7 @@ var SnippetEditor = Widget.extend({
         var self = this;
         this.dragState = {};
         const rowEl = this.$target[0].parentNode;
+        this.dragState.overFirstDropzone = true;
 
         this.dragState.restore = this._prepareDrag();
 
@@ -1041,6 +1036,9 @@ var SnippetEditor = Widget.extend({
                     this.dragState.columnHeight = parseFloat(this.$target[0].scrollHeight);
                 }
             }
+            // Storing the starting top position of the column.
+            this.dragState.columnTop = this.$target[0].getBoundingClientRect().top;
+            this.dragState.isColumn = true;
             // Deactivate the snippet so the overlay doesn't show.
             this.trigger_up('deactivate_snippet', {$snippet: self.$target});
         }
@@ -1123,6 +1121,25 @@ var SnippetEditor = Widget.extend({
                     self.$target.detach();
                     $('.oe_drop_zone').removeClass('invisible');
                 }
+
+                // Prevent a column to be trapped in an upper grid dropzone at
+                // the start of the drag.
+                if (self.dragState.isColumn && self.dragState.overFirstDropzone) {
+                    self.dragState.overFirstDropzone = false;
+
+                    // The column is considered as glued to the dropzone if the
+                    // dropzone is above and if the space between them is less
+                    // than 25px (the move handle height is 22px so 25 is a
+                    // safety margin).
+                    const columnTop = self.dragState.columnTop;
+                    const dropzoneBottom = this.getBoundingClientRect().bottom;
+                    const areDropzonesGlued = (columnTop >= dropzoneBottom) && (columnTop - dropzoneBottom < 25);
+
+                    if (areDropzonesGlued && this.classList.contains('oe_grid_zone')) {
+                        return;
+                    }
+                }
+
                 self.dropped = true;
                 const $dropzone = $(this).first().after(self.$target);
                 $dropzone.addClass('invisible');
@@ -1285,12 +1302,8 @@ var SnippetEditor = Widget.extend({
             gridUtils._resizeGrid(rowEl);
         } else if (this.$target[0].classList.contains('o_grid_item') && this.dropped) {
             // Case when dropping a grid item in a non-grid dropzone.
-            this.$target[0].classList.remove('o_grid_item');
+            this.$target[0].classList.remove('o_grid_item', 'o_grid_item_image');
             this.$target[0].style.removeProperty('grid-area');
-            if (this.$target[0].classList.contains('o_grid_item_image')) {
-                this.$target[0].classList.remove('o_grid_item_image');
-                this.$target[0].removeAttribute('contentEditable');
-            }
         }
 
         // TODO lot of this is duplicated code of the d&d feature of snippets
@@ -1329,13 +1342,9 @@ var SnippetEditor = Widget.extend({
                     if (this.$target[0].classList.contains('o_grid_item')) {
                         // Case when a grid column is dropped near a non-grid
                         // dropzone.
-                        this.$target[0].classList.remove('o_grid_item');
+                        this.$target[0].classList.remove('o_grid_item', 'o_grid_item_image');
                         this.$target[0].style.removeProperty('z-index');
                         this.$target[0].style.removeProperty('grid-area');
-                        if (this.$target[0].classList.contains('o_grid_item_image')) {
-                            this.$target[0].classList.remove('o_grid_item_image');
-                            this.$target[0].removeAttribute('contentEditable');
-                        }
                     }
                 }
 

@@ -882,6 +882,11 @@ td {
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
+    flex-direction: row-reverse;
+}
+
+.pos .rightpane-header .categories-header {
+    display: flex;
 }
 
 .pos .rightpane-header .breadcrumbs {
@@ -1155,8 +1160,7 @@ td {
 
 @media screen and (max-width: 768px) {
     .pos .product:active {
-        border: solid 3px $primary;
-        box-sizing: border-box;
+        box-shadow: 0 0 0 3px $primary;
     }
 }
 
@@ -1584,10 +1588,21 @@ td {
     border: 1px solid #cacaca;
 }
 .paymentlines .electronic_payment {
-    background: #e2e2e2;
+    background: $gray-200;
     border-collapse: unset;
     font-size: 16px;
     padding-right: 0;
+}
+
+.paymentline .electronic_status {
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+    /* make the name of the payment line to be truncated with ellipsis */
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding: map-get($spacers, 3);
 }
 
 .paymentlines .electronic_payment div:first-child {
@@ -1599,6 +1614,7 @@ td {
 .paymentlines .electronic_payment div:last-child {
     flex-grow: 1;
     text-align: center;
+    padding: map-get($spacers, 3);
 }
 
 .payment-status-container {
@@ -3517,6 +3533,8 @@ td {
     width: 75%;
     max-width: 250px;
     justify-content: flex-start;
+    height: 100%;
+    min-height: 48px;
 }
 
 .pos .search-bar-container.sb-product .icon {

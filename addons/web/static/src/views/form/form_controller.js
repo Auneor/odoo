@@ -18,7 +18,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { hasTouch } from "@web/core/browser/feature_detection";
 import { FormStatusIndicator } from "./form_status_indicator/form_status_indicator";
 
-const { Component, onWillStart, useEffect, useRef, onRendered, useState, toRaw } = owl;
+import { Component, onWillStart, useEffect, useRef, onRendered, useState, toRaw } from "@odoo/owl";
 
 const viewRegistry = registry.category("views");
 
@@ -130,6 +130,7 @@ export class FormController extends Component {
                 rootType: "record",
                 mode,
                 beforeLoadProm,
+                component: this,
             },
             {
                 ignoreUseSampleModel: true,
@@ -193,7 +194,7 @@ export class FormController extends Component {
                     });
                 }
             },
-            beforeUnload: () => this.beforeUnload(),
+            beforeUnload: (ev) => this.beforeUnload(ev),
             getLocalState: () => {
                 // TODO: export the whole model?
                 return {
@@ -273,8 +274,12 @@ export class FormController extends Component {
         }
     }
 
-    beforeUnload() {
-        return this.model.root.urgentSave();
+    async beforeUnload(ev) {
+        const isValid = await this.model.root.urgentSave();
+        if (!isValid) {
+            ev.preventDefault();
+            ev.returnValue = "Unsaved changes";
+        }
     }
 
     updateURL() {
@@ -395,7 +400,7 @@ export class FormController extends Component {
         }
     }
 
-    async save(params = {}) {
+    async saveButtonClicked(params = {}) {
         this.disableButtons();
         const record = this.model.root;
         let saved = false;
@@ -437,7 +442,7 @@ export class FormController extends Component {
         if (this.props.onDiscard) {
             this.props.onDiscard(this.model.root);
         }
-        if (this.model.root.isVirtual) {
+        if (this.model.root.isVirtual || this.env.inDialog) {
             this.env.config.historyBack();
         }
     }
@@ -467,7 +472,7 @@ export class FormController extends Component {
         if (this.props.className) {
             result[this.props.className] = true;
         }
-        result["o_form_with_borderless_input"] = size > SIZES.SM && !hasTouch();
+        result["o_field_highlight"] = size < SIZES.SM || hasTouch();
         return result;
     }
 }

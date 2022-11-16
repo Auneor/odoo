@@ -152,23 +152,25 @@ class Project(models.Model):
         return action
 
     def action_open_project_invoices(self):
-        invoices = self.env['account.move'].search([
-            ('line_ids.analytic_distribution_stored_char', '=ilike', f'%"{self.analytic_account_id.id}":%'),
-            ('move_type', '=', 'out_invoice')
-        ])
+        query = self.env['account.move.line']._search([('move_id.move_type', 'in', ['out_invoice', 'out_refund'])])
+        query.add_where('analytic_distribution ? %s', [str(self.analytic_account_id.id)])
+        query.order = None
+        query_string, query_param = query.select('DISTINCT move_id')
+        self._cr.execute(query_string, query_param)
+        invoice_ids = [line.get('move_id') for line in self._cr.dictfetchall()]
         action = {
             'name': _('Invoices'),
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
             'views': [[False, 'tree'], [False, 'form'], [False, 'kanban']],
-            'domain': [('id', 'in', invoices.ids)],
+            'domain': [('id', 'in', invoice_ids)],
             'context': {
                 'create': False,
             }
         }
-        if len(invoices) == 1:
+        if len(invoice_ids) == 1:
             action['views'] = [[False, 'form']]
-            action['res_id'] = invoices.id
+            action['res_id'] = invoice_ids[0]
         return action
 
     # ----------------------------
@@ -384,14 +386,14 @@ class Project(models.Model):
                     ._filter_access_rules_python('read')
                 if sale_order_items:
                     if sale_order_items:
+                        args = [section_name, [('id', 'in', sale_order_items.ids)]]
+                        if len(sale_order_items) == 1:
+                            args.append(sale_order_items.id)
                         action_params = {
                             'name': 'action_profitability_items',
                             'type': 'object',
-                            'section': section_name,
-                            'domain': json.dumps([('id', 'in', sale_order_items.ids)]),
+                            'args': json.dumps(args),
                         }
-                        if len(sale_order_items) == 1:
-                            action_params['res_id'] = sale_order_items.id
                         other_revenues['action'] = action_params
         sequence_per_invoice_type = self._get_profitability_sequence_per_invoice_type()
         return {
@@ -446,22 +448,25 @@ class Project(models.Model):
         return buttons
 
     def action_open_project_vendor_bills(self):
-        vendor_bills = self.env['account.move'].search([
-            ('line_ids.analytic_distribution_stored_char', '=ilike', f'%"{self.analytic_account_id.id}":%'),
-            ('move_type', '=', 'in_invoice')])
+        query = self.env['account.move.line']._search([('move_id.move_type', 'in', ['in_invoice', 'in_refund'])])
+        query.add_where('analytic_distribution ? %s', [str(self.analytic_account_id.id)])
+        query.order = None
+        query_string, query_param = query.select('DISTINCT move_id')
+        self._cr.execute(query_string, query_param)
+        vendor_bill_ids = [line.get('move_id') for line in self._cr.dictfetchall()]
         action_window = {
             'name': _('Vendor Bills'),
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
             'views': [[False, 'tree'], [False, 'form'], [False, 'kanban']],
-            'domain': [('id', 'in', vendor_bills.ids)],
+            'domain': [('id', 'in', vendor_bill_ids)],
             'context': {
                 'create': False,
             }
         }
-        if len(vendor_bills) == 1:
+        if len(vendor_bill_ids) == 1:
             action_window['views'] = [[False, 'form']]
-            action_window['res_id'] = vendor_bills.id
+            action_window['res_id'] = vendor_bill_ids[0]
         return action_window
 
 class ProjectTask(models.Model):
@@ -545,7 +550,7 @@ class ProjectTask(models.Model):
         action_window = {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",
-            "name": "Sales Order",
+            "name": _("Sales Order"),
             "views": [[False, "tree"], [False, "kanban"], [False, "form"]],
             "context": {"create": False, "show_sale": True},
             "domain": [["id", "in", so_ids]],

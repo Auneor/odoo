@@ -7,14 +7,15 @@
 # Antonio Trueba, 2022
 # Alejandro Die Sanchis <marketing@domatix.com>, 2022
 # Martin Trigaux, 2022
+# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:23+0000\n"
+"POT-Creation-Date: 2022-10-10 10:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +40,7 @@ msgstr ""
 #. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_mailing_mailing__mailing_filter_count
 msgid "# Favorite Filters"
-msgstr ""
+msgstr "# Filtros favoritos"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_comparisons
@@ -768,7 +769,7 @@ msgstr "Agregar a la lista"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.view_mail_mass_mailing_form
 msgid "Add to Templates"
-msgstr ""
+msgstr "Añadir a plantillas"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.view_mail_mass_mailing_form
@@ -781,12 +782,12 @@ msgid "Align Bottom"
 msgstr "Alinear el fondo"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Align Center"
 msgstr "Alinear al centro"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Align Left"
 msgstr "Alinear a la izquierda"
 
@@ -796,7 +797,7 @@ msgid "Align Middle"
 msgstr "Alinear en el medio"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Align Right"
 msgstr "Alinear a la derecha"
 
@@ -808,7 +809,6 @@ msgstr "Alinear hacia arriba"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Alignment"
 msgstr "Alineación"
 
@@ -995,12 +995,12 @@ msgstr "Promedio"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.utm_campaign_view_form
 msgid "Average of Bounced"
-msgstr ""
+msgstr "Promedio de rebotes"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.utm_campaign_view_form
 msgid "Average of Clicked"
-msgstr ""
+msgstr "Promedio de cliqueados"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.utm_campaign_view_form
@@ -1105,7 +1105,6 @@ msgstr "Libros"
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_border_widgets
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Border"
 msgstr "Borde"
 
@@ -1242,7 +1241,6 @@ msgstr ""
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Center"
 msgstr "Centro"
 
@@ -1800,13 +1798,6 @@ msgid "Duplicated Email"
 msgstr "Correo electrónico duplicado"
 
 #. module: mass_mailing
-#. openerp-web
-#: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
-#, python-format
-msgid "Dynamic Placeholder"
-msgstr ""
-
-#. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_coupon_code
 msgid "ENDOFSUMMER20"
 msgstr "FINDELVERANO20"
@@ -1943,18 +1934,18 @@ msgstr ""
 #. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_mailing_mailing__mailing_filter_id
 msgid "Favorite Filter"
-msgstr ""
+msgstr "Filtro favorito"
 
 #. module: mass_mailing
 #: model:ir.actions.act_window,name:mass_mailing.mailing_filter_action
 #: model:ir.ui.menu,name:mass_mailing.mailing_filter_menu_action
 msgid "Favorite Filters"
-msgstr ""
+msgstr "Filtros favoritos"
 
 #. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_mailing_mailing__mailing_filter_domain
 msgid "Favorite filter domain"
-msgstr ""
+msgstr "Dominio del filtro favorito"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_three_columns
@@ -2287,13 +2278,6 @@ msgid "Inner Content"
 msgstr "Contenido interno"
 
 #. module: mass_mailing
-#. openerp-web
-#: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
-#, python-format
-msgid "Insert personalized content"
-msgstr ""
-
-#. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.social_links
 msgid "Instagram"
 msgstr "Instagram"
@@ -2333,7 +2317,7 @@ msgstr "Es un seguidor"
 #. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_utm_campaign__is_mailing_campaign_activated
 msgid "Is Mailing Campaign Activated"
-msgstr ""
+msgstr "La campaña de correo está activada"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
@@ -2431,7 +2415,6 @@ msgstr "Última actualización el"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Left"
 msgstr "Izquierda"
 
@@ -2765,13 +2748,6 @@ msgstr "Marketing"
 #: model_terms:ir.ui.view,arch_db:mass_mailing.email_designer_snippets
 msgid "Marketing Content"
 msgstr "Contenido de marketing"
-
-#. module: mass_mailing
-#. openerp-web
-#: code:addons/mass_mailing/static/src/js/mass_mailing_html_field.js:0
-#, python-format
-msgid "Marketing Tools"
-msgstr ""
 
 #. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_mailing_trace_report__name
@@ -3336,13 +3312,12 @@ msgid "Outgoing Mails"
 msgstr "Correos salientes"
 
 #. module: mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 msgid "Padding ↕"
 msgstr ""
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Padding ⭤"
 msgstr ""
 
@@ -3527,7 +3502,7 @@ msgstr "Regular"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.view_mail_mass_mailing_form
 msgid "Reload a favorite filter"
-msgstr ""
+msgstr "Volver a cargar un filtro favorito"
 
 #. module: mass_mailing
 #. openerp-web
@@ -3535,7 +3510,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing.view_mail_mass_mailing_form
 #, python-format
 msgid "Remove from Templates"
-msgstr ""
+msgstr "Quitar de plantillas"
 
 #. module: mass_mailing
 #: model:ir.model.fields,field_description:mass_mailing.field_mailing_mailing__render_model
@@ -3631,13 +3606,12 @@ msgstr "Reintentar"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_hr_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Right"
 msgstr "Derecha"
 
 #. module: mass_mailing
+#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options
 #: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_border_widgets
-#: model_terms:ir.ui.view,arch_db:mass_mailing.snippet_options_image_styles
 msgid "Round Corners"
 msgstr "Esquinas redondas"
 

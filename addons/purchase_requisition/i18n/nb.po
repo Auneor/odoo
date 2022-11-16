@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:02+0000\n"
+"POT-Creation-Date: 2022-10-10 10:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
 "Last-Translator: Lars Aam <lars.aam@vikenfiber.no>, 2022\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -246,10 +246,7 @@ msgid "Clear"
 msgstr "Tøm"
 
 #. module: purchase_requisition
-#. openerp-web
-#: code:addons/purchase_requisition/static/src/xml/purchase_order_line_compare.xml:0
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.purchase_order_line_compare_tree
-#, python-format
 msgid "Clear Selected"
 msgstr ""
 
@@ -573,7 +570,7 @@ msgstr "Meldinger"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "MIn aktivitets tidsfrist"
 
 #. module: purchase_requisition
 #: model_terms:ir.ui.view,arch_db:purchase_requisition.view_purchase_requisition_filter
@@ -598,7 +595,7 @@ msgstr "Nytt tilbud"
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Neste aktivitets hendelse"
 
 #. module: purchase_requisition
 #: model:ir.model.fields,field_description:purchase_requisition.field_purchase_requisition__activity_date_deadline

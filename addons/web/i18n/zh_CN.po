@@ -6,20 +6,21 @@
 # waveyeung <waveyeung@qq.com>, 2022
 # mrshelly <mrshelly@hotmail.com>, 2022
 # bf2549c5415a9287249cba2b8a5823c7, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Gary Wei <Gary.wei@elico-corp.com>, 2022
 # Daniel Yang <daniel.yang.zhenyu@gmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 深圳 JM <3440895@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
+# digitalliuzg8888, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:26+0000\n"
+"POT-Creation-Date: 2022-10-10 10:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: 深圳 JM <3440895@qq.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,7 +102,7 @@ msgstr "%s 天前"
 #: code:addons/web/static/src/views/fields/formatters.js:0
 #, python-format
 msgid "%s records"
-msgstr ""
+msgstr "%s记录"
 
 #. module: web
 #. openerp-web
@@ -171,7 +172,7 @@ msgstr "'%s'与'%s'不同步。"
 #: code:addons/web/static/src/core/file_upload/file_upload_progress_record.js:0
 #, python-format
 msgid "(%s/%sMB)"
-msgstr ""
+msgstr "(%s/%sMB)"
 
 #. module: web
 #. openerp-web
@@ -199,7 +200,7 @@ msgstr "(个数)"
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 #, python-format
 msgid "(create)"
-msgstr ""
+msgstr "(创建)"
 
 #. module: web
 #. openerp-web
@@ -251,7 +252,7 @@ msgstr ""
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.xml:0
 #, python-format
 msgid "+ KEY"
-msgstr ""
+msgstr "+ KEY"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -429,14 +430,14 @@ msgstr "<strong>总计</strong>"
 #: code:addons/web/static/src/core/domain_selector/domain_selector_operators.js:0
 #, python-format
 msgid "=ilike"
-msgstr ""
+msgstr "=ilike"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/core/domain_selector/domain_selector_operators.js:0
 #, python-format
 msgid "=like"
-msgstr ""
+msgstr "=like"
 
 #. module: web
 #. openerp-web
@@ -487,7 +488,7 @@ msgstr "ALL"
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.xml:0
 #, python-format
 msgid "ALT"
-msgstr ""
+msgstr "ALT"
 
 #. module: web
 #. openerp-web
@@ -522,7 +523,7 @@ msgstr "访问全部企业版应用"
 #: code:addons/web/static/src/views/fields/ace/ace_field.js:0
 #, python-format
 msgid "Ace Editor"
-msgstr ""
+msgstr "王牌编辑"
 
 #. module: web
 #. openerp-web
@@ -566,7 +567,7 @@ msgstr "激活测试资产调试"
 #: code:addons/web/static/src/core/debug/debug_providers.js:0
 #, python-format
 msgid "Activate debug mode (with assets)"
-msgstr ""
+msgstr "激活调试模式(使用资产)"
 
 #. module: web
 #. openerp-web
@@ -620,14 +621,14 @@ msgstr "添加自定义分组"
 #: code:addons/web/static/src/views/fields/properties/properties_field.xml:0
 #, python-format
 msgid "Add a Property"
-msgstr ""
+msgstr "添加属性"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/views/fields/properties/property_definition_selection.xml:0
 #, python-format
 msgid "Add a Value"
-msgstr ""
+msgstr "添加值"
 
 #. module: web
 #. openerp-web
@@ -730,14 +731,14 @@ msgstr "添加： "
 #: code:addons/web/static/src/views/fields/x2many/x2many_field.js:0
 #, python-format
 msgid "Add: %s"
-msgstr ""
+msgstr "添加：%s"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/js/components/action_menus.js:0
 #, python-format
 msgid "Additionnal actions"
-msgstr ""
+msgstr "额外动作"
 
 #. module: web
 #. openerp-web
@@ -745,7 +746,7 @@ msgstr ""
 #: code:addons/web/static/src/legacy/js/views/signature_dialog.js:0
 #, python-format
 msgid "Adopt & Sign"
-msgstr "采用并签署"
+msgstr "采用和签署"
 
 #. module: web
 #. openerp-web
@@ -753,7 +754,7 @@ msgstr "采用并签署"
 #: code:addons/web/static/src/legacy/js/views/signature_dialog.js:0
 #, python-format
 msgid "Adopt Your Signature"
-msgstr "采纳您的签名"
+msgstr "采纳您的签字"
 
 #. module: web
 #. openerp-web
@@ -805,7 +806,7 @@ msgstr "当"
 #: code:addons/web/static/src/core/file_upload/file_upload_service.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "上传中发生错误"
 
 #. module: web
 #. openerp-web
@@ -886,7 +887,7 @@ msgstr "您确定要归档所有选定的记录吗？"
 #: code:addons/web/static/src/views/form/form_controller.js:0
 #, python-format
 msgid "Are you sure that you want to archive all this record?"
-msgstr ""
+msgstr "您确定要归档所有这些记录吗？"
 
 #. module: web
 #. openerp-web
@@ -930,7 +931,7 @@ msgstr "您确认要删除这些数据吗？"
 #: code:addons/web/static/src/views/kanban/kanban_renderer.js:0
 #, python-format
 msgid "Are you sure you want to delete this column?"
-msgstr ""
+msgstr "您确定要删除这一列吗？"
 
 #. module: web
 #. openerp-web
@@ -939,7 +940,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to delete this property field? It will be removed for "
 "everyone using the \"%s\" %s."
-msgstr ""
+msgstr "您确定要删除这个属性字段吗？它将从每个使用\"%s\"%s的人那里删除"
 
 #. module: web
 #. openerp-web
@@ -968,10 +969,11 @@ msgstr "您确定要执行以下更新"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/core/model_field_selector/model_field_selector_popover.xml:0
 #: code:addons/web/static/src/legacy/js/widgets/model_field_selector_popover.js:0
 #, python-format
 msgid "As a default text when no value are set"
-msgstr ""
+msgstr "当没有设置值时，作为默认文本"
 
 #. module: web
 #. openerp-web
@@ -1004,7 +1006,7 @@ msgstr "附件"
 #: code:addons/web/static/src/views/fields/attachment_image/attachment_image_field.js:0
 #, python-format
 msgid "Attachment Image"
-msgstr ""
+msgstr "附件图像"
 
 #. module: web
 #. openerp-web
@@ -1131,7 +1133,7 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
-"通过单击采用并签名，我同意所选的签名/姓名首字母将是我的手写签名/姓名首字母的有效电子表示，用于文件（包括具有法律约束力的合同）的所有目的。"
+"通过单击采用和签字，我同意所选的签字/姓名首字母将是我的手写签字/姓名首字母的有效电子表示，用于文件（包括具有法律约束力的合同）的所有目的。"
 
 #. module: web
 #. openerp-web
@@ -1159,14 +1161,14 @@ msgstr "清空"
 #: code:addons/web/static/src/core/commands/command_palette.xml:0
 #, python-format
 msgid "CMD"
-msgstr ""
+msgstr "CMD"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/core/commands/command_palette.xml:0
 #, python-format
 msgid "CTRL"
-msgstr ""
+msgstr "CTRL"
 
 #. module: web
 #. openerp-web
@@ -1553,7 +1555,7 @@ msgstr "无法显示所选图像"
 #: code:addons/web/static/src/views/fields/pdf_viewer/pdf_viewer_field.js:0
 #, python-format
 msgid "Could not display the selected pdf"
-msgstr ""
+msgstr "无法显示选定的pdf"
 
 #. module: web
 #. openerp-web
@@ -1666,7 +1668,7 @@ msgstr "创建并编辑..."
 #: code:addons/web/static/src/views/fields/relational_utils.js:0
 #, python-format
 msgid "Create and edit..."
-msgstr ""
+msgstr "创建并编辑..."
 
 #. module: web
 #. openerp-web
@@ -1822,7 +1824,7 @@ msgstr "默认"
 #: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
 #, python-format
 msgid "Default State"
-msgstr ""
+msgstr "默认状态"
 
 #. module: web
 #. openerp-web
@@ -1833,13 +1835,15 @@ msgstr "默认值"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/core/model_field_selector/model_field_selector_popover.xml:0
 #: code:addons/web/static/src/legacy/js/widgets/model_field_selector_popover.js:0
 #, python-format
 msgid "Default text is used when no values are set"
-msgstr ""
+msgstr "当没有设置值时使用默认文本"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/core/model_field_selector/model_field_selector_popover.xml:0
 #: code:addons/web/static/src/legacy/js/widgets/model_field_selector_popover.js:0
 #, python-format
 msgid "Default value"
@@ -1885,7 +1889,7 @@ msgstr "删除"
 #: code:addons/web/static/src/views/fields/properties/properties_field.js:0
 #, python-format
 msgid "Delete Property Field"
-msgstr ""
+msgstr "删除属性字段"
 
 #. module: web
 #. openerp-web
@@ -1944,7 +1948,6 @@ msgstr "降序"
 #: code:addons/web/static/src/views/fields/relational_utils.xml:0
 #: code:addons/web/static/src/views/fields/translation_dialog.xml:0
 #: code:addons/web/static/src/views/form/form_controller.xml:0
-#: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
 #: code:addons/web/static/src/views/kanban/kanban_cover_image_dialog.xml:0
 #: code:addons/web/static/src/views/list/list_controller.xml:0
 #: code:addons/web/static/src/webclient/settings_form_view/settings_confirmation_dialog.xml:0
@@ -1955,9 +1958,10 @@ msgstr "丢弃"
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
+#: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
 #, python-format
 msgid "Discard changes"
-msgstr ""
+msgstr "丢弃变更"
 
 #. module: web
 #. openerp-web
@@ -2193,7 +2197,7 @@ msgstr "Email"
 #: code:addons/web/static/src/webclient/settings_form_view/widgets/res_config_invite_users.js:0
 #, python-format
 msgid "Empty email address"
-msgstr ""
+msgstr "空的电子邮件地址"
 
 #. module: web
 #. openerp-web
@@ -2214,7 +2218,7 @@ msgstr "输入电子邮件地址"
 #: code:addons/web/static/src/webclient/settings_form_view/highlight_text/form_label_highlight_text.xml:0
 #, python-format
 msgid "Enterprise"
-msgstr ""
+msgstr "企业"
 
 #. module: web
 #. openerp-web
@@ -2442,7 +2446,7 @@ msgstr "关注者"
 #: code:addons/web/static/src/core/model_field_selector/model_field_selector.xml:0
 #, python-format
 msgid "Followed-by"
-msgstr ""
+msgstr "关注者"
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__font
@@ -2454,7 +2458,7 @@ msgstr "字体"
 #: code:addons/web/static/src/views/fields/font_selection/font_selection_field.js:0
 #, python-format
 msgid "Font Selection"
-msgstr ""
+msgstr "字体选择"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.view_base_document_layout
@@ -2505,7 +2509,7 @@ msgstr "周五"
 #: code:addons/web/static/src/core/colorlist/colorlist.js:0
 #, python-format
 msgid "Fuchsia"
-msgstr ""
+msgstr "紫红色"
 
 #. module: web
 #. openerp-web
@@ -2537,7 +2541,7 @@ msgstr "GNU LGPL授权"
 #: code:addons/web/static/src/views/debug_items.js:0
 #, python-format
 msgid "Get View"
-msgstr ""
+msgstr "获取视图"
 
 #. module: web
 #. openerp-web
@@ -2573,7 +2577,6 @@ msgstr "绿色"
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/search/group_by_menu/group_by_menu.xml:0
-#: code:addons/web/static/src/views/graph/graph_controller.xml:0
 #, python-format
 msgid "Group By"
 msgstr "分组"
@@ -2608,7 +2611,7 @@ msgstr "在看板中隐藏"
 #: code:addons/web/static/src/views/fields/many2many_tags/many2many_tags_field.xml:0
 #, python-format
 msgid "Hide in kanban"
-msgstr ""
+msgstr "在看板中隐藏"
 
 #. module: web
 #. openerp-web
@@ -2818,7 +2821,7 @@ msgstr "邀请新用户"
 #: code:addons/web/static/src/webclient/settings_form_view/widgets/res_config_invite_users.js:0
 #, python-format
 msgid "Inviting..."
-msgstr ""
+msgstr "邀请..."
 
 #. module: web
 #. openerp-web
@@ -2866,7 +2869,7 @@ msgstr "看板: 类型无动作: "
 #: code:addons/web/static/src/views/fields/state_selection/state_selection_field.js:0
 #, python-format
 msgid "Label Selection"
-msgstr ""
+msgstr "标签选择"
 
 #. module: web
 #: code:addons/web/controllers/session.py:0
@@ -3090,7 +3093,7 @@ msgstr "管理筛选"
 #: code:addons/web/static/src/views/fields/many2one_barcode/many2one_barcode_field.js:0
 #, python-format
 msgid "Many2OneBarcode"
-msgstr ""
+msgstr "Many2OneBarcode"
 
 #. module: web
 #. openerp-web
@@ -3279,7 +3282,7 @@ msgstr "更多"
 #: code:addons/web/static/src/views/fields/statusbar/statusbar_field.js:0
 #, python-format
 msgid "Move to %s..."
-msgstr ""
+msgstr "移动到%s……"
 
 #. module: web
 #. openerp-web
@@ -3307,8 +3310,6 @@ msgstr "无"
 #. openerp-web
 #: code:addons/web/static/src/legacy/js/views/basic/basic_model.js:0
 #: code:addons/web/static/src/views/form/form_controller.js:0
-#: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
-#: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
 #, python-format
 msgid "New"
 msgstr "新建"
@@ -3333,7 +3334,7 @@ msgstr "新活动"
 #: code:addons/web/static/src/views/fields/properties/properties_field.xml:0
 #, python-format
 msgid "New Property"
-msgstr ""
+msgstr "新属性"
 
 #. module: web
 #. openerp-web
@@ -3357,14 +3358,14 @@ msgstr "新模板"
 #: code:addons/web/static/src/views/fields/relational_utils.js:0
 #, python-format
 msgid "New:"
-msgstr ""
+msgstr "新建："
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/views/fields/many2one/many2one_field.js:0
 #, python-format
 msgid "New: %s"
-msgstr ""
+msgstr "新建：%s"
 
 #. module: web
 #. openerp-web
@@ -3402,7 +3403,7 @@ msgstr "否"
 #: code:addons/web/static/src/views/fields/properties/property_value.xml:0
 #, python-format
 msgid "No Access"
-msgstr ""
+msgstr "禁止访问"
 
 #. module: web
 #. openerp-web
@@ -3431,7 +3432,7 @@ msgstr "无颜色"
 #: code:addons/web/static/src/core/commands/default_providers.js:0
 #, python-format
 msgid "No command found"
-msgstr ""
+msgstr "未找到命令"
 
 #. module: web
 #. openerp-web
@@ -3452,7 +3453,7 @@ msgstr "无数据显示"
 #: code:addons/web/static/src/core/debug/debug_menu.js:0
 #, python-format
 msgid "No debug command found"
-msgstr ""
+msgstr "未找到调试命令"
 
 #. module: web
 #. openerp-web
@@ -3664,7 +3665,7 @@ msgstr "在所选的%d条记录中，只有前%d条已被归档/未归档。"
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
 #, python-format
 msgid "Oh snap!"
-msgstr ""
+msgstr "哦，快!"
 
 #. module: web
 #. openerp-web
@@ -3721,7 +3722,7 @@ msgstr "只有前%d条记录被删除（在所选的%d条记录中）。"
 #: code:addons/web/static/src/views/list/list_controller.js:0
 #, python-format
 msgid "Only the first %s records have been deleted (out of %s selected)"
-msgstr ""
+msgstr "只有前%s条记录被删除(在所选的%s条中)"
 
 #. module: web
 #: code:addons/web/models/models.py:0
@@ -3784,7 +3785,7 @@ msgstr "打开：%s"
 #: code:addons/web/static/src/views/fields/properties/property_definition_selection.xml:0
 #, python-format
 msgid "Option Name"
-msgstr ""
+msgstr "选项名称"
 
 #. module: web
 #. openerp-web
@@ -3887,7 +3888,7 @@ msgstr "待定邀请："
 #: code:addons/web/static/src/views/fields/percent_pie/percent_pie_field.js:0
 #, python-format
 msgid "PercentPie"
-msgstr ""
+msgstr "百分比派"
 
 #. module: web
 #. openerp-web
@@ -3979,7 +3980,7 @@ msgstr "请先点击“保存”按钮"
 #: code:addons/web/static/src/views/fields/properties/properties_field.js:0
 #, python-format
 msgid "Please complete your properties before adding a new one"
-msgstr ""
+msgstr "在添加新的属性之前，请完成您的属性"
 
 #. module: web
 #. openerp-web
@@ -4048,7 +4049,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/many2one/many2one_field.js:0
 #, python-format
 msgid "Please, scan again !"
-msgstr ""
+msgstr "请重新扫描！"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.brand_promotion_message
@@ -4189,14 +4190,14 @@ msgstr "权益"
 #: code:addons/web/static/src/views/fields/properties/properties_field.js:0
 #, python-format
 msgid "Property %s"
-msgstr ""
+msgstr "属性%s"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
 #, python-format
 msgid "Property Name"
-msgstr ""
+msgstr "属性名称"
 
 #. module: web
 #. openerp-web
@@ -4257,10 +4258,6 @@ msgstr "季"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/kanban.xml:0
 #: code:addons/web/static/src/legacy/xml/kanban.xml:0
-#: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
-#: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
-#: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
-#: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
 #: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
 #: code:addons/web/static/src/views/kanban/kanban_renderer.xml:0
 #, python-format
@@ -4330,7 +4327,7 @@ msgstr "记录痕迹"
 #: code:addons/web/static/src/core/debug/profiling/profiling_item.xml:0
 #, python-format
 msgid "Recording..."
-msgstr ""
+msgstr "记录中……"
 
 #. module: web
 #. openerp-web
@@ -4408,6 +4405,7 @@ msgstr "剩余天数"
 #: code:addons/web/static/src/search/search_bar/search_bar.xml:0
 #: code:addons/web/static/src/views/fields/relational_utils.xml:0
 #: code:addons/web/static/src/views/fields/relational_utils.xml:0
+#: code:addons/web/static/src/views/form/form_controller.xml:0
 #, python-format
 msgid "Remove"
 msgstr "移除"
@@ -4426,7 +4424,7 @@ msgstr "移除封面图像"
 #: code:addons/web/static/src/views/fields/properties/property_definition_selection.xml:0
 #, python-format
 msgid "Remove Property"
-msgstr ""
+msgstr "移除属性"
 
 #. module: web
 #. openerp-web
@@ -4533,7 +4531,7 @@ msgstr "查看结果"
 #: code:addons/web/static/src/views/fields/signature/signature_field.xml:0
 #, python-format
 msgid "SIGNATURE"
-msgstr "签名"
+msgstr "签字"
 
 #. module: web
 #. openerp-web
@@ -4564,7 +4562,6 @@ msgstr "周六"
 #: code:addons/web/static/src/views/fields/relational_utils.xml:0
 #: code:addons/web/static/src/views/fields/translation_dialog.xml:0
 #: code:addons/web/static/src/views/form/form_controller.xml:0
-#: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
 #: code:addons/web/static/src/views/list/list_controller.xml:0
 #: code:addons/web/static/src/webclient/settings_form_view/settings_confirmation_dialog.xml:0
 #: model_terms:ir.ui.view,arch_db:web.view_base_document_layout
@@ -4580,7 +4577,7 @@ msgstr "保存"
 #: code:addons/web/static/src/views/view_dialogs/form_view_dialog.xml:0
 #, python-format
 msgid "Save & Close"
-msgstr "保存并关闭"
+msgstr "保存和关闭"
 
 #. module: web
 #. openerp-web
@@ -4589,7 +4586,7 @@ msgstr "保存并关闭"
 #: code:addons/web/static/src/views/view_dialogs/form_view_dialog.xml:0
 #, python-format
 msgid "Save & New"
-msgstr "保存并新建"
+msgstr "保存和新建"
 
 #. module: web
 #. openerp-web
@@ -4618,6 +4615,13 @@ msgstr "保存当前搜索"
 #, python-format
 msgid "Save default"
 msgstr "保存默认"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
+#, python-format
+msgid "Save manually"
+msgstr "手动保存"
 
 #. module: web
 #. openerp-web
@@ -4662,14 +4666,14 @@ msgstr "搜索更多..."
 #: code:addons/web/static/src/core/model_selector/model_selector.js:0
 #, python-format
 msgid "Search a Model..."
-msgstr ""
+msgstr "搜索模型"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Search a field..."
-msgstr ""
+msgstr "搜索字段"
 
 #. module: web
 #. openerp-web
@@ -4683,7 +4687,7 @@ msgstr "搜索一个命令..."
 #: code:addons/web/static/src/webclient/menus/menu_providers.js:0
 #, python-format
 msgid "Search for a menu..."
-msgstr ""
+msgstr "搜索菜单"
 
 #. module: web
 #. openerp-web
@@ -4766,7 +4770,7 @@ msgstr "选择 <i class=\"fa fa-database\" role=\"img\" aria-label=\"数据库\"
 #: code:addons/web/static/src/views/fields/properties/property_definition_selection.xml:0
 #, python-format
 msgid "Select Default"
-msgstr ""
+msgstr "默认选择"
 
 #. module: web
 #. openerp-web
@@ -4812,7 +4816,7 @@ msgstr "选择字段"
 #: code:addons/web/static/src/views/fields/relational_utils.js:0
 #, python-format
 msgid "Select records"
-msgstr ""
+msgstr "选择记录"
 
 #. module: web
 #. openerp-web
@@ -4949,7 +4953,7 @@ msgstr "显示本地可用模块"
 #: code:addons/web/static/src/legacy/js/fields/signature.js:0
 #, python-format
 msgid "Signature"
-msgstr "签名"
+msgstr "签字"
 
 #. module: web
 #. openerp-web
@@ -5013,7 +5017,7 @@ msgstr "开始输入..."
 #: code:addons/web/static/src/views/fields/stat_info/stat_info_field.js:0
 #, python-format
 msgid "Stat Info"
-msgstr ""
+msgstr "统计信息"
 
 #. module: web
 #. openerp-web
@@ -5034,7 +5038,7 @@ msgstr "待在这儿"
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
 #, python-format
 msgid "Stay here"
-msgstr ""
+msgstr "呆在这里"
 
 #. module: web
 #. openerp-web
@@ -5224,7 +5228,12 @@ msgstr "上传您的文件时发生了问题"
 #: code:addons/web/static/src/views/fields/file_handler.js:0
 #, python-format
 msgid "There was a problem while uploading your file."
-msgstr ""
+msgstr "上传您的文件时出现问题"
+
+#. module: web
+#: model_terms:ir.ui.view,arch_db:web.neutralize_banner
+msgid "This database is neutralized."
+msgstr "此数据库已中和。"
 
 #. module: web
 #. openerp-web
@@ -5253,14 +5262,14 @@ msgstr "此域不受支持。"
 #: code:addons/web/static/src/views/fields/properties/properties_field.js:0
 #, python-format
 msgid "This field is already first"
-msgstr ""
+msgstr "这字段已经是第一个"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/views/fields/properties/properties_field.js:0
 #, python-format
 msgid "This field is already last"
-msgstr ""
+msgstr "这字段已经是最后一个"
 
 #. module: web
 #. openerp-web
@@ -5294,7 +5303,7 @@ msgstr "这是内部报告的一个例子。"
 #: code:addons/web/static/src/views/fields/properties/property_tags.js:0
 #, python-format
 msgid "This tag is already available"
-msgstr ""
+msgstr "这标签已经是可用的"
 
 #. module: web
 #. openerp-web
@@ -5417,11 +5426,18 @@ msgstr "周二"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/core/model_field_selector/model_field_selector_popover.xml:0
+#, python-format
+msgid "Type a default text or press ENTER"
+msgstr "键入默认文本或按回车键"
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/core/signature/name_and_signature.xml:0
 #: code:addons/web/static/src/legacy/xml/name_and_signature.xml:0
 #, python-format
 msgid "Type your name to sign"
-msgstr ""
+msgstr "输入您的姓名进行签名"
 
 #. module: web
 #. openerp-web
@@ -5558,7 +5574,6 @@ msgstr "未命名的"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/views/form/form_status_indicator/form_status_indicator.xml:0
 #: code:addons/web/static/src/webclient/settings_form_view/settings_confirmation_dialog.js:0
 #: code:addons/web/static/src/webclient/settings_form_view/settings_form_view.xml:0
 #, python-format
@@ -5751,6 +5766,13 @@ msgstr "查看字段"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
+#, python-format
+msgid "View In Kanban"
+msgstr "看板中的视图"
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/debug_manager.js:0
 #: code:addons/web/static/src/legacy/debug_manager.js:0
 #: code:addons/web/static/src/views/debug_items.js:0
@@ -5920,7 +5942,7 @@ msgstr "昨天"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.login_successful
 msgid "You are logged in."
-msgstr ""
+msgstr "您已登录"
 
 #. module: web
 #: code:addons/web/controllers/binary.py:0
@@ -5940,7 +5962,7 @@ msgstr "您无法跟踪此字段链结构的关系"
 #: code:addons/web/static/src/views/fields/properties/property_definition.js:0
 #, python-format
 msgid "You do not have access to the model \"%s\"."
-msgstr ""
+msgstr "您无权访问模型\"%s\""
 
 #. module: web
 #. openerp-web
@@ -6185,7 +6207,7 @@ msgstr "例如：全球商业解决方案"
 #: code:addons/web/static/src/views/view_dialogs/export_data_dialog.xml:0
 #, python-format
 msgid "expandText"
-msgstr ""
+msgstr "扩展文本"
 
 #. module: web
 #. openerp-web
@@ -6260,7 +6282,7 @@ msgstr "是"
 #: code:addons/web/static/src/search/filter_menu/custom_filter_item.js:0
 #, python-format
 msgid "is No"
-msgstr ""
+msgstr "不是"
 
 #. module: web
 #. openerp-web
@@ -6268,7 +6290,7 @@ msgstr ""
 #: code:addons/web/static/src/search/filter_menu/custom_filter_item.js:0
 #, python-format
 msgid "is Yes"
-msgstr ""
+msgstr "是"
 
 #. module: web
 #. openerp-web
@@ -6449,7 +6471,7 @@ msgstr "少于或等于"
 #: code:addons/web/static/src/core/domain_selector/domain_selector_operators.js:0
 #, python-format
 msgid "like"
-msgstr ""
+msgstr "like"
 
 #. module: web
 #. openerp-web
@@ -6524,7 +6546,7 @@ msgstr "不在"
 #: code:addons/web/static/src/core/domain_selector/domain_selector_operators.js:0
 #, python-format
 msgid "not like"
-msgstr ""
+msgstr "not like"
 
 #. module: web
 #. openerp-web
@@ -6555,7 +6577,7 @@ msgstr "的:"
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.xml:0
 #, python-format
 msgid "on any screen to show shortcut overlays and"
-msgstr ""
+msgstr "在任何屏幕上显示快捷方式叠加和"
 
 #. module: web
 #. openerp-web
@@ -6672,18 +6694,18 @@ msgstr "打开,"
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.xml:0
 #, python-format
 msgid "to trigger a shortcut."
-msgstr ""
+msgstr "以触发快捷方式。"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "type a default text or press ENTER"
-msgstr ""
+msgstr "键入默认文本或按 ENTER 键"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.xml:0
 #, python-format
 msgid "— press"
-msgstr ""
+msgstr "按下"

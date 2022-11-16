@@ -237,7 +237,6 @@
                                         force_save="1" domain="[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"/>
                                     <field name="name" widget="section_and_note_text"/>
                                     <field name="date_planned" optional="hide" attrs="{'required': [('display_type', '=', False)]}" force_save="1"/>
-                                    <field name="analytic_distribution_stored_char" invisible="1"/>
                                     <field name="analytic_distribution" widget="analytic_distribution"
                                            optional="hide"
                                            groups="analytic.group_analytic_accounting"
@@ -259,6 +258,8 @@
                                     <button name="action_purchase_history" type="object" icon="fa-history" title="Purchase History" attrs="{'invisible': [('id', '=', False)]}"/>
                                     <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase'), ('company_id', '=', parent.company_id), ('country_id', '=', parent.tax_country_id)]" context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'account.account_tax_view_search'}" options="{'no_create': True}" optional="show"/>
                                     <field name="price_subtotal" widget="monetary"/>
+                                    <field name="price_total" invisible="1"/>
+                                    <field name="price_tax" invisible="1"/>
                                 </tree>
                                 <form string="Purchase Order Line">
                                         <field name="state" invisible="1"/>
@@ -285,7 +286,6 @@
                                             </group>
                                             <group>
                                                 <field name="date_planned" widget="date" attrs="{'required': [('display_type', '=', False)]}"/>
-                                                <field name="analytic_distribution_stored_char" invisible="1"/>
                                                 <field name="analytic_distribution" widget="analytic_distribution"
                                                        groups="analytic.group_analytic_accounting"
                                                        options="{'product_field': 'product_id', 'business_domain': 'purchase_order'}"/>
@@ -337,7 +337,7 @@
                                                              <span>
                                                                  Quantity:
                                                                  <t t-esc="record.product_qty.value"/>
-                                                                 <t t-esc="record.product_uom.value"/>
+                                                                 <t t-esc="record.product_uom.value" groups="uom.group_uom"/>
                                                              </span>
                                                          </div>
                                                      </div>
@@ -364,7 +364,7 @@
                             </field>
                             <group>
                                 <group>
-                                    <field name="notes" nolabel="1" placeholder="Define your terms and conditions ..."/>
+                                    <field colspan="2" name="notes" nolabel="1" placeholder="Define your terms and conditions ..."/>
                                 </group>
                                 <group class="oe_subtotal_footer oe_right">
                                     <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
@@ -738,7 +738,6 @@
                                     domain="[('type_tax_use', '=', 'purchase')]"/>
                                 <field name="date_planned" widget="date" readonly="1"/>
                                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                                <field name="analytic_distribution_stored_char" invisible="1"/>
                                 <field name="analytic_distribution" widget="analytic_distribution"
                                        groups="analytic.group_analytic_accounting"
                                        options="{'product_field': 'product_id', 'business_domain': 'purchase_order'}"/>

@@ -19,7 +19,7 @@ import { KanbanColumnQuickCreate } from "./kanban_column_quick_create";
 import { KanbanRecord } from "./kanban_record";
 import { KanbanRecordQuickCreate } from "./kanban_record_quick_create";
 
-const { Component, useState, useRef, onWillDestroy } = owl;
+import { Component, useState, useRef, onWillDestroy } from "@odoo/owl";
 
 const DRAGGABLE_GROUP_TYPES = ["many2one"];
 const MOVABLE_RECORD_TYPES = ["char", "boolean", "integer", "selection", "many2one"];
@@ -41,11 +41,11 @@ export class KanbanRenderer extends Component {
         let dataRecordId;
         let dataGroupId;
         const rootRef = useRef("root");
-        if (!this.env.isSmall) {
+        if (this.canUseSortable) {
             useSortable({
                 enable: () => this.canResequenceRecords,
                 // Params
-                ref: this.props.layoutContentRef || rootRef,
+                ref: rootRef,
                 elements: ".o_record_draggable",
                 ignore: ".dropdown",
                 groups: () => this.props.list.isGrouped && ".o_kanban_group",
@@ -99,17 +99,19 @@ export class KanbanRenderer extends Component {
             this.dialogClose.forEach((close) => close());
         });
 
-        useBus(this.env.searchModel, "focus-view", () => {
-            const { model } = this.props.list;
-            if (model.useSampleModel || !model.hasData()) {
-                return;
-            }
-            const firstCard = rootRef.el.querySelector(".o_kanban_record");
-            if (firstCard) {
-                // Focus first kanban card
-                firstCard.focus();
-            }
-        });
+        if (this.env.searchModel) {
+            useBus(this.env.searchModel, "focus-view", () => {
+                const { model } = this.props.list;
+                if (model.useSampleModel || !model.hasData()) {
+                    return;
+                }
+                const firstCard = rootRef.el.querySelector(".o_kanban_record");
+                if (firstCard) {
+                    // Focus first kanban card
+                    firstCard.focus();
+                }
+            });
+        }
 
         useHotkey(
             "Enter",
@@ -129,15 +131,17 @@ export class KanbanRenderer extends Component {
         );
 
         const arrowsOptions = { area: () => rootRef.el, allowRepeat: true };
-        useHotkey(
-            "ArrowUp",
-            ({ area }) => {
-                if (!this.focusNextCard(area, "up")) {
-                    this.env.searchModel.trigger("focus-search");
-                }
-            },
-            arrowsOptions
-        );
+        if (this.env.searchModel) {
+            useHotkey(
+                "ArrowUp",
+                ({ area }) => {
+                    if (!this.focusNextCard(area, "up")) {
+                        this.env.searchModel.trigger("focus-search");
+                    }
+                },
+                arrowsOptions
+            );
+        }
         useHotkey("ArrowDown", ({ area }) => this.focusNextCard(area, "down"), arrowsOptions);
         useHotkey("ArrowLeft", ({ area }) => this.focusNextCard(area, "left"), arrowsOptions);
         useHotkey("ArrowRight", ({ area }) => this.focusNextCard(area, "right"), arrowsOptions);
@@ -146,6 +150,10 @@ export class KanbanRenderer extends Component {
     // ------------------------------------------------------------------------
     // Getters
     // ------------------------------------------------------------------------
+
+    get canUseSortable() {
+        return !this.env.isSmall;
+    }
 
     get canMoveRecords() {
         if (!this.canResequenceRecords) {
@@ -504,7 +512,6 @@ export class KanbanRenderer extends Component {
      */
     sortRecordGroupEnter({ group }) {
         group.classList.add("o_kanban_hover");
-        group.classList.remove("bg-100");
     }
 
     /**
@@ -513,7 +520,6 @@ export class KanbanRenderer extends Component {
      */
     sortRecordGroupLeave({ group }) {
         group.classList.remove("o_kanban_hover");
-        group.classList.add("bg-100");
     }
 
     /**
@@ -610,7 +616,6 @@ KanbanRenderer.props = [
     "readonly",
     "forceGlobalClick?",
     "noContentHelp?",
-    "layoutContentRef?",
 ];
 KanbanRenderer.components = {
     Dropdown,

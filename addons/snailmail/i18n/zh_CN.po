@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3\n"
+"Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 13:58+0000\n"
+"POT-Creation-Date: 2022-10-10 10:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
 "Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -44,7 +45,7 @@ msgstr "用Snailmail发送信件时发生了错误。"
 #: code:addons/snailmail/models/snailmail_letter.py:0
 #, python-format
 msgid "An error occurred when sending the document by post.<br>Error: %s"
-msgstr "发送文件时发生错误。<br>错误。%s</br>"
+msgstr "发送文件时发生错误。<br>错误：%s"
 
 #. module: snailmail
 #: code:addons/snailmail/models/snailmail_letter.py:0
@@ -71,7 +72,7 @@ msgstr "附件文件名"
 
 #. module: snailmail
 #. openerp-web
-#: code:addons/snailmail/static/src/components/snailmail_notification_popover/snailmail_notification_popover.js:0
+#: code:addons/snailmail/static/src/models/snailmail_notification_popover_content_view.js:0
 #, python-format
 msgid "Awaiting Dispatch"
 msgstr "等待发货"
@@ -125,7 +126,7 @@ msgstr "取消失败通知"
 
 #. module: snailmail
 #. openerp-web
-#: code:addons/snailmail/static/src/components/snailmail_notification_popover/snailmail_notification_popover.js:0
+#: code:addons/snailmail/static/src/models/snailmail_notification_popover_content_view.js:0
 #: model:ir.model.fields.selection,name:snailmail.selection__snailmail_letter__state__canceled
 #, python-format
 msgid "Canceled"
@@ -225,11 +226,11 @@ msgstr "文档ID"
 #. module: snailmail
 #: model:ir.model,name:snailmail.model_mail_thread
 msgid "Email Thread"
-msgstr "邮件主题"
+msgstr "邮件会话"
 
 #. module: snailmail
 #. openerp-web
-#: code:addons/snailmail/static/src/components/snailmail_notification_popover/snailmail_notification_popover.js:0
+#: code:addons/snailmail/static/src/models/snailmail_notification_popover_content_view.js:0
 #: model:ir.model.fields,field_description:snailmail.field_snailmail_letter__error_code
 #: model:ir.model.fields.selection,name:snailmail.selection__snailmail_letter__state__error
 #, python-format
@@ -263,11 +264,6 @@ msgstr "格式错误"
 #: model:ir.model,name:snailmail.model_snailmail_letter_format_error
 msgid "Format Error Sending a Snailmail Letter"
 msgstr "发送蜗牛邮件格式错误"
-
-#. module: snailmail
-#: model:ir.model,name:snailmail.model_iap_account
-msgid "IAP Account"
-msgstr "IAP 账户"
 
 #. module: snailmail
 #: model:ir.model.fields,field_description:snailmail.field_snailmail_letter__id
@@ -368,7 +364,7 @@ msgstr "NO_PRICE_AVAILABLE"
 #: code:addons/snailmail/models/snailmail_letter.py:0
 #, python-format
 msgid "Not enough credits for Snail Mail"
-msgstr ""
+msgstr "Snail邮件没有足够的额度"
 
 #. module: snailmail
 #: model:ir.model.fields,field_description:snailmail.field_mail_notification__notification_type
@@ -446,7 +442,7 @@ msgstr "立即发送"
 
 #. module: snailmail
 #. openerp-web
-#: code:addons/snailmail/static/src/components/snailmail_notification_popover/snailmail_notification_popover.js:0
+#: code:addons/snailmail/static/src/models/snailmail_notification_popover_content_view.js:0
 #: model:ir.model.fields.selection,name:snailmail.selection__snailmail_letter__state__sent
 #, python-format
 msgid "Sent"
@@ -461,7 +457,7 @@ msgstr "发送者"
 #: code:addons/snailmail/models/snailmail_letter.py:0
 #, python-format
 msgid "Snail Mails are successfully sent"
-msgstr ""
+msgstr "Snail 邮件已成功发送"
 
 #. module: snailmail
 #: code:addons/snailmail/wizard/snailmail_confirm.py:0
@@ -569,7 +565,7 @@ msgstr "街道"
 #. module: snailmail
 #: model_terms:ir.ui.view,arch_db:snailmail.snailmail_letter_missing_required_fields
 msgid "Street 2..."
-msgstr "详细地址..."
+msgstr "街道 2……"
 
 #. module: snailmail
 #: model_terms:ir.ui.view,arch_db:snailmail.snailmail_letter_missing_required_fields
@@ -627,7 +623,7 @@ msgstr "客户地址不完整。 在此处更新地址，然后重新发送信�
 #: code:addons/snailmail/models/snailmail_letter.py:0
 #, python-format
 msgid "The document was correctly sent by post.<br>The tracking id is %s"
-msgstr "该文件被正确地邮寄出去了。<br>追踪ID是%s</br>"
+msgstr "该文件被正确地邮寄出去了。<br>追踪ID是%s"
 
 #. module: snailmail
 #. openerp-web

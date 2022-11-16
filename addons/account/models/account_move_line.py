@@ -15,9 +15,9 @@ INTEGRITY_HASH_LINE_FIELDS = ('debit', 'credit', 'account_id', 'partner_id')
 
 class AccountMoveLine(models.Model):
     _name = "account.move.line"
-    _inherit = 'analytic.mixin'
+    _inherit = "analytic.mixin"
     _description = "Journal Item"
-    _order = "date desc, move_name desc, sequence, id"
+    _order = "date desc, move_name desc, id"
     _check_company_auto = True
     _rec_names_search = ['name', 'move_id', 'product_id']
 
@@ -43,6 +43,7 @@ class AccountMoveLine(models.Model):
     )
     company_id = fields.Many2one(
         related='move_id.company_id', store=True, readonly=True, precompute=True,
+        index=True,
     )
     company_currency_id = fields.Many2one(
         string='Company Currency',
@@ -70,6 +71,7 @@ class AccountMoveLine(models.Model):
         help="Utility field to express whether the journal item is subject to storno accounting",
     )
     sequence = fields.Integer(compute='_compute_sequence', store=True, readonly=False, precompute=True)
+    move_type = fields.Selection(related='move_id.move_type')
 
     # === Accountable fields === #
     account_id = fields.Many2one(
@@ -78,6 +80,7 @@ class AccountMoveLine(models.Model):
         compute='_compute_account_id', store=True, readonly=False, precompute=True,
         inverse='_inverse_account_id',
         index=True,
+        auto_join=True,
         ondelete="cascade",
         domain="[('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]",
         check_company=True,
@@ -143,16 +146,19 @@ class AccountMoveLine(models.Model):
         comodel_name='account.payment',
         string="Originator Payment",
         related='move_id.payment_id', store=True,
+        auto_join=True,
         index='btree_not_null',
         help="The payment that created this entry")
     statement_line_id = fields.Many2one(
         comodel_name='account.bank.statement.line',
         string="Originator Statement Line",
         related='move_id.statement_line_id', store=True,
+        auto_join=True,
         index='btree_not_null',
         help="The statement line that created this entry")
     statement_id = fields.Many2one(
         related='statement_line_id.statement_id', store=True,
+        auto_join=True,
         index='btree_not_null',
         copy=False,
         help="The bank statement used for bank reconciliation")
@@ -352,6 +358,9 @@ class AccountMoveLine(models.Model):
         comodel_name='account.analytic.line', inverse_name='move_line_id',
         string='Analytic lines',
     )
+    analytic_distribution = fields.Json(
+        inverse="_inverse_analytic_distribution",
+    ) # add the inverse function used to trigger the creation/update of the analytic lines accordingly (field originally defined in the analytic mixin)
 
     # === Early Pay fields === #
     discount_date = fields.Date(
@@ -929,17 +938,7 @@ class AccountMoveLine(models.Model):
                 include_caba_tags=line.move_id.always_tax_exigible,
                 fixed_multiplicator=sign,
             )
-            compute_all = line.tax_ids.compute_all(
-                amount,
-                currency=line.company_id.currency_id,
-                quantity=quantity,
-                product=line.product_id,
-                partner=line.move_id.partner_id or line.partner_id,
-                is_refund=line.is_refund,
-                handle_price_include=handle_price_include,
-                include_caba_tags=line.move_id.always_tax_exigible,
-                fixed_multiplicator=sign/line.currency_rate,
-            )
+            rate = line.amount_currency / line.balance if line.balance else 1
             line.compute_all_tax_dirty = True
             line.compute_all_tax = {
                 frozendict({
@@ -954,16 +953,16 @@ class AccountMoveLine(models.Model):
                     'move_id': line.move_id.id,
                 }): {
                     'name': tax['name'],
-                    'balance': tax['amount'],
-                    'amount_currency': tax_currency['amount'],
-                    'tax_base_amount': tax['base'] * (-1 if line.tax_tag_invert else 1),
+                    'balance': tax['amount'] / rate,
+                    'amount_currency': tax['amount'],
+                    'tax_base_amount': tax['base'] / rate * (-1 if line.tax_tag_invert else 1),
                 }
-                for tax, tax_currency in zip(compute_all['taxes'], compute_all_currency['taxes'])
-                if tax['amount'] or tax_currency['amount']
+                for tax in compute_all_currency['taxes']
+                if tax['amount']
             }
             if not line.tax_repartition_line_id:
                 line.compute_all_tax[frozendict({'id': line.id})] = {
-                    'tax_tag_ids': [(6, 0, compute_all['base_tags'])],
+                    'tax_tag_ids': [(6, 0, compute_all_currency['base_tags'])],
                 }
 
     @api.depends('tax_ids', 'account_id', 'company_id')
@@ -1071,10 +1070,10 @@ class AccountMoveLine(models.Model):
                 line.term_key = False
 
     @api.depends('account_id', 'partner_id', 'product_id')
-    def _compute_analytic_distribution_stored_char(self):
+    def _compute_analytic_distribution(self):
         for line in self:
             if line.display_type == 'product' or not line.move_id.is_invoice(include_receipts=True):
-                distribution = self.env['account.analytic.distribution.model']._get_distributionjson({
+                distribution = self.env['account.analytic.distribution.model']._get_distribution({
                     "product_id": line.product_id.id,
                     "product_categ_id": line.product_id.categ_id.id,
                     "partner_id": line.partner_id.id,
@@ -1082,8 +1081,7 @@ class AccountMoveLine(models.Model):
                     "account_prefix": line.account_id.code,
                     "company_id": line.company_id.id,
                 })
-                line.analytic_distribution_stored_char = distribution or line.analytic_distribution_stored_char
-            line._compute_analytic_distribution()
+                line.analytic_distribution = distribution or line.analytic_distribution
 
     # -------------------------------------------------------------------------
     # INVERSE METHODS
@@ -1125,7 +1123,6 @@ class AccountMoveLine(models.Model):
     @api.onchange('analytic_distribution')
     def _inverse_analytic_distribution(self):
         """ Unlink and recreate analytic_lines when modifying the distribution."""
-        super()._inverse_analytic_distribution()
         lines_to_modify = self.env['account.move.line'].browse([
             line.id for line in self if line.parent_state == "posted"
         ])
@@ -1138,21 +1135,6 @@ class AccountMoveLine(models.Model):
             line.account_id.tax_ids
             and not line.product_id.taxes_id.filtered(lambda tax: tax.company_id == line.company_id)
         ))
-
-    # -------------------------------------------------------------------------
-    # ONCHANGE METHODS
-    # -------------------------------------------------------------------------
-
-    @api.onchange('tax_ids')
-    def _onchange_quick_suggest_price_unit(self):
-        """When a new line is created, we suggest a price_unit according to the quick suggestions"""
-        for line in self:
-            if line.price_unit != 0 or not line.move_id.quick_edit_mode:
-                continue
-            suggestions = line.move_id._get_quick_edit_suggestions()
-            if suggestions:
-                line.price_unit = suggestions['price_unit']
-                line.tax_ids = suggestions['tax_ids']
 
     # -------------------------------------------------------------------------
     # CONSTRAINT METHODS
@@ -1300,6 +1282,13 @@ class AccountMoveLine(models.Model):
         )
         return super(AccountMoveLine, contextualized).search_read(domain, fields, offset, limit, order)
 
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        res = super().fields_get(allfields, attributes)
+        if res.get('cumulated_balance'):
+            res['cumulated_balance']['exportable'] = False
+        return res
+
     def init(self):
         """ change index on partner_id to a multi-column index on (partner_id, ref), the new index will behave in the
             same way when we search on partner_id, with the addition of being optimal when having a query that will
@@ -1308,6 +1297,14 @@ class AccountMoveLine(models.Model):
         create_index(self._cr, 'account_move_line_partner_id_ref_idx', 'account_move_line', ["partner_id", "ref"])
         create_index(self._cr, 'account_move_line_date_name_id_idx', 'account_move_line', ["date desc", "move_name desc", "id"])
 
+    def default_get(self, fields_list):
+        defaults = super().default_get(fields_list)
+        quick_encode_suggestion = self.env.context.get('quick_encoding_vals')
+        if quick_encode_suggestion:
+            defaults['account_id'] = quick_encode_suggestion['account_id']
+            defaults['price_unit'] = quick_encode_suggestion['price_unit']
+            defaults['tax_ids'] = [Command.set(quick_encode_suggestion['tax_ids'])]
+        return defaults
 
     def _sanitize_vals(self, vals):
         if 'debit' in vals or 'credit' in vals:
@@ -1328,10 +1325,10 @@ class AccountMoveLine(models.Model):
         def existing():
             return {
                 line: {
-                    'amount_currency': line.amount_currency,
-                    'balance': line.balance,
+                    'amount_currency': line.currency_id.round(line.amount_currency),
+                    'balance': line.company_id.currency_id.round(line.balance),
                     'currency_rate': line.currency_rate,
-                    'price_subtotal': line.price_subtotal,
+                    'price_subtotal': line.currency_id.round(line.price_subtotal),
                     'move_type': line.move_id.move_type,
                 } for line in container['records'].with_context(
                     skip_sync_invoice=True,
@@ -1357,12 +1354,11 @@ class AccountMoveLine(models.Model):
 
         after = existing()
         for line in after:
-            balance = line.company_id.currency_id.round(line.amount_currency / line.currency_rate)
-
             if (
                 (changed('amount_currency') or changed('currency_rate') or changed('move_type'))
                 and (not changed('balance') or (line not in before and not line.balance))
             ):
+                balance = line.company_id.currency_id.round(line.amount_currency / line.currency_rate)
                 line.balance = balance
         # Since this method is called during the sync, inside of `create`/`write`, these fields
         # already have been computed and marked as so. But this method should re-trigger it since
@@ -1387,12 +1383,6 @@ class AccountMoveLine(models.Model):
 
         lines.move_id._synchronize_business_models(['line_ids'])
         return lines
-
-    def new(self, values=None, origin=None, ref=None):
-        record = super().new(self._sanitize_vals(values), origin, ref)
-        if record.move_id.quick_edit_total_amount and record.move_id.quick_edit_mode:
-            record.move_id._check_total_amount(record.move_id.quick_edit_total_amount)
-        return record
 
     def write(self, vals):
         if not vals:
@@ -1617,6 +1607,8 @@ class AccountMoveLine(models.Model):
         has_credit_zero_residual = company_currency.is_zero(remaining_credit_amount)
         has_debit_zero_residual_currency = debit_vals['currency'].is_zero(remaining_debit_amount_curr)
         has_credit_zero_residual_currency = credit_vals['currency'].is_zero(remaining_credit_amount_curr)
+        is_rec_pay_account = debit_vals.get('record') \
+                             and debit_vals['record'].account_type in ('asset_receivable', 'liability_payable')
 
         if debit_vals['currency'] == credit_vals['currency'] == company_currency \
                 and not has_debit_zero_residual \
@@ -1627,6 +1619,7 @@ class AccountMoveLine(models.Model):
             recon_debit_amount = remaining_debit_amount
             recon_credit_amount = -remaining_credit_amount
         elif debit_vals['currency'] == company_currency \
+                and is_rec_pay_account \
                 and not has_debit_zero_residual \
                 and credit_vals['currency'] != company_currency \
                 and not has_credit_zero_residual_currency:
@@ -1638,6 +1631,7 @@ class AccountMoveLine(models.Model):
             recon_debit_amount = recon_currency.round(remaining_debit_amount * debit_rate)
             recon_credit_amount = -remaining_credit_amount_curr
         elif debit_vals['currency'] != company_currency \
+                and is_rec_pay_account \
                 and not has_debit_zero_residual_currency \
                 and credit_vals['currency'] == company_currency \
                 and not has_credit_zero_residual:
@@ -1929,6 +1923,7 @@ class AccountMoveLine(models.Model):
             'date': max(exchange_date or date.min, company._get_user_fiscal_lock_date() + timedelta(days=1)),
             'journal_id': journal.id,
             'line_ids': [],
+            'always_tax_exigible': True,
         }
         to_reconcile = []
 
@@ -2351,13 +2346,14 @@ class AccountMoveLine(models.Model):
                         'account': line.account_id.id,
                         'business_domain': line.move_id.move_type in ['out_invoice', 'out_refund', 'out_receipt'] and 'invoice'
                                            or line.move_id.move_type in ['in_invoice', 'in_refund', 'in_receipt'] and 'bill'
-                                           or 'general'
+                                           or 'general',
+                        'company_id': self.company_id.id,
                         }) if plan['applicability'] == 'mandatory']
             if not mandatory_plans_ids:
                 continue
             distribution_by_root_plan = {}
             for analytic_account_id, percentage in (line.analytic_distribution or {}).items():
-                root_plan = self.env['account.analytic.account'].browse(analytic_account_id).root_plan_id
+                root_plan = self.env['account.analytic.account'].browse(int(analytic_account_id)).root_plan_id
                 distribution_by_root_plan[root_plan.id] = distribution_by_root_plan.get(root_plan.id, 0) + percentage
 
             for plan_id in mandatory_plans_ids:
@@ -2378,7 +2374,6 @@ class AccountMoveLine(models.Model):
     def _prepare_analytic_lines(self):
         self.ensure_one()
         analytic_line_vals = []
-        self._compute_analytic_distribution()
         if self.analytic_distribution:
             # distribution_on_each_plan corresponds to the proportion that is distributed to each plan to be able to
             # give the real amount when we achieve a 100% distribution
@@ -2531,7 +2526,7 @@ class AccountMoveLine(models.Model):
         """
         tax_fnames = ['balance', 'tax_line_id', 'tax_ids', 'tax_tag_ids']
         fiscal_fnames = tax_fnames + ['account_id', 'journal_id', 'amount_currency', 'currency_id', 'partner_id']
-        reconciliation_fnames = ['account_id', 'date', 'balance', 'amount_currency', 'currency_id']
+        reconciliation_fnames = ['account_id', 'date', 'balance', 'amount_currency', 'currency_id', 'partner_id']
         return {
             'tax': tax_fnames,
             'fiscal': fiscal_fnames,

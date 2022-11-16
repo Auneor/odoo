@@ -16,7 +16,7 @@ import { toStringExpression } from "./utils";
  * @property {(el: Element, params: Record<string, any>) => Element} fn
  */
 
-const { xml } = owl;
+import { xml } from "@odoo/owl";
 
 const BUTTON_CLICK_PARAMS = [
     "name",
@@ -206,7 +206,7 @@ export function isTextNode(node) {
  */
 export function makeSeparator(title) {
     const separator = createElement("div");
-    separator.className = "o_horizontal_separator mb-3 text-uppercase fw-bolder small";
+    separator.className = "o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small";
     separator.textContent = title;
     return separator;
 }

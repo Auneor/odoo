@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.addons.hr_expense.tests.common import TestExpenseCommon
 from odoo.tests import tagged, Form
-from odoo import fields
+from odoo.tools.misc import formatLang
+from odoo import fields, Command
 
 
 @tagged('-at_install', 'post_install')
@@ -199,7 +200,7 @@ class TestExpenses(TestExpenseCommon):
                 'product_id': self.product_b.id,
                 'currency_id': self.currency_data['currency'].id,
                 'tax_line_id': False,
-                'analytic_distribution': {self.analytic_account_2.id: 100},
+                'analytic_distribution': {str(self.analytic_account_2.id): 100},
             },
             # Product line (company currency):
             {
@@ -210,7 +211,7 @@ class TestExpenses(TestExpenseCommon):
                 'product_id': self.product_a.id,
                 'currency_id': self.company_data['currency'].id,
                 'tax_line_id': False,
-                'analytic_distribution': {self.analytic_account_1.id: 100},
+                'analytic_distribution': {str(self.analytic_account_1.id): 100},
             },
         ])
 
@@ -319,7 +320,7 @@ class TestExpenses(TestExpenseCommon):
                 'unit_amount': 350.00,
                 'tax_ids': [(6, 0, [self.tax_purchase_a.id])],
                 'sheet_id': expense.id,
-                'analytic_distribution': {self.analytic_account_1.id: 100},
+                'analytic_distribution': {str(self.analytic_account_1.id): 100},
             })
 
         expense.action_submit_sheet()
@@ -437,3 +438,171 @@ class TestExpenses(TestExpenseCommon):
         self.assertEqual(expense.product_uom_id, product.uom_id)
         self.assertEqual(expense.tax_ids, product.supplier_taxes_id)
         self.assertEqual(expense.account_id, product._get_product_accounts()['expense'])
+
+    def test_expense_account(self):
+        """ Checking accounting move entries for the accounts set on the expenses """
+
+        account_expense_1 = self.env['account.account'].create({
+            'code': '610010',
+            'name': 'Expense Account 1'
+        })
+        account_expense_2 = self.env['account.account'].create({
+            'code': '610020',
+            'name': 'Expense Account 2'
+        })
+
+        expense_sheet = self.env['hr.expense.sheet'].create({
+            'name': 'First Expense for employee',
+            'employee_id': self.expense_employee.id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
+            'accounting_date': '2022-01-20',
+            'expense_line_ids': [
+                Command.create({
+                    # Expense on Expense Account 1
+                    'name': 'expense_1',
+                    'date': '2022-01-05',
+                    'account_id': account_expense_1.id,
+                    'product_id': self.product_a.id,
+                    'unit_amount': 115.0,
+                    'employee_id': self.expense_employee.id,
+                }),
+                Command.create({
+                    # Expense on Expense Account 2
+                    'name': 'expense_2',
+                    'date': '2022-01-08',
+                    'account_id': account_expense_2.id,
+                    'product_id': self.product_a.id,
+                    'unit_amount': 230.0,
+                    'employee_id': self.expense_employee.id,
+                }),
+            ],
+        })
+
+        self.assertRecordValues(expense_sheet, [{'state': 'draft', 'total_amount': 345.0}])
+
+        expense_sheet.action_submit_sheet()
+        expense_sheet.approve_expense_sheets()
+        expense_sheet.action_sheet_move_create()
+
+        # Check expense sheet journal entry values.
+        self.assertRecordValues(expense_sheet.account_move_id.line_ids.sorted('balance'), [
+            # Receivable lines:
+            {
+                'balance': -230.0,
+                'account_id': self.company_data['default_account_payable'].id,
+            },
+            {
+                'balance': -115.0,
+                'account_id': self.company_data['default_account_payable'].id,
+            },
+            # Tax lines:
+            {
+                'balance': 15.0,
+                'account_id': self.company_data['default_account_tax_purchase'].id,
+            },
+            {
+                'balance': 30.0,
+                'account_id': self.company_data['default_account_tax_purchase'].id,
+            },
+            # Expense line 1:
+            {
+                'balance': 100.0,
+                'account_id': account_expense_1.id,
+            },
+            # Expense line 2:
+            {
+                'balance': 200.0,
+                'account_id': account_expense_2.id,
+            },
+        ])
+
+    def test_employee_supplier(self):
+        """ Checking accounting move entries for the supplier set to the employee """
+
+        expense_sheet = self.env['hr.expense.sheet'].create({
+            'name': 'First Expense for employee',
+            'employee_id': self.expense_employee.id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
+            'accounting_date': '2022-01-20',
+            'expense_line_ids': [
+                Command.create({
+                    # Expense on Expense Account 1
+                    'name': 'expense_1',
+                    'date': '2022-01-05',
+                    'product_id': self.product_a.id,
+                    'unit_amount': 115.0,
+                    'employee_id': self.expense_employee.id,
+                }),
+                Command.create({
+                    # Expense on Expense Account 2
+                    'name': 'expense_2',
+                    'date': '2022-01-08',
+                    'product_id': self.product_a.id,
+                    'unit_amount': 230.0,
+                    'employee_id': self.expense_employee.id,
+                }),
+            ],
+        })
+
+        expense_sheet.action_submit_sheet()
+        expense_sheet.approve_expense_sheets()
+        expense_sheet.action_sheet_move_create()
+
+        # Check whether employee is set as supplier on the receipt
+        self.assertRecordValues(expense_sheet.account_move_id, [{
+            'partner_id': self.expense_user_employee.partner_id.id,
+        }])
+
+    def test_print_expense_check(self):
+        """
+        Test the check content when printing a check
+        that comes from an expense
+        """
+        sheet = self.env['hr.expense.sheet'].create({
+            'company_id': self.env.company.id,
+            'employee_id': self.expense_employee.id,
+            'name': 'test sheet',
+            'expense_line_ids': [
+                (0, 0, {
+                    'name': 'expense_1',
+                    'date': '2016-01-01',
+                    'product_id': self.product_a.id,
+                    'unit_amount': 10.0,
+                    'employee_id': self.expense_employee.id,
+                }),
+                (0, 0, {
+                    'name': 'expense_2',
+                    'date': '2016-01-01',
+                    'product_id': self.product_a.id,
+                    'unit_amount': 1.0,
+                    'employee_id': self.expense_employee.id,
+                }),
+            ],
+        })
+
+        #actions
+        sheet.action_submit_sheet()
+        sheet.approve_expense_sheets()
+        sheet.action_sheet_move_create()
+        action_data = sheet.action_register_payment()
+        payment_method_line = self.env.company.bank_journal_ids.outbound_payment_method_line_ids.filtered(lambda m: m.code == 'check_printing')
+        with Form(self.env[action_data['res_model']].with_context(action_data['context'])) as wiz_form:
+            wiz_form.payment_method_line_id = payment_method_line
+        wizard = wiz_form.save()
+        action = wizard.action_create_payments()
+        self.assertEqual(sheet.state, 'done', 'all account.move.line linked to expenses must be reconciled after payment')
+
+        payments = self.env[action['res_model']].search(action['domain'])
+        for payment in payments:
+            pages = payment._check_get_pages()
+            stub_line = pages[0]['stub_lines'][:1]
+            self.assertTrue(stub_line)
+            move = self.env[action_data['context']['active_model']].browse(action_data['context']['active_ids'])
+            self.assertDictEqual(stub_line[0], {
+                'due_date': payment.date.strftime("%m/%d/%Y"),
+                'number': ' - '.join([move.name, move.ref] if move.ref else [move.name]),
+                'amount_total': formatLang(self.env, move.amount_total, currency_obj=self.env.company.currency_id),
+                'amount_residual': '-',
+                'amount_paid': formatLang(self.env, payment.amount_total, currency_obj=self.env.company.currency_id),
+                'currency': self.env.company.currency_id
+            })

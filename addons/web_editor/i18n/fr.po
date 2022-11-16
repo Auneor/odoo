@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:02+0000\n"
+"POT-Creation-Date: 2022-10-10 10:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
 "Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -213,12 +213,12 @@ msgstr "<span class=\"me-2\">X</span>"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "<span>Blocks</span>"
-msgstr "<span>Elément</span>"
+msgstr "<span>Blocs</span>"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippets
 msgid "<span>Customize</span>"
-msgstr "<span>Personnaliser</span>"
+msgstr "<span>Styliser</span>"
 
 #. module: web_editor
 #. openerp-web
@@ -236,7 +236,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Above"
-msgstr "Au dessus"
+msgstr "Au-dessus"
 
 #. module: web_editor
 #. openerp-web
@@ -328,7 +328,7 @@ msgstr "Ajouter une rangée au-dessus"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Add a row below"
-msgstr "Ajouter une rangée en dessous"
+msgstr "Ajouter une rangée en-dessous"
 
 #. module: web_editor
 #. openerp-web
@@ -521,7 +521,7 @@ msgstr "Base"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Basic blocks"
-msgstr "Bloques basiques"
+msgstr "Blocs basiques"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -533,7 +533,7 @@ msgstr "L'essentiel"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Below"
-msgstr "En dessous"
+msgstr "En-dessous"
 
 #. module: web_editor
 #. openerp-web
@@ -656,7 +656,7 @@ msgstr "Modifier la description média et la bulle d'aide"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Checklist"
-msgstr "check-list"
+msgstr "Check-list"
 
 #. module: web_editor
 #. openerp-web
@@ -948,7 +948,7 @@ msgstr "Afficher Nom"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "Do you want to install the %s App?"
-msgstr "Voulez vous installer l'application  %s ?"
+msgstr "Voulez-vous installer l'application  %s ?"
 
 #. module: web_editor
 #. openerp-web
@@ -990,6 +990,13 @@ msgstr "Cloner le conteneur"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Dynamic Colors"
 msgstr "Couleurs dynamiques"
+
+#. module: web_editor
+#. openerp-web
+#: code:addons/web_editor/static/src/js/backend/html_field.js:0
+#, python-format
+msgid "Dynamic Placeholder"
+msgstr "Espace réservé dynamique"
 
 #. module: web_editor
 #: code:addons/web_editor/controllers/main.py:0
@@ -1167,7 +1174,7 @@ msgstr "Pivoter"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Flip Horizontal"
-msgstr "Retourner Horizontalement"
+msgstr "Retourner horizontalement"
 
 #. module: web_editor
 #. openerp-web
@@ -1424,8 +1431,8 @@ msgid ""
 "If you discard the current edits, all unsaved changes will be lost. You can "
 "cancel to return to edit mode."
 msgstr ""
-"Si vous annulez vos changements, tous ceux non-sauvés seront perdus. Vous "
-"pouvez annuler et retourner en mode édition."
+"Si vous annulez vos changements, tous les changements non sauvés seront "
+"perdus. Vous pouvez annuler et retourner en mode édition."
 
 #. module: web_editor
 #. openerp-web
@@ -1550,6 +1557,13 @@ msgstr "Insérer un médi"
 #, python-format
 msgid "Insert or edit link"
 msgstr "Insérer ou éditer un lien"
+
+#. module: web_editor
+#. openerp-web
+#: code:addons/web_editor/static/src/js/backend/html_field.js:0
+#, python-format
+msgid "Insert personalized content"
+msgstr "Insérez votre contenu personnalisé"
 
 #. module: web_editor
 #. openerp-web
@@ -1710,6 +1724,13 @@ msgstr "Boucle"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 msgid "Main Color"
 msgstr "Couleur principale"
+
+#. module: web_editor
+#. openerp-web
+#: code:addons/web_editor/static/src/js/backend/html_field.js:0
+#, python-format
+msgid "Marketing Tools"
+msgstr "Outils Marketing"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -1932,7 +1953,7 @@ msgstr "Options de la page"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Paragraph block."
-msgstr "Bloque paragraphe"
+msgstr "Bloc paragraphe"
 
 #. module: web_editor
 #. openerp-web
@@ -2010,7 +2031,7 @@ msgstr "Qualité"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Quote"
-msgstr "Devis"
+msgstr "Citation"
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_qweb
@@ -2697,6 +2718,12 @@ msgstr "L'URL ne semble pas fonctionner."
 #, python-format
 msgid "The URL seems valid."
 msgstr "L'URL semble valide."
+
+#. module: web_editor
+#: code:addons/web_editor/models/ir_qweb_fields.py:0
+#, python-format
+msgid "The datetime %s does not match the format %s"
+msgstr "La date %s ne correspond pas au format %s"
 
 #. module: web_editor
 #. openerp-web

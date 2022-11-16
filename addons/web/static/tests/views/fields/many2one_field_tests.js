@@ -1321,6 +1321,68 @@ QUnit.module("Fields", (hooks) => {
         assert.verifySteps(["search: ", "search: ", "search: p", "search: p"]);
     });
 
+    QUnit.test("many2one search with server returning multiple lines", async function (assert) {
+        const namegets = {
+            2: "fizz\nbuzz\nfizzbuzz",
+            4: "aaa\nAAA\nRecord",
+        };
+
+        await makeView({
+            type: "form",
+            resModel: "partner",
+            resId: 1,
+            serverData,
+            arch: `
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="trululu" options="{'always_reload': 1}" />
+                        </group>
+                    </sheet>
+                </form>`,
+            mockRPC(route, { args, kwargs, method }) {
+                if (method === "name_get") {
+                    assert.step(method);
+                    return args.map((id) => [id, namegets[id]]);
+                }
+                if (method === "name_search") {
+                    assert.step(method);
+                    return Object.keys(namegets).map((id) => [id, namegets[id]]);
+                }
+            },
+        });
+        assert.verifySteps(["name_get"]);
+
+        const input = target.querySelector(".o_field_widget input");
+
+        // Initial value
+        assert.strictEqual(input.value, "aaa");
+        assert.strictEqual(
+            target.querySelector(".o_field_many2one_extra").innerHTML,
+            "<span>AAA</span><br><span>Record</span>"
+        );
+
+        // Change the value
+        await editInput(input, null, "fizz");
+        // should display only the first line of the returned value from the server
+        assert.verifySteps(["name_search"]);
+        assert.deepEqual(
+            [...target.querySelectorAll(".dropdown-menu li:not(.o_m2o_dropdown_option")].map(
+                (el) => el.textContent
+            ),
+            ["fizz", "aaa"]
+        );
+        await click(target.querySelector(".dropdown-menu li"));
+
+        // Check the selection has been taken into account
+        assert.verifySteps(["name_get"]);
+        assert.strictEqual(input.value, "fizz");
+        assert.strictEqual(
+            target.querySelector(".o_field_many2one_extra").innerHTML,
+            "<span>buzz</span><br><span>fizzbuzz</span>"
+        );
+    });
+
     QUnit.test("many2one search with trailing and leading spaces", async function (assert) {
         await makeView({
             type: "form",
@@ -3530,6 +3592,33 @@ QUnit.module("Fields", (hooks) => {
                         [["foo", "=", "yop"]],
                         "sent domain should be correct"
                     );
+                }
+            },
+        });
+
+        await click(target.querySelectorAll(".o_data_cell")[0]);
+        await click(target, ".o_field_many2one input");
+
+        assert.containsOnce(target, ".o_field_many2one .o-autocomplete--dropdown-item");
+    });
+
+    QUnit.test("many2one: domain set in view and on field", async function (assert) {
+        assert.expect(2);
+        serverData.models.partner.fields.trululu.domain = "[('foo' ,'=', 'boum')]";
+
+        await makeView({
+            type: "list",
+            resModel: "partner",
+            serverData,
+            arch: `
+                <tree editable="top">
+                    <field name="foo" invisible="1"/>
+                    <field name="trululu" domain="[['foo', '=', 'blip']]"/>
+                </tree>`,
+            mockRPC(route, { kwargs, method }) {
+                if (method === "name_search") {
+                    // should only use the domain set in the view
+                    assert.deepEqual(kwargs.args, [["foo", "=", "blip"]]);
                 }
             },
         });

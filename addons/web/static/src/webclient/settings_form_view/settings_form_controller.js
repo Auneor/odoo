@@ -6,7 +6,7 @@ import { formView } from "@web/views/form/form_view";
 import { SettingsConfirmationDialog } from "./settings_confirmation_dialog";
 import { SettingsFormRenderer } from "./settings_form_renderer";
 
-const { useSubEnv, useState, useRef, useEffect } = owl;
+import { useSubEnv, useState, useRef, useEffect } from "@odoo/owl";
 
 export class SettingsFormController extends formView.Controller {
     setup() {
@@ -43,12 +43,6 @@ export class SettingsFormController extends formView.Controller {
         this.initialApp = "module" in this.props.context && this.props.context.module;
     }
 
-    get className() {
-        const result = super.className;
-        result["o_form_with_borderless_input"] = false;
-        return result;
-    }
-
     /**
      * @override
      */
@@ -68,7 +62,7 @@ export class SettingsFormController extends formView.Controller {
                     body: message,
                     confirm: async () => {
                         await this.model.root.save({ stayInEdition: true });
-                        await this.save();
+                        await this._save();
                         // It doesn't make sense to do the action of the button
                         // as the res.config.settings `execute` method will trigger a reload.
                         _continue = false;
@@ -102,7 +96,11 @@ export class SettingsFormController extends formView.Controller {
     //This is needed to avoid writing the id on the url
     updateURL() {}
 
-    async save() {
+    async saveButtonClicked() {
+        await this._save();
+    }
+
+    async _save() {
         this.env.onClickViewButton({
             clickParams: {
                 name: "execute",

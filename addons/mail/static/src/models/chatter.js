@@ -172,6 +172,9 @@ registerModel({
          * @private
          */
         _onThreadIdOrThreadModelChanged() {
+            if (!this.threadModel) {
+                return;
+            }
             if (this.threadId) {
                 if (this.thread && this.thread.isTemporary) {
                     this.thread.delete();
@@ -261,6 +264,9 @@ registerModel({
         }),
         dropZoneView: one('DropZoneView', {
             compute() {
+                if (!this.thread) {
+                    return clear();
+                }
                 if (this.useDragVisibleDropZone.isVisible) {
                     return {};
                 }
@@ -381,6 +387,15 @@ registerModel({
         }),
         scrollPanelRef: attr(),
         /**
+         * Determines whether the view should reload after file changed in this chatter,
+         * such as from a file upload.
+         */
+        shouldReloadParentFromFileChanged: attr({
+            compute() {
+                return this.hasParentReloadOnAttachmentsChanged;
+            },
+        }),
+        /**
          * Determines the `Thread` that should be displayed by `this`.
          */
         thread: one('Thread'),
@@ -403,6 +418,9 @@ registerModel({
          */
         threadViewer: one('ThreadViewer', {
             compute() {
+                if (!this.thread) {
+                    return clear();
+                }
                 return {
                     hasThreadView: this.hasThreadView,
                     order: 'desc',
@@ -410,10 +428,11 @@ registerModel({
                 };
             },
             inverse: 'chatter',
-            required: true,
         }),
         topbar: one('ChatterTopbar', {
-            default: {},
+            compute() {
+                return this.thread ? {} : clear();
+            },
             inverse: 'chatter',
         }),
         useDragVisibleDropZone: one('UseDragVisibleDropZone', {

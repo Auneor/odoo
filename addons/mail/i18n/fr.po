@@ -5,17 +5,17 @@
 # Translators:
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2022
 # laje_odoo, 2022
-# Martin Trigaux, 2022
-# Jolien De Paepe, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Jolien De Paepe, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2022-10-10 10:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,13 +68,6 @@ msgstr "\"%s\" a besoin de l'accès \"%s\""
 #, python-format
 msgid "\"%s\" requires microphone access"
 msgstr "\"%s\" a besoin d'accéder au microphone"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "%(attachmentCount)s files"
-msgstr "%(attachmentCount)s fichiers"
 
 #. module: mail
 #. openerp-web
@@ -296,20 +289,6 @@ msgstr "0 en retard"
 #, python-format
 msgid "0 Today"
 msgstr "0 aujourd'hui"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "1 file"
-msgstr "1 fichier"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
-#, python-format
-msgid "2 files"
-msgstr "2 fichiers"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_template_preview_view_form
@@ -701,6 +680,7 @@ msgstr "Domaine actif"
 #. openerp-web
 #: code:addons/mail/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #: code:addons/mail/static/src/components/activity_menu_view/activity_menu_view.xml:0
+#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #: model:ir.actions.act_window,name:mail.mail_activity_action
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_ids
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_ids
@@ -1145,8 +1125,6 @@ msgstr "Joindre un fichier"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/attachment_box/attachment_box.xml:0
-#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
-#: code:addons/mail/static/src/models/chatter_topbar.js:0
 #, python-format
 msgid "Attach files"
 msgstr "Joindre des fichiers"
@@ -1967,6 +1945,15 @@ msgid "Content"
 msgstr "Contenu"
 
 #. module: mail
+#: model:ir.model.fields,help:mail.field_mail_shortcode__substitution
+msgid ""
+"Content that will automatically replace the shortcut of your choosing. This "
+"content can still be adapted before sending your message."
+msgstr ""
+"le contenu qui remplacera automatiquement le raccourci de votre choix. Ce "
+"contenu peut encore être adapté avant l'envoi de votre message."
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__body
 #: model:ir.model.fields,field_description:mail.field_mail_composer_mixin__body
 #: model:ir.model.fields,field_description:mail.field_mail_mail__body
@@ -2379,6 +2366,7 @@ msgstr "Échec de l'envoi"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__description
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_description
 #: model:ir.model.fields,field_description:mail.field_mail_message_subtype__description
 #: model:ir.model.fields,field_description:mail.field_mail_shortcode__description
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_message_subtype_form
@@ -3225,7 +3213,7 @@ msgstr "Abonnés seulement"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/follow_button/follow_button.xml:0
+#: code:addons/mail/static/src/models/follow_button_view.js:0
 #, python-format
 msgid "Following"
 msgstr "Abonné(e)"
@@ -3804,6 +3792,7 @@ msgstr "Ignorer tout"
 #: code:addons/mail/static/src/components/attachment_viewer/attachment_viewer.xml:0
 #: model:ir.model.fields,field_description:mail.field_mail_channel__image_128
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_1920
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
 #, python-format
 msgid "Image"
 msgstr "Image"
@@ -3827,6 +3816,11 @@ msgstr "Image 256"
 #: model:ir.model.fields,field_description:mail.field_mail_guest__image_512
 msgid "Image 512"
 msgstr "Image 512"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__image_mimetype
+msgid "Image MIME type"
+msgstr ""
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_document_file_kanban
@@ -4356,11 +4350,6 @@ msgid "Link copied!"
 msgstr "Lien copié !"
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_thread_cc__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Liste de cc d'emails entrants."
-
-#. module: mail
 #: model:ir.model.fields,help:mail.field_mail_wizard_invite__partner_ids
 msgid ""
 "List of partners that will be added as follower of the current document."
@@ -4405,6 +4394,7 @@ msgstr "En cours de chargement..."
 #: code:addons/mail/static/src/components/message_list/message_list.xml:0
 #: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
 #: code:addons/mail/static/src/components/thread_view/thread_view.xml:0
+#: code:addons/mail/static/src/models/emoji_grid_loading_screen.js:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -4467,6 +4457,11 @@ msgstr "Enregistré comme"
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
 msgid "Login Information"
 msgstr "Information de connexion"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
+msgid "MIME type"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -6461,6 +6456,13 @@ msgid "Remove email from blacklist wizard"
 msgstr "Assistant pour supprimer l'email de la liste noire"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/models/message_action_view.js:0
+#, python-format
+msgid "Remove from Todo"
+msgstr "Supprimer de la liste des tâches"
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 msgid "Remove the contextual action to use this template on related documents"
 msgstr ""
@@ -6701,7 +6703,6 @@ msgstr "Planifier des activités pour vous aider à faire les choses."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #: code:addons/mail/static/src/xml/activity_view.xml:0
 #, python-format
 msgid "Schedule activity"
@@ -7061,6 +7062,17 @@ msgstr "Codes courts"
 #: model:ir.model.fields,field_description:mail.field_mail_shortcode__source
 msgid "Shortcut"
 msgstr "Raccourci"
+
+#. module: mail
+#: model:ir.model.fields,help:mail.field_mail_shortcode__source
+msgid ""
+"Shortcut that will automatically be substituted with longer content in your "
+"messages. Type ':' followed by the name of your shortcut (e.g. :hello) to "
+"use in your messages."
+msgstr ""
+"Raccourci qui sera automatiquement remplacé par un contenu plus long dans "
+"vos messages. Tapez ':' suivi du nom de votre raccourci (par exemple :hello)"
+" à utiliser dans vos messages."
 
 #. module: mail
 #. openerp-web
@@ -7592,11 +7604,6 @@ msgid "The email sent to"
 msgstr "L'email envoyé à"
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_shortcode__substitution
-msgid "The escaped html code replacing the shortcut"
-msgstr "Le code HTML avec caractères d'échappement remplaçant le raccourci"
-
-#. module: mail
 #: code:addons/mail/models/mail_composer_mixin.py:0
 #, python-format
 msgid "The field %s does not exist on the model %s"
@@ -7681,12 +7688,6 @@ msgstr ""
 #, python-format
 msgid "The server \"%s\" cannot be used because it is archived."
 msgstr "Le serveur \"%s\" ne peut pas être utilisé car il est archivé."
-
-#. module: mail
-#: model:ir.model.fields,help:mail.field_mail_shortcode__source
-msgid "The shortcut which must be replaced in the Chat Messages"
-msgstr ""
-"Le raccourci qui doit être remplacé dans les messages du chat de discussion"
 
 #. module: mail
 #. openerp-web
@@ -7825,6 +7826,11 @@ msgstr "Image de fil"
 #: model:ir.model.fields,field_description:mail.field_mail_guest__timezone
 msgid "Timezone"
 msgstr "Fuseau horaire"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
+msgid "Title"
+msgstr "Titre"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__email_to
@@ -8009,6 +8015,7 @@ msgstr "Twilio Compte SID"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__message_type
 #: model:ir.model.fields,field_description:mail.field_mail_ice_server__server_type
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_type
 #: model:ir.model.fields,field_description:mail.field_mail_mail__message_type
 #: model:ir.model.fields,field_description:mail.field_mail_message__message_type
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_type_view_tree
@@ -8064,6 +8071,11 @@ msgid "URI"
 msgstr "URI"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
+msgid "URL"
+msgstr "URL"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__uuid
 msgid "UUID"
 msgstr "UUID"
@@ -8110,7 +8122,7 @@ msgstr "Désassourdir"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/components/follow_button/follow_button.xml:0
+#: code:addons/mail/static/src/models/follow_button_view.js:0
 #, python-format
 msgid "Unfollow"
 msgstr "Ne plus suivre"
@@ -8191,6 +8203,13 @@ msgstr "Mise à jour de la mise en page de l'email"
 #, python-format
 msgid "Upload Document"
 msgstr "Télécharger un document"
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/backend_components/activity_list_view_item/activity_list_view_item.xml:0
+#, python-format
+msgid "Upload File"
+msgstr "Télécharger le fichier"
 
 #. module: mail
 #. openerp-web
@@ -8930,11 +8949,6 @@ msgid "deaf"
 msgstr "sourd"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_description
-msgid "description"
-msgstr "description"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/models/mail_thread.py:0
 #: code:addons/mail/static/src/components/message/message.xml:0
@@ -8966,7 +8980,7 @@ msgstr "par ex. \"Email de bienvenue\""
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 msgid "e.g. \"Welcome to MyCompany\" or \"Nice to meet you, {{ object.name }}\""
 msgstr ""
-"par ex. \"Bienvenue à MyCompany\" ou \"Ravi de vous rencontrer,  {{ "
+"par ex. \"Bienvenue à MyCompany\" or \"Ravi de vous rencontrer,  {{ "
 "object.name }}\""
 
 #. module: mail
@@ -9045,16 +9059,6 @@ msgid "has just assigned you the following activity:"
 msgstr "vient de vous attribuer l'activité suivante :"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_image
-msgid "image"
-msgstr "image"
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__image_mimetype
-msgid "image_mimetype"
-msgstr "image_mimetype"
-
-#. module: mail
 #: code:addons/mail/models/models.py:0
 #, python-format
 msgid "incorrectly configured alias"
@@ -9109,11 +9113,6 @@ msgid "message_post partner_ids and must be integer list, not commands."
 msgstr ""
 "message_post et partner_ids doivent être une liste entière, pas des "
 "instructions."
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_mimetype
-msgid "mimetype"
-msgstr "mimetype"
 
 #. module: mail
 #: code:addons/mail/models/mail_thread.py:0
@@ -9253,11 +9252,6 @@ msgid "this document"
 msgstr "ce document"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_title
-msgid "title"
-msgstr "titre"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
 #: code:addons/mail/static/src/components/call_settings_menu/call_settings_menu.xml:0
@@ -9272,11 +9266,6 @@ msgid "turn:"
 msgstr "turn:"
 
 #. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__og_type
-msgid "type"
-msgstr "type"
-
-#. module: mail
 #: code:addons/mail/models/mail_thread.py:0
 #, python-format
 msgid "unknown error"
@@ -9287,11 +9276,6 @@ msgstr "erreur inconnue"
 #, python-format
 msgid "unknown target model %s"
 msgstr "modèle cible inconnu %s"
-
-#. module: mail
-#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
-msgid "url"
-msgstr "url"
 
 #. module: mail
 #. openerp-web

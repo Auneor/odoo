@@ -33,6 +33,7 @@
             <field name="model">mrp.workcenter</field>
             <field name="arch" type="xml">
                 <tree string="Work Center" multi_edit="1">
+                    <field name="company_id" invisible="1"/>
                     <field name="sequence" widget="handle"/>
                     <field name="name" optional="show"/>
                     <field name="code" optional="show"/>
@@ -373,7 +374,7 @@
                                     <group string="Costing Information" name="costing">
                                         <label for="costs_hour"/>
                                         <div id="costs_hour">
-                                            <field name="costs_hour" class="oe_inline"/> per workcenter
+                                            <field name="costs_hour" widget="monetary" class="oe_inline"/> per workcenter
                                         </div>
                                     </group>
                                     <group>

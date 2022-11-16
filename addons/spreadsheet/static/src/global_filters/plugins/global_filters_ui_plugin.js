@@ -4,11 +4,6 @@
  * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
  * @typedef {import("./global_filters_core_plugin").GlobalFilter} GlobalFilter
  *
- * @typedef {Object} FieldMatching
- * @property {string} chain
- * @property {string} type Type of the last field of the chain
- * @property {number} [offset] offset to apply to the field (for date filters)
- *
  */
 
 import { _t } from "@web/core/l10n/translation";
@@ -135,6 +130,9 @@ export default class GlobalFiltersUIPlugin extends spreadsheet.UIPlugin {
     getGlobalFilterDomain(filterId, fieldMatching) {
         /** @type {GlobalFilter} */
         const filter = this.getters.getGlobalFilter(filterId);
+        if (!filter) {
+            return new Domain();
+        }
         switch (filter.type) {
             case "text":
                 return this._getTextDomain(filter, fieldMatching);
@@ -157,7 +155,13 @@ export default class GlobalFiltersUIPlugin extends spreadsheet.UIPlugin {
 
         const value = filterId in this.values ? this.values[filterId].value : filter.defaultValue;
 
-        if (filter.type === "date" && isEmpty(value) && filter.defaultsToCurrentPeriod) {
+        const preventAutomaticValue =
+            this.values[filterId] &&
+            this.values[filterId].value &&
+            this.values[filterId].value.preventAutomaticValue;
+        const defaultsToCurrentPeriod = !preventAutomaticValue && filter.defaultsToCurrentPeriod;
+
+        if (filter.type === "date" && isEmpty(value) && defaultsToCurrentPeriod) {
             return this._getValueOfCurrentPeriod(filterId);
         }
 
@@ -299,7 +303,7 @@ export default class GlobalFiltersUIPlugin extends spreadsheet.UIPlugin {
                 value = "";
                 break;
             case "date":
-                value = { yearOffset: undefined };
+                value = { yearOffset: undefined, preventAutomaticValue: true };
                 break;
             case "relation":
                 value = [];

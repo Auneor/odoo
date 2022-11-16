@@ -1131,18 +1131,17 @@ class PurchaseOrderLine(models.Model):
             return datetime.today() + relativedelta(days=seller.delay if seller else 0)
 
     @api.depends('product_id', 'order_id.partner_id')
-    def _compute_analytic_distribution_stored_char(self):
+    def _compute_analytic_distribution(self):
         for line in self:
             if not line.display_type:
-                distribution = self.env['account.analytic.distribution.model']._get_distributionjson({
+                distribution = self.env['account.analytic.distribution.model']._get_distribution({
                     "product_id": line.product_id.id,
                     "product_categ_id": line.product_id.categ_id.id,
                     "partner_id": line.order_id.partner_id.id,
                     "partner_category_id": line.order_id.partner_id.category_id.ids,
                     "company_id": line.company_id.id,
                 })
-                line.analytic_distribution_stored_char = distribution or line.analytic_distribution_stored_char
-                line._compute_analytic_distribution()
+                line.analytic_distribution = distribution or line.analytic_distribution
 
     @api.onchange('product_id')
     def onchange_product_id(self):
@@ -1208,6 +1207,12 @@ class PurchaseOrderLine(models.Model):
 
             # If not seller, use the standard price. It needs a proper currency conversion.
             if not seller:
+                unavailable_seller = line.product_id.seller_ids.filtered(
+                    lambda s: s.partner_id == line.order_id.partner_id)
+                if not unavailable_seller and line.price_unit and line.product_uom == line._origin.product_uom:
+                    # Avoid to modify the price unit if there is no price list for this partner and
+                    # the line has already one to avoid to override unit price set manually.
+                    continue
                 po_line_uom = line.product_uom or line.product_id.uom_po_id
                 price_unit = line.env['account.tax']._fix_tax_included_price_company(
                     line.product_id.uom_id._compute_price(line.product_id.standard_price, po_line_uom),
@@ -1245,7 +1250,7 @@ class PurchaseOrderLine(models.Model):
                 line.product_packaging_id = False
             # suggest biggest suitable packaging
             if line.product_id and line.product_qty and line.product_uom:
-                line.product_packaging_id = line.product_id.packaging_ids.filtered('purchase')._find_suitable_product_packaging(line.product_qty, line.product_uom)
+                line.product_packaging_id = line.product_id.packaging_ids.filtered('purchase')._find_suitable_product_packaging(line.product_qty, line.product_uom) or line.product_packaging_id
 
     @api.onchange('product_packaging_id')
     def _onchange_product_packaging_id(self):

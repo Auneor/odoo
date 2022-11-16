@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
@@ -36,7 +37,7 @@ msgstr ""
 #: code:addons/pos_loyalty/static/src/js/PartnerLine.js:0
 #, python-format
 msgid "%s Points"
-msgstr ""
+msgstr "%s Punten"
 
 #. module: pos_loyalty
 #: model:loyalty.program,name:pos_loyalty.15_pc_on_next_order
@@ -46,7 +47,7 @@ msgstr "15% op volgende order"
 #. module: pos_loyalty
 #: model:loyalty.reward,description:pos_loyalty.15_pc_on_next_order_reward
 msgid "15% on your order"
-msgstr ""
+msgstr "15% op je bestelling"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -69,7 +70,7 @@ msgstr ""
 #: code:addons/pos_loyalty/static/src/xml/OrderWidget.xml:0
 #, python-format
 msgid "Active Coupons"
-msgstr "Actieve coupons"
+msgstr "Actieve kortingsbonnen"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -88,7 +89,7 @@ msgstr "Actieve beloningen"
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.loyalty_program_view_form_inherit_pos_loyalty
 msgid "All PoS"
-msgstr "Alle PoS"
+msgstr "Alle kassa's"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__any_product
@@ -124,7 +125,7 @@ msgstr "Barcode"
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_barcode_rule
 msgid "Barcode Rule"
-msgstr "Barcode regel"
+msgstr "Barcoderegel"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_res_config_settings
@@ -135,7 +136,7 @@ msgstr "Configuratie instellingen"
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_order_line__coupon_id
 #: model:ir.model.fields.selection,name:pos_loyalty.selection__barcode_rule__type__coupon
 msgid "Coupon"
-msgstr "Coupon"
+msgstr "Kortingsbon"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -149,21 +150,21 @@ msgstr "Kortingscodes"
 #: model:loyalty.reward,point_name:pos_loyalty.15_pc_on_next_order_reward
 #: model:loyalty.rule,reward_point_name:pos_loyalty.15_pc_on_next_order_rule
 msgid "Coupon point(s)"
-msgstr "Coupon punt(en)"
+msgstr "Punt(en) kortingsbon"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/xml/Orderline.xml:0
 #, python-format
 msgid "Current Balance:"
-msgstr ""
+msgstr "Huidig saldo:"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "Customer needed"
-msgstr ""
+msgstr "Klant nodig"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -197,7 +198,7 @@ msgstr "Voer code in"
 #: code:addons/pos_loyalty/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "Enter the gift card code"
-msgstr ""
+msgstr "Voer de cadeauboncode in"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -211,12 +212,12 @@ msgstr "Fout"
 #: code:addons/pos_loyalty/static/src/js/PaymentScreen.js:0
 #, python-format
 msgid "Error validating rewards"
-msgstr "Fout bij valideren van beloningen"
+msgstr "Fout bij bevstigen van beloningen"
 
 #. module: pos_loyalty
 #: model:loyalty.reward,description:pos_loyalty.loyalty_program_reward
 msgid "Free Product - Simple Pen"
-msgstr ""
+msgstr "Gratis product - Eenvoudige pen"
 
 #. module: pos_loyalty
 #: model:ir.model.fields.selection,name:pos_loyalty.selection__pos_config__gift_card_settings__create_set
@@ -228,7 +229,7 @@ msgstr "Genereer PDF-kaarten"
 #: code:addons/pos_loyalty/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "Generate a Gift Card"
-msgstr ""
+msgstr "Genereer een cadeaubon"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_config__gift_card_settings
@@ -241,7 +242,7 @@ msgstr "Instellingen voor cadeaubonnen"
 #: code:addons/pos_loyalty/static/src/js/ControlButtons/PromoCodeButton.js:0
 #, python-format
 msgid "Gift card or Discount code"
-msgstr ""
+msgstr "Cadeaubon of Kortingscode"
 
 #. module: pos_loyalty
 #: model:ir.ui.menu,name:pos_loyalty.menu_gift_ewallet_type_config
@@ -252,7 +253,7 @@ msgstr "Cadeaubonnen & eWallet"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order_line__points_cost
 msgid "How many point this reward cost on the coupon."
-msgstr "Hoeveel punten deze beloning kost op de coupon."
+msgstr "Hoeveel punten deze beloning kost op de kortingsbon."
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_config.py:0
@@ -274,18 +275,18 @@ msgstr ""
 #: code:addons/pos_loyalty/models/pos_config.py:0
 #, python-format
 msgid "Invalid gift card program. More than one reward."
-msgstr "Ongeldig cadeaukaartprogramma. Meer dan één beloning."
+msgstr "Ongeldig cadeaubonprogramma. Meer dan één beloning."
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_config.py:0
 #, python-format
 msgid "Invalid gift card program. More than one rule."
-msgstr "Ongeldig cadeaukaartprogramma. Meer dan één regel."
+msgstr "Ongeldig cadeaubonprogramma. Meer dan één regel."
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_order_line__is_reward_line
 msgid "Is Reward Line"
-msgstr "Is beloningslijn"
+msgstr "Is beloningsregel"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_mail
@@ -331,7 +332,7 @@ msgstr "Nee"
 #: code:addons/pos_loyalty/models/pos_config.py:0
 #, python-format
 msgid "No reward can be claimed with this coupon."
-msgstr "Met deze coupon kan geen beloning worden geclaimd."
+msgstr "Met deze kortingsbon kan geen beloning worden geclaimd."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -357,12 +358,12 @@ msgstr "Kies een beloning"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pos_order_count
 msgid "PoS Order Count"
-msgstr "Aantal PoS-bestellingen"
+msgstr "Aantal Kassa-bestellingen"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_card__source_pos_order_id
 msgid "PoS Order Reference"
-msgstr "PoS-bestellingsreferentie"
+msgstr "Kassa-bestellingsreferentie"
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/loyalty_program.py:0
@@ -373,7 +374,7 @@ msgstr "Kassaorders"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_card__source_pos_order_id
 msgid "PoS order where this coupon was generated."
-msgstr "PoS-bestelling waar deze coupon is gegenereerd."
+msgstr "Kassa-bestelling waar deze kortingsbon is gegenereerd."
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pos_ok
@@ -441,7 +442,7 @@ msgstr "Programma: %(name)s, Regelproduct: `%(rule_product)s`"
 #: code:addons/pos_loyalty/static/src/js/ControlButtons/eWalletButton.js:0
 #, python-format
 msgid "Refund with eWallet"
-msgstr ""
+msgstr "Terugbetaling met eWallet"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -451,6 +452,8 @@ msgid ""
 "Refunding a top up or reward product for an eWallet or gift card program is "
 "not allowed."
 msgstr ""
+"Het terugbetalen van een opwaardeer- of beloningsproduct voor een eWallet- "
+"of cadeaubonprogramma is niet toegestaan."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -462,7 +465,7 @@ msgstr "Programma's resetten"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pos_config_ids
 msgid "Restrict publishing to those shops."
-msgstr ""
+msgstr "Beperk publicatie tot die winkels."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -487,7 +490,7 @@ msgstr "Scan bestaande kaarten"
 #: code:addons/pos_loyalty/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "Select program"
-msgstr ""
+msgstr "Selecteer programma"
 
 #. module: pos_loyalty
 #: model:product.product,name:pos_loyalty.simple_pen
@@ -502,8 +505,8 @@ msgid ""
 "Some coupons are invalid. The applied coupons have been updated. Please "
 "check the order."
 msgstr ""
-"Sommige coupons zijn ongeldig. De toegepaste coupons zijn bijgewerkt. "
-"Controleer de bestelling."
+"Sommige kortingsbonnen zijn ongeldig. De toegepaste kortingsbonnen zijn "
+"bijgewerkt. Controleer de bestelling."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -515,14 +518,14 @@ msgstr "Besteed:"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__any_product
 msgid "Technical field, whether all product match"
-msgstr "Technisch veld, of alle producten overeenkomen:"
+msgstr "Technisch veld, of alle producten overeenkomen"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/Loyalty.js:0
 #, python-format
 msgid "That coupon code has already been scanned and activated."
-msgstr "Die couponcode is al gescand en geactiveerd."
+msgstr "Die kortingsboncode is al gescand en geactiveerd."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -534,7 +537,7 @@ msgstr "Dat promotiecodeprogramma is al geactiveerd."
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order_line__coupon_id
 msgid "The coupon used to claim that reward."
-msgstr "De coupon die werd gebruikt om die beloning te claimen."
+msgstr "De kortingsbon die werd gebruikt om die beloning te claimen."
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_order.py:0
@@ -553,7 +556,7 @@ msgid ""
 "card in the PoS."
 msgstr ""
 "De meldactie die moet worden uitgevoerd bij het aanmaken van een "
-"coupon/cadeaubon/loyaliteitskaart in de PoS."
+"kortingsbon/cadeaubon/klantenkaart in de kassa."
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order_line__reward_id
@@ -578,14 +581,15 @@ msgstr "Er kunnen geen beloningen worden geclaimd voor deze klant."
 #: code:addons/pos_loyalty/models/pos_order.py:0
 #, python-format
 msgid "There are not enough points for the coupon: %s."
-msgstr "Er zijn niet genoeg punten voor de coupon: %s."
+msgstr "Er zijn niet genoeg punten voor de kortingsbon: %s."
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/Loyalty.js:0
 #, python-format
 msgid "There are not enough points on the coupon to claim this reward."
-msgstr "Er zijn niet genoeg punten op de coupon om deze beloning te claimen."
+msgstr ""
+"Er zijn niet genoeg punten op de kortingsbon om deze beloning te claimen."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -605,13 +609,13 @@ msgstr "Dit zijn de producten die voor deze regel geldig zijn."
 #: code:addons/pos_loyalty/models/pos_config.py:0
 #, python-format
 msgid "This coupon is expired (%s)."
-msgstr "Deze coupon is verlopen (%s)."
+msgstr "Deze kortingsbon is verlopen (%s)."
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_config.py:0
 #, python-format
 msgid "This coupon is invalid (%s)."
-msgstr "Deze coupon is ongeldig (%s)."
+msgstr "Deze kortingsbon is ongeldig (%s)."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -628,12 +632,15 @@ msgid ""
 "This gift card is not linked to any order. Do you really want to apply its "
 "reward?"
 msgstr ""
+"Deze cadeaubon is niet gekoppeld aan een bestelling. Wil je de beloning echt"
+" toepassen?"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pos_report_print_id
 msgid "This is used to print the generated gift cards from PoS."
 msgstr ""
-"Dit wordt gebruikt om de gegenereerde cadeaubonnen uit PoS af te drukken."
+"Dit wordt gebruikt om de gegenereerde cadeaubonnen van de kassa af te "
+"drukken."
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_config.py:0
@@ -667,21 +674,21 @@ msgstr "Onbekend kortingstype"
 #: code:addons/pos_loyalty/static/src/js/Loyalty.js:0
 #, python-format
 msgid "Unpaid gift card"
-msgstr ""
+msgstr "Onbetaalde cadeaubon"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/Loyalty.js:0
 #, python-format
 msgid "Unpaid gift card rejected."
-msgstr ""
+msgstr "Onbetaalde cadeaubon afgewezen."
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/ControlButtons/eWalletButton.js:0
 #, python-format
 msgid "Use eWallet to pay"
-msgstr ""
+msgstr "Gebruik eWallet om te betalen"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__valid_product_ids
@@ -719,7 +726,7 @@ msgstr "Ja"
 #: code:addons/pos_loyalty/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "You cannot sell a gift card that has already been sold."
-msgstr ""
+msgstr "Je kunt een cadeaubon die al is verkocht niet verkopen."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -727,12 +734,14 @@ msgstr ""
 #, python-format
 msgid "You cannot set negative quantity or price to gift card or ewallet."
 msgstr ""
+"Je kunt geen negatieve hoeveelheid of prijs instellen op cadeaubon of "
+"e-wallet."
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/loyalty_program.py:0
 #, python-format
 msgid "You must set '%s' before setting '%s'."
-msgstr "U moet '%s' instellen voordat je '%s' instelt."
+msgstr "Je moet '%s' instellen voordat je '%s' instelt."
 
 #. module: pos_loyalty
 #. openerp-web
@@ -746,25 +755,25 @@ msgstr "eWallet"
 #: code:addons/pos_loyalty/static/src/js/ControlButtons/eWalletButton.js:0
 #, python-format
 msgid "eWallet Pay"
-msgstr ""
+msgstr "eWallet Pay"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/ControlButtons/eWalletButton.js:0
 #, python-format
 msgid "eWallet Refund"
-msgstr ""
+msgstr "eWallet-terugbetaling"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "eWallet requires a customer to be selected"
-msgstr ""
+msgstr "eWallet vereist dat een klant wordt geselecteerd"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/xml/OrderReceipt.xml:0
 #, python-format
 msgid "no expiration"
-msgstr "Geen vervaldatum"
+msgstr "geen vervaldatum"

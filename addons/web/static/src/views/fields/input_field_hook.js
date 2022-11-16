@@ -3,7 +3,7 @@
 import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
 import { useBus } from "@web/core/utils/hooks";
 
-const { useComponent, useEffect, useRef, useEnv } = owl;
+import { useComponent, useEffect, useRef, useEnv } from "@odoo/owl";
 
 /**
  * This hook is meant to be used by field components that use an input or
@@ -56,7 +56,9 @@ export function useInputField(params) {
                 try {
                     val = params.parse(val);
                 } catch (_e) {
-                    component.props.record.setInvalidField(component.props.name);
+                    if (component.props.record) {
+                        component.props.record.setInvalidField(component.props.name);
+                    }
                     isInvalid = true;
                 }
             }
@@ -101,7 +103,7 @@ export function useInputField(params) {
      * If it is not such a case, we update the field with the new value.
      */
     useEffect(() => {
-        const isInvalid = component.props.record.isInvalid(component.props.name);
+        const isInvalid = component.props.record ? component.props.record.isInvalid(component.props.name) : false;
         if (inputRef.el && !isDirty && !isInvalid) {
             inputRef.el.value = params.getValue();
             lastSetValue = inputRef.el.value;
@@ -133,7 +135,7 @@ export function useInputField(params) {
                     isInvalid = true;
                     if (urgent) {
                         return;
-                    } else {
+                    } else if (component.props.record) {
                         component.props.record.setInvalidField(component.props.name);
                     }
                 }

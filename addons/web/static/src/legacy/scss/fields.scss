@@ -70,6 +70,7 @@
     text-align: inherit;
     display: inline-block;
 
+    textarea.o_input,
     input.o_input {
         display: inline-block;
         text-align: inherit;
@@ -401,8 +402,8 @@
                 border-color: $o-brand-primary;
             }
             &:hover:not(.active) {
-                color: darken(map-get($grays, '300'), 30%);
-                border-color: darken(map-get($grays, '300'), 30%);
+                color: $o-gray-600;
+                border-color: $o-gray-600;
             }
         }
     }
