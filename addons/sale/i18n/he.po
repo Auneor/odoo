@@ -18,8 +18,9 @@
 # yotam linder <linder@laylinetech.com>, 2021
 # Lilach Gilliam <lilach@apprcase.com>, 2021
 # Jonathan Spier, 2021
-# Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # Netta Waizer, 2022
+# Roy Sayag, 2022
+# Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # NoaFarkash, 2022
 # 
 msgid ""
@@ -1323,7 +1324,7 @@ msgstr "התאם אישית את הצעות המחיר וההזמנות שלך."
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_res_config_settings__module_delivery_dhl
 msgid "DHL Express Connector"
-msgstr ""
+msgstr "DHL Expressחיבור ל"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
@@ -4376,6 +4377,7 @@ msgid ""
 "You cannot change the product's type because it is already used in sales "
 "orders."
 msgstr ""
+"לא ניתן לשנות את סוג המוצר מכיוון שהוא כבר בשימוש בהזמנות מכירה קיימות."
 
 #. module: sale
 #: code:addons/sale/models/sale.py:0
@@ -4428,6 +4430,8 @@ msgid ""
 "Your quotation contains products from company %(product_company)s whereas your quotation belongs to company %(quote_company)s. \n"
 " Please change the company of your quotation or remove the products from other companies (%(bad_products)s)."
 msgstr ""
+"הצעת המחיר מכילה מוצרים של חברת  %(product_company)s ואילו הצעת המחיר שייכת לחברה %(quote_company)s. \n"
+"אנא שנה את החברה בהצעת המחיר או הסר את המוצרים מחברות אחרות  (%(bad_products)s)."
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_res_config_settings__module_delivery_bpost

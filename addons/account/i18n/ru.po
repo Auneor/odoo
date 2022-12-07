@@ -25,12 +25,13 @@
 # Vasiliy Korobatov <korobatov@gmail.com>, 2020
 # Irina Fedulova <istartlin@gmail.com>, 2020
 # Алексей Хомяков <alexey.homyakov@gmail.com>, 2020
-# Martin Trigaux, 2021
 # Yaroslav Panychev <walkmanyd@yandex.ru>, 2021
 # ILMIR <karamov@it-projects.info>, 2021
 # Диляра Дельтаева <dilya.kz93@gmail.com>, 2021
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2021
 # Evgeniia Kotova, 2022
+# Martin Trigaux, 2022
+# valmasone, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # 
 msgid ""
@@ -614,7 +615,7 @@ msgstr "<span title=\"Последняя проводка\">Последняя �
 msgid ""
 "<span title=\"Outstanding Payments/Receipts\">Outstanding "
 "Payments/Receipts</span>"
-msgstr ""
+msgstr "<span title=\"Долг по платежам\">Долг по платежам</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_form
@@ -764,6 +765,11 @@ msgstr "<strong>Компания:</strong>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "<strong>Credit Note Date:</strong>"
+msgstr ""
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "<strong>Customer Code:</strong>"
 msgstr "<strong>Код заказчика:</strong>"
 
@@ -776,6 +782,11 @@ msgstr "<strong>Заказчик: </strong>"
 #: model_terms:ir.ui.view,arch_db:account.view_account_analytic_default_kanban
 msgid "<strong>Customer</strong>"
 msgstr "<strong>Клиент</strong>"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "<strong>Date:</strong>"
+msgstr "<strong>Дата:</strong>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -831,6 +842,11 @@ msgstr "<strong>Метод платежа:</strong>"
 #: model_terms:ir.ui.view,arch_db:account.view_account_analytic_default_kanban
 msgid "<strong>Product</strong>"
 msgstr "<strong>Продукт</strong>"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "<strong>Receipt Date:</strong>"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
@@ -946,6 +962,12 @@ msgid ""
 msgstr ""
 "В журнал записываются транзакции по всем данным бухгалтерского учёта, "
 "относящимся к текущей работе."
+
+#. module: account
+#: code:addons/account/models/account_move.py:0
+#, python-format
+msgid "A line of this move is using a deprecated account, you cannot post it."
+msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_move.py:0
@@ -5304,7 +5326,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.onboarding_create_invoice_step
 msgid "First invoice sent!"
-msgstr ""
+msgstr "Отправлен первый счет!"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__tax_fiscal_country_id
