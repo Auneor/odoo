@@ -20,6 +20,7 @@
 # Simon S, 2022
 # Robin Calvin, 2022
 # MikaelAtVertel, 2022
+# Jakob Krabbe <jakob.krabbe@vertel.se>, 2022
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # 
 msgid ""
@@ -97,27 +98,27 @@ msgstr ""
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p4_q2_sug2
 msgid "10 kg"
-msgstr ""
+msgstr "10 kg"
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p3_q3_sug2
 msgid "100 years"
-msgstr ""
+msgstr "100 år"
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p3_q1_sug3
 msgid "1055"
-msgstr ""
+msgstr "1055"
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p3_q3_sug3
 msgid "116 years"
-msgstr ""
+msgstr "116 år"
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p3_q1_sug1
 msgid "1227"
-msgstr ""
+msgstr "1227"
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p3_q3_sug4
@@ -187,7 +188,7 @@ msgstr ""
 msgid ""
 "<br/>\n"
 "                        <span>Score:</span>"
-msgstr ""
+msgstr "<span>Poäng:</span>"
 
 #. module: survey
 #: model_terms:ir.ui.view,arch_db:survey.certification_report_view_classic
@@ -703,7 +704,7 @@ msgstr ""
 #. module: survey
 #: model:survey.question,title:survey.survey_feedback_p1
 msgid "About you"
-msgstr ""
+msgstr "Om dig"
 
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_invite__survey_access_mode
@@ -2140,7 +2141,7 @@ msgstr ""
 #: model:survey.question,comments_message:survey.vendor_certification_page_3_question_6
 #, python-format
 msgid "If other, please specify:"
-msgstr ""
+msgstr "Om annat, vänligen specificera:"
 
 #. module: survey
 #: model:ir.model.fields,help:survey.field_survey_question__questions_selection
@@ -3831,7 +3832,7 @@ msgstr ""
 #: model:survey.question,validation_error_msg:survey.vendor_certification_page_3_question_6
 #, python-format
 msgid "The answer you entered is not valid."
-msgstr ""
+msgstr "Ditt svar är inte giltigt"
 
 #. module: survey
 #: model:ir.model.constraint,message:survey.constraint_survey_survey_attempts_limit_check
