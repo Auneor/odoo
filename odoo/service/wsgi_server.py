@@ -122,7 +122,7 @@ def wsgi_xmlrpc(environ, start_response):
         params, method = xmlrpclib.loads(data)
         try:
             result = odoo.http.dispatch_rpc(service, method, params)
-            response = xmlrpclib.dumps((result,), methodresponse=1, allow_none=False)
+            response = xmlrpclib.dumps((result,), methodresponse=1, allow_none=True)
         except Exception as e:
             if string_faultcode:
                 response = xmlrpc_handle_exception_string(e)
