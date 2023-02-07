@@ -92,12 +92,12 @@ function insert(editor, data, isText = true) {
         fakeEl.replaceChildren(...p.childNodes);
     } else if (fakeEl.childElementCount > 1) {
         // Grab the content of the first child block and isolate it.
-        if (isBlock(fakeEl.firstChild)) {
+        if (isBlock(fakeEl.firstChild) && !['TABLE', 'UL', 'OL'].includes(fakeEl.firstChild.nodeName)) {
             fakeElFirstChild.replaceChildren(...fakeEl.firstElementChild.childNodes);
             fakeEl.firstElementChild.remove();
         }
         // Grab the content of the last child block and isolate it.
-        if (isBlock(fakeEl.lastChild)) {
+        if (isBlock(fakeEl.lastChild) && !['TABLE', 'UL', 'OL'].includes(fakeEl.lastChild.nodeName)) {
             fakeElLastChild.replaceChildren(...fakeEl.lastElementChild.childNodes);
             fakeEl.lastElementChild.remove();
         }
@@ -452,6 +452,9 @@ export const editorCommands = {
         // before we apply the unlink, otherwise the command is not performed
         // because the content editable root is the link
         const closestEl = closestElement(sel.focusNode, 'a');
+        if(closestEl) {
+            closestEl.removeAttribute('class'); // To prevent firefox from adding unnecessary <span>.
+        }
         if (closestEl && closestEl.getAttribute('contenteditable') === 'true') {
             editor._activateContenteditable();
         }
@@ -555,8 +558,14 @@ export const editorCommands = {
                 } else {
                     font = [];
                 }
-            } else if (node.nodeType === Node.TEXT_NODE && isVisibleStr(node)) {
-                // Node is a visible text node: wrap it in a <font>.
+            } else if ((node.nodeType === Node.TEXT_NODE && isVisibleStr(node))
+                    || (node.nodeType === Node.ELEMENT_NODE &&
+                        ['inline', 'inline-block'].includes(getComputedStyle(node).display) &&
+                        isVisibleStr(node.textContent) &&
+                        !node.classList.contains('btn') &&
+                        !node.querySelector('font'))) {
+                // Node is a visible text or inline node without font nor a button:
+                // wrap it in a <font>.
                 const previous = node.previousSibling;
                 const classRegex = mode === 'color' ? BG_CLASSES_REGEX : TEXT_CLASSES_REGEX;
                 if (
