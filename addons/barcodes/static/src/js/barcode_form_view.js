@@ -163,8 +163,6 @@ FormController.include({
     _barcodeStartListening: function () {
         core.bus.on('barcode_scanned', this, this._barcodeScanned);
         core.bus.on('keypress', this, this._quantityListener);
-        console.log('yesieskjfk');
-        console.log($('.modal-dialog:has(.disable-tab)'));
         var modal = $('.modal-dialog:has(.disable-tab)');
         if (modal.size()) {
             modal[0].addEventListener('keydown', function(e) {
@@ -334,7 +332,6 @@ FormController.include({
      */
     _quantityListener: function (event) {
         var character = String.fromCharCode(event.which);
-        console.log('_quantityListener')
 
         if (! $.contains(event.target, this.el)) {
             return;

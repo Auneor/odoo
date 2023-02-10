@@ -170,8 +170,6 @@ var BarcodeEvents = core.Class.extend(mixins.PropertiesMixin, {
 
     handler: function(e){
         // Don't catch events we resent
-        console.log('handler')
-        console.log(e.keyCode)
         if (e.keyCode == 9)
             e.preventDefault();
         if (e.dispatched_by_barcode_reader)
