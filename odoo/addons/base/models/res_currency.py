@@ -7,7 +7,9 @@ import re
 import time
 
 from lxml import etree
+
 from odoo import api, fields, models, tools, _
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -118,7 +120,7 @@ class Currency(models.Model):
 
     @api.depends('rate_ids.rate')
     def _compute_current_rate(self):
-        date = self._context.get('date') or fields.Date.today()
+        date = self._context.get('date') or fields.Date.context_today(self)
         company = self.env['res.company'].browse(self._context.get('company_id')) or self.env.company
         # the subquery selects the last rate before 'date' for the given currency/company
         currency_rates = self._get_rates(company, date)
@@ -288,6 +290,7 @@ class Currency(models.Model):
                  LIMIT 1) AS date_end
             FROM res_currency_rate r
             JOIN res_company c ON (r.company_id is null or r.company_id = c.id)
+            ORDER BY date_end
         """
 
     @api.model
@@ -356,6 +359,9 @@ class CurrencyRate(models.Model):
         return super().create([self._sanitize_vals(vals) for vals in vals_list])
 
     def _get_latest_rate(self):
+        # Make sure 'name' is defined when creating a new rate.
+        if not self.name:
+            raise UserError(_("The name for the current rate is empty.\nPlease set it."))
         return self.currency_id.rate_ids.sudo().filtered(lambda x: (
             x.rate
             and x.company_id == (self.company_id or self.env.company)
@@ -374,7 +380,7 @@ class CurrencyRate(models.Model):
     @api.depends('currency_id', 'company_id', 'name')
     def _compute_rate(self):
         for currency_rate in self:
-            currency_rate.rate = currency_rate.rate or self._get_latest_rate().rate or 1.0
+            currency_rate.rate = currency_rate.rate or currency_rate._get_latest_rate().rate or 1.0
 
     @api.depends('rate', 'name', 'currency_id', 'company_id', 'currency_id.rate_ids.rate')
     @api.depends_context('company')
@@ -382,7 +388,7 @@ class CurrencyRate(models.Model):
         last_rate = self.env['res.currency.rate']._get_last_rates_for_companies(self.company_id | self.env.company)
         for currency_rate in self:
             company = currency_rate.company_id or self.env.company
-            currency_rate.company_rate = (currency_rate.rate or self._get_latest_rate().rate or 1.0) / last_rate[company]
+            currency_rate.company_rate = (currency_rate.rate or currency_rate._get_latest_rate().rate or 1.0) / last_rate[company]
 
     @api.onchange('company_rate')
     def _inverse_company_rate(self):
@@ -394,11 +400,15 @@ class CurrencyRate(models.Model):
     @api.depends('company_rate')
     def _compute_inverse_company_rate(self):
         for currency_rate in self:
+            if not currency_rate.company_rate:
+                currency_rate.company_rate = 1.0
             currency_rate.inverse_company_rate = 1.0 / currency_rate.company_rate
 
     @api.onchange('inverse_company_rate')
     def _inverse_inverse_company_rate(self):
         for currency_rate in self:
+            if not currency_rate.inverse_company_rate:
+                currency_rate.inverse_company_rate = 1.0
             currency_rate.company_rate = 1.0 / currency_rate.inverse_company_rate
 
     @api.onchange('company_rate')
