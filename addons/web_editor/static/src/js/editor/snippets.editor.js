@@ -923,6 +923,7 @@ var SnippetEditor = Widget.extend({
             width: self.$target.width(),
             height: self.$target.height()
         };
+        const closestFormEl = this.$target[0].closest('form');
         self.$target.after('<div class="oe_drop_clone" style="display: none;"/>');
         self.$target.detach();
         self.$el.addClass('d-none');
@@ -950,6 +951,16 @@ var SnippetEditor = Widget.extend({
         if (this.$target[0].classList.contains('s_table_of_content')) {
             $selectorChildren = $selectorChildren.filter((i, el) => !el.closest('.s_table_of_content'));
         }
+        // Disallow dropping form fields outside of their form.
+        // TODO this can probably be implemented by reviewing data-drop-near
+        // definitions in master but we should find a better to define those and
+        // such cases.
+        if (this.$target[0].matches('.form-group')) {
+            $selectorSiblings = $selectorSiblings.filter(
+                (i, el) => closestFormEl === el.closest('form')
+            );
+        }
+
         const canBeSanitizedUnless = this._canBeSanitizedUnless(this.$target[0]);
 
         this.trigger_up('activate_snippet', {$snippet: this.$target.parent()});
@@ -1998,13 +2009,20 @@ var SnippetsMenu = Widget.extend({
                 }
 
                 return editorToEnable;
-            }).then(editor => {
+            }).then(async editor => {
                 // If a link was clicked, the linktools should be focused after
                 // the right panel is shown to the user.
-                if (this._currentTab === this.tabs.OPTIONS
-                        && this.options.wysiwyg.linkTools
-                        && !this.options.wysiwyg.linkTools.noFocusUrl) {
-                    this.options.wysiwyg.linkTools.focusUrl();
+                // TODO: this should be reviewed to be done another way: we
+                // should avoid focusing something here while it is being
+                // rendered elsewhere.
+                const linkTools = this.options.wysiwyg.linkTools;
+                if (linkTools && this._currentTab === this.tabs.OPTIONS
+                        && !linkTools.noFocusUrl) {
+                    // Wait for `linkTools` potential in-progress rendering
+                    // before focusing the URL input on `snippetsMenu` (this
+                    // prevents race condition for automated testing).
+                    await linkTools.renderingPromise;
+                    linkTools.focusUrl();
                 }
                 return editor;
             });
