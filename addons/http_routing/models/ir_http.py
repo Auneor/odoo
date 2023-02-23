@@ -23,7 +23,7 @@ from odoo import api, models, exceptions, tools, http
 from odoo.addons.base.models import ir_http
 from odoo.addons.base.models.ir_http import RequestUID
 from odoo.addons.base.models.ir_qweb import QWebException
-from odoo.http import request
+from odoo.http import request, Response
 from odoo.osv import expression
 from odoo.tools import config, ustr, pycompat
 
@@ -103,8 +103,9 @@ def slug(value):
     return f"{slugname}-{identifier}"
 
 
-# NOTE: as the pattern is used as it for the ModelConverter (ir_http.py), do not use any flags
+# NOTE: the second pattern is used for the ModelConverter, do not use nor flags nor groups
 _UNSLUG_RE = re.compile(r'(?:(\w{1,2}|\w[A-Za-z0-9-_]+?\w)-)?(-?\d+)(?=$|/)')
+_UNSLUG_ROUTE_PATTERN = r'(?:(?:\w{1,2}|\w[A-Za-z0-9-_]+?\w)-)?(?:-?\d+)(?=$|/)'
 
 
 def unslug(s):
@@ -249,13 +250,13 @@ class ModelConverter(ir_http.ModelConverter):
     def __init__(self, url_map, model=False, domain='[]'):
         super(ModelConverter, self).__init__(url_map, model)
         self.domain = domain
-        self.regex = _UNSLUG_RE.pattern
+        self.regex = _UNSLUG_ROUTE_PATTERN
 
     def to_url(self, value):
         return slug(value)
 
     def to_python(self, value):
-        matching = re.match(self.regex, value)
+        matching = _UNSLUG_RE.match(value)
         _uid = RequestUID(value=value, match=matching, converter=self)
         record_id = int(matching.group(2))
         env = api.Environment(request.cr, _uid, request.context)
@@ -420,6 +421,13 @@ class IrHttp(models.AbstractModel):
             request.httprequest.method != 'POST'
             and getattr(request, 'is_frontend_multilang', True)
         )
+
+        # Some URLs in website are concatenated, first url ends with /,
+        # second url starts with /, resulting url contains two following
+        # slashes that must be merged.
+        if allow_redirect and '//' in path:
+            new_url = path.replace('//', '/')
+            werkzeug.exceptions.abort(request.redirect(new_url, code=301, local=True))
 
         # There is no user on the environment yet but the following code
         # requires one to set the lang on the request. Temporary grant
@@ -649,7 +657,7 @@ class IrHttp(models.AbstractModel):
         except Exception:
             code, html = 418, request.env['ir.ui.view']._render_template('http_routing.http_error', values)
 
-        response = werkzeug.wrappers.Response(html, status=code, content_type='text/html;charset=utf-8')
+        response = Response(html, status=code, content_type='text/html;charset=utf-8')
         cls._post_dispatch(response)
         return response
 

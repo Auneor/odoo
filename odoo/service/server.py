@@ -138,6 +138,14 @@ class RequestHandler(werkzeug.serving.WSGIRequestHandler):
             self.protocol_version = "HTTP/1.1"
         return environ
 
+    def send_header(self, keyword, value):
+        # Prevent `WSGIRequestHandler` from sending the connection close header (compatibility with werkzeug >= 2.1.1 )
+        # since it is incompatible with websocket.
+        if self.headers.get('Upgrade') == 'websocket' and keyword == 'Connection' and value == 'close':
+            # Do not keep processing requests.
+            self.close_connection = True
+            return
+        super().send_header(keyword, value)
 
 class ThreadedWSGIServerReloadable(LoggingBaseWSGIServerMixIn, werkzeug.serving.ThreadedWSGIServer):
     """ werkzeug Threaded WSGI Server patched to allow reusing a listen socket
@@ -1308,7 +1316,7 @@ def preload_registries(dbnames):
                 _logger.info("Starting post tests")
                 tests_before = registry._assertion_report.testsRun
                 post_install_suite = loader.make_suite(module_names, 'post_install')
-                if post_install_suite.countTestCases():
+                if post_install_suite.has_http_case():
                     with registry.cursor() as cr:
                         env = odoo.api.Environment(cr, odoo.SUPERUSER_ID, {})
                         env['ir.qweb']._pregenerate_assets_bundles()

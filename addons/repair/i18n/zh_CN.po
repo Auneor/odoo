@@ -6,7 +6,7 @@
 # Martin Trigaux, 2022
 # 陕西_jack, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -233,7 +233,7 @@ msgstr "允许的拣货类型"
 #. module: repair
 #: model:ir.model.fields,field_description:repair.field_repair_order__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件数量"
+msgstr "附件计数"
 
 #. module: repair
 #: model:ir.model.fields.selection,name:repair.selection__repair_order__invoice_method__b4repair
@@ -463,7 +463,7 @@ msgstr "额外信息"
 #. module: repair
 #: model_terms:ir.ui.view,arch_db:repair.view_repair_order_form
 msgid "Fees"
-msgstr "费用"
+msgstr "费"
 
 #. module: repair
 #: model:ir.model.fields,field_description:repair.field_repair_order__message_follower_ids
@@ -762,6 +762,14 @@ msgid "Normal"
 msgstr "正常"
 
 #. module: repair
+#. odoo-python
+#: code:addons/repair/models/repair.py:0
+#, python-format
+msgid ""
+"Note that the warehouses of the return and repair locations don't match!"
+msgstr ""
+
+#. module: repair
 #: model:ir.model.fields,field_description:repair.field_repair_order__message_needaction_counter
 msgid "Number of Actions"
 msgstr "动作数量"
@@ -1057,7 +1065,7 @@ msgstr "维修单必须维修，以便结束赔偿。"
 #. module: repair
 #: model:ir.model.fields,field_description:repair.field_stock_lot__repair_order_count
 msgid "Repair order count"
-msgstr "维修订单数量"
+msgstr "维修订单计数"
 
 #. module: repair
 #: code:addons/repair/models/stock_lot.py:0
@@ -1128,7 +1136,7 @@ msgstr "已归还"
 #. module: repair
 #: model:ir.model.fields,field_description:repair.field_repair_order__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "短信发送错误"
+msgstr "短信息发送错误"
 
 #. module: repair
 #: model:ir.model.fields,field_description:repair.field_repair_order__sale_order_id
@@ -1423,6 +1431,12 @@ msgstr "您不能删除链接到已过帐结算单的维修单。"
 #, python-format
 msgid "You can not enter negative quantities."
 msgstr "不能输入负数数量"
+
+#. module: repair
+#: code:addons/repair/models/repair.py:0
+#, python-format
+msgid "You cannot cancel a completed repair order."
+msgstr ""
 
 #. module: repair
 #: code:addons/repair/models/repair.py:0 code:addons/repair/models/repair.py:0

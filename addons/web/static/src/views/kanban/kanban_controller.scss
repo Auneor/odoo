@@ -22,6 +22,8 @@
 
     --KanbanColumn__highlight-background: #{rgba($o-info, 0.05)};
     --KanbanColumn__highlight-border: #{$o-info};
+
+    --o-view-nocontent-zindex: 1;
     // ----------------------------------------------------------------------------
 
     .dropdown,
@@ -64,15 +66,6 @@
         &:focus,
         &:focus-within {
             z-index: 1; // show the shadow on top of the previous & next cards in grouped mode
-        }
-
-        // In FireFox: elements with `overflow: hidden` will prevent mouseenter and mouseleave
-        // events from firing on elements underneath them. This is the case when dragging a card
-        // by the `.o_kanban_record_headings` element. In such cases, the pointer events are
-        // disabled to allow mouse events to fire properly.
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1352061
-        &.o_dragged .o_kanban_record_headings {
-            pointer-events: none;
         }
 
         // ------- Kanban Record, v11 Layout -------
@@ -509,9 +502,6 @@
         padding: 0 var(--KanbanGroup-padding-h) var(--KanbanGroup-padding-bottom);
 
         .o_kanban_header > .o_kanban_header_title {
-            // Makes the title come on top of the "no-content" background gradient.
-            z-index: 2;
-
             &:hover .o_kanban_config,
             .o_kanban_config.show {
                 visibility: visible;
@@ -533,6 +523,12 @@
             box-shadow: -1px 0px 0px 0px var(--KanbanColumn__highlight-border) inset,
                 1px 0px 0px 0px var(--KanbanColumn__highlight-border) inset;
         }
+    }
+
+    .o_column_quick_create,
+    .o_kanban_group:not(.o_column_folded) .o_kanban_header_title {
+        // Makes them come on top of the "no-content" background gradient.
+        z-index: calc(var(--o-view-nocontent-zindex) + 1);
     }
 
     .o_group_draggable .o_column_title {

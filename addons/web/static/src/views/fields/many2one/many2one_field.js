@@ -232,7 +232,7 @@ export class Many2OneField extends Component {
             searchInput.value = barcode;
             searchInput.dispatchEvent(new Event("input"));
             if (this.env.isSmall) {
-                searchInput.click();
+                searchInput.dispatchEvent(new Event("barcode-search"));
             }
         }
     }
@@ -257,7 +257,7 @@ Many2OneField.props = {
     canWrite: { type: Boolean, optional: true },
     canQuickCreate: { type: Boolean, optional: true },
     canCreateEdit: { type: Boolean, optional: true },
-    createNameField: { type: String, optional: true },
+    nameCreateField: { type: String, optional: true },
     searchLimit: { type: Number, optional: true },
     relation: { type: String, optional: true },
     string: { type: String, optional: true },
@@ -270,7 +270,7 @@ Many2OneField.defaultProps = {
     canWrite: true,
     canQuickCreate: true,
     canCreateEdit: true,
-    createNameField: "name",
+    nameCreateField: "name",
     searchLimit: 7,
     string: "",
     canScanBarcode: false,
@@ -298,7 +298,7 @@ Many2OneField.extractProps = ({ attrs, field }) => {
         canCreateEdit: canCreate && !noCreateEdit,
         relation: field.relation,
         string: attrs.string || field.string,
-        createNameField: attrs.options.create_name_field,
+        nameCreateField: attrs.options.create_name_field,
         canScanBarcode: canScanBarcode,
         openTarget: attrs.open_target,
     };
