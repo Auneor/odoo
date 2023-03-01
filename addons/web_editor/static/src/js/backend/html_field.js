@@ -225,7 +225,7 @@ export class HtmlField extends Component {
                 collaborationResId: parseInt(this.props.record.resId),
             },
             mediaModalParams: {
-                ...this.props.mediaModalParams,
+                ...this.props.wysiwygOptions.mediaModalParams,
                 res_model: this.props.record.resModel,
                 res_id: this.props.record.resId,
             },
@@ -303,7 +303,7 @@ export class HtmlField extends Component {
             this.wysiwyg.toolbar.$el.append($codeviewButtonToolbar);
             $codeviewButtonToolbar.click(this.toggleCodeView.bind(this));
         }
-        this.wysiwyg.odooEditor.addEventListener("historyStep", () =>
+        this.wysiwyg.odooEditor.editable.addEventListener("input", () =>
             this.props.setDirty(this._isDirty())
         );
 
