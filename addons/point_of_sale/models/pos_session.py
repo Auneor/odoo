@@ -781,7 +781,7 @@ class PosSession(models.Model):
                         signed_product_qty = move.product_qty
                         if move._is_in():
                             signed_product_qty *= -1
-                        amount = signed_product_qty * move.product_id._compute_average_price(0, move.product_qty, move)
+                        amount = signed_product_qty * move.product_id._compute_average_price(0, move.quantity_done, move)
                         stock_expense[exp_key] = self._update_amounts(stock_expense[exp_key], {'amount': amount}, move.picking_id.date, force_company_currency=True)
                         if move._is_in():
                             stock_return[out_key] = self._update_amounts(stock_return[out_key], {'amount': amount}, move.picking_id.date, force_company_currency=True)
@@ -810,7 +810,7 @@ class PosSession(models.Model):
                     signed_product_qty = move.product_qty
                     if move._is_in():
                         signed_product_qty *= -1
-                    amount = signed_product_qty * move.product_id._compute_average_price(0, move.product_qty, move)
+                    amount = signed_product_qty * move.product_id._compute_average_price(0, move.quantity_done, move)
                     stock_expense[exp_key] = self._update_amounts(stock_expense[exp_key], {'amount': amount}, move.picking_id.date, force_company_currency=True)
                     if move._is_in():
                         stock_return[out_key] = self._update_amounts(stock_return[out_key], {'amount': amount}, move.picking_id.date, force_company_currency=True)
@@ -1489,31 +1489,21 @@ class PosSession(models.Model):
         }
 
     def set_cashbox_pos(self, cashbox_value, notes):
+        if not self.env.user.has_group('point_of_sale.group_pos_user'):
+            raise AccessError(_("You don't have the access rights to set the point of sale cash box."))
         self.state = 'opened'
         self.opening_notes = notes
         difference = cashbox_value - self.cash_register_id.balance_start
-        self.cash_register_id.balance_start = cashbox_value
         self._post_cash_details_message('Opening', difference, notes)
         #if there is a difference create an account move to register the loss
         if difference:
-            account_to_use = self.cash_register_id.journal_id.loss_account_id.id if difference < 0 else self.cash_register_id.journal_id.profit_account_id.id
-            self.env['account.move'].create({
-                'ref': 'Opening Balance difference for %s' % (self.name),
+            self.env['account.bank.statement.line'].sudo().create({
+                'payment_ref': 'Opening Balance difference for %s' % (self.name),
                 'journal_id': self.cash_register_id.journal_id.id,
                 'date': self.start_at,
-                'line_ids': [
-                    (0, 0, {
-                        'account_id': self.cash_register_id.journal_id.default_account_id.id,
-                        'debit': difference > 0 and difference or 0,
-                        'credit': difference < 0 and -difference or 0,
-                    }),
-                    (0, 0, {
-                        'account_id': account_to_use,
-                        'credit': difference > 0 and difference or 0,
-                        'debit': difference < 0 and -difference or 0,
-                    }),
-                ]
-            }).action_post()
+                'amount': difference,
+                'statement_id': self.cash_register_id.id,
+            })
 
     def _post_cash_details_message(self, state, difference, notes):
         message = ""

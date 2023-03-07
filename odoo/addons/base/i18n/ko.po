@@ -3971,6 +3971,9 @@ msgid ""
 "Convert employee's extra hours to leave allocations.\n"
 "    "
 msgstr ""
+"\n"
+"직원이 초과 근무한 시간을 휴가로 할당하여 전환하십시오.\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_helpdesk_account
@@ -4068,6 +4071,9 @@ msgid ""
 "Create booths for your favorite event.\n"
 "    "
 msgstr ""
+"\n"
+"가장 관심 있는 행사를 위한 부스를 제작하십시오.\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_sale_coupon
@@ -4201,6 +4207,17 @@ msgid ""
 "- Základní fiskální pozice pro českou legislativu\n"
 "    "
 msgstr ""
+"\n"
+"체코 회계 차트 및 현지화. 세금 및 기본 재정 위치가 있는 계정과목표 포함.\n"
+"\n"
+"Tento modul definuje:\n"
+"\n"
+"- Českou účetní osnovu za rok 2020\n"
+"\n"
+"- Základní sazby pro DPH z prodeje a nákupu\n"
+"\n"
+"- Základní fiskální pozice pro českou legislativu\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_mass_mailing_themes
@@ -4281,6 +4298,24 @@ msgid ""
 "invoice line to export in the FatturaPA XML.   \n"
 "    "
 msgstr ""
+"\n"
+"Documento di Trasporto (DDT)\n"
+"\n"
+"A와 B 사이에서 품목을 이동시킬 때마다 DDT를 이용하여 법적인 역할을\n"
+"수행할 수 있으며, 일례로 경찰의 저지를 받는 경우가 있겠습니다. \n"
+"\n"
+"이탈리아에 있는 회사로 가는 물품 배송을 위해서 인쇄를 할 경우, \n"
+"DDT를 대신 인쇄하게 됩니다.  배송표와 비슷하지만, \n"
+"배송품의 가격 정보와 같은 내용을 담고 있으며, \n"
+"DDT를 통해 배송 사유나 배송업체 등을 포함할 수 있습니다.  \n"
+"\n"
+"또한 DDT 에 대해서 별도의 결과를 사용할 수 있으나, 관련\n"
+"번호에는 공백란이 있어서는 안되고 해당 품목이 발송되는 시점에만 적용될 수 있습니다. \n"
+"\n"
+"청구서가 판매주문서나 배송과 관련된 판매주문서와 관련된 경우 시스템에서는\n"
+"FatturaPA XML로 내보낼 모든 청구서 항목에 대해 연결되어 있는 DDT를 \n"
+"자동으로 계산합니다.   \n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_it_edi
@@ -4912,6 +4947,67 @@ msgid ""
 "* Unit of measures AFIP codes\n"
 "* Partners: Consumidor Final and AFIP\n"
 msgstr ""
+"\n"
+"기능\n"
+"----------\n"
+"\n"
+"이 모듈은 회사가 아르헨티나에서 AFIP (Administración Federal de Ingresos Públicos) 규정 및 지침에 따라 운영하는데 필요한 최소한의 구성을 통하여 아르헨티나 현지화를 하기 위한 회계 기능을 추가합니다.\n"
+"\n"
+"생산관리를 위해서는 다음 구성 단계를 따르십시오:\n"
+"\n"
+"1. 회사 항목으로 이동하여 VAT 번호 및 AFIP 책임 유형을 구성합니다.\n"
+"2. 회계 / 설정 항목으로 이동하여 사용하려는 계정과목표를 설정합니다.\n"
+"3. AFIP POS 정보를 고려하여 판매 분개장을 생성합니다.\n"
+"\n"
+"테스트용 데모 데이터:\n"
+"\n"
+"* 각각의 계정과목표가 설치된 각 AFIP 책임 주체 유형에 대해 하나씩 3개의 회사가 생성되었습니다. 테스트를 위해 귀하가 수정할 회사를 선택하십시오:\n"
+"\n"
+"  * (AR) Responsable Inscripto\n"
+"  * (AR) Exento\n"
+"  * (AR) Monotributo\n"
+"\n"
+"* 전체 회사에 대한 판매 분개장을 구성하여 테스트용 인쇄 및 청구서 내보내기 시행\n"
+"* “(AR) Responsable Inscripto” 회사 상에서 검증이 완료된 청구서 및 기타 문서 예시\n"
+"* 다양한 책임 주체 유형에 대한 협력업체 예시:\n"
+"\n"
+"  * ADHOC (IVA Responsable Inscripto)\n"
+"  * Consejo Municipal Rosario (IVA Sujeto Exento)\n"
+"  * Gritti (Monotributo)\n"
+"  * Cerro Castor. IVA Liberado in Zona Franca\n"
+"  * Expresso (Cliente del Exterior)\n"
+"  * Odoo (Proveedor del Exterior)\n"
+"\n"
+"강조 사항:\n"
+"\n"
+"* 계정과목표는 자동으로 설치되지 않으며 각 CoA 서식은 회사의 AFIP 책임 주체에 따라 다르므로 필요에 따라 CoA를 설치해야 합니다.\n"
+"* CoA를 설치할 때 판매 분개장이 생성되지 않으므로 분개장을 직접 구성해야 합니다.\n"
+"* 문서의 발행자와 수신자 및 관련 저널의 재정 책임 주체에 따라 청구서 생성 시 문서 유형이 적절하게 미리 선택됩니다..\n"
+"* CBU 계정 유형이 추가되었으며 CBU 유효성 검사도 추가되었습니다.\n"
+"\n"
+"\n"
+"기술\n"
+"---------\n"
+"\n"
+"이 모듈에서는 최종적으로 전자 청구서 모듈에 사용될 모델과 필드 전체를 추가합니다. 다음은 주요 기능에 대한 요약 내용입니다:\n"
+"\n"
+"마스터 데이터:\n"
+"\n"
+"* 계정과목표: 법인과 관련된 각 AFIP 책임 주체에 대해 하나씩 존재:\n"
+"\n"
+"  * Responsable Inscripto (RI)\n"
+"  * Exento (EX)\n"
+"  * Monotributo (Mono)\n"
+"\n"
+"* 아르헨티나 세금 및 계정 세금 그룹 (기존 금액 및 기타 유형의 VAT 세금)\n"
+"* AFIP 책임 주체 유형\n"
+"* 재정 상태 (세금 추정 목적)\n"
+"* 아르헨티나의 법적 문서 유형\n"
+"* 아르헨티나에서 유효한 신분증 유형\n"
+"* 법인, 자연인 및 기타에 대한 국가 AFIP 코드 및 국가 VAT 코드\n"
+"* 통화용 AFIP 코드\n"
+"* 측정 단위용 AFIP 코드\n"
+"* 협력업체: 최종 소비자 및 AFIP\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ec
@@ -4955,6 +5051,10 @@ msgid ""
 "=======================================================\n"
 "    "
 msgstr ""
+"\n"
+"GCC POS 현지화\n"
+"=======================================================\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_gamification
@@ -5107,6 +5207,8 @@ msgid ""
 "\n"
 "Germany TSS Regulation\n"
 msgstr ""
+"\n"
+"독일 TSS 규정\n"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_de_pos_res_cert
@@ -5269,6 +5371,28 @@ msgid ""
 "correctly when the cn2an library is installed. (e.g. with pip3 install cn2an)\n"
 "    "
 msgstr ""
+"\n"
+"Includes the following data for the Chinese localization\n"
+"========================================================\n"
+"\n"
+"Account Type/科目类型\n"
+"\n"
+"State Data/省份数据\n"
+"\n"
+"    科目类型\\会计科目表模板\\增值税\\辅助核算类别\\管理会计凭证簿\\财务会计凭证簿\n"
+"\n"
+"    添加中文省份数据\n"
+"\n"
+"    增加小企业会计科目表\n"
+"\n"
+"    修改小企业会计科目表\n"
+"\n"
+"    修改小企业会计税率\n"
+"\n"
+"We added the option to print a voucher which will also \n"
+"print the amount in words (special Chinese characters for numbers)\n"
+"correctly when the cn2an library is installed. (e.g. with pip3 install cn2an)\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_cn_city
@@ -5447,6 +5571,10 @@ msgid ""
 "=======================================================\n"
 "    "
 msgstr ""
+"\n"
+"K.S.A. POS 현지화\n"
+"=======================================================\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_sa_hr_payroll
@@ -7208,6 +7336,21 @@ msgid ""
 "    \n"
 "    "
 msgstr ""
+"\n"
+"슬로바키아 회계 차트 및 현지화: 계정과목표 2020, 기본 VAT 율 및 \n"
+"재정 상황.\n"
+"\n"
+"Tento modul definuje:\n"
+"• Slovenskú účtovú osnovu za rok 2020\n"
+"\n"
+"• Základné sadzby pre DPH z predaja a nákupu\n"
+"\n"
+"• Základné fiškálne pozície pre slovenskú legislatívu\n"
+"\n"
+" \n"
+"Pre viac informácií kontaktujte info@26house.com alebo navštívte https://www.26house.com.\n"
+"    \n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_es
@@ -7295,6 +7438,13 @@ msgid ""
 "It also includes the invoice OCR payment reference handling.\n"
 "    "
 msgstr ""
+"\n"
+"스웨덴 회계\n"
+"------------------\n"
+"\n"
+"Odoo에서 스웨덴 회계 차트를 관리하기 위한 기본 모튤입니다.\n"
+"청구서 OCR 결제 참조를 처리하기 위한 내용이 포함됩니다.\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_ch
@@ -7905,6 +8055,15 @@ msgid ""
 " - Multiple Fiscal positions\n"
 " "
 msgstr ""
+"\n"
+"이 내용은 이스라엘에서 Odoo를 실행하기 위해 필요한 최신 기본 이스라엘 현지화 항목입니다:\n"
+"================================================================================\n"
+"\n"
+"이 모듈은 다음을 포함하고 있습니다:\n"
+" - 일반적인 이스라엘 계정과목표\n"
+" - 세금 및 세무 보고서\n"
+" - 다중 재정 상태\n"
+" "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_za
@@ -9239,6 +9398,10 @@ msgid ""
 "=======================================================\n"
 "    "
 msgstr ""
+"\n"
+"아랍에미리트 회계 계정과목표 및 현지화.\n"
+"=======================================================\n"
+"    "
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_us
@@ -10148,7 +10311,7 @@ msgstr "<i class=\"fa fa-times\" title=\"Close the onboarding panel\"/>"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
 msgid "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
-msgstr ""
+msgstr "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.onboarding_container
@@ -14160,7 +14323,7 @@ msgstr "회사 데이터"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__company_details
 msgid "Company Details"
-msgstr ""
+msgstr "회사 상세 정보"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__favicon
@@ -24909,7 +25072,7 @@ msgstr "온라인 은행 명세서 동기화"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_booth_sale
 msgid "Online Event Booth Sale"
-msgstr ""
+msgstr "온라인 행사 부스 판매"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_booth
@@ -25658,7 +25821,7 @@ msgstr "파키스탄"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pk
 msgid "Pakistan - Accounting"
-msgstr ""
+msgstr "파키스탄 - 회계"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_pk_reports
@@ -26519,7 +26682,7 @@ msgstr "프로젝트 유료버전 HR 계약"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_project_hr_expense
 msgid "Project Expenses"
-msgstr ""
+msgstr "프로젝트 경비"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_project_mail_plugin
@@ -26658,7 +26821,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_project_hr_expense
 msgid "Project expenses"
-msgstr ""
+msgstr "프로젝트 경비"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_documents_project
@@ -28838,7 +29001,7 @@ msgstr "삭감"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_sk
 msgid "Slovak - Accounting"
-msgstr ""
+msgstr "슬로바키아 - 회계"
 
 #. module: base
 #: model:res.country,name:base.sk
@@ -29443,7 +29606,7 @@ msgstr "스웨덴"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_se
 msgid "Sweden - Accounting"
-msgstr ""
+msgstr "스웨덴 - 회계"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_se_reports
@@ -33021,7 +33184,7 @@ msgstr "연락처를 부모와 병합할 수 없습니다."
 msgid ""
 "You cannot reduce the number of decimal places of a currency already used on"
 " an accounting entry."
-msgstr ""
+msgstr "회계 상 이미 입력에 사용된 통화에 대해서는 소숫점 자릿수를 줄일 수 없습니다."
 
 #. module: base
 #: code:addons/models.py:0

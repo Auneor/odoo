@@ -3978,7 +3978,7 @@ msgstr "¿Desea editar la información de la empresa?"
 #: code:addons/website/static/src/js/menu/new_content.js:0
 #, python-format
 msgid "Do you want to install the \"%s\" App?"
-msgstr "¿Desea instalar la aplicación de \"%s\"?"
+msgstr "¿Desea instalar la aplicación \"%s\"?"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links
@@ -11365,6 +11365,15 @@ msgstr ""
 #, python-format
 msgid "You can't remove the submit button of the form"
 msgstr "No se puede eliminar el botón de envío del formulario"
+
+#. module: website
+#: code:addons/website/models/website.py:0
+#, python-format
+msgid ""
+"You cannot delete default website %s. Try to change its settings instead"
+msgstr ""
+"No puede eliminar un sitio web predeterminado %s. En su lugar, intente "
+"cambiar sus ajustes"
 
 #. module: website
 #: code:addons/website/controllers/backend.py:0
