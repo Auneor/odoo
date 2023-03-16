@@ -1003,7 +1003,7 @@ class MailThread(models.AbstractModel):
                     'message': message,
                 }, engine='ir.qweb')
                 self._routing_create_bounce_email(email_from, body, message, reply_to=self.env.company.email)
-                return []
+#                return [] On commente ça car sinon on ne sait pas qu'un email n'a pas été routé ce qui fait que les devs R2400 et R2399 ne marchent pas
 
             dest_aliases = self.env['mail.alias'].search([('alias_name', 'in', rcpt_tos_valid_localparts)])
             if dest_aliases:
