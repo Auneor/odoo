@@ -2626,7 +2626,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Ajoutez une sélection de méthodes de livraison à votre boutique en ligne.\n"
+"Ajoutez une sélection de modes de livraison à votre boutique en ligne.\n"
 "Configurez vos propres méthodes avec une grille de tarification ou réalisez une intégration avec les opérateurs pour un processus d'expédition entièrement automatisé."
 
 #. module: base
@@ -7164,7 +7164,7 @@ msgstr ""
 "Tableau de bord d'abonnement\n"
 "===========================\n"
 "Ajout de tableaux de bord pour :\n"
-"1) analyser les revenus récurrents et autres paramètres des abonnements ;\n"
+"1) analyser les revenus récurrents et autres métriques des abonnements ;\n"
 "2) analyser les modifications d'abonnements par vendeur et calculer leur valeur.\n"
 "    "
 
@@ -18194,7 +18194,7 @@ msgstr ""
 "\n"
 "Étapes à suivre pour obtenir la rapport :\n"
 "\n"
-"1. L'écriture comptable pour le transfert des exercices doit être générée manuellement\n"
+"1. La pièce comptable pour le transfert des exercices doit être générée manuellement\n"
 "   avec la date de fin de l'exercice fiscal qui se clôture. Elle doit être comptabilisée.\n"
 "\n"
 "2. Cette écriture doit être définie comme l'écriture de clôture pour l'exercice fiscal.\n"
@@ -20398,7 +20398,7 @@ msgstr "Intégrer le mécanisme de coupon dans les commandes clients."
 #. module: base
 #: model:ir.module.module,description:base.module_sale_coupon_delivery
 msgid "Integrate coupon mechanism with shipping costs."
-msgstr "Intégrer le mécanisme de coupon avec les coûts d'expédition."
+msgstr "Intégrer le mécanisme de coupon avec les frais d'expédition."
 
 #. module: base
 #: model:ir.module.module,description:base.module_gift_card
