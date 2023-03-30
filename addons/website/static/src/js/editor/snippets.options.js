@@ -2246,6 +2246,24 @@ options.registry.HeaderNavbar = options.Class.extend({
     },
 
     //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */
+    async updateUI() {
+        await this._super(...arguments);
+        // For all header templates except those in the following array, change
+        // the label of the option to "Mobile Alignment" (instead of
+        // "Alignment") because it only impacts the mobile view.
+        if (!["'default'", "'hamburger'", "'sidebar'"].includes(weUtils.getCSSVariableValue('header-template'))) {
+            const alignmentOptionTitleEl = this.el.querySelector('[data-name="header_alignment_opt"] we-title');
+            alignmentOptionTitleEl.textContent = _t("Mobile Alignment");
+        }
+    },
+
+    //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
@@ -2264,6 +2282,14 @@ options.registry.HeaderNavbar = options.Class.extend({
             case 'no_hamburger_opt': {
                 return !weUtils.getCSSVariableValue('header-template').includes('hamburger');
             }
+        }
+        if (widgetName === 'header_alignment_opt') {
+            if (!this.$target[0].querySelector('.o_offcanvas_menu_toggler')) {
+                // If mobile menu is "Default", hides the alignment option for
+                // "hamburger full" and "magazine" header templates.
+                return !["'hamburger-full'", "'magazine'"].includes(weUtils.getCSSVariableValue('header-template'));
+            }
+            return true;
         }
         return this._super(...arguments);
     },
@@ -2489,16 +2515,16 @@ options.registry.DeviceVisibility = options.Class.extend({
      * @see this.selectClass for parameters
      */
     async toggleDeviceVisibility(previewMode, widgetValue, params) {
-        this.$target[0].classList.remove('d-none', 'd-md-none',
+        this.$target[0].classList.remove('d-none', 'd-md-none', 'd-lg-none',
             'o_snippet_mobile_invisible', 'o_snippet_desktop_invisible',
             'o_snippet_override_invisible',
         );
         const style = getComputedStyle(this.$target[0]);
-        this.$target[0].classList.remove(`d-md-${style['display']}`);
+        this.$target[0].classList.remove(`d-md-${style['display']}`, `d-lg-${style['display']}`);
         if (widgetValue === 'no_desktop') {
-            this.$target[0].classList.add('d-md-none', 'o_snippet_desktop_invisible');
+            this.$target[0].classList.add('d-lg-none', 'o_snippet_desktop_invisible');
         } else if (widgetValue === 'no_mobile') {
-            this.$target[0].classList.add(`d-md-${style['display']}`, 'd-none', 'o_snippet_mobile_invisible');
+            this.$target[0].classList.add(`d-lg-${style['display']}`, 'd-none', 'o_snippet_mobile_invisible');
         }
 
         // Update invisible elements.
@@ -2543,10 +2569,10 @@ options.registry.DeviceVisibility = options.Class.extend({
         if (methodName === 'toggleDeviceVisibility') {
             const classList = [...this.$target[0].classList];
             if (classList.includes('d-none') &&
-                    classList.some(className => className.startsWith('d-md-'))) {
+                    classList.some(className => className.match(/^d-(md|lg)-/))) {
                 return 'no_mobile';
             }
-            if (classList.includes('d-md-none')) {
+            if (classList.some(className => className.match(/d-(md|lg)-none/))) {
                 return 'no_desktop';
             }
             return '';
