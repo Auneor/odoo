@@ -121,7 +121,7 @@ class PartnerCategory(models.Model):
     child_ids = fields.One2many('res.partner.category', 'parent_id', string='Child Tags')
     active = fields.Boolean(default=True, help="The active field allows you to hide the category without removing it.")
     parent_path = fields.Char(index=True, unaccent=False)
-    partner_ids = fields.Many2many('res.partner', column1='category_id', column2='partner_id', string='Partners')
+    partner_ids = fields.Many2many('res.partner', column1='category_id', column2='partner_id', string='Partners', copy=False)
 
     @api.constrains('parent_id')
     def _check_parent_id(self):
@@ -381,7 +381,9 @@ class Partner(models.Model):
                 domain += [('company_id', 'in', [False, partner.company_id.id])]
             if partner_id:
                 domain += [('id', '!=', partner_id), '!', ('id', 'child_of', partner_id)]
-            partner.same_vat_partner_id = bool(partner.vat) and not partner.parent_id and Partner.search(domain, limit=1)
+            # For VAT number being only one character, we will skip the check just like the regular check_vat
+            should_check_vat = partner.vat and len(partner.vat) != 1
+            partner.same_vat_partner_id = should_check_vat and not partner.parent_id and Partner.search(domain, limit=1)
             # check company_registry
             domain = [
                 ('company_registry', '=', partner.company_registry),
@@ -566,6 +568,7 @@ class Partner(models.Model):
         if commercial_partner != self:
             sync_vals = commercial_partner._update_fields_values(self._commercial_fields())
             self.write(sync_vals)
+            self._commercial_sync_to_children()
 
     def _commercial_sync_to_children(self):
         """ Handle sync of commercial fields to descendants """

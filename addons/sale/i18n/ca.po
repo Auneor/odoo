@@ -18,7 +18,6 @@
 # Sandra Franch <sandra.franch@upc.edu>, 2022
 # marcescu, 2022
 # Carles Antoli <carlesantoli@hotmail.com>, 2022
-# jabelchi, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
 # Cristian Cruz, 2022
@@ -26,17 +25,18 @@
 # CristianCruzParra, 2022
 # jabiri7, 2022
 # Ivan Espinola, 2023
-# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # Evgeniia Kotova, 2023
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
+# jabelchi, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:34+0000\n"
+"POT-Creation-Date: 2023-04-14 05:52+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: Evgeniia Kotova, 2023\n"
-"Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
+"Last-Translator: jabelchi, 2023\n"
+"Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -62,13 +62,6 @@ msgstr "# de línies"
 #: model:ir.model.fields,field_description:sale.field_payment_transaction__sale_order_ids_nbr
 msgid "# of Sales Orders"
 msgstr "# de comandes de venda"
-
-#. module: sale
-#. odoo-python
-#: code:addons/sale/models/sale_order.py:0
-#, python-format
-msgid "%(amount)s due %(date)s"
-msgstr "%(amount)s vençut %(date)s"
 
 #. module: sale
 #. odoo-python
@@ -746,10 +739,10 @@ msgstr "<span class=\"o_stat_text\">Venut</span>"
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
-"                                <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
+"                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
-"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Quantitat</span>\n"
-"                                <span groups=\"account.group_show_line_subtotals_tax_included\">Preu total</span>"
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Import</span>\n"
+"                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Preu total</span>"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -1953,6 +1946,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale.field_sale_order__validity_date
 msgid "Expiration"
 msgstr "Caducitat"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+#, python-format
+msgid "Expires on %(date)s"
+msgstr ""
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
@@ -4387,14 +4387,9 @@ msgid ""
 "There is nothing to invoice!\n"
 "\n"
 "Reason(s) of this behavior could be:\n"
-"- You should deliver your products before invoicing them: Click on the \"truck\" icon (top-right of your screen) and follow instructions.\n"
+"- You should deliver your products before invoicing them.\n"
 "- You should modify the invoicing policy of your product: Open the product, go to the \"Sales\" tab and modify invoicing policy from \"delivered quantities\" to \"ordered quantities\". For Services, you should modify the Service Invoicing Policy to 'Prepaid'."
 msgstr ""
-"No hi ha res a facturar!\n"
-"\n"
-"Les raon(s) d'aquest comportament podrien ser:\n"
-"- Hauries de lliurar els teus productes abans de facturar-los: Fes Clic a la icona de \"truck\" (superior dreta de la pantalla) i segueix les instruccions.\n"
-"- Hauríeu de modificar la política de facturació del vostre producte: Obriu el producte, aneu a la pestanya \"Sales\" i modifiqueu la política de facturació des de \"quantitats d'entrega\" a \"quantitats ordenades\". En el cas dels serveis, hauria de modificar la política de facturació del servei per a \"premesos\"."
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -4991,6 +4986,9 @@ msgid ""
 "== 'pending') and 'Pending Order' or 'Order' }} (Ref {{ object.name or 'n/a'"
 " }})"
 msgstr ""
+"{{ object.company_id.name }} {{ (object.get_portal_last_transaction().state "
+"== 'pending') and 'Comanda pendent' or 'Comanda' }} (Ref {{ object.name or "
+"'n/a' }})"
 
 #. module: sale
 #: model:mail.template,subject:sale.email_template_edi_sale
@@ -4999,6 +4997,9 @@ msgid ""
 "(ctx.get('proforma') and 'Proforma' or 'Quotation') or 'Order' }} (Ref {{ "
 "object.name or 'n/a' }})"
 msgstr ""
+"{{ object.company_id.name }} {{ object.state in ('draft', 'sent') and "
+"(ctx.get('proforma') and 'Proforma' or 'Pressupost') or 'Comanda' }} (Ref {{"
+" object.name or 'n/a' }})"
 
 #. module: sale
 #: model:mail.template,subject:sale.mail_template_sale_cancellation

@@ -1,26 +1,6 @@
 (function (exports, owl) {
     'use strict';
 
-    function _interopNamespace(e) {
-        if (e && e.__esModule) return e;
-        var n = Object.create(null);
-        if (e) {
-            Object.keys(e).forEach(function (k) {
-                if (k !== 'default') {
-                    var d = Object.getOwnPropertyDescriptor(e, k);
-                    Object.defineProperty(n, k, d.get ? d : {
-                        enumerable: true,
-                        get: function () { return e[k]; }
-                    });
-                }
-            });
-        }
-        n["default"] = e;
-        return Object.freeze(n);
-    }
-
-    var owl__namespace = /*#__PURE__*/_interopNamespace(owl);
-
     /*
      * usage: every string should be translated either with _lt if they are registered with a registry at
      *  the load of the app or with Spreadsheet._t in the templates. Spreadsheet._t is exposed in the
@@ -132,88 +112,88 @@
     const FILTERS_COLOR = "#188038";
     const BACKGROUND_HEADER_FILTER_COLOR = "#E6F4EA";
     const BACKGROUND_HEADER_SELECTED_FILTER_COLOR = "#CEEAD6";
-    // Color picker
+    // Color picker defaults as upper case HEX to match `toHex`helper
     const COLOR_PICKER_DEFAULTS = [
         "#000000",
         "#434343",
         "#666666",
         "#999999",
-        "#b7b7b7",
-        "#cccccc",
-        "#d9d9d9",
-        "#efefef",
-        "#f3f3f3",
-        "#ffffff",
+        "#B7B7B7",
+        "#CCCCCC",
+        "#D9D9D9",
+        "#EFEFEF",
+        "#F3F3F3",
+        "#FFFFFF",
         "#980000",
-        "#ff0000",
-        "#ff9900",
-        "#ffff00",
-        "#00ff00",
-        "#00ffff",
-        "#4a86e8",
-        "#0000ff",
-        "#9900ff",
-        "#ff00ff",
-        "#e6b8af",
-        "#f4cccc",
-        "#fce5cd",
-        "#fff2cc",
-        "#d9ead3",
-        "#d0e0e3",
-        "#c9daf8",
-        "#cfe2f3",
-        "#d9d2e9",
-        "#ead1dc",
-        "#dd7e6b",
-        "#ea9999",
-        "#f9cb9c",
-        "#ffe599",
-        "#b6d7a8",
-        "#a2c4c9",
-        "#a4c2f4",
-        "#9fc5e8",
-        "#b4a7d6",
-        "#d5a6bd",
-        "#cc4125",
-        "#e06666",
-        "#f6b26b",
-        "#ffd966",
-        "#93c47d",
-        "#76a5af",
-        "#6d9eeb",
-        "#6fa8dc",
-        "#8e7cc3",
-        "#c27ba0",
-        "#a61c00",
-        "#cc0000",
-        "#e69138",
-        "#f1c232",
-        "#6aa84f",
-        "#45818e",
-        "#3c78d8",
-        "#3d85c6",
-        "#674ea7",
-        "#a64d79",
-        "#85200c",
+        "#FF0000",
+        "#FF9900",
+        "#FFFF00",
+        "#00FF00",
+        "#00FFFF",
+        "#4A86E8",
+        "#0000FF",
+        "#9900FF",
+        "#FF00FF",
+        "#E6B8AF",
+        "#F4CCCC",
+        "#FCE5CD",
+        "#FFF2CC",
+        "#D9EAD3",
+        "#D0E0E3",
+        "#C9DAF8",
+        "#CFE2F3",
+        "#D9D2E9",
+        "#EAD1DC",
+        "#DD7E6B",
+        "#EA9999",
+        "#F9CB9C",
+        "#FFE599",
+        "#B6D7A8",
+        "#A2C4C9",
+        "#A4C2F4",
+        "#9FC5E8",
+        "#B4A7D6",
+        "#D5A6BD",
+        "#CC4125",
+        "#E06666",
+        "#F6B26B",
+        "#FFD966",
+        "#93C47D",
+        "#76A5AF",
+        "#6D9EEB",
+        "#6FA8DC",
+        "#8E7CC3",
+        "#C27BA0",
+        "#A61C00",
+        "#CC0000",
+        "#E69138",
+        "#F1C232",
+        "#6AA84F",
+        "#45818E",
+        "#3C78D8",
+        "#3D85C6",
+        "#674EA7",
+        "#A64D79",
+        "#85200C",
         "#990000",
-        "#b45f06",
-        "#bf9000",
-        "#38761d",
-        "#134f5c",
-        "#1155cc",
-        "#0b5394",
-        "#351c75",
-        "#741b47",
-        "#5b0f00",
+        "#B45F06",
+        "#BF9000",
+        "#38761D",
+        "#134F5C",
+        "#1155CC",
+        "#0B5394",
+        "#351C75",
+        "#741B47",
+        "#5B0F00",
         "#660000",
-        "#783f04",
-        "#7f6000",
-        "#274e13",
-        "#0c343d",
-        "#1c4587",
+        "#783F04",
+        "#7F6000",
+        "#274E13",
+        "#0C343D",
+        "#1C4587",
         "#073763",
-        "#20124d",
-        "#4c1130",
+        "#20124D",
+        "#4C1130",
     ];
     // Dimensions
     const MIN_ROW_HEIGHT = 10;
@@ -251,7 +231,7 @@
     const DEFAULT_BORDER_DESC = ["thin", "#000"];
     const DEFAULT_FILTER_BORDER_DESC = ["thin", FILTERS_COLOR];
     // DateTimeRegex
-    const DATETIME_FORMAT = /[ymd:]/;
+    const DATETIME_FORMAT = /[ymdhs:]/;
     // Ranges
     const INCORRECT_RANGE_STRING = CellErrorType.InvalidReference;
     // Max Number of history steps kept in memory
@@ -263,6 +243,7 @@
     const DEFAULT_FIGURE_WIDTH = 536;
     // Chart
     const MAX_CHAR_LABEL = 20;
+    const FIGURE_ID_SPLITTER = "??";
     const DEFAULT_GAUGE_LOWER_COLOR = "#cc0000";
     const DEFAULT_GAUGE_MIDDLE_COLOR = "#f1c232";
     const DEFAULT_GAUGE_UPPER_COLOR = "#6aa84f";
@@ -286,11 +267,13 @@
         ComponentsImportance[ComponentsImportance["Highlight"] = 5] = "Highlight";
         ComponentsImportance[ComponentsImportance["Figure"] = 10] = "Figure";
         ComponentsImportance[ComponentsImportance["ScrollBar"] = 15] = "ScrollBar";
-        ComponentsImportance[ComponentsImportance["Dropdown"] = 16] = "Dropdown";
-        ComponentsImportance[ComponentsImportance["Composer"] = 20] = "Composer";
+        ComponentsImportance[ComponentsImportance["GridPopover"] = 19] = "GridPopover";
+        ComponentsImportance[ComponentsImportance["GridComposer"] = 20] = "GridComposer";
+        ComponentsImportance[ComponentsImportance["Dropdown"] = 21] = "Dropdown";
         ComponentsImportance[ComponentsImportance["ColorPicker"] = 25] = "ColorPicker";
         ComponentsImportance[ComponentsImportance["IconPicker"] = 25] = "IconPicker";
-        ComponentsImportance[ComponentsImportance["Popover"] = 30] = "Popover";
+        ComponentsImportance[ComponentsImportance["TopBarComposer"] = 30] = "TopBarComposer";
+        ComponentsImportance[ComponentsImportance["Popover"] = 35] = "Popover";
         ComponentsImportance[ComponentsImportance["ChartAnchor"] = 1000] = "ChartAnchor";
     })(ComponentsImportance || (ComponentsImportance = {}));
     const DEFAULT_SHEETVIEW_SIZE = 1000;
@@ -912,6 +895,9 @@
     function isDefined$1(argument) {
         return argument !== undefined;
     }
+    function isNonEmptyString(str) {
+        return str !== undefined && str !== "";
+    }
     /**
      * Check if all the values of an object, and all the values of the objects inside of it, are undefined.
      */
@@ -1038,6 +1024,10 @@
         }
         return true;
     }
+    /** Check if the given array contains all the values of the other array. */
+    function includesAll(arr, values) {
+        return values.every((value) => arr.includes(value));
+    }
     /**
      * Return an object with all the keys in the object that have a falsy value removed.
      */
@@ -1056,6 +1046,8 @@
         return matrix[0].map((_, i) => matrix.map((row) => row[i]));
     }
 
+    const RBA_REGEX = /rgba?\(|\s+|\)/gi;
+    const HEX_MATCH = /^#([A-F\d]{2}){3,4}$/g;
     const colors$1 = [
         "#eb6d00",
         "#0074d9",
@@ -1086,7 +1078,10 @@
     }
     /**
      * Converts any CSS color value to a standardized hex6 value.
-     * Accepts: hex3, hex6, hex8 and rgb (rgba is not supported)
+     * Accepts: hex3, hex6, hex8, rgb[1] and rgba[1].
+     *
+     * [1] under the form rgb(r, g, b, a?) or rgba(r, g, b, a?)
+     * with r,g,b ∈ [0, 255] and a ∈ [0, 1]
      *
      * toHex("#ABC")
      * >> "#AABBCC"
@@ -1097,27 +1092,31 @@
      * toHex("rgb(30, 80, 16)")
      * >> "#1E5010"
      *
+     *  * toHex("rgb(30, 80, 16, 0.5)")
+     * >> "#1E501080"
+     *
      */
     function toHex(color) {
-        if (color.includes("rgba")) {
-            throw new Error(`rgba() conversion currently not supported: ${color}`);
+        let hexColor = color;
+        if (color.startsWith("rgb")) {
+            hexColor = rgbaStringToHex(color);
         }
-        if (color.includes("rgb")) {
-            return rgbToHex6(color);
+        else {
+            hexColor = color.replace("#", "").toUpperCase();
+            if (hexColor.length === 3 || hexColor.length === 4) {
+                hexColor = hexColor.split("").reduce((acc, h) => acc + h + h, "");
+            }
+            hexColor = `#${hexColor}`;
         }
-        color = color.replace("#", "").toUpperCase();
-        if (color.length === 3 || color.length === 4) {
-            color = color.split("").reduce((acc, h) => acc + h + h, "");
+        if (!hexColor.match(HEX_MATCH)) {
+            throw new Error(`invalid color input: ${color}`);
         }
-        if (color.replace(/[a-f0-9]/gi, "") !== "") {
-            throw new Error("invalid color");
-        }
-        return "#" + color;
+        return hexColor;
     }
     function isColorValid(color) {
         try {
-            const { r, g, b, a } = colorToRGBA(color);
-            return (isColorValueValid(r) && isColorValueValid(g) && isColorValueValid(b) && isColorValueValid(a));
+            toHex(color);
+            return true;
         }
         catch (error) {
             return false;
@@ -1150,15 +1149,29 @@
     /**
      * Convert a CSS rgb color string to a standardized hex6 color value.
      *
-     * rgbToHex6("rgb(30, 80, 16)")
+     * rgbaStringToHex("rgb(30, 80, 16)")
      * >> "#1E5010"
+     *
+     * rgbaStringToHex("rgba(30, 80, 16, 0.5)")
+     * >> "#1E501080"
+     *
+     * DOES NOT SUPPORT NON INTEGER RGB VALUES
      */
-    function rgbToHex6(color) {
-        return ("#" +
-            concat(color
-                .slice(4, -1)
-                .split(",")
-                .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase());
+    function rgbaStringToHex(color) {
+        const stringVals = color.replace(RBA_REGEX, "").split(",");
+        let alphaHex = 255;
+        if (stringVals.length !== 3 && stringVals.length !== 4) {
+            throw new Error("invalid color");
+        }
+        else if (stringVals.length === 4) {
+            const alpha = parseFloat(stringVals.pop() || "1");
+            alphaHex = Math.round((alpha || 1) * 255);
+        }
+        const vals = stringVals.map((val) => parseInt(val, 10));
+        if (alphaHex !== 255) {
+            vals.push(alphaHex);
+        }
+        return "#" + concat(vals.map((value) => value.toString(16).padStart(2, "0"))).toUpperCase();
     }
     /**
      * RGBA to HEX representation (#RRGGBBAA).
@@ -1180,7 +1193,7 @@
             a = "0" + a;
         if (a === "ff")
             a = "";
-        return "#" + r + g + b + a;
+        return ("#" + r + g + b + a).toUpperCase();
     }
     /**
      * Color string to RGBA representation
@@ -1301,6 +1314,9 @@
         s = +(s * 100).toFixed(1);
         l = +(l * 100).toFixed(1);
         return { a: rgba.a, h, s, l };
+    }
+    function isSameColor(color1, color2) {
+        return isColorValid(color1) && isColorValid(color2) && toHex(color1) === toHex(color2);
     }
 
     /** Reference of a cell (eg. A1, $B$5) */
@@ -1557,12 +1573,77 @@
      * - all digit stored in the decimal part of the number
      *
      * The 'maxDecimal' parameter allows to indicate the number of digits to not
-     * exceed in the decimal part, in which case digits are rounded
+     * exceed in the decimal part, in which case digits are rounded.
      *
-     * Intl.Numberformat is used to properly handle all the roundings.
-     * e.g. 1234.7  with format ### (<> maxDecimals=0) should become 1235, not 1234
      **/
     function splitNumber(value, maxDecimals = MAX_DECIMAL_PLACES) {
+        const asString = value.toString();
+        if (asString.includes("e"))
+            return splitNumberIntl(value, maxDecimals);
+        if (Number.isInteger(value)) {
+            return { integerDigits: asString, decimalDigits: undefined };
+        }
+        const indexOfDot = asString.indexOf(".");
+        let integerDigits = asString.substring(0, indexOfDot);
+        let decimalDigits = asString.substring(indexOfDot + 1);
+        if (maxDecimals === 0) {
+            if (Number(decimalDigits[0]) >= 5) {
+                integerDigits = (Number(integerDigits) + 1).toString();
+            }
+            return { integerDigits, decimalDigits: undefined };
+        }
+        if (decimalDigits.length > maxDecimals) {
+            const { integerDigits: roundedIntegerDigits, decimalDigits: roundedDecimalDigits } = limitDecimalDigits(decimalDigits, maxDecimals);
+            decimalDigits = roundedDecimalDigits;
+            if (roundedIntegerDigits !== "0") {
+                integerDigits = (Number(integerDigits) + Number(roundedIntegerDigits)).toString();
+            }
+        }
+        return { integerDigits, decimalDigits: removeTrailingZeroes(decimalDigits || "") };
+    }
+    /**
+     *  Return the given string minus the trailing "0" characters.
+     *
+     * @param numberString : a string of integers
+     * @returns the numberString, minus the eventual zeroes at the end
+     */
+    function removeTrailingZeroes(numberString) {
+        let i = numberString.length - 1;
+        while (i >= 0 && numberString[i] === "0") {
+            i--;
+        }
+        return numberString.slice(0, i + 1) || undefined;
+    }
+    /**
+     * Limit the size of the decimal part of a number to the given number of digits.
+     */
+    function limitDecimalDigits(decimalDigits, maxDecimals) {
+        let integerDigits = "0";
+        let resultDecimalDigits = decimalDigits;
+        // Note : we'd want to simply use number.toFixed() to handle the max digits & rounding,
+        // but it has very strange behaviour. Ex: 12.345.toFixed(2) => "12.35", but 1.345.toFixed(2) => "1.34"
+        let slicedDecimalDigits = decimalDigits.slice(0, maxDecimals);
+        const i = maxDecimals;
+        if (Number(Number(decimalDigits[i]) < 5)) {
+            return { integerDigits, decimalDigits: slicedDecimalDigits };
+        }
+        // round up
+        const slicedRoundedUp = (Number(slicedDecimalDigits) + 1).toString();
+        if (slicedRoundedUp.length > slicedDecimalDigits.length) {
+            integerDigits = (Number(integerDigits) + 1).toString();
+            resultDecimalDigits = undefined;
+        }
+        else {
+            resultDecimalDigits = slicedRoundedUp;
+        }
+        return { integerDigits, decimalDigits: resultDecimalDigits };
+    }
+    /**
+     * Split numbers into decimal/integer digits using Intl.NumberFormat.
+     * Supports numbers with a lot of digits that are transformed to scientific notation by
+     * number.toString(), but is slow.
+     */
+    function splitNumberIntl(value, maxDecimals = MAX_DECIMAL_PLACES) {
         let formatter = numberRepresentation[maxDecimals];
         if (!formatter) {
             formatter = new Intl.NumberFormat("en-US", {
@@ -1859,7 +1940,7 @@
      *   formula, commas are used to separate arguments
      * - it does not support % symbol, in formulas % is an operator
      */
-    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?|^-?\.\d+/;
+    const formulaNumberRegexp = /(^-?\d+(\.?\d*(e\d+)?)?|^-?\.\d+)(?!\w|!)/;
     const pIntegerAndDecimals = "(\\d+(,\\d{3,})*(\\.\\d*)?)"; // pattern that match integer number with or without decimal digits
     const pOnlyDecimals = "(\\.\\d+)"; // pattern that match only expression with decimal digits
     const pScientificFormat = "(e(\\+|-)?\\d+)?"; // pattern that match scientific format between zero and one time (should be placed before pPercentFormat)
@@ -3187,6 +3268,8 @@
         CommandResult[CommandResult["NonContinuousTargets"] = 80] = "NonContinuousTargets";
         CommandResult[CommandResult["DuplicatedFigureId"] = 81] = "DuplicatedFigureId";
         CommandResult[CommandResult["InvalidSelectionStep"] = 82] = "InvalidSelectionStep";
+        CommandResult[CommandResult["DuplicatedChartId"] = 83] = "DuplicatedChartId";
+        CommandResult[CommandResult["ChartDoesNotExist"] = 84] = "ChartDoesNotExist";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var DIRECTION;
@@ -3837,7 +3920,7 @@
             const shadow = maxHeight !== 0 ? "box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);" : "";
             return `
       position: absolute;
-      z-index: ${ComponentsImportance.Popover};
+      z-index: ${this.props.zIndex};
       ${verticalPosition}px;
       ${horizontalPosition}px;
       ${height}px;
@@ -3881,6 +3964,7 @@
         verticalOffset: 0,
         marginTop: 0,
         onMouseWheel: () => { },
+        zIndex: ComponentsImportance.Popover,
     };
 
     //------------------------------------------------------------------------------
@@ -3956,13 +4040,16 @@
                 }
             });
         }
+        get visibleMenuItems() {
+            return this.props.menuItems.filter((x) => x.isVisible(this.env));
+        }
         get subMenuPosition() {
             const position = Object.assign({}, this.subMenu.position);
             position.y -= this.subMenu.scrollOffset || 0;
             return position;
         }
         get menuHeight() {
-            return this.menuComponentHeight(this.props.menuItems);
+            return this.menuComponentHeight(this.visibleMenuItems);
         }
         get subMenuHeight() {
             return this.menuComponentHeight(this.subMenu.menuItems);
@@ -3998,7 +4085,7 @@
          * and the menu item at a given index.
          */
         subMenuVerticalPosition(position) {
-            const menusAbove = this.props.menuItems.slice(0, position);
+            const menusAbove = this.visibleMenuItems.slice(0, position);
             return this.menuComponentHeight(menusAbove) + this.position.y;
         }
         onExternalClick(ev) {
@@ -5531,6 +5618,11 @@
         name: REMOVE_COLUMNS_NAME,
         sequence: 90,
         action: REMOVE_COLUMNS_ACTION,
+        isVisible: (env) => {
+            const sheetId = env.model.getters.getActiveSheetId();
+            const selectedCols = env.model.getters.getElementsFromSelection("COL");
+            return env.model.getters.canRemoveHeaders(sheetId, "COL", selectedCols);
+        },
     })
         .add("clear_column", {
         name: DELETE_CONTENT_COLUMNS_NAME,
@@ -5543,14 +5635,13 @@
         action: HIDE_COLUMNS_ACTION,
         isVisible: (env) => {
             const sheetId = env.model.getters.getActiveSheetId();
-            const hiddenCols = env.model.getters.getHiddenColsGroups(sheetId).flat();
-            return (env.model.getters.getNumberCols(sheetId) >
-                hiddenCols.length + env.model.getters.getElementsFromSelection("COL").length);
+            const selectedCols = env.model.getters.getElementsFromSelection("COL");
+            return env.model.getters.canRemoveHeaders(sheetId, "COL", selectedCols);
         },
         separator: true,
     })
         .add("unhide_columns", {
-        name: "Unhide columns",
+        name: _lt("Unhide columns"),
         sequence: 86,
         action: UNHIDE_COLUMNS_ACTION,
         isVisible: (env) => {
@@ -5619,6 +5710,11 @@
         name: REMOVE_ROWS_NAME,
         sequence: 70,
         action: REMOVE_ROWS_ACTION,
+        isVisible: (env) => {
+            const sheetId = env.model.getters.getActiveSheetId();
+            const selectedRows = env.model.getters.getElementsFromSelection("ROW");
+            return env.model.getters.canRemoveHeaders(sheetId, "ROW", selectedRows);
+        },
     })
         .add("clear_row", {
         name: DELETE_CONTENT_ROWS_NAME,
@@ -5631,14 +5727,13 @@
         action: HIDE_ROWS_ACTION,
         isVisible: (env) => {
             const sheetId = env.model.getters.getActiveSheetId();
-            const hiddenRows = env.model.getters.getHiddenRowsGroups(sheetId).flat();
-            return (env.model.getters.getNumberRows(sheetId) >
-                hiddenRows.length + env.model.getters.getElementsFromSelection("ROW").length);
+            const selectedRows = env.model.getters.getElementsFromSelection("ROW");
+            return env.model.getters.canRemoveHeaders(sheetId, "ROW", selectedRows);
         },
         separator: true,
     })
         .add("unhide_rows", {
-        name: "Unhide rows",
+        name: _lt("Unhide rows"),
         sequence: 86,
         action: UNHIDE_ROWS_ACTION,
         isVisible: (env) => {
@@ -6200,17 +6295,17 @@
         separator: true,
     })
         .addChild("format_wrapping_overflow", ["format", "format_wrapping"], {
-        name: "Overflow",
+        name: _lt("Overflow"),
         sequence: 10,
         action: (env) => setStyle(env, { wrapping: "overflow" }),
     })
         .addChild("format_wrapping_wrap", ["format", "format_wrapping"], {
-        name: "Wrap",
+        name: _lt("Wrap"),
         sequence: 20,
         action: (env) => setStyle(env, { wrapping: "wrap" }),
     })
         .addChild("format_wrapping_clip", ["format", "format_wrapping"], {
-        name: "Clip",
+        name: _lt("Clip"),
         sequence: 30,
         action: (env) => setStyle(env, { wrapping: "clip" }),
     })
@@ -7051,7 +7146,7 @@
         validateChartDefinition: (validator, definition) => BarChart.validateChartDefinition(validator, definition),
         transformDefinition: (definition, executed) => BarChart.transformDefinition(definition, executed),
         getChartDefinitionFromContextCreation: (context) => BarChart.getDefinitionFromContextCreation(context),
-        name: "Bar",
+        name: _lt("Bar"),
     });
     class BarChart extends AbstractChart {
         constructor(definition, sheetId, getters) {
@@ -7280,7 +7375,7 @@
         validateChartDefinition: (validator, definition) => GaugeChart.validateChartDefinition(validator, definition),
         transformDefinition: (definition, executed) => GaugeChart.transformDefinition(definition, executed),
         getChartDefinitionFromContextCreation: (context) => GaugeChart.getDefinitionFromContextCreation(context),
-        name: "Gauge",
+        name: _lt("Gauge"),
     });
     function isDataRangeValid(definition) {
         return definition.dataRange && !rangeReference.test(definition.dataRange)
@@ -7675,7 +7770,7 @@
         validateChartDefinition: (validator, definition) => LineChart.validateChartDefinition(validator, definition),
         transformDefinition: (definition, executed) => LineChart.transformDefinition(definition, executed),
         getChartDefinitionFromContextCreation: (context) => LineChart.getDefinitionFromContextCreation(context),
-        name: "Line",
+        name: _lt("Line"),
     });
     class LineChart extends AbstractChart {
         constructor(definition, sheetId, getters) {
@@ -7932,7 +8027,7 @@
         validateChartDefinition: (validator, definition) => PieChart.validateChartDefinition(validator, definition),
         transformDefinition: (definition, executed) => PieChart.transformDefinition(definition, executed),
         getChartDefinitionFromContextCreation: (context) => PieChart.getDefinitionFromContextCreation(context),
-        name: "Pie",
+        name: _lt("Pie"),
     });
     class PieChart extends AbstractChart {
         constructor(definition, sheetId, getters) {
@@ -8078,7 +8173,7 @@
         validateChartDefinition: (validator, definition) => ScorecardChart$1.validateChartDefinition(validator, definition),
         transformDefinition: (definition, executed) => ScorecardChart$1.transformDefinition(definition, executed),
         getChartDefinitionFromContextCreation: (context) => ScorecardChart$1.getDefinitionFromContextCreation(context),
-        name: "Scorecard",
+        name: _lt("Scorecard"),
     });
     function checkKeyValue(definition) {
         return definition.keyValue && !rangeReference.test(definition.keyValue)
@@ -8400,7 +8495,7 @@
         }
         onColorClick(color) {
             if (color) {
-                this.props.onColorPicked(color);
+                this.props.onColorPicked(toHex(color));
             }
         }
         getCheckMarkColor() {
@@ -8415,8 +8510,10 @@
                 this.state.isCurrentColorInvalid = true;
                 return;
             }
+            const color = toHex(this.state.currentColor);
             this.state.isCurrentColorInvalid = false;
-            this.props.onColorPicked(this.state.currentColor);
+            this.props.onColorPicked(color);
+            this.state.currentColor = color;
         }
         toggleColorPicker() {
             this.state.showGradient = !this.state.showGradient;
@@ -8440,6 +8537,9 @@
         get magnifyingGlassStyle() {
             const { display, background, left, top } = this.state.style;
             return `display:${display};${display === "block" ? `background-color:${background};left:${left};top:${top};` : ""}`;
+        }
+        isSameColor(color1, color2) {
+            return isSameColor(color1, color2);
         }
     }
     ColorPicker.template = "o-spreadsheet-ColorPicker";
@@ -8565,6 +8665,12 @@
             var _a;
             const cancelledReasons = [...(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
             return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
+        }
+        onClick(ev) {
+            this.state.openedMenu = undefined;
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
         }
         updateBackgroundColor(color) {
             this.state.openedMenu = undefined;
@@ -8734,6 +8840,12 @@
                 openedColorPicker: undefined,
             });
         }
+        onClick(ev) {
+            this.state.openedColorPicker = undefined;
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+        }
         updateTitle(ev) {
             this.props.updateChart({
                 title: ev.target.value,
@@ -8825,6 +8937,9 @@
         get figureId() {
             return this.state.figureId;
         }
+        get sheetId() {
+            return this.state.sheetId;
+        }
         setup() {
             const selectedFigureId = this.env.model.getters.getSelectedFigureId();
             if (!selectedFigureId) {
@@ -8833,11 +8948,13 @@
             this.state = owl.useState({
                 panel: "configuration",
                 figureId: selectedFigureId,
+                sheetId: this.env.model.getters.getActiveSheetId(),
             });
             owl.onWillUpdateProps(() => {
                 const selectedFigureId = this.env.model.getters.getSelectedFigureId();
                 if (selectedFigureId && selectedFigureId !== this.state.figureId) {
                     this.state.figureId = selectedFigureId;
+                    this.state.sheetId = this.env.model.getters.getActiveSheetId();
                     this.shouldUpdateChart = false;
                 }
                 else {
@@ -8860,7 +8977,7 @@
             return this.env.model.dispatch("UPDATE_CHART", {
                 definition,
                 id: this.figureId,
-                sheetId: this.env.model.getters.getActiveSheetId(),
+                sheetId: this.sheetId,
             });
         }
         onTypeChange(type) {
@@ -8872,7 +8989,7 @@
             this.env.model.dispatch("UPDATE_CHART", {
                 definition,
                 id: this.figureId,
-                sheetId: this.env.model.getters.getActiveSheetId(),
+                sheetId: this.sheetId,
             });
         }
         get chartPanel() {
@@ -9967,6 +10084,7 @@
     const LINE_HEIGHT = 1.2;
     css /* scss */ `
   div.o-scorecard {
+    font-family: ${DEFAULT_FONT};
     user-select: none;
     background-color: white;
     display: flex;
@@ -10048,7 +10166,7 @@
             return this.runtime.fontColor;
         }
         get secondaryFontColor() {
-            return relativeLuminance(this.primaryFontColor) <= 0.3 ? "#757575" : "#bbbbbb";
+            return relativeLuminance(this.backgroundColor) > 0.3 ? "#525252" : "#C8C8C8";
         }
         get figure() {
             return this.props.figure;
@@ -10272,7 +10390,7 @@
         openContextMenu(position) {
             const registry = this.getMenuItemRegistry();
             this.menuState.isOpen = true;
-            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.menuItems = registry.getAll();
             this.menuState.position = position;
         }
         get chartComponent() {
@@ -19376,6 +19494,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.setContent(this.initialContent || "");
         }
         setContent(text, selection, raise) {
+            text = text.replace(/[\r\n]/g, "");
             const isNewCurrentContent = this.currentContent !== text;
             this.currentContent = text;
             if (selection) {
@@ -19705,6 +19824,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         start = 0;
                     if (end > this.el.textContent.length)
                         end = this.el.textContent.length;
+                    if (start > this.el.textContent.length)
+                        start = this.el.textContent.length;
                 }
                 let startNode = this.findChildAtCharacterIndex(start);
                 let endNode = this.findChildAtCharacterIndex(end);
@@ -19789,14 +19910,31 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * */
         getCurrentSelection() {
             let { startElement, endElement, startSelectionOffset, endSelectionOffset } = this.getStartAndEndSelection();
-            let startSizeBefore = this.findSizeBeforeElement(startElement);
-            let endSizeBefore = this.findSizeBeforeElement(endElement);
+            let startSizeBefore = this.findSelectionIndex(startElement, startSelectionOffset);
+            let endSizeBefore = this.findSelectionIndex(endElement, endSelectionOffset);
             return {
-                start: startSizeBefore + startSelectionOffset,
-                end: endSizeBefore + endSelectionOffset,
+                start: startSizeBefore,
+                end: endSizeBefore,
             };
         }
-        findSizeBeforeElement(nodeToFind) {
+        /**
+         * Computes the text 'index' inside this.el based on the currently selected node and its offset.
+         * The selected node is either a Text node or an Element node.
+         *
+         * case 1 -Text node:
+         * the offset is the number of characters from the start of the node. We have to add this offset to the
+         * content length of all previous nodes.
+         *
+         * case 2 - Element node:
+         * the offset is the number of child nodes before the selected node. We have to add the content length of
+         * all the bnodes prior to the selected node as well as the content of the child node before the offset.
+         *
+         * See the MDN documentation for more details.
+         * https://developer.mozilla.org/en-US/docs/Web/API/Range/startOffset
+         * https://developer.mozilla.org/en-US/docs/Web/API/Range/endOffset
+         *
+         */
+        findSelectionIndex(nodeToFind, nodeOffset) {
             let it = this.iterateChildren(this.el);
             let usedCharacters = 0;
             let current = it.next();
@@ -19807,6 +19945,19 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     }
                 }
                 current = it.next();
+            }
+            if (current.value === nodeToFind) {
+                if (!current.value.hasChildNodes()) {
+                    usedCharacters += nodeOffset;
+                }
+                else {
+                    const children = [...current.value.childNodes].slice(0, nodeOffset);
+                    for (const child of children) {
+                        if (!child.textContent)
+                            continue;
+                        usedCharacters += child.textContent.length;
+                    }
+                }
             }
             return usedCharacters;
         }
@@ -19926,10 +20077,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     padding: 0;
     margin: 0;
     border: 0;
-    z-index: ${ComponentsImportance.Composer};
     flex-grow: 1;
     max-height: inherit;
     .o-composer {
+      font-family: ${DEFAULT_FONT};
       caret-color: black;
       padding-left: 3px;
       padding-right: 3px;
@@ -19958,6 +20109,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
   /* Custom css to highlight topbar composer on focus */
   .o-topbar-toolbar .o-composer-container:focus-within {
     border: 1px solid ${SELECTION_BORDER_COLOR};
+  }
+
+  .o-topbar-toolbar .o-composer-container {
+    z-index: ${ComponentsImportance.TopBarComposer};
   }
 `;
     class Composer extends owl.Component {
@@ -20383,7 +20538,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
     css /* scss */ `
   div.o-grid-composer {
-    z-index: ${ComponentsImportance.Composer};
+    z-index: ${ComponentsImportance.GridComposer};
     box-sizing: border-box;
     position: absolute;
     border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
@@ -20478,7 +20633,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     GridComposer.template = "o-spreadsheet-GridComposer";
     GridComposer.components = { Composer };
 
-    const { Component: Component$1 } = owl__namespace;
     const CSS$1 = css /* scss */ `
   .o-filter-icon {
     color: ${FILTERS_COLOR};
@@ -20504,7 +20658,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
   }
 `;
-    class FilterIcon extends Component$1 {
+    class FilterIcon extends owl.Component {
         get style() {
             const { x, y } = this.props.position;
             return `top:${y}px;left:${x}px`;
@@ -20513,9 +20667,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     FilterIcon.style = CSS$1;
     FilterIcon.template = "o-spreadsheet-FilterIcon";
 
-    const { Component } = owl__namespace;
     const CSS = css /* scss */ ``;
-    class FilterIconsOverlay extends Component {
+    class FilterIconsOverlay extends owl.Component {
         getVisibleFilterHeaders() {
             const sheetId = this.env.model.getters.getActiveSheetId();
             const headerPositions = this.env.model.getters.getFilterHeaders(sheetId);
@@ -21215,6 +21368,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     };
 
     class GridPopover extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.zIndex = ComponentsImportance.GridPopover;
+        }
         get cellPopover() {
             const popover = this.env.model.getters.getCellPopover(this.props.hoveredCell);
             if (!popover.isOpen) {
@@ -22287,8 +22444,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 },
                 "CTRL+END": () => {
                     const sheetId = this.env.model.getters.getActiveSheetId();
-                    const col = this.env.model.getters.findVisibleHeader(sheetId, "COL", range(0, this.env.model.getters.getNumberCols(sheetId)).reverse());
-                    const row = this.env.model.getters.findVisibleHeader(sheetId, "ROW", range(0, this.env.model.getters.getNumberRows(sheetId)).reverse());
+                    const col = this.env.model.getters.findVisibleHeader(sheetId, "COL", this.env.model.getters.getNumberCols(sheetId) - 1, 0);
+                    const row = this.env.model.getters.findVisibleHeader(sheetId, "ROW", this.env.model.getters.getNumberRows(sheetId) - 1, 0);
                     this.env.model.selection.selectCell(col, row);
                 },
                 "SHIFT+ ": () => {
@@ -22364,9 +22521,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.focus();
         }
         focus() {
+            var _a;
             if (!this.env.model.getters.getSelectedFigureId() &&
                 this.env.model.getters.getEditionMode() === "inactive") {
-                this.hiddenInput.el.focus();
+                (_a = this.hiddenInput.el) === null || _a === void 0 ? void 0 : _a.focus();
             }
         }
         get gridEl() {
@@ -22518,6 +22676,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         onInput(ev) {
+            // the user meant to paste in the sheet, not open the composer with the pasted content
+            if (!ev.isComposing && ev.inputType === "insertFromPaste") {
+                return;
+            }
             if (ev.data) {
                 // if the user types a character on the grid, it means he wants to start composing the selected cell with that
                 // character
@@ -22566,9 +22728,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.closeOpenedPopover();
             this.menuState.isOpen = true;
             this.menuState.position = { x, y };
-            this.menuState.menuItems = registries$1[type]
-                .getAll()
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
+            this.menuState.menuItems = registries$1[type].getAll();
         }
         copy(cut, ev) {
             if (!this.gridEl.contains(document.activeElement)) {
@@ -23733,6 +23893,72 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         });
     }
 
+    const XLSX_DATE_FORMAT_REGEX = /^(yy|yyyy|m{1,5}|d{1,4}|h{1,2}|s{1,2}|am\/pm|a\/m|\s|-|\/|\.|:)+$/i;
+    /**
+     * Convert excel format to o_spreadsheet format
+     *
+     * Excel format are defined in openXML §18.8.31
+     */
+    function convertXlsxFormat(numFmtId, formats, warningManager) {
+        var _a, _b, _c;
+        if (numFmtId === 0) {
+            return undefined;
+        }
+        // Format is either defined in the imported data, or the formatId is defined in openXML §18.8.30
+        let format = XLSX_FORMATS_CONVERSION_MAP[numFmtId] || ((_a = formats.find((f) => f.id === numFmtId)) === null || _a === void 0 ? void 0 : _a.format);
+        if (format) {
+            try {
+                let convertedFormat = format.replace(/(.*?);.*/, "$1"); // only take first part of multi-part format
+                convertedFormat = convertedFormat.replace(/\[(.*)-[A-Z0-9]{3}\]/g, "[$1]"); // remove currency and locale/date system/number system info (ECMA §18.8.31)
+                convertedFormat = convertedFormat.replace(/\[\$\]/g, ""); // remove empty bocks
+                // Quotes in format escape sequences of characters. ATM we only support [$...] blocks to escape characters, and only one of them per format
+                const numberOfQuotes = ((_b = convertedFormat.match(/"/g)) === null || _b === void 0 ? void 0 : _b.length) || 0;
+                const numberOfOpenBrackets = ((_c = convertedFormat.match(/\[/g)) === null || _c === void 0 ? void 0 : _c.length) || 0;
+                if (numberOfQuotes / 2 + numberOfOpenBrackets > 1) {
+                    throw new Error("Multiple escaped blocks in format");
+                }
+                convertedFormat = convertedFormat.replace(/"(.*)"/g, "[$$$1]"); // replace '"..."' by '[$...]'
+                convertedFormat = convertedFormat.replace(/_.{1}/g, ""); // _ == ignore width of next char for align purposes. Not supported ATM
+                convertedFormat = convertedFormat.replace(/\*.{1}/g, ""); // * == repeat next character enough to fill the line. Not supported ATM
+                convertedFormat = convertedFormat.replace(/\\ /g, " "); // unescape spaces
+                convertedFormat = convertedFormat.replace(/\\./g, (match) => match[1]); // unescape other characters
+                if (isXlsxDateFormat(convertedFormat)) {
+                    convertedFormat = convertDateFormat$1(convertedFormat);
+                }
+                if (isFormatSupported(convertedFormat)) {
+                    return convertedFormat;
+                }
+            }
+            catch (e) { }
+        }
+        warningManager.generateNotSupportedWarning(WarningTypes.NumFmtIdNotSupported, format || `nmFmtId ${numFmtId}`);
+        return undefined;
+    }
+    function isFormatSupported(format) {
+        try {
+            formatValue(0, format);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    }
+    function isXlsxDateFormat(format) {
+        return format.match(XLSX_DATE_FORMAT_REGEX) !== null;
+    }
+    function convertDateFormat$1(format) {
+        // Some of these aren't defined neither in the OpenXML spec not the Xlsx extension of OpenXML,
+        // but can still occur and are supported by Excel/Google sheets
+        format = format.toLowerCase();
+        format = format.replace(/mmmmm|mmmm|mmm/g, "mm");
+        format = format.replace(/dddd|ddd/g, "dd");
+        format = format.replace(/am\/pm|a\/m/g, "a");
+        format = format.replace(/\byy\b/g, "yyyy");
+        format = format.replace(/hhhh/g, "hh");
+        format = format.replace(/\bh\b/g, "hh");
+        return format;
+    }
+
     function convertBorders(data, warningManager) {
         const borderArray = data.borders.map((border) => {
             addBorderWarnings(border, warningManager);
@@ -23796,41 +24022,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         return arrayToObject(formats, 1);
-    }
-    /**
-     * Convert excel format to o_spreadsheet format
-     *
-     * Excel format are defined in openXML §18.8.31
-     */
-    function convertXlsxFormat(numFmtId, formats, warningManager) {
-        var _a, _b, _c;
-        if (numFmtId === 0) {
-            return undefined;
-        }
-        // Format is either defined in the imported data, or the formatId is defined in openXML §18.8.30
-        let format = XLSX_FORMATS_CONVERSION_MAP[numFmtId] || ((_a = formats.find((f) => f.id === numFmtId)) === null || _a === void 0 ? void 0 : _a.format);
-        if (format) {
-            try {
-                let convertedFormat = format.replace(/(.*?);.*/, "$1"); // only take first part of multi-part format
-                convertedFormat = convertedFormat.replace(/\[(.*)-[A-Z0-9]{3}\]/g, "[$1]"); // remove currency and locale/date system/number system info (ECMA §18.8.31)
-                convertedFormat = convertedFormat.replace(/\[\$\]/g, ""); // remove empty bocks
-                // Quotes in format escape sequences of characters. ATM we only support [$...] blocks to escape characters, and only one of them per format
-                const numberOfQuotes = ((_b = convertedFormat.match(/"/g)) === null || _b === void 0 ? void 0 : _b.length) || 0;
-                const numberOfOpenBrackets = ((_c = convertedFormat.match(/\[/g)) === null || _c === void 0 ? void 0 : _c.length) || 0;
-                if (numberOfQuotes / 2 + numberOfOpenBrackets > 1) {
-                    throw new Error("Multiple escaped blocks in format");
-                }
-                convertedFormat = convertedFormat.replace(/"(.*)"/g, "[$$$1]"); // replace '"..."' by '[$...]'
-                convertedFormat = convertedFormat.replace(/_.{1}/g, ""); // _ == ignore with of next char for align purposes. Not supported ATM
-                convertedFormat = convertedFormat.replace(/\*.{1}/g, ""); // * == repeat next character enough to fill the line. Not supported ATM
-                convertedFormat = convertedFormat.replace(/\\ /g, " "); // unescape spaces
-                formatValue(0, convertedFormat);
-                return convertedFormat;
-            }
-            catch (e) { }
-        }
-        warningManager.generateNotSupportedWarning(WarningTypes.NumFmtIdNotSupported, format || `nmFmtId ${numFmtId}`);
-        return undefined;
     }
     /**
      * We currently only support only a set of font sizes, we cannot define new font sizes.
@@ -26275,20 +26466,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
             }
         }
-        data = JSON.parse(JSON.stringify(data));
+        data = deepCopy(data);
         // apply migrations, if needed
         if ("version" in data) {
             if (data.version < CURRENT_VERSION) {
                 data = migrate(data);
             }
         }
-        // sanity check: try to fix missing fields/corrupted state by providing
-        // sensible default values
-        data = Object.assign(createEmptyWorkbookData(), data, { version: CURRENT_VERSION });
-        data.sheets = data.sheets.map((s, i) => Object.assign(createEmptySheet(`Sheet${i + 1}`, `Sheet${i + 1}`), s));
-        if (data.sheets.length === 0) {
-            data.sheets.push(createEmptySheet(INITIAL_SHEET_ID, "Sheet1"));
-        }
+        data = repairData(data);
         return data;
     }
     function migrate(data) {
@@ -26527,6 +26712,48 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         },
     ];
     /**
+     * This function is used to repair faulty data independently of the migration.
+     */
+    function repairData(data) {
+        data = forceUnicityOfFigure(data);
+        data = setDefaults(data);
+        return data;
+    }
+    /**
+     * Force the unicity of figure ids accross sheets
+     */
+    function forceUnicityOfFigure(data) {
+        if (data.uniqueFigureIds) {
+            return data;
+        }
+        const figureIds = new Set();
+        const uuidGenerator = new UuidGenerator();
+        for (const sheet of data.sheets || []) {
+            for (const figure of sheet.figures || []) {
+                if (figureIds.has(figure.id)) {
+                    figure.id += uuidGenerator.uuidv4();
+                }
+                figureIds.add(figure.id);
+            }
+        }
+        data.uniqueFigureIds = true;
+        return data;
+    }
+    /**
+     * sanity check: try to fix missing fields/corrupted state by providing
+     * sensible default values
+     */
+    function setDefaults(data) {
+        data = Object.assign(createEmptyWorkbookData(), data, { version: CURRENT_VERSION });
+        data.sheets = data.sheets
+            ? data.sheets.map((s, i) => Object.assign(createEmptySheet(`Sheet${i + 1}`, `Sheet${i + 1}`), s))
+            : [];
+        if (data.sheets.length === 0) {
+            data.sheets.push(createEmptySheet(INITIAL_SHEET_ID, "Sheet1"));
+        }
+        return data;
+    }
+    /**
      * The goal of this function is to repair corrupted/wrong initial messages caused by
      * a bug.
      * The bug should obviously be fixed, but it's too late for existing spreadsheet.
@@ -26664,6 +26891,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             formats: {},
             borders: {},
             revisionId: DEFAULT_REVISION_ID,
+            uniqueFigureIds: true,
         };
         return data;
     }
@@ -27582,9 +27810,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         constructor() {
             super(...arguments);
             this.charts = {};
-            this.nextId = 1;
             this.createChart = chartFactory(this.getters);
-            this.validateChartDefinition = (definition) => validateChartDefinition(this, definition);
+            this.validateChartDefinition = (cmd) => validateChartDefinition(this, cmd.definition);
         }
         adaptRanges(applyChange) {
             for (const [chartId, chart] of Object.entries(this.charts)) {
@@ -27597,8 +27824,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "CREATE_CHART":
+                    return this.checkValidations(cmd, this.chainValidations(this.validateChartDefinition, this.checkChartDuplicate));
                 case "UPDATE_CHART":
-                    return this.validateChartDefinition(cmd.definition);
+                    return this.checkValidations(cmd, this.chainValidations(this.validateChartDefinition, this.checkChartExists));
                 default:
                     return 0 /* CommandResult.Success */;
             }
@@ -27608,22 +27836,22 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             switch (cmd.type) {
                 case "CREATE_CHART":
                     this.addFigure(cmd.id, cmd.sheetId, cmd.position, cmd.size);
-                    this.addChart(cmd.id, cmd.sheetId, cmd.definition);
+                    this.addChart(cmd.id, cmd.definition);
                     break;
                 case "UPDATE_CHART": {
-                    this.addChart(cmd.id, cmd.sheetId, cmd.definition);
+                    this.addChart(cmd.id, cmd.definition);
                     break;
                 }
                 case "DUPLICATE_SHEET": {
                     const sheetFiguresFrom = this.getters.getFigures(cmd.sheetId);
                     for (const fig of sheetFiguresFrom) {
                         if (fig.tag === "chart") {
-                            const id = this.nextId.toString();
-                            this.history.update("nextId", this.nextId + 1);
+                            const figureIdBase = fig.id.split(FIGURE_ID_SPLITTER).pop();
+                            const duplicatedFigureId = `${cmd.sheetIdTo}${FIGURE_ID_SPLITTER}${figureIdBase}`;
                             const chart = (_a = this.charts[fig.id]) === null || _a === void 0 ? void 0 : _a.copyForSheetId(cmd.sheetIdTo);
                             if (chart) {
                                 this.dispatch("CREATE_CHART", {
-                                    id,
+                                    id: duplicatedFigureId,
                                     position: { x: fig.x, y: fig.y },
                                     size: { width: fig.width, height: fig.height },
                                     definition: chart.getDefinition(),
@@ -27689,7 +27917,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         // figure data should be external IMO => chart should be in sheet.chart
                         // instead of in figure.data
                         if (figure.tag === "chart") {
-                            this.history.update("nextId", this.nextId + 1);
                             this.charts[figure.id] = this.createChart(figure.id, figure.data, sheet.id);
                         }
                     }
@@ -27697,14 +27924,23 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         export(data) {
+            var _a;
             if (data.sheets) {
                 for (let sheet of data.sheets) {
                     // TODO This code is false, if two plugins want ot insert figures on the sheet, it will crash !
                     const sheetFigures = this.getters.getFigures(sheet.id);
-                    const figures = sheetFigures;
-                    for (let figure of figures) {
+                    const figures = [];
+                    for (let sheetFigure of sheetFigures) {
+                        const figure = sheetFigure;
                         if (figure && figure.tag === "chart") {
-                            figure.data = this.getChartDefinition(figure.id);
+                            const data = (_a = this.charts[figure.id]) === null || _a === void 0 ? void 0 : _a.getDefinition();
+                            if (data) {
+                                figure.data = data;
+                                figures.push(figure);
+                            }
+                        }
+                        else {
+                            figures.push(figure);
                         }
                     }
                     sheet.figures = figures;
@@ -27757,8 +27993,21 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * Add a chart in the local state. If a chart already exists, this chart is
          * replaced
          */
-        addChart(id, sheetId, definition) {
-            this.history.update("charts", id, this.createChart(id, definition, sheetId));
+        addChart(id, definition) {
+            const sheetId = this.getters.getFigureSheetId(id);
+            if (sheetId) {
+                this.history.update("charts", id, this.createChart(id, definition, sheetId));
+            }
+        }
+        checkChartDuplicate(cmd) {
+            return this.getters.getFigureSheetId(cmd.id)
+                ? 83 /* CommandResult.DuplicatedChartId */
+                : 0 /* CommandResult.Success */;
+        }
+        checkChartExists(cmd) {
+            return this.getters.getFigureSheetId(cmd.id)
+                ? 0 /* CommandResult.Success */
+                : 84 /* CommandResult.ChartDoesNotExist */;
         }
     }
     ChartPlugin.getters = [
@@ -28221,6 +28470,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             var _a;
             return (_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId];
         }
+        getFigureSheetId(figureId) {
+            return Object.keys(this.figures).find((sheetId) => { var _a; return ((_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId]) !== undefined; });
+        }
         // ---------------------------------------------------------------------------
         // Import/Export
         // ---------------------------------------------------------------------------
@@ -28245,7 +28497,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.export(data);
         }
     }
-    FigurePlugin.getters = ["getFigures", "getFigure"];
+    FigurePlugin.getters = ["getFigures", "getFigure", "getFigureSheetId"];
 
     class FilterTable {
         constructor(zone) {
@@ -28799,7 +29051,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "HIDE_COLUMNS_ROWS": {
-                    if (!this.hiddenHeaders[cmd.sheetId]) {
+                    if (!this.getters.tryGetSheet(cmd.sheetId)) {
                         return 27 /* CommandResult.InvalidSheetId */;
                     }
                     const hiddenGroup = cmd.dimension === "COL"
@@ -28812,6 +29064,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         ? 0 /* CommandResult.Success */
                         : 65 /* CommandResult.TooManyHiddenElements */;
                 }
+                case "REMOVE_COLUMNS_ROWS":
+                    if (!this.getters.tryGetSheet(cmd.sheetId)) {
+                        return 27 /* CommandResult.InvalidSheetId */;
+                    }
+                    if (!this.canRemoveHeaders(cmd.sheetId, cmd.dimension, cmd.elements)) {
+                        return 8 /* CommandResult.NotEnoughElements */;
+                    }
+                    return 0 /* CommandResult.Success */;
             }
             return 0 /* CommandResult.Success */;
         }
@@ -28858,6 +29118,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             return;
         }
+        canRemoveHeaders(sheetId, dimension, elements) {
+            const visibleHeaders = this.getAllVisibleHeaders(sheetId, dimension);
+            return !includesAll(elements, visibleHeaders);
+        }
         isRowHiddenByUser(sheetId, index) {
             return this.hiddenHeaders[sheetId].ROW[index];
         }
@@ -28901,6 +29165,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 consecutiveIndexes.pop();
             }
             return consecutiveIndexes;
+        }
+        getAllVisibleHeaders(sheetId, dimension) {
+            return range(0, this.hiddenHeaders[sheetId][dimension].length).filter((i) => !this.hiddenHeaders[sheetId][dimension][i]);
         }
         import(data) {
             var _a, _b;
@@ -28949,6 +29216,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
     }
     HeaderVisibilityPlugin.getters = [
+        "canRemoveHeaders",
         "getHiddenColsGroups",
         "getHiddenRowsGroups",
         "isRowHiddenByUser",
@@ -29449,14 +29717,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     return this.orderedSheetIds.length > 1
                         ? 0 /* CommandResult.Success */
                         : 9 /* CommandResult.NotEnoughSheets */;
-                case "REMOVE_COLUMNS_ROWS": {
-                    const length = cmd.dimension === "COL"
-                        ? this.getNumberCols(cmd.sheetId)
-                        : this.getNumberRows(cmd.sheetId);
-                    return length > cmd.elements.length
-                        ? 0 /* CommandResult.Success */
-                        : 8 /* CommandResult.NotEnoughElements */;
-                }
                 case "FREEZE_ROWS": {
                     return this.checkValidations(cmd, this.checkRowFreezeQuantity, this.checkRowFreezeOverlapMerge);
                 }
@@ -29940,7 +30200,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         duplicateSheet(fromId, toId) {
             const sheet = this.getSheet(fromId);
             const toName = this.getDuplicateSheetName(sheet.name);
-            const newSheet = JSON.parse(JSON.stringify(sheet));
+            const newSheet = deepCopy(sheet);
             newSheet.id = toId;
             newSheet.name = toName;
             for (let col = 0; col <= newSheet.numberOfCols; col++) {
@@ -30067,10 +30327,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
         }
         moveCellOnColumnsDeletion(sheet, deletedColumn) {
-            for (let [index, row] of Object.entries(sheet.rows)) {
-                const rowIndex = parseInt(index, 10);
+            for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+                const row = sheet.rows[rowIndex];
                 for (let i in row.cells) {
-                    const colIndex = parseInt(i, 10);
+                    const colIndex = Number(i);
                     const cellId = row.cells[i];
                     if (cellId) {
                         if (colIndex === deletedColumn) {
@@ -30097,11 +30357,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         moveCellsOnAddition(sheet, addedElement, quantity, dimension) {
             const commands = [];
-            for (const [index, row] of Object.entries(sheet.rows)) {
-                const rowIndex = parseInt(index, 10);
+            for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+                const row = sheet.rows[rowIndex];
                 if (dimension !== "rows" || rowIndex >= addedElement) {
                     for (let i in row.cells) {
-                        const colIndex = parseInt(i, 10);
+                        const colIndex = Number(i);
                         const cellId = row.cells[i];
                         if (cellId) {
                             if (dimension === "rows" || colIndex >= addedElement) {
@@ -30131,11 +30391,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          */
         moveCellOnRowsDeletion(sheet, deleteFromRow, deleteToRow) {
             const numberRows = deleteToRow - deleteFromRow + 1;
-            for (let [index, row] of Object.entries(sheet.rows)) {
-                const rowIndex = parseInt(index, 10);
+            for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+                const row = sheet.rows[rowIndex];
                 if (rowIndex >= deleteFromRow && rowIndex <= deleteToRow) {
                     for (let i in row.cells) {
-                        const colIndex = parseInt(i, 10);
+                        const colIndex = Number(i);
                         const cellId = row.cells[i];
                         if (cellId) {
                             this.dispatch("CLEAR_CELL", {
@@ -30148,7 +30408,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
                 if (rowIndex > deleteToRow) {
                     for (let i in row.cells) {
-                        const colIndex = parseInt(i, 10);
+                        const colIndex = Number(i);
                         const cellId = row.cells[i];
                         if (cellId) {
                             this.dispatch("UPDATE_CELL_POSITION", {
@@ -30166,7 +30426,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const rows = [];
             const cellsQueue = sheet.rows.map((row) => row.cells);
             for (let i in sheet.rows) {
-                if (parseInt(i, 10) === index) {
+                if (Number(i) === index) {
                     continue;
                 }
                 rows.push({
@@ -31953,9 +32213,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 // remove duplicates first to check validity on a reduced
                 // set of colors, then normalize to HEX and remove duplicates
                 // again
-                [...new Set([...usedColors, ...this.customColors])]
-                    .filter(isColorValid)
-                    .map((c) => toHex(c).toLowerCase())),
+                [...new Set([...usedColors, ...this.customColors])].filter(isColorValid).map(toHex)),
             ]).filter((color) => !COLOR_PICKER_DEFAULTS.includes(color));
         }
         getColorsFromCells(cells) {
@@ -32016,7 +32274,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return [...chartsColors];
         }
         tryToAddColor(color) {
-            const formattedColor = toHex(color).toLowerCase();
+            const formattedColor = toHex(color);
             if (color && !COLOR_PICKER_DEFAULTS.includes(formattedColor)) {
                 this.customColors.add(formattedColor);
             }
@@ -32720,6 +32978,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "CREATE_SHEET":
                     this.filterValues[cmd.sheetId] = {};
                     break;
+                case "HIDE_COLUMNS_ROWS":
+                    this.updateHiddenRows();
+                    break;
                 case "UPDATE_FILTER":
                     this.updateFilter(cmd);
                     this.updateHiddenRows();
@@ -32801,13 +33062,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return Boolean(id && ((_b = (_a = this.filterValues[sheetId]) === null || _a === void 0 ? void 0 : _a[id]) === null || _b === void 0 ? void 0 : _b.length));
         }
         intersectZoneWithViewport(sheetId, zone) {
-            const colsRange = range(zone.left, zone.right + 1);
-            const rowsRange = range(zone.top, zone.bottom + 1);
             return {
-                left: this.getters.findVisibleHeader(sheetId, "COL", colsRange),
-                right: this.getters.findVisibleHeader(sheetId, "COL", colsRange.reverse()),
-                top: this.getters.findVisibleHeader(sheetId, "ROW", rowsRange),
-                bottom: this.getters.findVisibleHeader(sheetId, "ROW", rowsRange.reverse()),
+                left: this.getters.findVisibleHeader(sheetId, "COL", zone.left, zone.right),
+                right: this.getters.findVisibleHeader(sheetId, "COL", zone.right, zone.left),
+                top: this.getters.findVisibleHeader(sheetId, "ROW", zone.top, zone.bottom),
+                bottom: this.getters.findVisibleHeader(sheetId, "ROW", zone.bottom, zone.top),
             };
         }
         updateFilter({ col, row, values, sheetId }) {
@@ -32821,9 +33080,16 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         updateHiddenRows() {
             var _a, _b;
             const sheetId = this.getters.getActiveSheetId();
-            const filters = this.getters.getFilters(sheetId);
+            const filters = this.getters
+                .getFilters(sheetId)
+                .sort((filter1, filter2) => filter1.zoneWithHeaders.top - filter2.zoneWithHeaders.top);
             const hiddenRows = new Set();
             for (let filter of filters) {
+                // Disable filters whose header are hidden
+                if (this.getters.isRowHiddenByUser(sheetId, filter.zoneWithHeaders.top))
+                    continue;
+                if (hiddenRows.has(filter.zoneWithHeaders.top))
+                    continue;
                 const filteredValues = (_b = (_a = this.filterValues[sheetId]) === null || _a === void 0 ? void 0 : _a[filter.id]) === null || _b === void 0 ? void 0 : _b.map(toLowerCase);
                 if (!filteredValues || !filter.filteredZone)
                     continue;
@@ -32856,7 +33122,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         const valuesInFilterZone = filter.filteredZone
                             ? positions(filter.filteredZone)
                                 .map((pos) => { var _a; return (_a = this.getters.getCell(sheetData.id, pos.col, pos.row)) === null || _a === void 0 ? void 0 : _a.formattedValue; })
-                                .filter(isDefined$1)
+                                .filter(isNonEmptyString)
                             : [];
                         // In xlsx, filtered values = values that are displayed, not values that are hidden
                         const xlsxFilteredValues = valuesInFilterZone.filter((val) => !filteredValues.includes(val));
@@ -33242,13 +33508,33 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         getNextVisibleCellPosition(sheetId, col, row) {
             return {
-                col: this.findVisibleHeader(sheetId, "COL", range(col, this.getters.getNumberCols(sheetId))),
-                row: this.findVisibleHeader(sheetId, "ROW", range(row, this.getters.getNumberRows(sheetId))),
+                col: this.findVisibleHeader(sheetId, "COL", col, this.getters.getNumberCols(sheetId) - 1),
+                row: this.findVisibleHeader(sheetId, "ROW", row, this.getters.getNumberRows(sheetId) - 1),
             };
         }
-        findVisibleHeader(sheetId, dimension, indexes) {
-            return indexes.find((index) => this.getters.doesHeaderExist(sheetId, dimension, index) &&
-                !this.isHeaderHidden(sheetId, dimension, index));
+        /**
+         * Find the first visible header in the range [`from` => `to`].
+         *
+         * Both `from` and `to` are inclusive.
+         */
+        findVisibleHeader(sheetId, dimension, from, to) {
+            if (from <= to) {
+                for (let i = from; i <= to; i++) {
+                    if (this.getters.doesHeaderExist(sheetId, dimension, i) &&
+                        !this.isHeaderHidden(sheetId, dimension, i)) {
+                        return i;
+                    }
+                }
+            }
+            if (from > to) {
+                for (let i = from; i >= to; i--) {
+                    if (this.getters.doesHeaderExist(sheetId, dimension, i) &&
+                        !this.isHeaderHidden(sheetId, dimension, i)) {
+                        return i;
+                    }
+                }
+            }
+            return undefined;
         }
         findLastVisibleColRowIndex(sheetId, dimension, indexes) {
             let lastIndex;
@@ -33261,7 +33547,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         findFirstVisibleColRowIndex(sheetId, dimension) {
             const numberOfHeaders = this.getters.getNumberHeaders(sheetId, dimension);
-            for (let i = 0; i < numberOfHeaders - 1; i++) {
+            for (let i = 0; i < numberOfHeaders; i++) {
                 if (dimension === "COL" && !this.isColHidden(sheetId, i)) {
                     return i;
                 }
@@ -35747,8 +36033,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.getters = getters;
             this.sheetId = sheetId;
             this.boundaries = boundaries;
-            this.width = sizeInGrid.width;
-            this.height = sizeInGrid.height;
+            this.viewportWidth = sizeInGrid.width;
+            this.viewportHeight = sizeInGrid.height;
             this.offsetScrollbarX = offsets.x;
             this.offsetScrollbarY = offsets.y;
             this.canScrollVertically = options.canScrollVertically;
@@ -35759,6 +36045,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.adjustViewportOffsetY();
         }
         // PUBLIC
+        /** Returns the maximum size (in Pixels) of the viewport relative to its allocated client size
+         * When the viewport grid size is smaller than its client width (resp. height), it will return
+         * the client width (resp. height).
+         */
         getMaxSize() {
             const lastCol = this.getters.findLastVisibleColRowIndex(this.sheetId, "COL", {
                 first: this.boundaries.left,
@@ -35770,20 +36060,24 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             });
             const { end: lastColEnd, size: lastColSize } = this.getters.getColDimensions(this.sheetId, lastCol);
             const { end: lastRowEnd, size: lastRowSize } = this.getters.getRowDimensions(this.sheetId, lastRow);
-            const leftColIndex = this.searchHeaderIndex("COL", lastColEnd - this.width, 0);
+            const leftColIndex = this.searchHeaderIndex("COL", lastColEnd - this.viewportWidth, 0);
             const leftColSize = this.getters.getColSize(this.sheetId, leftColIndex);
-            const leftRowIndex = this.searchHeaderIndex("ROW", lastRowEnd - this.height, 0);
+            const leftRowIndex = this.searchHeaderIndex("ROW", lastRowEnd - this.viewportHeight, 0);
             const topRowSize = this.getters.getRowSize(this.sheetId, leftRowIndex);
-            const width = lastColEnd -
-                this.offsetCorrectionX +
-                (this.canScrollHorizontally
-                    ? Math.max(DEFAULT_CELL_WIDTH, Math.min(leftColSize, this.width - lastColSize))
-                    : 0);
-            const height = lastRowEnd -
-                this.offsetCorrectionY +
-                (this.canScrollVertically
-                    ? Math.max(DEFAULT_CELL_HEIGHT + 5, Math.min(topRowSize, this.height - lastRowSize))
-                    : 0);
+            let width = lastColEnd - this.offsetCorrectionX;
+            if (this.canScrollHorizontally) {
+                width += Math.max(DEFAULT_CELL_WIDTH, // leave some minimal space to let the user know they scrolled all the way
+                Math.min(leftColSize, this.viewportWidth - lastColSize) // Add pixels that allows the snapping at maximum horizontal scroll
+                );
+                width = Math.max(width, this.viewportWidth); // if the viewport grid size is smaller than its client width, return client width
+            }
+            let height = lastRowEnd - this.offsetCorrectionY;
+            if (this.canScrollVertically) {
+                height += Math.max(DEFAULT_CELL_HEIGHT + 5, // leave some space to let the user know they scrolled all the way
+                Math.min(topRowSize, this.viewportHeight - lastRowSize) // Add pixels that allows the snapping at maximum vertical scroll
+                );
+                height = Math.max(height, this.viewportHeight); // if the viewport grid size is smaller than its client height, return client height
+            }
             return { width, height };
         }
         /**
@@ -35792,7 +36086,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * It returns -1 if no column is found.
          */
         getColIndex(x, absolute = false) {
-            if (x < this.offsetCorrectionX || x > this.offsetCorrectionX + this.width) {
+            if (x < this.offsetCorrectionX || x > this.offsetCorrectionX + this.viewportWidth) {
                 return -1;
             }
             return this.searchHeaderIndex("COL", x - this.offsetCorrectionX, this.left, absolute);
@@ -35803,7 +36097,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
          * It returns -1 if no row is found.
          */
         getRowIndex(y, absolute = false) {
-            if (y < this.offsetCorrectionY || y > this.offsetCorrectionY + this.height) {
+            if (y < this.offsetCorrectionY || y > this.offsetCorrectionY + this.viewportHeight) {
                 return -1;
             }
             return this.searchHeaderIndex("ROW", y - this.offsetCorrectionY, this.top, absolute);
@@ -35827,48 +36121,66 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 this.adjustPositionY(row);
             }
         }
-        adjustPositionX(col) {
+        adjustPositionX(targetCol) {
             const sheetId = this.sheetId;
-            const { start, end } = this.getters.getColDimensions(sheetId, col);
-            while (end > this.offsetX + this.offsetCorrectionX + this.width &&
-                this.offsetX + this.offsetCorrectionX < start) {
-                this.offsetX = this.getters.getColDimensions(sheetId, this.left).end - this.offsetCorrectionX;
-                this.offsetScrollbarX = this.offsetX;
-                this.adjustViewportZoneX();
-            }
-            while (col < this.left) {
-                let leftCol;
-                for (leftCol = this.left; leftCol >= 0; leftCol--) {
-                    if (!this.getters.isColHidden(sheetId, leftCol)) {
+            const { end } = this.getters.getColDimensions(sheetId, targetCol);
+            const maxCol = this.getters.getNumberCols(sheetId);
+            if (this.offsetX + this.offsetCorrectionX + this.viewportWidth < end) {
+                for (let col = this.left; this.offsetX + this.offsetCorrectionX + this.viewportWidth < end; col++) {
+                    if (col > maxCol) {
                         break;
                     }
+                    if (this.getters.isColHidden(sheetId, col)) {
+                        continue;
+                    }
+                    this.offsetX = this.getters.getColDimensions(sheetId, col).end - this.offsetCorrectionX;
+                    this.offsetScrollbarX = this.offsetX;
+                    this.adjustViewportZoneX();
                 }
-                this.offsetX =
-                    this.getters.getColDimensions(sheetId, leftCol - 1).start - this.offsetCorrectionX;
-                this.offsetScrollbarX = this.offsetX;
-                this.adjustViewportZoneX();
+            }
+            else if (this.left > targetCol) {
+                for (let col = this.left; col >= targetCol; col--) {
+                    if (col < 0) {
+                        break;
+                    }
+                    if (this.getters.isColHidden(sheetId, col)) {
+                        continue;
+                    }
+                    this.offsetX = this.getters.getColDimensions(sheetId, col).start - this.offsetCorrectionX;
+                    this.offsetScrollbarX = this.offsetX;
+                    this.adjustViewportZoneX();
+                }
             }
         }
-        adjustPositionY(row) {
+        adjustPositionY(targetRow) {
             const sheetId = this.sheetId;
-            while (this.getters.getRowDimensions(sheetId, row).end >
-                this.offsetY + this.height + this.offsetCorrectionY &&
-                this.offsetY + this.offsetCorrectionY < this.getters.getRowDimensions(sheetId, row).start) {
-                this.offsetY = this.getters.getRowDimensions(sheetId, this.top).end - this.offsetCorrectionY;
-                this.offsetScrollbarY = this.offsetY;
-                this.adjustViewportZoneY();
-            }
-            while (row < this.top) {
-                let topRow;
-                for (topRow = this.top; topRow >= 0; topRow--) {
-                    if (!this.getters.isRowHidden(sheetId, topRow)) {
+            const { end } = this.getters.getRowDimensions(sheetId, targetRow);
+            const maxRow = this.getters.getNumberRows(sheetId);
+            if (this.offsetY + this.viewportHeight + this.offsetCorrectionY < end) {
+                for (let row = this.top; this.offsetY + this.viewportHeight + this.offsetCorrectionY < end; row++) {
+                    if (row > maxRow) {
                         break;
                     }
+                    if (this.getters.isRowHidden(sheetId, row)) {
+                        continue;
+                    }
+                    this.offsetY = this.getters.getRowDimensions(sheetId, row).end - this.offsetCorrectionY;
+                    this.offsetScrollbarY = this.offsetY;
+                    this.adjustViewportZoneY();
                 }
-                this.offsetY =
-                    this.getters.getRowDimensions(sheetId, topRow - 1).start - this.offsetCorrectionY;
-                this.offsetScrollbarY = this.offsetY;
-                this.adjustViewportZoneY();
+            }
+            else if (this.top > targetRow) {
+                for (let row = this.top; row >= targetRow; row--) {
+                    if (row < 0) {
+                        break;
+                    }
+                    if (this.getters.isRowHidden(sheetId, row)) {
+                        continue;
+                    }
+                    this.offsetY = this.getters.getRowDimensions(sheetId, row).start - this.offsetCorrectionY;
+                    this.offsetScrollbarY = this.offsetY;
+                    this.adjustViewportZoneY();
+                }
             }
         }
         setViewportOffset(offsetX, offsetY) {
@@ -35890,8 +36202,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 const x = this.getters.getColRowOffset("COL", this.zone.left, targetZone.left) +
                     this.offsetCorrectionX;
                 const y = this.getters.getColRowOffset("ROW", this.zone.top, targetZone.top) + this.offsetCorrectionY;
-                const width = Math.min(this.getters.getColRowOffset("COL", targetZone.left, targetZone.right + 1), this.width);
-                const height = Math.min(this.getters.getColRowOffset("ROW", targetZone.top, targetZone.bottom + 1), this.height);
+                const width = Math.min(this.getters.getColRowOffset("COL", targetZone.left, targetZone.right + 1), this.viewportWidth);
+                const height = Math.min(this.getters.getColRowOffset("ROW", targetZone.top, targetZone.bottom + 1), this.viewportHeight);
                 return {
                     x,
                     y,
@@ -35954,12 +36266,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         adjustViewportOffsetX() {
             if (this.canScrollHorizontally) {
                 const { width: viewportWidth } = this.getMaxSize();
-                if (this.width + this.offsetScrollbarX > viewportWidth) {
-                    this.offsetScrollbarX = Math.max(0, viewportWidth - this.width);
+                if (this.viewportWidth + this.offsetScrollbarX > viewportWidth) {
+                    this.offsetScrollbarX = Math.max(0, viewportWidth - this.viewportWidth);
                 }
             }
             this.left = this.getColIndex(this.offsetScrollbarX, true);
-            this.right = this.getColIndex(this.offsetScrollbarX + this.width, true);
+            this.right = this.getColIndex(this.offsetScrollbarX + this.viewportWidth, true);
             if (this.right === -1) {
                 this.right = this.boundaries.right;
             }
@@ -35971,12 +36283,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         adjustViewportOffsetY() {
             if (this.canScrollVertically) {
                 const { height: paneHeight } = this.getMaxSize();
-                if (this.height + this.offsetScrollbarY > paneHeight) {
-                    this.offsetScrollbarY = Math.max(0, paneHeight - this.height);
+                if (this.viewportHeight + this.offsetScrollbarY > paneHeight) {
+                    this.offsetScrollbarY = Math.max(0, paneHeight - this.viewportHeight);
                 }
             }
             this.top = this.getRowIndex(this.offsetScrollbarY, true);
-            this.bottom = this.getRowIndex(this.offsetScrollbarY + this.width, true);
+            this.bottom = this.getRowIndex(this.offsetScrollbarY + this.viewportWidth, true);
             if (this.bottom === -1) {
                 this.bottom = this.boundaries.bottom;
             }
@@ -35987,7 +36299,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         adjustViewportZoneX() {
             const sheetId = this.sheetId;
             this.left = this.searchHeaderIndex("COL", this.offsetScrollbarX, this.boundaries.left);
-            this.right = Math.min(this.boundaries.right, this.searchHeaderIndex("COL", this.width, this.left));
+            this.right = Math.min(this.boundaries.right, this.searchHeaderIndex("COL", this.viewportWidth, this.left));
             if (this.right === -1) {
                 this.right = this.getters.getNumberCols(sheetId) - 1;
             }
@@ -36000,7 +36312,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         adjustViewportZoneY() {
             const sheetId = this.sheetId;
             this.top = this.searchHeaderIndex("ROW", this.offsetScrollbarY, this.boundaries.top);
-            this.bottom = Math.min(this.boundaries.bottom, this.searchHeaderIndex("ROW", this.height, this.top));
+            this.bottom = Math.min(this.boundaries.bottom, this.searchHeaderIndex("ROW", this.viewportHeight, this.top));
             if (this.bottom === -1) {
                 this.bottom = this.getters.getNumberRows(sheetId) - 1;
             }
@@ -36259,8 +36571,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return [...new Set(viewports.map((v) => range(v.top, v.bottom + 1)).flat())].filter((row) => !this.getters.isHeaderHidden(sheetId, "ROW", row));
         }
         /**
-         * Return the main viewport maximum size. That is the zone dimension
-         * with some bottom and right padding.
+         * Return the main viewport maximum size relative to the client size.
          */
         getMainViewportRect() {
             const sheetId = this.getters.getActiveSheetId();
@@ -36276,8 +36587,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const { width, height } = this.getMainViewportRect();
             const viewport = this.getMainInternalViewport(sheetId);
             return {
-                maxOffsetX: Math.max(0, width - viewport.width + 1),
-                maxOffsetY: Math.max(0, height - viewport.height + 1),
+                maxOffsetX: Math.max(0, width - viewport.viewportWidth + 1),
+                maxOffsetY: Math.max(0, height - viewport.viewportHeight + 1),
             };
         }
         getColRowOffsetInViewport(dimension, referenceIndex, index) {
@@ -37363,7 +37674,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         openContextMenu(x, y, registry, menuId) {
             this.menuState.isOpen = true;
-            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.menuItems = registry.getAll();
             this.menuState.position = { x, y };
             this.menuState.menuId = menuId;
         }
@@ -38124,10 +38435,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const { left, top, height } = ev.target.getBoundingClientRect();
             this.state.menuState.isOpen = true;
             this.state.menuState.position = { x: left, y: top + height };
-            this.state.menuState.menuItems = getMenuChildren(menu, this.env).filter((item) => !item.isVisible || item.isVisible(this.env));
+            this.state.menuState.menuItems = getMenuChildren(menu, this.env);
             this.state.menuState.parentMenu = menu;
             this.isSelectingMenu = true;
             this.openedEl = ev.target;
+            this.env.model.dispatch("STOP_EDITION");
         }
         closeMenus() {
             this.state.activeTool = "";
@@ -38172,9 +38484,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.style.align = this.style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign);
             this.fillColor = this.style.fillColor || "#ffffff";
             this.textColor = this.style.textColor || "#000000";
-            this.menus = topbarMenuRegistry
-                .getAll()
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
+            this.menus = topbarMenuRegistry.getAll();
         }
         getMenuName(menu) {
             return getMenuName(menu, this.env);
@@ -38293,9 +38603,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
       color: #333;
     }
 
-    * {
-      font-family: "Roboto", "RobotoDraft", Helvetica, Arial, sans-serif;
-    }
     &,
     *,
     *:before,
@@ -39471,6 +39778,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                             }
                             else if (range.zone[start] >= min && range.zone[end] <= max) {
                                 changeType = "REMOVE";
+                                newRange = range.clone({ ...this.getInvalidRange() });
                             }
                             else if (range.zone[start] <= max && range.zone[end] >= max) {
                                 const toRemove = max - range.zone[start] + 1;
@@ -39536,8 +39844,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                             return { changeType: "NONE" };
                         }
                         const invalidSheetName = this.getters.getSheetName(cmd.sheetId);
-                        const sheetId = "";
-                        range = range.clone({ sheetId, invalidSheetName });
+                        range = range.clone({
+                            ...this.getInvalidRange(),
+                            invalidSheetName,
+                        });
                         return { changeType: "REMOVE", range };
                     }, cmd.sheetId);
                     break;
@@ -39800,6 +40110,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 str = colFixed + col + rowFixed + row;
             }
             return str;
+        }
+        getInvalidRange() {
+            return {
+                parts: [],
+                prefixSheet: false,
+                zone: { left: -1, top: -1, right: -1, bottom: -1 },
+                sheetId: "",
+                invalidXc: INCORRECT_RANGE_STRING,
+            };
         }
     }
     RangeAdapter.getters = [
@@ -40231,8 +40550,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             const { left, right, top, bottom } = zone;
             const sheetId = this.getters.getActiveSheetId();
-            const refCol = this.getters.findVisibleHeader(sheetId, "COL", range(left, right + 1));
-            const refRow = this.getters.findVisibleHeader(sheetId, "ROW", range(top, bottom + 1));
+            const refCol = this.getters.findVisibleHeader(sheetId, "COL", left, right);
+            const refRow = this.getters.findVisibleHeader(sheetId, "ROW", top, bottom);
             if (refRow === undefined || refCol === undefined) {
                 return 17 /* CommandResult.SelectionOutOfBound */;
             }
@@ -40307,10 +40626,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             const { col: anchorCol, row: anchorRow } = anchor.cell;
             return {
                 col: this.getters.isColHidden(sheetId, anchorCol)
-                    ? this.getters.findVisibleHeader(sheetId, "COL", range(left, right + 1)) || anchorCol
+                    ? this.getters.findVisibleHeader(sheetId, "COL", left, right) || anchorCol
                     : anchorCol,
                 row: this.getters.isRowHidden(sheetId, anchorRow)
-                    ? this.getters.findVisibleHeader(sheetId, "ROW", range(top, bottom + 1)) || anchorRow
+                    ? this.getters.findVisibleHeader(sheetId, "ROW", top, bottom) || anchorRow
                     : anchorRow,
             };
         }
@@ -41950,6 +42269,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
              * Internal status of the model. Important for command handling coordination
              */
             this.status = 0 /* Status.Ready */;
+            this.handlers = [];
+            this.coreHandlers = [];
             /**
              * The dispatch method is the only entry point to manipulate data in the model.
              * This is through this method that commands are dispatched most of the time
@@ -42022,7 +42343,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 const command = { type, ...payload };
                 const previousStatus = this.status;
                 this.status = 2 /* Status.RunningCore */;
-                const handlers = this.isReplayingCommand ? [this.range, ...this.corePlugins] : this.handlers;
+                const handlers = this.isReplayingCommand ? this.coreHandlers : this.handlers;
                 this.dispatchToHandlers(handlers, command);
                 this.status = previousStatus;
                 return DispatchResult.Success;
@@ -42056,6 +42377,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             this.uuidGenerator.setIsFastStrategy(true);
             // Initiate stream processor
             this.selection = new SelectionStreamProcessor(this.getters);
+            this.coreHandlers.push(this.range);
+            this.handlers.push(this.range);
             // registering plugins
             for (let Plugin of corePluginRegistry.getAll()) {
                 this.setupCorePlugin(Plugin, workbookData);
@@ -42065,6 +42388,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 this.setupUiPlugin(Plugin);
             }
             this.uuidGenerator.setIsFastStrategy(false);
+            this.handlers.push(this.history);
             // starting plugins
             this.dispatch("START");
             // Model should be the last permanent subscriber in the list since he should render
@@ -42085,9 +42409,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             // by owl, since we do not rely on reactivity
             owl.markRaw(this);
         }
-        get handlers() {
-            return [this.range, ...this.corePlugins, ...this.uiPlugins, this.history];
-        }
         joinSession() {
             this.session.join(this.config.client);
         }
@@ -42106,6 +42427,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 this.getters[name] = plugin[name].bind(plugin);
             }
             this.uiPlugins.push(plugin);
+            this.handlers.push(plugin);
             const layers = Plugin.layers.map((l) => [plugin, l]);
             this.renderers.push(...layers);
             this.renderers.sort((p1, p2) => p1[1] - p2[1]);
@@ -42129,6 +42451,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             }
             plugin.import(data);
             this.corePlugins.push(plugin);
+            this.coreHandlers.push(plugin);
+            this.handlers.push(plugin);
         }
         onRemoteRevisionReceived({ commands }) {
             for (let command of commands) {
@@ -42146,7 +42470,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     return;
                 }
                 this.isReplayingCommand = true;
-                this.dispatchToHandlers([this.range, ...this.corePlugins], command);
+                this.dispatchToHandlers(this.coreHandlers, command);
                 this.isReplayingCommand = false;
             }), this.config.transportService, revisionId);
             return session;
@@ -42246,7 +42570,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 }
             }
             data.revisionId = this.session.getRevisionId() || DEFAULT_REVISION_ID;
-            data = JSON.parse(JSON.stringify(data));
+            data = deepCopy(data);
             return data;
         }
         updateMode(mode) {
@@ -42273,7 +42597,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     handler.exportForExcel(data);
                 }
             }
-            data = JSON.parse(JSON.stringify(data));
+            data = deepCopy(data);
             return getXLSX(data);
         }
     }
@@ -42406,9 +42730,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-    exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2023-02-17T09:46:03.434Z';
-    exports.__info__.hash = 'c96ce8d';
+
+    __info__.version = '16.0.8';
+    __info__.date = '2023-04-21T07:59:07.851Z';
+    __info__.hash = 'dbd7aa4';
+
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

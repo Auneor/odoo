@@ -204,10 +204,15 @@ class HolidaysAllocation(models.Model):
         for allocation in self:
             allocation.number_of_days_display = allocation.number_of_days
 
-    @api.depends('number_of_days', 'holiday_status_id')
+    @api.depends('number_of_days', 'holiday_status_id', 'employee_id', 'holiday_type')
     def _compute_number_of_hours_display(self):
         for allocation in self:
-            allocation.number_of_hours_display = allocation.number_of_days * (allocation.holiday_status_id.company_id.resource_calendar_id.hours_per_day or HOURS_PER_DAY)
+            allocation_calendar = allocation.holiday_status_id.company_id.resource_calendar_id
+            if allocation.holiday_type == 'employee':
+                allocation_calendar = allocation.employee_id.sudo().resource_calendar_id
+
+            allocation.number_of_hours_display = allocation.number_of_days * (allocation_calendar.hours_per_day or HOURS_PER_DAY)
+
 
     @api.depends('number_of_hours_display', 'number_of_days_display')
     def _compute_duration_display(self):
@@ -314,7 +319,10 @@ class HolidaysAllocation(models.Model):
         for allocation in self:
             allocation.number_of_days = allocation.number_of_days_display
             if allocation.type_request_unit == 'hour':
-                allocation.number_of_days = allocation.number_of_hours_display / (allocation.employee_id.sudo().resource_calendar_id.hours_per_day or HOURS_PER_DAY)
+                allocation.number_of_days = allocation.number_of_hours_display / \
+                    (allocation.employee_id.sudo().resource_calendar_id.hours_per_day \
+                    or allocation.holiday_status_id.company_id.resource_calendar_id.hours_per_day \
+                    or HOURS_PER_DAY)
             if allocation.accrual_plan_id.time_off_type_id.id not in (False, allocation.holiday_status_id.id):
                 allocation.accrual_plan_id = False
             if allocation.allocation_type == 'accrual' and not allocation.accrual_plan_id:
@@ -438,6 +446,8 @@ class HolidaysAllocation(models.Model):
             days_added_per_level = defaultdict(lambda: 0)
             while allocation.nextcall <= date_to:
                 (current_level, current_level_idx) = allocation._get_current_accrual_plan_level_id(allocation.nextcall)
+                if not current_level:
+                    break
                 current_level_maximum_leave = current_level.maximum_leave if current_level.added_value_type == "days" else current_level.maximum_leave / (allocation.employee_id.sudo().resource_id.calendar_id.hours_per_day or HOURS_PER_DAY)
                 nextcall = current_level._get_next_date(allocation.nextcall)
                 # Since _get_previous_date returns the given date if it corresponds to a call date
@@ -636,12 +646,14 @@ class HolidaysAllocation(models.Model):
         validated_holidays = self.filtered(lambda holiday: holiday.state == 'validate')
         res = (self - validated_holidays).write({'state': 'confirm'})
         self.activity_update()
-        self.filtered(lambda holiday: holiday.validation_type == 'no' and holiday.state != 'validate').action_validate()
+        no_employee_requests = [holiday.id for holiday in self.sudo() if holiday.holiday_status_id.employee_requests == 'no']
+        self.filtered(lambda holiday: (holiday.id in no_employee_requests or holiday.validation_type == 'no') and holiday.state != 'validate').action_validate()
         return res
 
     def action_validate(self):
         current_employee = self.env.user.employee_id
-        if any(holiday.state != 'confirm' and holiday.validation_type != 'no' for holiday in self):
+        no_employee_requests = [holiday.id for holiday in self.sudo() if holiday.holiday_status_id.employee_requests == 'no']
+        if any((holiday.state != 'confirm' and holiday.id not in no_employee_requests and holiday.validation_type != 'no') for holiday in self):
             raise UserError(_('Allocation request must be confirmed in order to approve it.'))
 
         self.write({

@@ -78,6 +78,8 @@ class AccountMove(models.Model):
         for layer in stock_valuation_layers:
             description = f"{layer.account_move_line_id.move_id.display_name} - {layer.product_id.display_name}"
             layer.description = description
+            if layer.product_id.valuation != 'real_time':
+                continue
             layer.account_move_id.ref = description
             layer.account_move_id.line_ids.write({'name': description})
 
@@ -231,7 +233,7 @@ class AccountMove(models.Model):
                         lambda line: line.product_id == prod and line.account_id == product_interim_account and not line.reconciled)
 
                     # Search for anglo-saxon lines linked to the product in the stock moves.
-                    product_stock_moves = stock_moves.filtered(lambda stock_move: stock_move.product_id == prod)
+                    product_stock_moves = stock_moves._get_all_related_sm(prod)
                     product_account_moves |= product_stock_moves._get_all_related_aml().filtered(
                         lambda line: line.account_id == product_interim_account and not line.reconciled and line.move_id.state == "posted"
                     )
@@ -261,7 +263,7 @@ class AccountMoveLine(models.Model):
     def _compute_account_id(self):
         super()._compute_account_id()
         input_lines = self.filtered(lambda line: (
-            line.product_id.type == 'product'
+            line._can_use_stock_accounts()
             and line.move_id.company_id.anglo_saxon_accounting
             and line.move_id.is_purchase_document()
         ))
@@ -391,6 +393,9 @@ class AccountMoveLine(models.Model):
                 break
 
         return svl_vals_list
+
+    def _can_use_stock_accounts(self):
+        return self.product_id.type == 'product' and self.product_id.categ_id.property_valuation == 'real_time'
 
     def _stock_account_get_anglo_saxon_price_unit(self):
         self.ensure_one()

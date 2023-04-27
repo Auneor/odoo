@@ -402,6 +402,40 @@ class TestTranslation(TransactionCase):
         self.assertEqual(categories.ids, [padawans.id, self.customers.id],
             "Search ordered by translated name should return Padawans (Apprentis) before Customers (Clients)")
 
+    def test_105_duplicate_record_multi_no_en(self):
+        self.env['res.partner'].with_context(active_test=False).search([]).write({'lang': 'fr_FR'})
+        self.env['res.lang']._activate_lang('nl_NL')
+        self.customers.with_context(lang='nl_NL').name = 'Klanten'
+        self.env['res.lang']._activate_lang('zh_CN')
+        self.customers.with_context(lang='zh_CN').name = '客户'
+        self.env.ref('base.lang_en').active = False
+        self.env.ref('base.lang_zh_CN').active = False
+
+        category = self.customers
+        translations = category._fields['name']._get_stored_translations(category)
+        self.assertDictEqual(
+            translations,
+            {
+                'en_US': 'Customers',
+                'fr_FR': 'Clients',
+                'nl_NL': 'Klanten',
+                'zh_CN': '客户',
+            }
+        )
+
+        category_copy = self.customers.with_context(lang='fr_FR').copy()
+        translations = category_copy._fields['name']._get_stored_translations(category_copy)
+
+        self.assertDictEqual(
+            translations,
+            {
+                'en_US': 'Customers',
+                'fr_FR': 'Clients',
+                'nl_NL': 'Klanten',
+            },
+            'English, French and Dutch translation should be copied, Chinese translation should be dropped'
+        )
+
     def test_107_duplicate_record_en(self):
         category = self.customers.with_context({'lang': 'en_US'}).copy()
 
@@ -662,7 +696,7 @@ class TestTranslationWrite(TransactionCase):
         self.assertEqual(belgium.with_context(lang='en_US').vat_label, '')
         self.assertEqual(belgium.with_context(lang='nl_NL').vat_label, '')
 
-    def test_cresate_emtpy_false(self):
+    def test_create_empty_false(self):
         self._test_create_empty(False)
 
     # feature removed
@@ -1005,6 +1039,21 @@ class TestXMLTranslation(TransactionCase):
         self.assertEqual(view.with_context(lang='en_US').arch_db, '<form string="X">Bread and cheese<div>Fork2</div></form>')
         self.assertEqual(view.with_context(lang='fr_FR').arch_db, '<form string="X">Pain et fromage<div>Fourchette2</div></form>')
         self.assertEqual(view.with_context(lang='nl_NL').arch_db, view_nl)
+
+
+class TestHTMLTranslation(TransactionCase):
+    def test_write_non_existing(self):
+        html = '''
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
+'''
+        company = self.env['res.company'].browse(9999)
+        company.report_footer = html
+        self.assertHTMLEqual(company.report_footer, html)
+        # flushing on non-existing records does not break for scalar fields; the
+        # same behavior is expected for translated fields
+        company.flush_recordset()
+
 
 @tagged('post_install', '-at_install')
 class TestLanguageInstallPerformance(TransactionCase):
