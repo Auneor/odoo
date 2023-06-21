@@ -55,3 +55,4 @@ tsconfig.json
 /odoo-conf-*
 /sessions
 /data_dir
+/venv
