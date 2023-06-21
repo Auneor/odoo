@@ -352,8 +352,9 @@ class HrExpense(models.Model):
             raise UserError(_("You need to have at least one category that can be expensed in your database to proceed!"))
 
         for attachment in attachments:
+            attachment_name = '.'.join(attachment.name.split('.')[:-1])
             expense = self.env['hr.expense'].create({
-                'name': product.display_name,
+                'name': attachment_name,
                 'unit_amount': 0,
                 'product_id': product.id,
             })
@@ -383,6 +384,8 @@ class HrExpense(models.Model):
                 raise UserError(_('You cannot delete a posted or approved expense.'))
 
     def write(self, vals):
+        if 'sheet_id' in vals:
+            self.env['hr.expense.sheet'].browse(vals['sheet_id']).check_access_rule('write')
         if 'tax_ids' in vals or 'analytic_distribution' in vals or 'account_id' in vals:
             if any(not expense.is_editable for expense in self):
                 raise UserError(_('You are not authorized to edit this expense report.'))
@@ -1230,7 +1233,11 @@ class HrExpenseSheet(models.Model):
         if not filtered_sheet:
             return notification
         for sheet in filtered_sheet:
-            sheet.write({'state': 'approve', 'user_id': sheet.user_id.id or self.env.user.id})
+            sheet.write({
+                'state': 'approve',
+                'user_id': sheet.user_id.id or self.env.user.id,
+                'approval_date': fields.Date.context_today(sheet),
+            })
         notification['params'].update({
             'title': _('The expense reports were successfully approved.'),
             'type': 'success',
