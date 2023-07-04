@@ -41,6 +41,8 @@ class PurchaseOrder(models.Model):
         for order in self:
             min_date = False
             for line in order.order_line:
+                if not line.date_planned:
+                    line.date_planned=datetime.now()
                 if not min_date or line.date_planned < min_date:
                     min_date = line.date_planned
             if min_date:
@@ -536,6 +538,8 @@ class PurchaseOrderLine(models.Model):
 
     @api.model
     def create(self, values):
+        if not values.get("date_planned"):
+            values["date_planned"]=datetime.now()
         line = super(PurchaseOrderLine, self).create(values)
         if line.order_id.state == 'purchase':
             msg = _("Extra line with %s ") % (line.product_id.display_name,)

@@ -213,6 +213,7 @@ class MailBot(models.AbstractModel):
         return False
 
     def _is_bot_pinged(self, values):
+        return False
         odoobot_id = self.env['ir.model.data'].xmlid_to_res_id("base.partner_root")
         return (4, odoobot_id) in values.get('partner_ids', [])
 
