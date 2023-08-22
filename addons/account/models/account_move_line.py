@@ -1715,6 +1715,15 @@ class AccountMoveLine(models.Model):
             credit_rate = get_accounting_rate(credit_vals)
             recon_debit_amount = recon_currency.round(remaining_debit_amount * debit_rate)
             recon_credit_amount = -remaining_credit_amount_curr
+
+            # If there is nothing left after applying the rate to reconcile in foreign currency,
+            # try to fallback on the company currency instead.
+            if recon_currency.is_zero(recon_debit_amount) or recon_currency.is_zero(recon_credit_amount):
+                recon_currency = company_currency
+                debit_rate = 1
+                recon_debit_amount = remaining_debit_amount
+                recon_credit_amount = -remaining_credit_amount
+
         elif debit_vals['currency'] != company_currency \
                 and is_rec_pay_account \
                 and not has_debit_zero_residual_currency \
@@ -1727,6 +1736,15 @@ class AccountMoveLine(models.Model):
             credit_rate = get_odoo_rate(credit_vals)
             recon_debit_amount = remaining_debit_amount_curr
             recon_credit_amount = recon_currency.round(-remaining_credit_amount * credit_rate)
+
+            # If there is nothing left after applying the rate to reconcile in foreign currency,
+            # try to fallback on the company currency instead.
+            if recon_currency.is_zero(recon_debit_amount) or recon_currency.is_zero(recon_credit_amount):
+                recon_currency = company_currency
+                credit_rate = 1
+                recon_debit_amount = remaining_debit_amount
+                recon_credit_amount = -remaining_credit_amount
+
         elif debit_vals['currency'] == credit_vals['currency'] \
                 and debit_vals['currency'] != company_currency \
                 and not has_debit_zero_residual_currency \
@@ -2386,7 +2404,7 @@ class AccountMoveLine(models.Model):
         # ==== Create entries for cash basis taxes ====
 
         is_cash_basis_needed = account.company_id.tax_exigibility and account.account_type in ('asset_receivable', 'liability_payable')
-        if is_cash_basis_needed and not self._context.get('move_reverse_cancel'):
+        if is_cash_basis_needed and not self._context.get('move_reverse_cancel') and not self._context.get('no_cash_basis'):
             tax_cash_basis_moves = partials._create_tax_cash_basis_moves()
             results['tax_cash_basis_moves'] = tax_cash_basis_moves
 

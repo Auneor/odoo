@@ -1327,11 +1327,11 @@ msgstr ""
 "    Los archivos de prueba se separan por fuentes de donde se tomaron:\n"
 "    \n"
 "    * el documento factur-x (de FNFE)\n"
-"    * el documento peppol-bis-invoice-3 (el repositorio de github: https://github.com/OpenPEPPOL/peppol-bis-invoice-3/tree/master/rules/examples contains examples)\n"
+"    * el documento peppol-bis-invoice-3 (el siguiente repositorio de GitHub incluye ejemplos: https://github.com/OpenPEPPOL/peppol-bis-invoice-3/tree/master/rules/examples)\n"
 "    * odoo, estos archivos pasan todas las pruebas de validación (usando ecosio o el validador FNFE)\n"
 "    \n"
-"    Probamos que los ejemplos externos se importen correctamente (divisa, cantidad total y coincidencia fiscal total).\n"
-"    También probamos que la generación de xml desde odoo con parámetros dados resulta exactamente en el mismo xml que se espera, \n"
+"    Probamos que los ejemplos externos se importen de forma correcta (divisa, cantidad total y coincidencia fiscal total).\n"
+"    También probamos que la generación de xml desde Odoo con parámetros dados resulta exactamente en el mismo xml que se espera, \n"
 "    válido.\n"
 "    "
 
@@ -8352,7 +8352,7 @@ msgstr "Añadir"
 #. module: base
 #: model:ir.actions.act_window,name:base.action_view_base_language_install
 msgid "Add Languages"
-msgstr "Añadir idiomas"
+msgstr "Agregar idiomas"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_mail_bot
@@ -8842,7 +8842,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_holidays
 msgid "Allocate PTOs and follow leaves requests"
-msgstr "Asigne PTO y siga las peticiones de permisos"
+msgstr "Asigne tiempo personal y lleve un seguimiento de las solicitudes"
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_event_crm
@@ -13308,6 +13308,16 @@ msgstr "Mensaje de error que aparece cuando se viola la restricción."
 
 #. module: base
 #. odoo-python
+#: code:addons/translate.py:0
+#, python-format
+msgid ""
+"Error while parsing view:\n"
+"\n"
+"%s"
+msgstr ""
+
+#. module: base
+#. odoo-python
 #: code:addons/base/models/ir_ui_view.py:0
 #, python-format
 msgid ""
@@ -16538,15 +16548,15 @@ msgid ""
 "                    mainly by governmental and international agencies as well\n"
 "                    as industries."
 msgstr ""
-"Realiza y promueve la investigación en el campo de la dinámica de fluidos\n"
-"                 Cuenta con cerca de cincuenta túneles de viento, turbomaquinaria\n"
-"                 y otras instalaciones de experimentación especializadas, algunas\n"
-"                 de las cuales son únicas o las más grandes del mundo. Se realiza\n"
-"                 una amplia investigación sobre los aspectos experimentales,\n"
-"                 computacionales y teóricos de los flujos de gases y líquidos bajo\n"
-"                 la dirección del profesorado y los ingenieros de investigación,\n"
-"                 patrocinada principalmente por organismos gubernamentales e\n"
-"                 internacionales, así como por los sectores industriales."
+"Realiza y promueve la investigación en el campo de la dinámica\n"
+"                    de fluidos. Cuenta con cerca de cincuenta túneles de viento,\n"
+"                    turbomaquinaria y otras instalaciones de experimentación especializadas, algunas\n"
+"                    de las cuales son únicas o las más grandes en el mundo. Se realiza\n"
+"                    una amplia investigación sobre los aspectos experimentales, computacionales y teóricos\n"
+"                    del flujo de gases y líquidos bajo la dirección\n"
+"                    de la facultad y los ingenieros de investigación, con el patrocinio\n"
+"                    principal del gobierno y de organismos internacionales, así como\n"
+"                    de los sectores industriales."
 
 #. module: base
 #: model:res.country,name:base.it
@@ -29141,6 +29151,13 @@ msgstr ""
 
 #. module: base
 #. odoo-python
+#: code:addons/base/models/ir_config_parameter.py:0
+#, python-format
+msgid "You cannot delete the %s record."
+msgstr "No puede eliminar el registro %s."
+
+#. module: base
+#. odoo-python
 #: code:addons/base/models/res_lang.py:0
 #, python-format
 msgid ""
@@ -29172,6 +29189,14 @@ msgid ""
 msgstr ""
 "No puede reducir el número de decimales de una divisa que ya se ha utilizado"
 " para realizar asientos contables."
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_config_parameter.py:0
+#, python-format
+msgid "You cannot rename config parameters with keys %s"
+msgstr ""
+"No puede cambiar el nombre de los parámetros de configuración con claves %s"
 
 #. module: base
 #. odoo-python
