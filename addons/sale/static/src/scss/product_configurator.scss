@@ -31,6 +31,10 @@
     &.custom_value {
         background-image: linear-gradient(to bottom right, #FF0000, #FFF200, #1E9600);
     }
+
+    &.transparent {
+        background-image: url(/web/static/img/transparent.png);
+    }
 }
 
 .css_not_available_msg {
@@ -191,6 +195,13 @@ label.css_attribute_color.css_not_available {
         &:not(.active) {
             color: map-get($grays, '600');
             background-color: map-get($grays, '200');
+        }
+
+        input {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            opacity: 0;
         }
     }
 }

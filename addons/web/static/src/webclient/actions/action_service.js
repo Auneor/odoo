@@ -15,7 +15,16 @@ import { ActionDialog } from "./action_dialog";
 import { CallbackRecorder } from "./action_hook";
 import { ReportAction } from "./reports/report_action";
 
-import { Component, markup, onMounted, onWillUnmount, onError, useChildSubEnv, xml, reactive } from "@odoo/owl";
+import {
+    Component,
+    markup,
+    onMounted,
+    onWillUnmount,
+    onError,
+    useChildSubEnv,
+    xml,
+    reactive,
+} from "@odoo/owl";
 
 const actionHandlersRegistry = registry.category("action_handlers");
 const actionRegistry = registry.category("actions");
@@ -192,16 +201,11 @@ function makeActionManager(env) {
             // do nothing, the action might simply not be serializable
         }
         action.context = makeContext([context, action.context], env.services.user.context);
-        if (action.domain) {
-            const domain = action.domain || [];
-            action.domain =
-                typeof domain === "string"
-                    ? evaluateExpr(
-                          domain,
-                          Object.assign({}, env.services.user.context, action.context)
-                      )
-                    : domain;
-        }
+        const domain = action.domain || [];
+        action.domain =
+            typeof domain === "string"
+                ? evaluateExpr(domain, Object.assign({}, env.services.user.context, action.context))
+                : domain;
         if (action.help) {
             const htmlHelp = document.createElement("div");
             htmlHelp.innerHTML = action.help;
@@ -438,12 +442,12 @@ function makeActionManager(env) {
             resModel: action.res_model,
             type: view.type,
             selectRecord: async (resId, { activeIds, mode }) => {
-                if (_getView("form")) {
+                if (target !== "new" && _getView("form")) {
                     await switchView("form", { mode, resId, resIds: activeIds });
                 }
             },
             createRecord: async () => {
-                if (_getView("form")) {
+                if (target !== "new" && _getView("form")) {
                     await switchView("form", { resId: false });
                 }
             },
@@ -487,7 +491,7 @@ function makeActionManager(env) {
         }
 
         // view specific
-        if (action.res_id) {
+        if (action.res_id && !viewProps.resId) {
             viewProps.resId = action.res_id;
         }
 
@@ -655,14 +659,15 @@ function makeActionManager(env) {
                             Promise.resolve().then(() => {
                                 throw error;
                             });
-                            return;
                         } else {
                             info = lastCt.__info__;
                             // the error occurred while rendering a new controller,
                             // so go back to the last non faulty controller
                             // (the error will be shown anyway as the promise
                             // has been rejected)
+                            restore(lastCt.jsId);
                         }
+                        return;
                     }
                     env.bus.trigger("ACTION_MANAGER:UPDATE", info);
                 }
@@ -814,10 +819,14 @@ function makeActionManager(env) {
      * @param {ActionOptions} options
      */
     function _executeActURLAction(action, options) {
+        let url = action.url;
+        if (url && !(url.startsWith("http") || url.startsWith("/"))) {
+            url = "/" + url;
+        }
         if (action.target === "self") {
-            env.services.router.redirect(action.url);
+            env.services.router.redirect(url);
         } else {
-            const w = browser.open(action.url, "_blank");
+            const w = browser.open(url, "_blank");
             if (!w || w.closed || typeof w.closed === "undefined") {
                 const msg = env._t(
                     "A popup window has been blocked. You may need to change your " +
@@ -1212,7 +1221,7 @@ function makeActionManager(env) {
                 if (action.target !== "new") {
                     const canProceed = await clearUncommittedChanges(env);
                     if (!canProceed) {
-                        return;
+                        return new Promise(() => {});
                     }
                 }
                 return _executeActWindowAction(action, options);
@@ -1363,6 +1372,11 @@ function makeActionManager(env) {
         }
         // END LEGACY CODE COMPATIBILITY
 
+        const canProceed = await clearUncommittedChanges(env);
+        if (!canProceed) {
+            return;
+        }
+
         Object.assign(
             newController,
             _getViewInfo(view, controller.action, controller.views, props)
@@ -1380,10 +1394,7 @@ function makeActionManager(env) {
             );
             index = index > -1 ? index : controllerStack.length;
         }
-        const canProceed = await clearUncommittedChanges(env);
-        if (canProceed) {
-            return _updateUI(newController, { index });
-        }
+        return _updateUI(newController, { index });
     }
 
     /**
@@ -1405,6 +1416,10 @@ function makeActionManager(env) {
             const msg = jsId ? "Invalid controller to restore" : "No controller to restore";
             throw new ControllerNotFoundError(msg);
         }
+        const canProceed = await clearUncommittedChanges(env);
+        if (!canProceed) {
+            return;
+        }
         const controller = controllerStack[index];
         if (controller.action.type === "ir.actions.act_window") {
             const { action, exportedState, view, views } = controller;
@@ -1415,10 +1430,7 @@ function makeActionManager(env) {
             }
             Object.assign(controller, _getViewInfo(view, action, views, props));
         }
-        const canProceed = await clearUncommittedChanges(env);
-        if (canProceed) {
-            return _updateUI(controller, { index });
-        }
+        return _updateUI(controller, { index });
     }
 
     /**

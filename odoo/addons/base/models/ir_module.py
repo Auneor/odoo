@@ -4,11 +4,9 @@ import base64
 from collections import defaultdict, OrderedDict
 from decorator import decorator
 from operator import attrgetter
-import importlib
 import io
 import logging
 import os
-import pkg_resources
 import shutil
 import tempfile
 import threading
@@ -31,6 +29,7 @@ from odoo.exceptions import AccessDenied, UserError
 from odoo.osv import expression
 from odoo.tools.parse_version import parse_version
 from odoo.tools.misc import topological_sort
+from odoo.tools.translate import TranslationImporter
 from odoo.http import request
 from odoo.modules import get_module_path, get_module_resource
 
@@ -153,6 +152,13 @@ STATES = [
 ]
 
 
+XML_DECLARATION = (
+    '<?xml version='.encode('utf-8'),
+    '<?xml version='.encode('utf-16-be'),
+    '<?xml version='.encode('utf-16-le'),
+)
+
+
 class Module(models.Model):
     _name = "ir.module.module"
     _rec_name = "shortdesc"
@@ -189,6 +195,11 @@ class Module(models.Model):
             if module_path and path:
                 with tools.file_open(path, 'rb') as desc_file:
                     doc = desc_file.read()
+                    if not doc.startswith(XML_DECLARATION):
+                        try:
+                            doc = doc.decode('utf-8')
+                        except UnicodeDecodeError:
+                            pass
                     html = lxml.html.document_fromstring(doc)
                     for element, attribute, link, pos in html.iterlinks():
                         if element.get('src') and not '//' in element.get('src') and not 'static/' in element.get('src'):
@@ -251,7 +262,7 @@ class Module(models.Model):
                 path_parts = module.icon.split('/')
                 path = modules.get_module_resource(path_parts[1], *path_parts[2:])
             elif module.id:
-                path = modules.module.get_module_icon(module.name)
+                path = modules.module.get_module_icon_path(module)
             else:
                 path = ''
             if path:
@@ -328,45 +339,15 @@ class Module(models.Model):
         self.clear_caches()
         return super(Module, self).unlink()
 
-    @staticmethod
-    def _check_python_external_dependency(pydep):
-        try:
-            pkg_resources.get_distribution(pydep)
-        except pkg_resources.DistributionNotFound as e:
-            try:
-                importlib.import_module(pydep)
-                _logger.info("python external dependency on '%s' does not appear to be a valid PyPI package. Using a PyPI package name is recommended.", pydep)
-            except ImportError:
-                # backward compatibility attempt failed
-                _logger.warning("DistributionNotFound: %s", e)
-                raise Exception('Python library not installed: %s' % (pydep,))
-        except pkg_resources.VersionConflict as e:
-            _logger.warning("VersionConflict: %s", e)
-            raise Exception('Python library version conflict: %s' % (pydep,))
-        except Exception as e:
-            _logger.warning("get_distribution(%s) failed: %s", pydep, e)
-            raise Exception('Error finding python library %s' % (pydep,))
-
-
-    @staticmethod
-    def _check_external_dependencies(terp):
-        depends = terp.get('external_dependencies')
-        if not depends:
-            return
-        for pydep in depends.get('python', []):
-            Module._check_python_external_dependency(pydep)
-
-        for binary in depends.get('bin', []):
-            try:
-                tools.find_in_path(binary)
-            except IOError:
-                raise Exception('Unable to find %r in path' % (binary,))
+    def _get_modules_to_load_domain(self):
+        """ Domain to retrieve the modules that should be loaded by the registry. """
+        return [('state', '=', 'installed')]
 
     @classmethod
     def check_external_dependencies(cls, module_name, newstate='to install'):
         terp = cls.get_module_info(module_name)
         try:
-            cls._check_external_dependencies(terp)
+            modules.check_manifest_dependencies(terp)
         except Exception as e:
             if newstate == 'to install':
                 msg = _('Unable to install module "%s" because an external dependency is not met: %s')
@@ -610,6 +591,10 @@ class Module(models.Model):
         self._cr.commit()
         registry = modules.registry.Registry.new(self._cr.dbname, update_module=True)
         self._cr.commit()
+        if request and request.registry is self.env.registry:
+            request.env.cr.reset()
+            request.registry = request.env.registry
+            assert request.env.registry is registry
         self._cr.reset()
         assert self.env.registry is registry
 
@@ -637,8 +622,9 @@ class Module(models.Model):
 
     @assert_log_admin_access
     def button_uninstall(self):
-        if 'base' in self.mapped('name'):
-            raise UserError(_("The `base` module cannot be uninstalled"))
+        un_installable_modules = set(odoo.conf.server_wide_modules) & set(self.mapped('name'))
+        if un_installable_modules:
+            raise UserError(_("Those modules cannot be uninstalled: %s", ', '.join(un_installable_modules)))
         if any(state not in ('installed', 'to upgrade') for state in self.mapped('state')):
             raise UserError(_(
                 "One or more of the selected modules have already been uninstalled, if you "
@@ -1033,13 +1019,14 @@ class Module(models.Model):
     def _load_module_terms(self, modules, langs, overwrite=False):
         """ Load PO files of the given modules for the given languages. """
         # load i18n files
+        translation_importer = TranslationImporter(self.env.cr, verbose=False)
+
         for module_name in modules:
             modpath = get_module_path(module_name)
             if not modpath:
                 continue
             for lang in langs:
                 lang_code = tools.get_iso_codes(lang)
-                lang_overwrite = overwrite
                 base_lang_code = None
                 if '_' in lang_code:
                     base_lang_code = lang_code.split('_')[0]
@@ -1049,29 +1036,28 @@ class Module(models.Model):
                     base_trans_file = get_module_resource(module_name, 'i18n', base_lang_code + '.po')
                     if base_trans_file:
                         _logger.info('module %s: loading base translation file %s for language %s', module_name, base_lang_code, lang)
-                        tools.trans_load(self._cr, base_trans_file, lang, verbose=False, overwrite=lang_overwrite)
-                        lang_overwrite = True  # make sure the requested translation will override the base terms later
+                        translation_importer.load_file(base_trans_file, lang)
 
                     # i18n_extra folder is for additional translations handle manually (eg: for l10n_be)
                     base_trans_extra_file = get_module_resource(module_name, 'i18n_extra', base_lang_code + '.po')
                     if base_trans_extra_file:
                         _logger.info('module %s: loading extra base translation file %s for language %s', module_name, base_lang_code, lang)
-                        tools.trans_load(self._cr, base_trans_extra_file, lang, verbose=False, overwrite=lang_overwrite)
-                        lang_overwrite = True  # make sure the requested translation will override the base terms later
+                        translation_importer.load_file(base_trans_extra_file, lang)
 
                 # Step 2: then load the main translation file, possibly overriding the terms coming from the base language
                 trans_file = get_module_resource(module_name, 'i18n', lang_code + '.po')
                 if trans_file:
-                    _logger.info('module %s: loading translation file (%s) for language %s', module_name, lang_code, lang)
-                    tools.trans_load(self._cr, trans_file, lang, verbose=False, overwrite=lang_overwrite)
+                    _logger.info('module %s: loading translation file %s for language %s', module_name, lang_code, lang)
+                    translation_importer.load_file(trans_file, lang)
                 elif lang_code != 'en_US':
                     _logger.info('module %s: no translation for language %s', module_name, lang_code)
 
                 trans_extra_file = get_module_resource(module_name, 'i18n_extra', lang_code + '.po')
                 if trans_extra_file:
-                    _logger.info('module %s: loading extra translation file (%s) for language %s', module_name, lang_code, lang)
-                    tools.trans_load(self._cr, trans_extra_file, lang, verbose=False, overwrite=lang_overwrite)
-        return True
+                    _logger.info('module %s: loading extra translation file %s for language %s', module_name, lang_code, lang)
+                    translation_importer.load_file(trans_extra_file, lang)
+
+        translation_importer.save(overwrite=overwrite)
 
 
 DEP_STATES = STATES + [('unknown', 'Unknown')]

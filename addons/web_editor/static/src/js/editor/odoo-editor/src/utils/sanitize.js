@@ -11,13 +11,14 @@ import {
     moveNodes,
     preserveCursor,
     isFontAwesome,
-    isMediaElement,
     getDeepRange,
     isUnbreakable,
     isEditorTab,
     isZWS,
-    getUrlsInfosInString,
-    URL_REGEX,
+    isArtificialVoidElement,
+    EMAIL_REGEX,
+    URL_REGEX_WITH_INFOS,
+    unwrapContents,
 } from './utils.js';
 
 const NOT_A_NUMBER = /[^\d]/g;
@@ -79,22 +80,71 @@ export function areSimilarElements(node, node2) {
     );
 }
 
+/**
+ * Returns a URL if link's label is a valid email of http URL, null otherwise.
+ *
+ * @param {HTMLAnchorElement} link
+ * @returns {String|null}
+ */
+function deduceURLfromLabel(link) {
+    const label = link.innerText.trim();
+    // Check first for e-mail.
+    let match = label.match(EMAIL_REGEX);
+    if (match) {
+        return match[1] ? match[0] : 'mailto:' + match[0];
+    }
+    // Check for http link.
+    // Regex with 'g' flag is stateful, reset lastIndex before and after using
+    // exec.
+    URL_REGEX_WITH_INFOS.lastIndex = 0;
+    match = URL_REGEX_WITH_INFOS.exec(label);
+    URL_REGEX_WITH_INFOS.lastIndex = 0;
+    if (match && match[0] === label) {
+        const currentHttpProtocol = (link.href.match(/^http(s)?:\/\//gi) || [])[0];
+        if (match[2]) {
+            return match[0];
+        } else if (currentHttpProtocol) {
+            // Avoid converting a http link to https.
+            return currentHttpProtocol + match[0];
+        } else {
+            return 'https://' + match[0];
+        }
+    }
+    return null;
+}
+
 class Sanitize {
     constructor(root) {
         this.root = root;
+        this.parse(root);
+        // Handle unique ids.
         const rootClosestBlock = closestBlock(root);
         if (rootClosestBlock) {
-            // Remove unique ids from checklists and stars. These will be
-            // renewed afterwards.
-            for (const node of rootClosestBlock.querySelectorAll('[id^=checkId-]')) {
-                node.removeAttribute('id');
-            }
-        }
-        this.parse(root);
-        if (rootClosestBlock) {
             // Ensure unique ids on checklists and stars.
-            for (const node of rootClosestBlock.querySelectorAll('.o_checklist > li, .o_stars')) {
-                node.setAttribute('id', `checkId-${Math.floor(new Date() * Math.random())}`);
+            const elementsWithId = [...rootClosestBlock.querySelectorAll('[id^=checkId-]')];
+            const maxId = Math.max(...[0, ...elementsWithId.map(node => +node.getAttribute('id').substring(8))]);
+            let nextId = maxId + 1;
+            const ids = [];
+            for (const node of rootClosestBlock.querySelectorAll('[id^=checkId-], .o_checklist > li, .o_stars')) {
+                if (
+                    !node.classList.contains('o_stars') && (
+                        !node.parentElement.classList.contains('o_checklist') ||
+                        [...node.children].some(child => ['UL', 'OL'].includes(child.nodeName))
+                )) {
+                    // Remove unique ids from checklists and stars from elements
+                    // that are no longer checklist items or stars, and from
+                    // parents of nested lists.
+                    node.removeAttribute('id')
+                } else {
+                    // Add/change IDs where needed, and ensure they're unique.
+                    let id = node.getAttribute('id');
+                    if (!id || ids.includes(id)) {
+                        id = `checkId-${nextId}`;
+                        nextId++;
+                        node.setAttribute('id', id);
+                    }
+                    ids.push(id);
+                }
             }
         }
     }
@@ -109,6 +159,10 @@ class Sanitize {
 
     _parse(node) {
         while (node) {
+            const closestProtected = closestElement(node, '[data-oe-protected="true"]');
+            if (closestProtected && node !== closestProtected) {
+                return;
+            }
             // Merge identical elements together.
             while (
                 areSimilarElements(node, node.previousSibling) &&
@@ -124,6 +178,11 @@ class Sanitize {
                     restoreCursor();
                 }
                 node = nodeP;
+            }
+
+            // Remove comment nodes to avoid issues with mso comments.
+            if (node.nodeType === Node.COMMENT_NODE) {
+                node.remove();
             }
 
             const selection = this.root.ownerDocument.getSelection();
@@ -162,12 +221,16 @@ class Sanitize {
             // Remove empty blocks in <li>
             if (
                 node.nodeName === 'P' &&
-                node.parentElement.tagName === 'LI' &&
-                isEmptyBlock(node)
+                node.parentElement.tagName === 'LI'
             ) {
                 const parent = node.parentElement;
                 const restoreCursor = node.isConnected &&
                     preserveCursor(this.root.ownerDocument);
+                if (isEmptyBlock(node)) {
+                    node.remove();
+                } else {
+                    unwrapContents(node);
+                }
                 node.remove();
                 fillEmpty(parent);
                 if (restoreCursor) {
@@ -215,26 +278,25 @@ class Sanitize {
             // Ensure elements which should not contain any content are tagged
             // contenteditable=false to avoid any hiccup.
             if (
-                (isMediaElement(node) || node.tagName === 'HR') &&
+                isArtificialVoidElement(node) &&
                 node.getAttribute('contenteditable') !== 'false'
             ) {
                 node.setAttribute('contenteditable', 'false');
             }
+
             if (node.firstChild) {
                 this._parse(node.firstChild);
             }
+
             // Update link URL if label is a new valid link.
             if (node.nodeName === 'A' && anchorEl === node) {
-                const linkLabel = node.textContent;
-                const match = linkLabel.match(URL_REGEX);
-                if (match && match[0] === node.textContent) {
-                    const urlInfo = getUrlsInfosInString(linkLabel)[0];
-                    node.setAttribute('href', urlInfo.url);
+                const url = deduceURLfromLabel(node);
+                if (url) {
+                    node.setAttribute('href', url);
                 }
             }
             node = node.nextSibling;
         }
-
     }
 }
 

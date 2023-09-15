@@ -78,6 +78,8 @@ class StockPicking(models.Model):
         pickings = super().create(vals_list)
         for picking, vals in zip(pickings, vals_list):
             if vals.get('batch_id'):
+                if not picking.batch_id.picking_type_id:
+                    picking.batch_id.picking_type_id = picking.picking_type_id[0]
                 picking.batch_id._sanity_check()
         return pickings
 
@@ -120,8 +122,10 @@ class StockPicking(models.Model):
             picking._find_auto_batch()
         return res
 
-    def _action_done(self):
-        res = super()._action_done()
+    def button_validate(self):
+        res = super().button_validate()
+        if res is not True:
+            return res
         to_assign_ids = set()
         if self and self.env.context.get('pickings_to_detach'):
             self.env['stock.picking'].browse(self.env.context['pickings_to_detach']).batch_id = False

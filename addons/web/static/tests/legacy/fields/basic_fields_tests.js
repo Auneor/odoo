@@ -1749,7 +1749,7 @@ QUnit.module('Legacy basic_fields', {
     });
 
     QUnit.test('html field translatable', async function (assert) {
-        assert.expect(6);
+        assert.expect(8);
 
         this.data.partner.fields.foo.translate = true;
 
@@ -1777,7 +1777,7 @@ QUnit.module('Legacy basic_fields', {
                     return Promise.resolve([
                         [{lang: "en_US", source: "first paragraph", value: "first paragraph"},
                             {lang: "en_US", source: "second paragraph", value: "second paragraph"},
-                            {lang: "fr_BE", source: "first paragraph", value: "premier paragraphe"},
+                            {lang: "fr_BE", source: "first paragraph", value: ""},
                             {lang: "fr_BE", source: "second paragraph", value: "deuxième paragraphe"}],
                         {translation_type: "char", translation_show_source: true},
                     ]);
@@ -1786,7 +1786,13 @@ QUnit.module('Legacy basic_fields', {
                     return Promise.resolve([["en_US", "English"], ["fr_BE", "French (Belgium)"]]);
                 }
                 if (route === "/web/dataset/call_kw/partner/update_field_translations") {
-                    assert.deepEqual(args.args, [[1], "foo", {"en_US": {"first paragraph": "first paragraph modified"}}], "the new translation value should be written");
+                    assert.deepEqual(args.args, [[1], "foo", {
+                        "en_US": {"first paragraph": "first paragraph modified"},
+                        "fr_BE": {
+                            "first paragraph": "premier paragraphe modifié",
+                            "deuxième paragraphe": "deuxième paragraphe modifié",
+                        },
+                    }], "the new translation value should be written");
                     return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
@@ -1807,11 +1813,24 @@ QUnit.module('Legacy basic_fields', {
         assert.containsN($('.modal .o_translation_dialog'), '.translation', 4,
             'four rows should be visible');
 
-        var $enField = $('.modal .o_translation_dialog .translation:first() input');
-        assert.strictEqual($enField.val(), 'first paragraph',
+        const $translations = $('.modal .o_translation_dialog .translation input');
+        const enField1 = $translations[0];
+        assert.strictEqual(enField1.value, 'first paragraph',
             'first part of english translation should be filled');
 
-        await testUtils.fields.editInput($enField, "first paragraph modified");
+        await testUtils.fields.editInput(enField1, "first paragraph modified");
+
+        const frField1 = $translations[2];
+        assert.strictEqual(frField1.value, '',
+            'first part of french translation should not be filled');
+
+        await testUtils.fields.editInput(frField1, "premier paragraphe modifié");
+
+        const frField2 = $translations[3];
+        assert.strictEqual(frField2.value, 'deuxième paragraphe',
+            'second part of french translation should be filled');
+
+        await testUtils.fields.editInput(frField2, "deuxième paragraphe modifié");
         await testUtils.dom.click($('.modal button.btn-primary'));  // save
         await testUtils.nextTick();
 
@@ -5396,6 +5415,75 @@ QUnit.module('Legacy basic_fields', {
 
         form.destroy();
     });
+
+    QUnit.test("datetime field: use picker with arabic numbering system", async function (assert) {
+        assert.expect(2);
+
+        const symbols = [
+            ["1", "١"],
+            ["2", "٢"],
+            ["3", "٣"],
+            ["4", "٤"],
+            ["5", "٥"],
+            ["6", "٦"],
+            ["7", "٧"],
+            ["8", "٨"],
+            ["9", "٩"],
+            ["0", "٠"],
+        ];
+        const symbolMap = Object.fromEntries(symbols);
+        const numberMap = Object.fromEntries(symbols.map(([latn, arab]) => [arab, latn]));
+
+        const originalLocale = moment.locale();
+        moment.defineLocale("TEST_ar", {
+            preparse:
+                (string) => string
+                    .replace(/\u200f/g, "")
+                    .replace(/[١٢٣٤٥٦٧٨٩٠]/g, (match) => numberMap[match])
+                    .replace(/،/g, ","),
+            postformat:
+                (string) => string
+                    .replace(/\d/g, (match) => symbolMap[match])
+                    .replace(/,/g, "،"),
+        });
+
+        const form = await createView({
+            View: FormView,
+            model: "partner",
+            data: this.data,
+            arch: /* xml */ `
+                <form string="Partners">
+                    <field name="datetime" />
+                </form>
+            `,
+            res_id: 1,
+            viewOptions: {
+                mode: "edit",
+            },
+        });
+
+        const getInput = () => form.el.querySelector("[name=datetime] input")
+        const click = (el) => testUtils.dom.click($(el));
+
+        assert.strictEqual(getInput().value, "٠٢/٠٨/٢٠١٧ ١٠:٠٠:٠٠");
+
+        await click(getInput());
+
+        await click(document.querySelector("[data-action=togglePicker]"));
+
+        await click(document.querySelector("[data-action=showMinutes]"));
+        await click(document.querySelectorAll("[data-action=selectMinute]")[9]);
+
+        await click(document.querySelector("[data-action=showSeconds]"));
+        await click(document.querySelectorAll("[data-action=selectSecond]")[3]);
+
+        assert.strictEqual(getInput().value, "٠٢/٠٨/٢٠١٧ ١٠:٤٥:١٥");
+
+        moment.locale(originalLocale);
+        moment.updateLocale("TEST_ar", null);
+
+        form.destroy();
+    })
 
     QUnit.module('RemainingDays');
 

@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Andy Yiu, 2022
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,8 +13,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:01+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
+"Last-Translator: Junko Augias, 2023\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -169,6 +171,10 @@ msgid ""
 "Post as Message: log on document\n"
 "Post as Note: mass SMS with archives"
 msgstr ""
+"SMS送信方法を選ぶ：\n"
+"SMS：一括SMS\n"
+"メッセージとして投稿する：ドキュメントへのログオン\n"
+"メモとして投稿する：アーカイブ付一括SMS"
 
 #. module: base_automation
 #: model:ir.model.fields,help:base_automation.field_base_automation__mail_post_method
@@ -178,6 +184,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"Eメール送信方法を選ぶ：\n"
+"Eメール：直接メールを送信する\n"
+"メッセージとして投稿：ドキュメントへ投稿しフォロワーに通知する\n"
+"メモとして投稿：ドキュメントにメモをログ"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__create_uid
@@ -201,6 +211,9 @@ msgid ""
 "        You can put a negative number if you need a delay before the\n"
 "        trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
+"トリガー日以降の遅延。\n"
+"　　トリガー日の15分前にリマインダーを送信するなど、トリガー日よ　　　　　　　　　\n"
+"りも前に遅延が必要な場合は、負の数を入力することができます。"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__trg_date_range
@@ -255,7 +268,7 @@ msgstr "アクションを編集"
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__template_id
 msgid "Email Template"
-msgstr "Eメールテンプレート"
+msgstr "メールテンプレート"
 
 #. module: base_automation
 #: code:addons/base_automation/models/base_automation.py:0
@@ -447,12 +460,12 @@ msgstr "SMSテンプレート"
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__mail_post_method
 msgid "Send as"
-msgstr ""
+msgstr "以下として送信："
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__sms_method
 msgid "Send as (SMS)"
-msgstr ""
+msgstr "以下として送信（SMS）"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__sequence
@@ -484,7 +497,7 @@ msgstr "新しい自動化をセットアップする"
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "受信者を登録する"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__activity_summary
@@ -514,7 +527,7 @@ msgstr " \"%(trigger_value)s\" %(trigger_label)s は \"%(state_value)s\" 動作�
 msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
-msgstr ""
+msgstr "これらのフィールドのいずれかが更新された場合にのみ、アクションがトリガーされる。空の場合、すべてのフィールドが監視されます。"
 
 #. module: base_automation
 #. openerp-web
@@ -559,6 +572,15 @@ msgid ""
 "- 'Create Next Activity': create an activity (Discuss)\n"
 "- 'Send SMS Text Message': send SMS, log them on documents (SMS)"
 msgstr ""
+"サーバーアクションのタイプ。以下の値が利用可能です：\n"
+"- 「Pythonコードの実行」：Pythonコードブロックが実行されます\n"
+"- 「新規記録の作成」： 新しい値で新しいレコードを作成します\n"
+"- 「記録のアップデート」： 記録の値を更新します\n"
+"- 「複数のアクションを実行」： 他の複数のサーバーアクションをトリガーするアクションを定義します。\n"
+"- 「メール送信」： メッセージやメモの投稿やメールを送信します。\n"
+"- 「フォロワーを追加」：記録にフォロワーを追加します (ディスカッション)\n"
+"- 「次のアクティビティを作成」：アクティビティを作成します（ディスカッション）\n"
+"- 「SMSテキストメッセージを送信」：SMSを送信し、ドキュメントに記録します（SMS）"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__usage
@@ -644,6 +666,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"いつその条件をトリガーするのか。\n"
+"　　　　存在する場合、スケジューラによって確認されます。空の場合は、作成時と更新時に確認されます。"
 
 #. module: base_automation
 #: model:ir.model.fields,help:base_automation.field_base_automation__active

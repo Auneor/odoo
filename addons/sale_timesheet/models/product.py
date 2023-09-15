@@ -12,7 +12,7 @@ class ProductTemplate(models.Model):
 
     def _selection_service_policy(self):
         service_policies = super()._selection_service_policy()
-        service_policies.insert(1, ('delivered_timesheet', 'Based on Timesheets'))
+        service_policies.insert(1, ('delivered_timesheet', _('Based on Timesheets')))
         return service_policies
 
     service_type = fields.Selection(selection_add=[
@@ -121,7 +121,7 @@ class ProductProduct(models.Model):
 
     @api.onchange('service_policy')
     def _onchange_service_policy(self):
-        self.product_tmpl_id._inverse_service_policy()
+        self._inverse_service_policy()
         vals = self.product_tmpl_id._get_onchange_service_policy_updates(self.service_tracking,
                                                                         self.service_policy,
                                                                         self.project_id,

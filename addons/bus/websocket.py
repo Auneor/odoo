@@ -3,6 +3,7 @@ import functools
 import hashlib
 import json
 import logging
+import os
 import psycopg2
 import random
 import socket
@@ -14,6 +15,7 @@ from collections import defaultdict, deque
 from contextlib import closing, suppress
 from enum import IntEnum
 from psycopg2.pool import PoolError
+from urllib.parse import urlparse
 from weakref import WeakSet
 
 from werkzeug.local import LocalStack
@@ -22,7 +24,7 @@ from werkzeug.exceptions import BadRequest, HTTPException
 import odoo
 from odoo import api
 from .models.bus import dispatch
-from odoo.http import root, Request, Response, SessionExpiredException
+from odoo.http import root, Request, Response, SessionExpiredException, get_default_session
 from odoo.modules.registry import Registry
 from odoo.service import model as service_model
 from odoo.service.server import CommonServer
@@ -602,6 +604,8 @@ class Websocket:
         registered for this event type. Every callback is given both the
         environment and the related websocket.
         """
+        if not type(self)._event_callbacks[event_type]:
+            return
         with closing(acquire_cursor(self._session.db)) as cr:
             env = api.Environment(cr, self._session.uid, self._session.context)
             for callback in type(self)._event_callbacks[event_type]:
@@ -646,8 +650,8 @@ class TimeoutManager:
     """
     This class handles the Websocket timeouts. If no response to a
     PING/CLOSE frame is received after `TIMEOUT` seconds or if the
-    connection is opened for more than `KEEP_ALIVE_TIMEOUT` seconds, the
-    connection is considered to have timed out. To determine if the
+    connection is opened for more than `self._keep_alive_timeout` seconds,
+    the connection is considered to have timed out. To determine if the
     connection has timed out, use the `has_timed_out` method.
     """
     TIMEOUT = 15
@@ -660,6 +664,11 @@ class TimeoutManager:
         self._awaited_opcode = None
         # Time in which the connection was opened.
         self._opened_at = time.time()
+        # Custom keep alive timeout for each TimeoutManager to avoid multiple
+        # connections timing out at the same time.
+        self._keep_alive_timeout = (
+            type(self).KEEP_ALIVE_TIMEOUT + random.uniform(0, type(self).KEEP_ALIVE_TIMEOUT / 2)
+        )
         self.timeout_reason = None
         # Start time recorded when we started awaiting an answer to a
         # PING/CLOSE frame.
@@ -689,10 +698,10 @@ class TimeoutManager:
         Determine whether the connection has timed out or not. The
         connection times out when the answer to a CLOSE/PING frame
         is not received within `TIMEOUT` seconds or if the connection
-        is opened for more than `KEEP_ALIVE_TIMEOUT` seconds.
+        is opened for more than `self._keep_alive_timeout` seconds.
         """
         now = time.time()
-        if now - self._opened_at >= type(self).KEEP_ALIVE_TIMEOUT:
+        if now - self._opened_at >= self._keep_alive_timeout:
             self.timeout_reason = TimeoutReason.KEEP_ALIVE
             return True
         if self._awaited_opcode and now - self._waiting_start_time >= type(self).TIMEOUT:
@@ -788,7 +797,7 @@ class WebsocketConnectionHandler:
     _HANDSHAKE_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
     _REQUIRED_HANDSHAKE_HEADERS = {
         'connection', 'host', 'sec-websocket-key',
-        'sec-websocket-version', 'upgrade',
+        'sec-websocket-version', 'upgrade', 'origin',
     }
 
     @classmethod
@@ -801,6 +810,7 @@ class WebsocketConnectionHandler:
         versions the client supports and those we support.
         :raise: BadRequest if the handshake data is incorrect.
         """
+        cls._handle_public_configuration(request)
         response = cls._get_handshake_response(request.httprequest.headers)
         response.call_on_close(functools.partial(
             cls._serve_forever,
@@ -832,6 +842,17 @@ class WebsocketConnectionHandler:
             'Connection': 'Upgrade',
             'Sec-WebSocket-Accept': accept_header,
         })
+
+    @classmethod
+    def _handle_public_configuration(cls, request):
+        if not os.getenv('ODOO_BUS_PUBLIC_SAMESITE_WS'):
+            return
+        headers = request.httprequest.headers
+        origin_url = urlparse(headers.get('origin'))
+        if origin_url.netloc != headers.get('host') or origin_url.scheme != request.httprequest.scheme:
+            request.session = root.session_store.new()
+            request.session.update(get_default_session(), db=request.session.db)
+            request.session.is_explicit = True
 
     @classmethod
     def _assert_handshake_validity(cls, headers):
