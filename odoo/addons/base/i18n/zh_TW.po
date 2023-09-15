@@ -5798,7 +5798,7 @@ msgstr " 在潛在客戶表單檢視上增加一個統計按鈕以存取他們�
 #. module: base
 #: model:ir.module.module,summary:base.module_website_sale_delivery_mondialrelay
 msgid " Let's choose Point Relais® on your ecommerce "
-msgstr " Let's choose Point Relais® on your ecommerce "
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_delivery_mondialrelay
@@ -7164,6 +7164,10 @@ msgid ""
 "                    aerospace, environmental and applied fluid dynamics, and\n"
 "                    turbomachinery and propulsion)."
 msgstr ""
+"一個非營利性國際教育和科學組織，\n"
+"                    擁有三個部門（航空航天、\n"
+"                    環境和應用流體動力學，以及\n"
+"                    渦輪機械與推進）。"
 
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_3
@@ -7834,9 +7838,6 @@ msgid ""
 "    notably for selling mouse traps. With that trick he cut\n"
 "    IT budget by almost half within the last 2 years."
 msgstr ""
-"Addison Olson works in IT sector <b>since 10 years</b>. He is known\n"
-"    notably for selling mouse traps. With that trick he cut\n"
-"    IT budget by almost half within the last 2 years."
 
 #. module: base
 #. odoo-python
@@ -9270,7 +9271,7 @@ msgstr "空白"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_blog
 msgid "Blogs"
-msgstr "部落格"
+msgstr "網誌"
 
 #. module: base
 #: model:res.country,name:base.bo
@@ -10192,7 +10193,7 @@ msgstr "公司圖示"
 #: model:ir.model.fields,field_description:base.field_res_partner__company_registry
 #: model:ir.model.fields,field_description:base.field_res_users__company_registry
 msgid "Company ID"
-msgstr ""
+msgstr "公司識別碼"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__logo
@@ -11511,6 +11512,9 @@ msgid ""
 "                Chain processes in order to make our customers more productive,\n"
 "                responsive and profitable."
 msgstr ""
+"Deco Addict 設計、開發、整合和支援人力資源及供應鏈\n"
+"                流程，以使我們的客戶提高生產力、\n"
+"                反應速度和盈利能力。"
 
 #. module: base
 #: model:res.partner,website_short_description:base.res_partner_2
@@ -11529,6 +11533,9 @@ msgid ""
 "                with Open Sources software to manage their businesses. Our\n"
 "                consultants are experts in the following areas:"
 msgstr ""
+"Deco Addict 為跨國公司整合 ERP，\n"
+"                並透過開源軟件支援 PME 以協助管理其業務。\n"
+"                我們的顧問是以下領域的專家："
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_partner_deduplicate
@@ -13284,7 +13291,7 @@ msgstr ""
 #. module: base
 #: model:ir.model,name:base.model_ir_binary
 msgid "File streaming helper model for controllers"
-msgstr ""
+msgstr "控制器檔案串流輔助模型"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_actions_act_window__filter
@@ -13761,7 +13768,7 @@ msgstr "從聯繫表單建立潛在商機"
 #. module: base
 #: model:ir.module.module,summary:base.module_website_links
 msgid "Generate trackable & short URLs"
-msgstr "建立可追蹤的 & 短連結URLs"
+msgstr "產生可追蹤的簡短網址"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_property_view_search
@@ -14764,7 +14771,7 @@ msgstr "圖像"
 #: model:ir.model.fields,field_description:base.field_res_partner__image_1024
 #: model:ir.model.fields,field_description:base.field_res_users__image_1024
 msgid "Image 1024"
-msgstr "畫素 1024"
+msgstr "圖像 1024"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_avatar_mixin__image_128
@@ -14772,7 +14779,7 @@ msgstr "畫素 1024"
 #: model:ir.model.fields,field_description:base.field_res_partner__image_128
 #: model:ir.model.fields,field_description:base.field_res_users__image_128
 msgid "Image 128"
-msgstr "畫素 128"
+msgstr "圖像 128"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_avatar_mixin__image_256
@@ -14780,7 +14787,7 @@ msgstr "畫素 128"
 #: model:ir.model.fields,field_description:base.field_res_partner__image_256
 #: model:ir.model.fields,field_description:base.field_res_users__image_256
 msgid "Image 256"
-msgstr "畫素 256"
+msgstr "圖像 256"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_avatar_mixin__image_512
@@ -14788,7 +14795,7 @@ msgstr "畫素 256"
 #: model:ir.model.fields,field_description:base.field_res_partner__image_512
 #: model:ir.model.fields,field_description:base.field_res_users__image_512
 msgid "Image 512"
-msgstr "畫素 512"
+msgstr "圖像 512"
 
 #. module: base
 #: model:ir.model,name:base.model_image_mixin
@@ -15453,7 +15460,7 @@ msgstr "庫存"
 #: model_terms:res.partner,website_description:base.res_partner_2
 #: model_terms:res.partner,website_description:base.res_partner_4
 msgid "Inventory and Warehouse management"
-msgstr ""
+msgstr "庫存和倉庫管理"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_purchase_price_diff
@@ -15581,6 +15588,11 @@ msgid ""
 "                    series) and encourages \"training in research through\n"
 "                    research\"."
 msgstr ""
+"它提供流體動力學的研究生課程\n"
+"                    （流體動力學研究碩士、前\n"
+"                    “文憑課程”、博士課程、實習訓練課程，\n"
+"                    以及講座系列）並鼓勵\n"
+"                    “通過參與研究進行研究培訓”。"
 
 #. module: base
 #: model_terms:res.partner,website_description:base.res_partner_3
@@ -15595,6 +15607,15 @@ msgid ""
 "                    mainly by governmental and international agencies as well\n"
 "                    as industries."
 msgstr ""
+"它承擔並促進流體動力學\n"
+"                    領域的研究， 擁有約五十個不同的風洞、\n"
+"                    渦輪機械和其他專門的測試設施，其中一些\n"
+"                    是世界上獨一無二或最大的。\n"
+"                    在學院和研究工程師的指導下，\n"
+"                    對氣體及液體流動的實驗性、\n"
+"                    計算性和理論層面方面進行了廣泛研究。\n"
+"                    研究主要由政府和國際機構\n"
+"                    以及行業贊助。"
 
 #. module: base
 #: model:res.country,name:base.it
@@ -16941,7 +16962,7 @@ msgstr "批次郵寄銷售訂單"
 #: model_terms:res.partner,website_description:base.res_partner_2
 #: model_terms:res.partner,website_description:base.res_partner_4
 msgid "Materials Management"
-msgstr ""
+msgstr "物料管理"
 
 #. module: base
 #: model:res.country,name:base.mr
@@ -20871,6 +20892,11 @@ msgid ""
 "                installed IT software into account. That is why Idealis\n"
 "                Consulting delivers excellence in HR and SC Management."
 msgstr ""
+"我們的專家發明、想像和開發能滿足\n"
+"                你業務需求的解決方案。 他們為你的公司構建新的\n"
+"                技術環境，但他們一定會考慮\n"
+"                已安裝的 IT 軟件。 這就是 Idealis \n"
+"                Consulting 能夠提供卓越人力資源及供應鏈管理的原因。"
 
 #. module: base
 #: model_terms:res.company,invoice_terms_html:base.main_company
@@ -21391,7 +21417,7 @@ msgstr "薪資本地化"
 #: model_terms:res.partner,website_description:base.res_partner_2
 #: model_terms:res.partner,website_description:base.res_partner_4
 msgid "Personnel Administration"
-msgstr ""
+msgstr "人事管理"
 
 #. module: base
 #: model:res.country,name:base.pe
@@ -23275,7 +23301,7 @@ msgstr "銷售工時表"
 #: model_terms:res.partner,website_description:base.res_partner_2
 #: model_terms:res.partner,website_description:base.res_partner_4
 msgid "Sales and Distribution"
-msgstr ""
+msgstr "銷售及分銷"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_mrp
@@ -24043,7 +24069,7 @@ msgstr "社交媒體營銷"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_social_media
 msgid "Social Media"
-msgstr "社群媒體"
+msgstr "社交媒體"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_social_media
@@ -24439,7 +24465,7 @@ msgstr "街道..."
 #: model:ir.model.fields,field_description:base.field_res_partner__street2
 #: model:ir.model.fields,field_description:base.field_res_users__street2
 msgid "Street2"
-msgstr "街道2"
+msgstr "街道第二行"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_web_studio
@@ -24514,7 +24540,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_website_event_track_live
 msgid "Support live tracks: streaming, participation, youtube"
-msgstr "支援直播曲目: 流媒體、參與、youtube"
+msgstr ""
 
 #. module: base
 #: model:res.country,name:base.sr
@@ -24683,7 +24709,7 @@ msgstr "塔吉克斯坦"
 #: model_terms:res.partner,website_description:base.res_partner_2
 #: model_terms:res.partner,website_description:base.res_partner_4
 msgid "Talent Management"
-msgstr ""
+msgstr "人才管理"
 
 #. module: base
 #: model:res.country,name:base.tz
@@ -28300,7 +28326,7 @@ msgstr "例如 法語"
 #: model_terms:ir.ui.view,arch_db:base.view_users_form
 #: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
 msgid "e.g. John Doe"
-msgstr "例如: John Doe"
+msgstr "例：陳大文"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form

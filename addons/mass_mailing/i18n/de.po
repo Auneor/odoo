@@ -1723,7 +1723,7 @@ msgstr "Löschen"
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_features_grid
 msgid "Delete Blocks"
-msgstr "Bausteine Löschen"
+msgstr "Blöcke löschen"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.s_three_columns
@@ -2304,7 +2304,7 @@ msgid ""
 "related mail_mail can be deleted separately from its statistics. However the"
 " ID is needed for several action and controllers."
 msgstr ""
-"ID der zugehörigen mail_mail. Dieses Feld ist eine Ganzzahl, weil das "
+"ID der zugehörigen mail_mail. Dieses Feld ist eine Ganzzahl, weil die "
 "zugehörige mail_mail separat von dessen Statistiken gelöscht werden kann. "
 "Diese ID wird allerdings für verschiedene Aktionen und Controller benötigt."
 
@@ -3468,9 +3468,9 @@ msgid ""
 "Opt out flag for a specific mailing list. This field should not be used in a"
 " view without a unique and active mailing list context."
 msgstr ""
-"Abmeldungsflagge für bestimmte Mailinglisten. Dieses Feld sollte nicht in "
-"einer Ansicht ohne einen eindeutigen und aktiven Mailinglistenkontext "
-"verwendet werden."
+"Abmeldungskennzeichnung für bestimmte Mailinglisten. Dieses Feld sollte "
+"nicht in einer Ansicht ohne einen eindeutigen und aktiven "
+"Mailinglistenkontext verwendet werden."
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.mailing_list_view_tree

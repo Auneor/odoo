@@ -6164,7 +6164,7 @@ msgstr "todos os registros"
 #: code:addons/web/static/src/core/domain_selector/domain_selector_branch_operator.xml:0
 #, python-format
 msgid "any"
-msgstr ""
+msgstr "qualquer"
 
 #. module: web
 #. odoo-javascript
@@ -6734,14 +6734,7 @@ msgstr "definido (true)"
 #. odoo-javascript
 #: code:addons/web/static/src/core/commands/command_palette.xml:0
 #, python-format
-msgid "to open in new tab"
-msgstr ""
-
-#. module: web
-#. odoo-javascript
-#: code:addons/web/static/src/core/commands/command_palette.xml:0
-#, python-format
-msgid "to open,"
+msgid "new tab"
 msgstr ""
 
 #. module: web
