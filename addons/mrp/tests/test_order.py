@@ -296,20 +296,26 @@ class TestMrpOrder(TestMrpCommon):
         mo_form.qty_producing = 2
         mo = mo_form.save()
 
-        mo._post_inventory()
+        # Produce & backorder
+        action = mo.button_mark_done()
+        backorder = Form(self.env['mrp.production.backorder'].with_context(**action['context']))
+        backorder.save().action_backorder()
+        mo_backorder = mo.procurement_group_id.mrp_production_ids[-1]
+        self.assertEqual(mo_backorder.product_qty, 1)
 
         update_quantity_wizard = self.env['change.production.qty'].create({
-            'mo_id': mo.id,
-            'product_qty': 5,
+            'mo_id': mo_backorder.id,
+            'product_qty': 3,
         })
         update_quantity_wizard.change_prod_qty()
-        mo_form = Form(mo)
-        mo_form.qty_producing = 5
-        mo = mo_form.save()
-        mo.button_mark_done()
+        mo_back_form = Form(mo_backorder)
+        mo_back_form.qty_producing = 3
+        mo_backorder = mo_back_form.save()
+        mo_backorder.button_mark_done()
 
-        self.assertEqual(sum(mo.move_raw_ids.filtered(lambda m: m.product_id == p1).mapped('quantity_done')), 20)
-        self.assertEqual(sum(mo.move_finished_ids.mapped('quantity_done')), 5)
+        productions = mo | mo_backorder
+        self.assertEqual(sum(productions.move_raw_ids.filtered(lambda m: m.product_id == p1).mapped('quantity_done')), 20)
+        self.assertEqual(sum(productions.move_finished_ids.mapped('quantity_done')), 5)
 
     def test_update_quantity_3(self):
         bom = self.env['mrp.bom'].create({
@@ -1307,6 +1313,88 @@ class TestMrpOrder(TestMrpCommon):
             ml.lot_id = sn
         details_operation_form.save()
         mo2.button_mark_done()
+
+    def test_product_produce_duplicate_5(self):
+        """Produce a subassembly for the second time with the same serial
+        after having unbuilt both the subassembly and finished good it was part of"""
+        subassembly_product = self.env["product.product"].create(
+            {
+                "name": "Subassembly",
+                "type": "product",
+                "tracking": "serial",
+            }
+        )
+
+        subassembly_sn = self.env["stock.lot"].create(
+            {
+                "name": "SN",
+                "product_id": subassembly_product.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        subassembly_mo1_form = Form(self.env["mrp.production"])
+        subassembly_mo1_form.product_id = subassembly_product
+        subassembly_mo1 = subassembly_mo1_form.save()
+        subassembly_mo1.action_confirm()
+        with Form(subassembly_mo1) as mo:
+            mo.qty_producing = 1
+        subassembly_mo1.lot_producing_id = subassembly_sn
+        subassembly_mo1.button_mark_done()
+
+        finished_good_product = self.env["product.product"].create(
+            {
+                "name": "Finished Good",
+                "type": "product",
+                "tracking": "serial",
+            }
+        )
+        finished_good_product_bom = self.env["mrp.bom"].create(
+            {
+                "product_tmpl_id": finished_good_product.product_tmpl_id.id,
+                "product_qty": 1,
+                "type": "normal",
+                "bom_line_ids": [
+                    (0, 0, {"product_id": subassembly_product.id, "product_qty": 1}),
+                ],
+            }
+        )
+        finished_good_mo_form = Form(self.env["mrp.production"])
+        finished_good_mo_form.product_id = finished_good_product
+        finished_good_mo_form.bom_id = finished_good_product_bom
+        finished_good_mo = finished_good_mo_form.save()
+        finished_good_mo.action_confirm()
+        with Form(finished_good_mo) as mo:
+            mo.qty_producing = 1
+        finished_good_mo.action_generate_serial()
+        finished_good_detailed_operations_form = Form(
+            finished_good_mo.move_raw_ids[0],
+            view=self.env.ref("stock.view_stock_move_operations"),
+        )
+        with finished_good_detailed_operations_form.move_line_ids.edit(0) as ml:
+            ml.qty_done = 1
+            ml.lot_id = subassembly_sn
+        finished_good_detailed_operations_form.save()
+        finished_good_mo.button_mark_done()
+
+        finished_good_ub_form = Form(self.env["mrp.unbuild"])
+        finished_good_ub_form.mo_id = finished_good_mo
+        finished_good_ub = finished_good_ub_form.save()
+        finished_good_ub.action_unbuild()
+
+        subassembly_ub_form = Form(self.env["mrp.unbuild"])
+        subassembly_ub_form.mo_id = subassembly_mo1
+        subassembly_ub = subassembly_ub_form.save()
+        subassembly_ub.action_unbuild()
+
+        subassembly_mo2_form = Form(self.env["mrp.production"])
+        subassembly_mo2_form.product_id = subassembly_product
+        subassembly_mo2 = subassembly_mo2_form.save()
+        subassembly_mo2.action_confirm()
+        with Form(subassembly_mo2) as mo:
+            mo.qty_producing = 1
+        subassembly_mo2.lot_producing_id = subassembly_sn
+        subassembly_mo2.button_mark_done()
 
     def test_product_produce_12(self):
         """ Checks that, the production is robust against deletion of finished move."""
@@ -3366,6 +3454,10 @@ class TestMrpOrder(TestMrpCommon):
                 self.assertEqual(move.product_uom_qty, 4, "expected qty was not correctly set")
                 self.assertEqual(move.quantity_done, 4, "expected qty was not applied as qty to be done (UoM was possibly not correctly converted)")
         self.assertEqual(mo2.state, 'done')
+        # double check that backorder qtys are also correct
+        mo2_backorder = mo2.procurement_group_id.mrp_production_ids[-1]
+        self.assertEqual(len(mo2_backorder.move_raw_ids), 1, "missing line should NOT have been added in")
+        self.assertEqual(mo2_backorder.move_raw_ids[0].product_uom_qty, 12, "backorder values are based on original MO, not current bom")
 
         #### scenario 3 - repeated comp move ####
         # bom.bom_line_ids[0]/product_id = p2
