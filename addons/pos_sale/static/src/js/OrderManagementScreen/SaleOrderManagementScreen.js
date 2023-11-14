@@ -169,6 +169,8 @@ odoo.define('pos_sale.SaleOrderManagementScreen', function (require) {
                         customer_note: line.customer_note,
                     });
 
+                    this.env.pos.get_order().set_orderline_options(new_line, line);
+
                     if (
                         new_line.get_product().tracking !== 'none' &&
                         (this.env.pos.picking_type.use_create_lots || this.env.pos.picking_type.use_existing_lots) &&
@@ -253,7 +255,7 @@ odoo.define('pos_sale.SaleOrderManagementScreen', function (require) {
                         order: this.env.pos.get_order(),
                         product: down_payment_product,
                         price: down_payment,
-                        price_manually_set: true,
+                        price_automatically_set: true,
                         sale_order_origin_id: clickedOrder,
                         down_payment_details: tab,
                     });
@@ -293,7 +295,8 @@ odoo.define('pos_sale.SaleOrderManagementScreen', function (require) {
             sale_order[0].amount_unpaid = saleOrdersAmountUnpaid[sale_order[0].id];
 
             const sale_lines = await this._getSOLines(sale_order[0].order_line);
-            sale_order[0].order_line = sale_lines;
+            const promo_products_to_remove = this.env.pos.promo_programs ? this.env.pos.promo_programs.flatMap(program => program.promo_code_usage === 'no_code_needed' ? program.discount_line_product_id[0] : []) : [];
+            sale_order[0].order_line = sale_lines.filter(line => !promo_products_to_remove.includes(line.product_id[0]));
 
             return sale_order[0];
         }

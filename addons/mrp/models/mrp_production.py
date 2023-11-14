@@ -475,7 +475,7 @@ class MrpProduction(models.Model):
                 production.state = 'progress'
             elif production.product_uom_id and not float_is_zero(production.qty_producing, precision_rounding=production.product_uom_id.rounding):
                 production.state = 'progress'
-            elif any(not float_is_zero(move.quantity_done, precision_rounding=move.product_uom.rounding or move.product_id.uom_id.rounding) for move in production.move_raw_ids):
+            elif any(not float_is_zero(move.quantity_done, precision_rounding=move.product_uom.rounding or move.product_id.uom_id.rounding) for move in production.move_raw_ids if move.product_id):
                 production.state = 'progress'
 
     @api.depends('state', 'move_raw_ids.state')
@@ -725,7 +725,7 @@ class MrpProduction(models.Model):
         else:
             self.workorder_ids = False
 
-    @api.constrains('move_byproduct_ids')
+    @api.constrains('move_finished_ids')
     def _check_byproducts(self):
         for order in self:
             if any(move.cost_share < 0 for move in order.move_byproduct_ids):
@@ -783,6 +783,8 @@ class MrpProduction(models.Model):
                     finished_move_lines.write({'lot_id': vals.get('lot_producing_id')})
                 if 'qty_producing' in vals:
                     finished_move_lines.write({'qty_done': vals.get('qty_producing')})
+            elif production.state not in ['draft', 'done', 'cancel'] and 'lot_producing_id' in vals:
+                production.move_finished_ids.filtered(lambda m: m.product_id == production.product_id).move_line_ids.write({'lot_id': production.lot_producing_id.id})
 
             if not production.workorder_ids.operation_id and vals.get('date_planned_start') and not vals.get('date_planned_finished'):
                 new_date_planned_start = fields.Datetime.to_datetime(vals.get('date_planned_start'))
@@ -1165,13 +1167,14 @@ class MrpProduction(models.Model):
 
     def action_generate_serial(self):
         self.ensure_one()
+        if self.product_id.tracking == 'none':
+            return
+        name = self.env['stock.production.lot']._get_new_serial(self.company_id, self.product_id)
         self.lot_producing_id = self.env['stock.production.lot'].create({
             'product_id': self.product_id.id,
             'company_id': self.company_id.id,
-            'name': self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
+            'name': name,
         })
-        if self.move_finished_ids.filtered(lambda m: m.product_id == self.product_id).move_line_ids:
-            self.move_finished_ids.filtered(lambda m: m.product_id == self.product_id).move_line_ids.lot_id = self.lot_producing_id
         if self.product_id.tracking == 'serial':
             self._set_qty_producing()
 
@@ -1784,9 +1787,11 @@ class MrpProduction(models.Model):
                 if remaining_qty:
                     workorder.qty_produced = max(workorder.qty_production, remaining_qty)
                     initial_workorder_remaining_qty[index % workorders_len] = max(remaining_qty - workorder.qty_produced, 0)
-        backorders.workorder_ids._action_confirm()
-
+        backorders._action_confirm_mo_backorders()
         return self.env['mrp.production'].browse(production_ids)
+
+    def _action_confirm_mo_backorders(self):
+        self.workorder_ids._action_confirm()
 
     def button_mark_done(self):
         self._button_mark_done_sanity_checks()
