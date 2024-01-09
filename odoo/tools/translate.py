@@ -156,7 +156,7 @@ TRANSLATED_ELEMENTS = {
 TRANSLATED_ATTRS = dict.fromkeys({
     'string', 'add-label', 'help', 'sum', 'avg', 'confirm', 'placeholder', 'alt', 'title', 'aria-label',
     'aria-keyshortcuts', 'aria-placeholder', 'aria-roledescription', 'aria-valuetext',
-    'value_label', 'data-tooltip',
+    'value_label', 'data-tooltip', 'data-editor-message',
 }, lambda e: True)
 
 def translate_attrib_value(node):
@@ -1287,9 +1287,9 @@ class TranslationImporter:
             xmlid = module_name + '.' + row['imd_name']
             if xmlids and xmlid not in xmlids:
                 continue
-            if row.get('type') == 'model':
+            if row.get('type') == 'model' and field.translate is True:
                 self.model_translations[model_name][field_name][xmlid][lang] = row['value']
-            elif row.get('type') == 'model_terms':
+            elif row.get('type') == 'model_terms' and callable(field.translate):
                 self.model_terms_translations[model_name][field_name][xmlid][row['src']][lang] = row['value']
 
     def save(self, overwrite=False, force_overwrite=False):
