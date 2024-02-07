@@ -507,7 +507,8 @@ class Website(models.Model):
                         rendered_snippets.append(rendered_snippet)
                 except ValueError as e:
                     logger.warning(e)
-            page_view_id.save(value=''.join(rendered_snippets), xpath="(//div[hasclass('oe_structure')])[last()]")
+            page_view_id.save(value=f'<div class="oe_structure">{"".join(rendered_snippets)}</div>',
+                              xpath="(//div[hasclass('oe_structure')])[last()]")
 
         def set_images(images):
             names = self.env['ir.model.data'].search([
@@ -1236,6 +1237,25 @@ class Website(models.Model):
                 record['lastmod'] = page['write_date'].date()
             yield record
 
+    def get_website_page_ids(self):
+        if not self.env.user.has_group('website.group_website_restricted_editor'):
+            # Note that `website.pages` have `0,0,0,0` ACL rights by default for
+            # everyone except for the website designer which receive `1,0,0,0`.
+            # So the "Website/Site/Content/Pages" menu to reach the page manager
+            # is not shown to the restricted users, as the action linked model
+            # (website.page) can't be access. It's how the Odoo framework works.
+            # Still, we let the restricted editor access this resource for
+            # custos granting them read and/or write access on page.
+            raise AccessError(_("Access Denied"))
+
+        domain = [('url', '!=', False)]
+        if self:
+            domain = AND([domain, self.website_domain()])
+        pages = self.env['website.page'].sudo().search(domain)
+        if self:
+            pages = pages._get_most_specific_pages()
+        return pages.ids
+
     def _get_website_pages(self, domain=None, order='name', limit=None):
         if domain is None:
             domain = []
@@ -1579,16 +1599,15 @@ class Website(models.Model):
         """
         fuzzy_term = False
         search_details = self._search_get_details(search_type, order, options)
+        count, results = self._search_exact(search_details, search, limit, order)
+        if count > 0:
+            return count, results, fuzzy_term
         if search and options.get('allowFuzzy', True):
             fuzzy_term = self._search_find_fuzzy_term(search_details, search)
             if fuzzy_term:
                 count, results = self._search_exact(search_details, fuzzy_term, limit, order)
                 if fuzzy_term.lower() == search.lower():
                     fuzzy_term = False
-            else:
-                count, results = self._search_exact(search_details, search, limit, order)
-        else:
-            count, results = self._search_exact(search_details, search, limit, order)
         return count, results, fuzzy_term
 
     def _search_exact(self, search_details, search, limit, order):

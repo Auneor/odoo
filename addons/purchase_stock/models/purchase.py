@@ -122,7 +122,7 @@ class PurchaseOrder(models.Model):
                 for order_line in order.order_line:
                     order_line.move_ids._action_cancel()
                     if order_line.move_dest_ids:
-                        move_dest_ids = order_line.move_dest_ids
+                        move_dest_ids = order_line.move_dest_ids.filtered(lambda move: move.state != 'done' and not move.scrapped)
                         if order_line.propagate_cancel:
                             move_dest_ids._action_cancel()
                         else:
@@ -449,6 +449,8 @@ class PurchaseOrderLine(models.Model):
                 pickings = line.order_id.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel') and x.location_dest_id.usage in ('internal', 'transit', 'customer'))
                 picking = pickings and pickings[0] or False
                 if not picking:
+                    if not line.product_qty > line.qty_received:
+                        continue
                     res = line.order_id._prepare_picking()
                     picking = self.env['stock.picking'].create(res)
 

@@ -231,3 +231,51 @@ PosLoyalty.do.enterCode('abcda');
 PosLoyalty.check.orderTotalIs('90');
 
 Tour.register('PosLoyaltyTour7', { test: true, url: '/pos/web' }, getSteps());
+
+startSteps();
+
+ProductScreen.do.clickHomeCategory();
+ProductScreen.do.confirmOpeningPopup();
+
+ProductScreen.do.clickDisplayedProduct('Product B');
+ProductScreen.do.clickDisplayedProduct('Product A');
+ProductScreen.check.totalAmountIs('50.00');
+
+Tour.register('PosLoyaltyTour8', { test: true, url: '/pos/web' }, getSteps());
+
+startSteps();
+
+ProductScreen.do.clickHomeCategory();
+ProductScreen.do.confirmOpeningPopup();
+
+ProductScreen.do.clickPartnerButton();
+ProductScreen.do.clickCustomer('AAA Partner');
+ProductScreen.do.clickDisplayedProduct('Product B');
+ProductScreen.do.clickDisplayedProduct('Product A');
+ProductScreen.check.totalAmountIs('210.00');
+PosLoyalty.check.isRewardButtonHighlighted(true);
+PosLoyalty.do.clickRewardButton();
+ProductScreen.check.totalAmountIs('205.00');
+PosLoyalty.check.isRewardButtonHighlighted(true);
+PosLoyalty.do.clickRewardButton();
+ProductScreen.check.totalAmountIs('200.00');
+
+Tour.register('PosLoyaltyTour9', { test: true, url: '/pos/web' }, getSteps());
+
+startSteps();
+
+ProductScreen.do.clickHomeCategory();
+ProductScreen.do.confirmOpeningPopup();
+
+ProductScreen.do.clickPartnerButton();
+ProductScreen.do.clickCustomer('AAA Partner');
+ProductScreen.do.clickDisplayedProduct('Product Test');
+ProductScreen.check.totalAmountIs('1.00');
+PosLoyalty.check.isRewardButtonHighlighted(true);
+PosLoyalty.do.clickRewardButton();
+PosLoyalty.do.claimReward('Free Product B');
+PosLoyalty.check.hasRewardLine('Free Product B', '-1.00');
+ProductScreen.check.totalAmountIs('1.00');
+PosLoyalty.check.isRewardButtonHighlighted(false);
+
+Tour.register('PosLoyaltyTour10', { test: true, url: '/pos/web' }, getSteps());

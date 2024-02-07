@@ -176,6 +176,7 @@ class IrModel(models.Model):
     _description = "Models"
     _order = 'model'
     _rec_names_search = ['name', 'model']
+    _allow_sudo_commands = False
 
     def _default_field_id(self):
         if self.env.context.get('install_mode'):
@@ -300,10 +301,9 @@ class IrModel(models.Model):
 
     def unlink(self):
         # prevent screwing up fields that depend on these models' fields
-        if self.state == 'manual':
-            self.field_id.filtered(lambda f: f.state == 'manual')._prepare_update()
-        else:
-            self.field_id._prepare_update()
+        manual_models = self.filtered(lambda model: model.state == 'manual')
+        manual_models.field_id.filtered(lambda f: f.state == 'manual')._prepare_update()
+        (self - manual_models).field_id._prepare_update()
 
         # delete fields whose comodel is being removed
         self.env['ir.model.fields'].search([('relation', 'in', self.mapped('model'))]).unlink()
@@ -372,7 +372,7 @@ class IrModel(models.Model):
             'model': model._name,
             'name': model._description,
             'order': model._order,
-            'info': next(cls.__doc__ for cls in type(model).mro() if cls.__doc__),
+            'info': next(cls.__doc__ for cls in self.env.registry[model._name].mro() if cls.__doc__),
             'state': 'manual' if model._custom else 'base',
             'transient': model._transient,
         }
@@ -474,6 +474,7 @@ class IrModelFields(models.Model):
     _description = "Fields"
     _order = "name"
     _rec_name = 'field_description'
+    _allow_sudo_commands = False
 
     name = fields.Char(string='Field Name', default='x_', required=True, index=True)
     complete_name = fields.Char(index=True)
@@ -1002,7 +1003,7 @@ class IrModelFields(models.Model):
                             sql.Identifier(f'{table}_{newname}_index'),
                         ))
 
-        if column_rename or patched_models:
+        if column_rename or patched_models or translate_only:
             # setup models, this will reload all manual fields in registry
             self.env.flush_all()
             self.pool.setup_models(self._cr)
@@ -1011,9 +1012,6 @@ class IrModelFields(models.Model):
             # update the database schema of the models to patch
             models = self.pool.descendants(patched_models, '_inherits')
             self.pool.init_models(self._cr, models, dict(self._context, update_custom_fields=True))
-
-        if translate_only:
-            self.clear_caches()
 
         return res
 
@@ -1245,6 +1243,7 @@ class IrModelSelection(models.Model):
     _name = 'ir.model.fields.selection'
     _order = 'sequence, id'
     _description = "Fields Selection"
+    _allow_sudo_commands = False
 
     field_id = fields.Many2one("ir.model.fields",
         required=True, ondelete="cascade", index=True,
@@ -1548,6 +1547,7 @@ class IrModelConstraint(models.Model):
     """
     _name = 'ir.model.constraint'
     _description = 'Model Constraint'
+    _allow_sudo_commands = False
 
     name = fields.Char(string='Constraint', required=True, index=True,
                        help="PostgreSQL constraint or foreign key name.")
@@ -1676,7 +1676,7 @@ class IrModelConstraint(models.Model):
         # map each constraint on the name of the module where it is defined
         constraint_module = {
             constraint[0]: cls._module
-            for cls in reversed(type(model).mro())
+            for cls in reversed(self.env.registry[model._name].mro())
             if models.is_definition_class(cls)
             for constraint in getattr(cls, '_local_sql_constraints', ())
         }
@@ -1700,6 +1700,7 @@ class IrModelRelation(models.Model):
     """
     _name = 'ir.model.relation'
     _description = 'Relation Model'
+    _allow_sudo_commands = False
 
     name = fields.Char(string='Relation Name', required=True, index=True,
                        help="PostgreSQL table name implementing a many2many relation.")
@@ -1762,6 +1763,7 @@ class IrModelAccess(models.Model):
     _name = 'ir.model.access'
     _description = 'Model Access'
     _order = 'model_id,group_id,name,id'
+    _allow_sudo_commands = False
 
     name = fields.Char(required=True, index=True)
     active = fields.Boolean(default=True, help='If you uncheck the active field, it will disable the ACL without deleting it (if you delete a native ACL, it will be re-created when you reload the module).')
@@ -1969,6 +1971,7 @@ class IrModelData(models.Model):
     _name = 'ir.model.data'
     _description = 'Model Data'
     _order = 'module, model, name'
+    _allow_sudo_commands = False
 
     name = fields.Char(string='External Identifier', required=True,
                        help="External Key/Identifier that can be used for "
