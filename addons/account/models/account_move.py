@@ -537,6 +537,8 @@ class AccountMoveLine(models.Model):
     _description = "Journal Item"
     _order = "date desc, id desc"
 
+    COUNT=0
+
     @api.onchange('debit', 'credit', 'tax_ids', 'analytic_account_id', 'analytic_tag_ids')
     def onchange_tax_ids_create_aml(self):
         for line in self:
@@ -1027,6 +1029,9 @@ class AccountMoveLine(models.Model):
         # The calling method might have filtered out reconciled lines.
         if not self:
             return True
+        AccountMoveLine.COUNT+=1
+        if AccountMoveLine.COUNT>300:
+            raise Exception("could not reconcile")
 
         self._check_reconcile_validity()
         #reconcile everything that can be
