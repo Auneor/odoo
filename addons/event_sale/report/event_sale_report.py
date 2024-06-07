@@ -118,7 +118,7 @@ SELECT
         WHEN sale_order_line.price_total = 0 THEN 'free'
         WHEN event_registration.is_paid THEN 'paid'
         ELSE 'to_pay'
-    END payment_status""" + (',\n    ' + ',\n    '.join( ) if select else '')
+    END payment_status""" + (',\n    ' + ',\n    '.join(select) if select else '')
 
     def _from_clause(self, *join_):
         # Extra clauses formatted as `column1`, `column2`...
