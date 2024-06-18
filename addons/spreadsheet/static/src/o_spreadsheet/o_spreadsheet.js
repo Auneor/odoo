@@ -2298,8 +2298,11 @@
     /**
      * Create a range from a xc. If the xc is empty, this function returns undefined.
      */
-    function createRange(getters, sheetId, range) {
-        return range ? getters.getRangeFromSheetXC(sheetId, range) : undefined;
+    function createValidRange(getters, sheetId, xc) {
+        if (!xc)
+            return;
+        const range = getters.getRangeFromSheetXC(sheetId, xc);
+        return !(range.invalidSheetName || range.invalidXc) ? range : undefined;
     }
 
     /** Methods from Odoo Web Utils  */
@@ -4020,6 +4023,7 @@
     }
 
     const macRegex = /Mac/i;
+    const MODIFIER_KEYS = ["Shift", "Control", "Alt", "Meta"];
     /**
      * Return true if the event was triggered from
      * a child element.
@@ -4037,6 +4041,31 @@
     }
     function getOpenedMenus() {
         return Array.from(document.querySelectorAll(".o-spreadsheet .o-menu"));
+    }
+    const letterRegex = /^[a-zA-Z]$/;
+    /**
+     * Transform a keyboard event into a shortcut string that represent this event. The letters keys will be uppercased.
+     *
+     * @argument ev - The keyboard event to transform
+     * @argument mode - Use either ev.key of ev.code to get the string shortcut
+     *
+     * @example
+     * event : { ctrlKey: true, key: "a" } => "Ctrl+A"
+     * event : { shift: true, alt: true, key: "Home" } => "Alt+Shift+Home"
+     */
+    function keyboardEventToShortcutString(ev, mode = "key") {
+        let keyDownString = "";
+        if (!MODIFIER_KEYS.includes(ev.key)) {
+            if (isCtrlKey(ev))
+                keyDownString += "Ctrl+";
+            if (ev.altKey)
+                keyDownString += "Alt+";
+            if (ev.shiftKey)
+                keyDownString += "Shift+";
+        }
+        const key = mode === "key" ? ev.key : ev.code;
+        keyDownString += letterRegex.test(key) ? key.toUpperCase() : key;
+        return keyDownString;
     }
     function isMacOS() {
         return Boolean(macRegex.test(navigator.userAgent));
@@ -6972,8 +7001,8 @@
         const dataSets = [];
         for (const sheetXC of dataSetsString) {
             const dataRange = getters.getRangeFromSheetXC(sheetId, sheetXC);
-            const { unboundedZone: zone, sheetId: dataSetSheetId, invalidSheetName } = dataRange;
-            if (invalidSheetName) {
+            const { unboundedZone: zone, sheetId: dataSetSheetId, invalidSheetName, invalidXc } = dataRange;
+            if (invalidSheetName || invalidXc) {
                 continue;
             }
             // It's a rectangle. We treat all columns (arbitrary) as different data series.
@@ -7241,7 +7270,7 @@
     /**
      * Get a default chart js configuration
      */
-    function getDefaultChartJsRuntime(chart, labels, fontColor) {
+    function getDefaultChartJsRuntime(chart, labels, fontColor, truncateLabels = true) {
         return {
             type: chart.type,
             options: {
@@ -7280,7 +7309,7 @@
                 },
             },
             data: {
-                labels: labels.map(truncateLabel),
+                labels: truncateLabels ? labels.map(truncateLabel) : labels,
                 datasets: [],
             },
         };
@@ -7366,7 +7395,7 @@
             super(definition, sheetId, getters);
             this.type = "bar";
             this.dataSets = createDataSets(getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
-            this.labelRange = createRange(getters, sheetId, definition.labelRange);
+            this.labelRange = createValidRange(getters, sheetId, definition.labelRange);
             this.background = definition.background;
             this.verticalAxisPosition = definition.verticalAxisPosition;
             this.legendPosition = definition.legendPosition;
@@ -7662,7 +7691,7 @@
         constructor(definition, sheetId, getters) {
             super(definition, sheetId, getters);
             this.type = "gauge";
-            this.dataRange = createRange(this.getters, this.sheetId, definition.dataRange);
+            this.dataRange = createValidRange(this.getters, this.sheetId, definition.dataRange);
             this.sectionRule = definition.sectionRule;
             this.background = definition.background;
         }
@@ -7993,7 +8022,7 @@
             super(definition, sheetId, getters);
             this.type = "line";
             this.dataSets = createDataSets(this.getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
-            this.labelRange = createRange(this.getters, sheetId, definition.labelRange);
+            this.labelRange = createValidRange(this.getters, sheetId, definition.labelRange);
             this.background = definition.background;
             this.verticalAxisPosition = definition.verticalAxisPosition;
             this.legendPosition = definition.legendPosition;
@@ -8140,10 +8169,10 @@
         }
         return true;
     }
-    function getLineConfiguration(chart, labels) {
+    function getLineConfiguration(chart, labels, truncateLabels) {
         var _a;
         const fontColor = chartFontColor(chart.background);
-        const config = getDefaultChartJsRuntime(chart, labels, fontColor);
+        const config = getDefaultChartJsRuntime(chart, labels, fontColor, truncateLabels);
         const legend = {
             labels: {
                 fontColor,
@@ -8205,7 +8234,8 @@
         if (axisType === "time") {
             ({ labels, dataSetsValues } = fixEmptyLabelsForDateCharts(labels, dataSetsValues));
         }
-        const config = getLineConfiguration(chart, labels);
+        const truncateLabels = axisType === "category";
+        const config = getLineConfiguration(chart, labels, truncateLabels);
         const labelFormat = getLabelFormat(getters, chart.labelRange);
         if (axisType === "time") {
             config.options.scales.xAxes[0].type = "time";
@@ -8266,7 +8296,7 @@
             super(definition, sheetId, getters);
             this.type = "pie";
             this.dataSets = createDataSets(getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
-            this.labelRange = createRange(getters, sheetId, definition.labelRange);
+            this.labelRange = createValidRange(getters, sheetId, definition.labelRange);
             this.background = definition.background;
             this.legendPosition = definition.legendPosition;
         }
@@ -8424,8 +8454,8 @@
         constructor(definition, sheetId, getters) {
             super(definition, sheetId, getters);
             this.type = "scorecard";
-            this.keyValue = createRange(getters, sheetId, definition.keyValue);
-            this.baseline = createRange(getters, sheetId, definition.baseline);
+            this.keyValue = createValidRange(getters, sheetId, definition.keyValue);
+            this.baseline = createValidRange(getters, sheetId, definition.baseline);
             this.baselineMode = definition.baselineMode;
             this.baselineDescr = definition.baselineDescr;
             this.background = definition.background;
@@ -18750,7 +18780,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         var _a;
         let head = 0;
         let transitions = machine[State.LeftRef];
-        const matchedTokens = [];
+        let matchedTokens = "";
         while (transitions !== undefined) {
             const token = tokens[head++];
             if (!token) {
@@ -18762,15 +18792,15 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case undefined:
                     return null;
                 case State.Found:
-                    matchedTokens.push(token);
+                    matchedTokens += token.value;
                     tokens.splice(0, head);
                     return {
                         type: "REFERENCE",
-                        value: concat(matchedTokens.map((token) => token.value)),
+                        value: matchedTokens,
                     };
                 default:
                     transitions = machine[nextState];
-                    matchedTokens.push(token);
+                    matchedTokens += token.value;
                     break;
             }
         }
@@ -20578,7 +20608,14 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         onPaste(ev) {
             if (this.env.model.getters.getEditionMode() !== "inactive") {
+                // let the browser clipboard work
                 ev.stopPropagation();
+            }
+            else {
+                // the user meant to paste in the sheet, not open the composer with the pasted content
+                // While we're not editing, we still have the focus and should therefore prevent
+                // the native "paste" to occur.
+                ev.preventDefault();
             }
         }
         /*
@@ -20587,10 +20624,6 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         onInput(ev) {
             var _a, _b;
             if (!this.shouldProcessInputEvents) {
-                return;
-            }
-            if (ev.inputType === "insertFromPaste" &&
-                this.env.model.getters.getEditionMode() === "inactive") {
                 return;
             }
             ev.stopPropagation();
@@ -20909,10 +20942,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         get containerStyle() {
             if (this.env.model.getters.getEditionMode() === "inactive" || !this.rect) {
-                return `
-        position: absolute;
-        z-index: -1000;
-      `;
+                return `z-index: -1000;`;
             }
             const isFormula = this.env.model.getters.getCurrentContent().startsWith("=");
             const cell = this.env.model.getters.getActiveCell();
@@ -21198,7 +21228,8 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         }
         onKeyDown(ev) {
             const figure = this.props.figure;
-            switch (ev.key) {
+            const keyDownShortcut = keyboardEventToShortcutString(ev);
+            switch (keyDownShortcut) {
                 case "Delete":
                     this.env.model.dispatch("DELETE_FIGURE", {
                         sheetId: this.env.model.getters.getActiveSheetId(),
@@ -21225,6 +21256,22 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                         x: figure.x + delta[0],
                         y: figure.y + delta[1],
                     });
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    break;
+                case "Ctrl+A":
+                    // Maybe in the future we will implement a way to select all figures
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    break;
+                case "Ctrl+Y":
+                case "Ctrl+Z":
+                    if (keyDownShortcut === "Ctrl+Y") {
+                        this.env.model.dispatch("REQUEST_REDO");
+                    }
+                    else if (keyDownShortcut === "Ctrl+Z") {
+                        this.env.model.dispatch("REQUEST_UNDO");
+                    }
                     ev.preventDefault();
                     ev.stopPropagation();
                     break;
@@ -23250,15 +23297,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     }
     class LinkCell extends AbstractCell {
         constructor(id, content, properties = {}) {
-            var _a;
             const link = parseMarkdownLink(content);
-            properties = {
-                ...properties,
-                style: {
-                    ...properties.style,
-                    textColor: ((_a = properties.style) === null || _a === void 0 ? void 0 : _a.textColor) || LINK_COLOR,
-                },
-            };
             link.label = _t(link.label);
             super(id, lazy({ value: link.label, type: CellValueType.text }), properties);
             this.link = link;
@@ -27387,7 +27426,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     this.clearBorders(cmd.sheetId, cmd.target);
                     break;
                 case "REMOVE_COLUMNS_ROWS":
-                    for (let el of cmd.elements) {
+                    for (let el of [...cmd.elements].sort((a, b) => b - a)) {
                         if (cmd.dimension === "COL") {
                             this.shiftBordersHorizontally(cmd.sheetId, el + 1, -1);
                         }
@@ -27824,6 +27863,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     BordersPlugin.getters = ["getCellBorder"];
 
     const nbspRegexp = new RegExp(String.fromCharCode(160), "g");
+    const LINK_STYLE = { textColor: LINK_COLOR };
     /**
      * Core Plugin
      *
@@ -28058,7 +28098,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return this.buildFormulaContent(sheetId, cell);
         }
         getCellStyle(cell) {
-            return (cell && cell.style) || {};
+            if (!cell) {
+                return {};
+            }
+            const linkStyle = cell.isLink() ? LINK_STYLE : {};
+            return { ...linkStyle, ...cell.style };
         }
         /**
          * Converts a zone to a XC coordinate system
@@ -32467,7 +32511,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             return 0 /* CommandResult.Success */;
         }
         handle(cmd) {
-            var _a, _b;
+            var _a, _b, _c, _d;
             switch (cmd.type) {
                 case "COPY":
                 case "CUT":
@@ -32508,7 +32552,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "ADD_COLUMNS_ROWS": {
                     this.status = "invisible";
                     // If we add a col/row inside or before the cut area, we invalidate the clipboard
-                    if (((_a = this.state) === null || _a === void 0 ? void 0 : _a.operation) !== "CUT") {
+                    if (((_a = this.state) === null || _a === void 0 ? void 0 : _a.operation) !== "CUT" || cmd.sheetId !== ((_b = this.state) === null || _b === void 0 ? void 0 : _b.sheetId)) {
                         return;
                     }
                     const isClipboardDirty = this.state.isColRowDirtyingClipboard(cmd.position === "before" ? cmd.base : cmd.base + 1, cmd.dimension);
@@ -32520,7 +32564,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                 case "REMOVE_COLUMNS_ROWS": {
                     this.status = "invisible";
                     // If we remove a col/row inside or before the cut area, we invalidate the clipboard
-                    if (((_b = this.state) === null || _b === void 0 ? void 0 : _b.operation) !== "CUT") {
+                    if (((_c = this.state) === null || _c === void 0 ? void 0 : _c.operation) !== "CUT" || cmd.sheetId !== ((_d = this.state) === null || _d === void 0 ? void 0 : _d.sheetId)) {
                         return;
                     }
                     for (let el of cmd.elements) {
@@ -39298,6 +39342,10 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             });
             owl.useExternalListener(window, "resize", () => this.render(true));
             owl.useExternalListener(window, "beforeunload", this.unbindModelEvents.bind(this));
+            // For some reason, the wheel event is not properly registered inside templates
+            // in Chromium-based browsers based on chromium 125
+            // This hack ensures the event declared in the template is properly registered/working
+            owl.useExternalListener(document.body, "wheel", () => { });
             this.bindModelEvents();
             owl.onMounted(() => {
                 this.checkViewportSize();
@@ -40623,6 +40671,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
             if (range.invalidXc) {
                 return range.invalidXc;
             }
+            if (!this.getters.tryGetSheet(range.sheetId)) {
+                return INCORRECT_RANGE_STRING;
+            }
             if (range.zone.bottom - range.zone.top < 0 || range.zone.right - range.zone.left < 0) {
                 return INCORRECT_RANGE_STRING;
             }
@@ -41761,6 +41812,12 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
         else {
             // Shouldn't we always output the value then ?
             const value = cell.value;
+            // If the cell contains a non-exported formula and that is evaluates to
+            // nothing* ,we don't export it.
+            // * non-falsy value are relevant and so are 0 and FALSE, which only leaves
+            // the empty string.
+            if (value === "")
+                return undefined;
             const type = getCellType(value);
             attrs.push(["t", type]);
             node = escapeXml /*xml*/ `<v>${value}</v>`;
@@ -42483,7 +42540,11 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
                     let cellNode = escapeXml ``;
                     // Either formula or static value inside the cell
                     if (cell.isFormula) {
-                        ({ attrs: additionalAttrs, node: cellNode } = addFormula(cell));
+                        const res = addFormula(cell);
+                        if (!res) {
+                            continue;
+                        }
+                        ({ attrs: additionalAttrs, node: cellNode } = res);
                     }
                     else if (cell.content && isMarkdownLink(cell.content)) {
                         const { label } = parseMarkdownLink(cell.content);
@@ -43321,9 +43382,9 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    __info__.version = '16.0.38';
-    __info__.date = '2024-04-10T12:32:46.699Z';
-    __info__.hash = '6c7d510';
+    __info__.version = '16.0.44';
+    __info__.date = '2024-06-10T09:42:06.873Z';
+    __info__.hash = '25d16f6';
 
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);

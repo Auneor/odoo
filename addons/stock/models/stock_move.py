@@ -529,7 +529,8 @@ Please change the quantity done or the rounding precision of your unit of measur
 
     def _set_date_deadline(self, new_deadline):
         # Handle the propagation of `date_deadline` fields (up and down stream - only update by up/downstream documents)
-        already_propagate_ids = self.env.context.get('date_deadline_propagate_ids', set()) | set(self.ids)
+        already_propagate_ids = self.env.context.get('date_deadline_propagate_ids', set())
+        already_propagate_ids.update(self.ids)
         self = self.with_context(date_deadline_propagate_ids=already_propagate_ids)
         for move in self:
             moves_to_update = (move.move_dest_ids | move.move_orig_ids)
@@ -645,7 +646,7 @@ Please change the quantity done or the rounding precision of your unit of measur
 
     def name_get(self):
         res = []
-        for move in self:
+        for move in self.with_context(prefetch_fields=False):
             res.append((move.id, '%s%s%s>%s' % (
                 move.picking_id.origin and '%s/' % move.picking_id.origin or '',
                 move.product_id.code and '%s: ' % move.product_id.code or '',
@@ -1061,9 +1062,11 @@ Please change the quantity done or the rounding precision of your unit of measur
             return 'assigned'
         # The picking should be the same for all moves.
         if moves_todo[:1].picking_id and moves_todo[:1].picking_id.move_type == 'one':
+            if all(not m.product_uom_qty for m in moves_todo):
+                return 'assigned'
             most_important_move = moves_todo[0]
             if most_important_move.state == 'confirmed':
-                return 'confirmed' if most_important_move.product_uom_qty else 'assigned'
+                return 'confirmed'
             elif most_important_move.state == 'partially_available':
                 return 'confirmed'
             else:
@@ -2132,6 +2135,8 @@ Please change the quantity done or the rounding precision of your unit of measur
                 ('location_id', 'parent_of', move.location_id.id),
                 ('company_id', '=', move.company_id.id),
                 '!', ('location_id', 'parent_of', move.location_dest_id.id),
+                '|', ('snoozed_until', '=', False),
+                ('snoozed_until', '<=', fields.Date.today()),
             ], limit=1)
             if orderpoint:
                 orderpoints_by_company[orderpoint.company_id] |= orderpoint

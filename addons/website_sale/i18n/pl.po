@@ -38,6 +38,8 @@
 # Krystian Harkot <kharkot@trilab.pl>, 2024
 # Wil Odoo, 2024
 # Larissa Manderfeld, 2024
+# Mathieu Coutant, 2024
+# Andrzej Gerasimuk, 2024
 # 
 msgid ""
 msgstr ""
@@ -45,7 +47,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:57+0000\n"
-"Last-Translator: Larissa Manderfeld, 2024\n"
+"Last-Translator: Andrzej Gerasimuk, 2024\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1105,7 +1107,7 @@ msgstr "Można publikować"
 #: code:addons/website_sale/controllers/main.py:0
 #, python-format
 msgid "You can't use a video as the product's main image."
-msgstr ""
+msgstr "Nie możesz używać filmu jako głównego obrazu produktu."
 
 #. module: website_sale
 #. odoo-javascript
@@ -1582,7 +1584,7 @@ msgstr "Łącznik DHL Express"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.product
 msgid "DROP BUILDING BLOCKS HERE TO MAKE THEM AVAILABLE ACROSS ALL PRODUCTS"
-msgstr ""
+msgstr "UPUŚĆ BLOKI TUTAJ, ABY BYŁY DOSTĘPNE WE WSZYSTKICH PRODUKTACH"
 
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.snippet_options
@@ -2068,6 +2070,10 @@ msgid ""
 "backend. If you wish to change your name or email address, please do so in "
 "the account settings or contact your administrator."
 msgstr ""
+"Jeśli składasz zamówienie dla osoby zewnętrznej, prosimy o złożenie "
+"zamówienia poprzez backend. Jeśli chcesz zmienić swoje imię i nazwisko lub "
+"adres e-mail, zrób to w ustawieniach konta lub skontaktuj się z "
+"administratorem."
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_image__image_1920
@@ -2491,7 +2497,7 @@ msgstr "Nie określono produktu"
 #. module: website_sale
 #: model_terms:ir.ui.view,arch_db:website_sale.products
 msgid "No product defined in this category."
-msgstr ""
+msgstr "W tej kategorii nie zdefiniowano żadnego produktu."
 
 #. module: website_sale
 #: model_terms:ir.actions.act_window,help:website_sale.website_sale_visitor_product_action
