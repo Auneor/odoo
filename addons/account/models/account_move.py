@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 from copy import deepcopy
 import logging
@@ -26,6 +26,8 @@ class AccountMove(models.Model):
     _description = "Journal Entries"
     _order = 'date desc, id desc'
 
+    COUNT=0
+    
     @api.multi
     @api.depends('name', 'state')
     def name_get(self):
@@ -536,6 +538,7 @@ class AccountMoveLine(models.Model):
     _name = "account.move.line"
     _description = "Journal Item"
     _order = "date desc, id desc"
+    COUNT=0
 
     @api.onchange('debit', 'credit', 'tax_ids', 'analytic_account_id', 'analytic_tag_ids')
     def onchange_tax_ids_create_aml(self):
@@ -1025,6 +1028,11 @@ class AccountMoveLine(models.Model):
     def reconcile(self, writeoff_acc_id=False, writeoff_journal_id=False):
         # Empty self can happen if the user tries to reconcile entries which are already reconciled.
         # The calling method might have filtered out reconciled lines.
+        print("we reconcile",self,writeoff_acc_id,writeoff_journal_id)
+        AccountMoveLine.COUNT+=1
+        if AccountMoveLine.COUNT>2:
+            raise Exception()
+
         if not self:
             return True
 
