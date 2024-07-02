@@ -12,16 +12,19 @@
 # Martin Trigaux, 2022
 # Jiří Podhorecký, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
-# Jakub Smolka, 2023
-# Aleš Fiala <f.ales1@seznam.cz>, 2023
+# Katerina Horylova, 2024
+# Jakub Smolka, 2024
+# Wil Odoo, 2024
+# Aleš Fiala <f.ales1@seznam.cz>, 2024
+# Vojtech Smolka, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 12:44+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
+"Last-Translator: Vojtech Smolka, 2024\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,17 +127,6 @@ msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
-#, python-format
-msgid ""
-"/** Font Awesome by Dave Gandy\n"
-" *  http://fontawesome.io/\n"
-" *  https://fontawesome.com/license\n"
-" */"
-msgstr ""
-
-#. module: spreadsheet
-#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "1 column"
@@ -152,7 +144,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "2 columns"
-msgstr ""
+msgstr "2 sloupce"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -266,7 +258,7 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/global_filters/plugins/global_filters_ui_plugin.js:0
 #, python-format
 msgid "Active Filters"
-msgstr ""
+msgstr "Aktivní filtry"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -393,6 +385,7 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "April"
 msgstr "Duben"
@@ -422,6 +415,7 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "August"
 msgstr "Srpen"
@@ -1010,7 +1004,14 @@ msgstr "Počítá hodnoty z rozsahu podobného tabulce."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "Create filter"
-msgstr ""
+msgstr "Vytvoř filtr"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Cumulative data"
+msgstr "Kumulativní data"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1222,6 +1223,7 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "December"
 msgstr "Prosinec"
@@ -1409,6 +1411,7 @@ msgstr "Upravit"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "Edit link"
@@ -1472,6 +1475,7 @@ msgstr "Přesný počet let mezi dvěma daty."
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "February"
 msgstr "Únor"
@@ -1635,6 +1639,13 @@ msgstr "Vzorec"
 #, python-format
 msgid "Freeze"
 msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Friday"
+msgstr "Pátek"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1985,6 +1996,13 @@ msgstr ""
 #, python-format
 msgid "Increase decimal places"
 msgstr "Přidat desetinná místa"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Index out of range."
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2365,6 +2383,7 @@ msgstr "Kurzíva"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "January"
 msgstr "Leden"
@@ -2372,6 +2391,7 @@ msgstr "Leden"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "July"
 msgstr "Červen"
@@ -2379,6 +2399,7 @@ msgstr "Červen"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "June"
 msgstr "Červenec"
@@ -2437,7 +2458,7 @@ msgstr "Posledních 7 dní"
 #: code:addons/spreadsheet/static/src/helpers/constants.js:0
 #, python-format
 msgid "Last 90 Days"
-msgstr ""
+msgstr "Posledních 90 dní"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2569,6 +2590,7 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "March"
 msgstr "Březen"
@@ -2625,6 +2647,7 @@ msgstr "Maximální hodnota v číselné datové sadě."
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "May"
 msgstr "Květen"
@@ -2679,7 +2702,7 @@ msgstr "Midpoint musí být menší než Maximum"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Min"
-msgstr ""
+msgstr "Minimálně"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2758,6 +2781,13 @@ msgstr ""
 #, python-format
 msgid "Modulo (remainder) operator."
 msgstr "Operátor Modulo (zbytek)."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Monday"
+msgstr "Pondělí"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2911,6 +2941,7 @@ msgstr "Neimplementovaný operátor %s pro druh podmíněného formátování:  
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "November"
 msgstr "Listopad"
@@ -3020,6 +3051,7 @@ msgstr "Numerická průměrná hodnota v datové sadě."
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "October"
 msgstr "Říjen"
@@ -3357,6 +3389,13 @@ msgstr "Vrátí opak zadané logické hodnoty."
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Returns the content of a cell, specified by row and column offset."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Returns the error value #N/A."
 msgstr ""
 
@@ -3483,6 +3522,13 @@ msgstr "Číslo řádku zadané buňky."
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Saturday"
+msgstr "Sobota"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "Save"
@@ -3575,6 +3621,7 @@ msgstr ""
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/assets_backend/constants.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "September"
 msgstr "Září"
@@ -3706,14 +3753,14 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "Stacked barchart"
-msgstr ""
+msgstr "Skládaný sloupcový graf"
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "Stacked linechart"
-msgstr ""
+msgstr "Skládaný spojnicový graf"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3816,6 +3863,13 @@ msgstr "Součet hodnot z rozsahu podobného tabulce."
 #, python-format
 msgid "Sums a range depending on multiple criteria."
 msgstr "Shrnuje rozsah v závislosti na více kritériích."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Sunday"
+msgstr "Neděle"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5176,6 +5230,15 @@ msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"This function can only return a single cell value, not an array. Provide "
+"valid row and column indices."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/currency/formulas.js:0
 #, python-format
 msgid ""
@@ -5206,6 +5269,13 @@ msgstr ""
 #, python-format
 msgid "Thresholds"
 msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Thursday"
+msgstr "Čtvrtek"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5254,6 +5324,13 @@ msgstr ""
 #, python-format
 msgid "Truncates a number."
 msgstr "Zkrátí číslo."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Tuesday"
+msgstr "Úterý"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5493,6 +5570,13 @@ msgid ""
 msgstr ""
 "Vedle vašeho výběru jsme našli data. Protože tato data nebyla vybrána, "
 "nebudou seřazena. Chcete svůj výběr rozšířit?"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Wednesday"
+msgstr "Středa"
 
 #. module: spreadsheet
 #. odoo-javascript

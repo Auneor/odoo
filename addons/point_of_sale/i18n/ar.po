@@ -7,17 +7,17 @@
 # Farid Fox, 2022
 # Martin Trigaux, 2023
 # Niyas Raphy, 2023
-# Wil Odoo, 2023
 # Mehjabin Farsana, 2023
-# Malaz Abuidris <msea@odoo.com>, 2023
+# Wil Odoo, 2024
+# Malaz Abuidris <msea@odoo.com>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-10 06:06+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2024\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -950,13 +950,10 @@ msgstr "أفضل: "
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__limited_partners_loading
 #: model:ir.model.fields,help:point_of_sale.field_res_config_settings__pos_limited_partners_loading
 msgid ""
-"By default, 100 partners are loaded.\n"
+"By default, 10000 partners are loaded.\n"
 "When the session is open, we keep on loading all remaining partners in the background.\n"
 "In the meantime, you can use the 'Load Customers' button to load partners from database."
 msgstr ""
-"يتم تحميل 100 شريك افتراضياً. \n"
-"عندما تُفتَح الجلسة، نستمر بتحميل كافة الشركاء المتبقين في الخلفية. \n"
-"في الوقت الراهن، بوسعك استخدام زر 'تحميل العملاء' لتحميل الشركاء من قاعدة البيانات. "
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__iface_print_via_proxy
@@ -1338,6 +1335,13 @@ msgid "Close Session Wizard"
 msgstr "إغلاق معالج الجلسة "
 
 #. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/js/models.js:0
+#, python-format
+msgid "Close anyway"
+msgstr ""
+
+#. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__pos_session__state__closed
 msgid "Closed & Posted"
 msgstr "تم الإغلاق والترحيل "
@@ -1420,7 +1424,7 @@ msgstr "الشركة "
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__company_has_template
 #: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_company_has_template
 msgid "Company has chart of accounts"
-msgstr "لدى الشركة مخطط حسابات "
+msgstr "لدى الشركة شجرة حسابات "
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_res_config_settings
@@ -1802,8 +1806,8 @@ msgid "Customer Screen Warning"
 msgstr "تحذير شاشة العميل "
 
 #. module: point_of_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/point_of_sale/static/src/js/Screens/PaymentScreen/PaymentScreen.js:0
 #: code:addons/point_of_sale/wizard/pos_payment.py:0
 #, python-format
@@ -2112,6 +2116,13 @@ msgstr "صرف "
 #: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__display_name
 msgid "Display Name"
 msgstr "اسم العرض "
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/js/models.js:0
+#, python-format
+msgid "Do not close"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-python
@@ -2890,7 +2901,7 @@ msgstr "مفوتر"
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Invoices"
-msgstr "الفواتير"
+msgstr "فواتير العملاء "
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_validation_screen
@@ -3241,6 +3252,13 @@ msgstr "اسم الدفعة "
 
 #. module: point_of_sale
 #. odoo-javascript
+#: code:addons/point_of_sale/static/src/xml/Screens/ReceiptScreen/OrderReceipt.xml:0
+#, python-format
+msgid "Lot Number"
+msgstr "رقم الدفعة "
+
+#. module: point_of_sale
+#. odoo-javascript
 #: code:addons/point_of_sale/static/src/js/Screens/ProductScreen/OrderWidget.js:0
 #: code:addons/point_of_sale/static/src/js/Screens/ProductScreen/ProductScreen.js:0
 #, python-format
@@ -3485,6 +3503,11 @@ msgid "Newspaper Rack"
 msgstr "رف الصحف"
 
 #. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "الفعالية التالية في تقويم الأنشطة "
+
+#. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "الموعد النهائي للنشاط التالي"
@@ -3702,7 +3725,7 @@ msgstr "خطأ عدم الاتصال بالإنترنت "
 
 #. module: point_of_sale
 #. odoo-javascript
-#: code:addons/point_of_sale/static/src/js/Chrome.js:0
+#: code:addons/point_of_sale/static/src/js/models.js:0
 #, python-format
 msgid "Offline Orders"
 msgstr "أوامر مقدمة دون الاتصال بالإنترنت "
@@ -3750,6 +3773,12 @@ msgid ""
 msgstr ""
 "يسمح فقط بكمية سالبة لبند استرداد الأموال هذا. اضغط على علامة +/- لتعديل "
 "الكمية التي ترغب باسترداد ثمنها. "
+
+#. module: point_of_sale
+#: code:addons/point_of_sale/models/pos_config.py:0
+#, python-format
+msgid "Only administrators can edit receipt headers and footers"
+msgstr "وحدهم المدراء بوسعهم تحرير ترويسات وتذييلات الإيصالات "
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__only_round_cash_method
@@ -3990,8 +4019,8 @@ msgstr ""
 "بنود الطلب في هذا الحقل هي البنود التي قامت باسترداد قيمة بند الطلب هذا. "
 
 #. module: point_of_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/point_of_sale/models/pos_session.py:0
 #: code:addons/point_of_sale/static/src/xml/ChromeWidgets/DebugWidget.xml:0
 #: code:addons/point_of_sale/static/src/xml/ChromeWidgets/TicketButton.xml:0
@@ -4147,8 +4176,8 @@ msgid "Pay Order"
 msgstr "دفع قيمة الطلب "
 
 #. module: point_of_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/point_of_sale/static/src/js/Screens/ProductScreen/ProductScreen.js:0
 #: code:addons/point_of_sale/static/src/js/Screens/TicketScreen/TicketScreen.js:0
 #: code:addons/point_of_sale/static/src/xml/Screens/PaymentScreen/PaymentScreen.xml:0
@@ -4545,6 +4574,13 @@ msgstr "فئات منتجات نقطة البيع "
 #: model_terms:ir.ui.view,arch_db:point_of_sale.product_pos_category_tree_view
 msgid "PoS Product Category"
 msgstr "فئة منتج نقطة البيع "
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#, python-format
+msgid "PoS order %s can not be processed"
+msgstr ""
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_partner_property_form
@@ -5916,7 +5952,7 @@ msgstr "بعض الأرقام التسلسلية/أرقام الدفعات غي�
 
 #. module: point_of_sale
 #. odoo-javascript
-#: code:addons/point_of_sale/static/src/js/Chrome.js:0
+#: code:addons/point_of_sale/static/src/js/models.js:0
 #, python-format
 msgid ""
 "Some orders could not be submitted to the server due to configuration "
@@ -5928,7 +5964,7 @@ msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
-#: code:addons/point_of_sale/static/src/js/Chrome.js:0
+#: code:addons/point_of_sale/static/src/js/models.js:0
 #, python-format
 msgid ""
 "Some orders could not be submitted to the server due to internet connection "
@@ -6262,6 +6298,17 @@ msgid ""
 msgstr "تدعم نقطة البيع فقط استراتيجية تقريب \"إضافة بند تقريب\". "
 
 #. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#, python-format
+msgid ""
+"The Point of Sale order with the following reference %s was received by the "
+"Odoo server, but the order processing phase failed.<br/>The datas received "
+"from the point of sale has been saved in the attachments.<br/>Please contact"
+" your support service to assist you on restoring it"
+msgstr ""
+
+#. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/js/Screens/PaymentScreen/PaymentScreen.js:0
 #, python-format
@@ -6389,12 +6436,10 @@ msgstr "يجب أن ينتمى دفتر يومية فواتير نقطة الب�
 #, python-format
 msgid ""
 "The maximum difference allowed is %s.\n"
-"\n"
-"                        Please contact your manager to accept the closing difference."
+"Please contact your manager to accept the closing difference."
 msgstr ""
 "الحد الأقصى للفرق المسموح به هو %s.\n"
-"\n"
-"                        يرجى التواصل مع مديرك لقبول فرق الإقفال. "
+"يرجى التواصل مع مديرك لقبول فرق الإقفال. "
 
 #. module: point_of_sale
 #. odoo-python

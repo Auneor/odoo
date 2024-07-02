@@ -15,7 +15,11 @@ from odoo.exceptions import AccessError
 def _check_special_access(res_model, res_id, token='', _hash='', pid=False):
     record = request.env[res_model].browse(res_id).sudo()
     if _hash and pid:  # Signed Token Case: hash implies token is signed by partner pid
-        return consteq(_hash, record._sign_token(pid))
+        can_access = consteq(_hash, record._sign_token(pid))
+        if not can_access:
+            parent_sign_token = record._portal_get_parent_hash_token(pid)
+            can_access = parent_sign_token and consteq(_hash, parent_sign_token)
+        return can_access
     elif token:  # Token Case: token is the global one of the document
         token_field = request.env[res_model]._mail_post_token_field
         return (token and record and consteq(record[token_field], token))
@@ -113,11 +117,11 @@ class PortalChatter(http.Controller):
         return bool(message) or bool(attachment_ids)
 
     @http.route('/mail/avatar/mail.message/<int:res_id>/author_avatar/<int:width>x<int:height>', type='http', auth='public')
-    def portal_avatar(self, res_id=None, height=50, width=50, access_token=None):
+    def portal_avatar(self, res_id=None, height=50, width=50, access_token=None, _hash=None, pid=None):
         """ Get the avatar image in the chatter of the portal """
-        if access_token:
+        if access_token or (_hash and pid):
             message = request.env['mail.message'].browse(int(res_id)).exists().filtered(
-                lambda msg: _check_special_access(msg.model, msg.res_id, token=access_token)
+                lambda msg: _check_special_access(msg.model, msg.res_id, access_token, _hash, pid and int(pid))
             ).sudo()
         else:
             message = request.env.ref('web.image_placeholder').sudo()
@@ -250,7 +254,7 @@ class MailController(mail.MailController):
         if not model or not res_id or model not in request.env:
             return super(MailController, cls)._redirect_to_record(model, res_id, access_token=access_token, **kwargs)
 
-        if issubclass(type(request.env[model]), request.env.registry['portal.mixin']):
+        if isinstance(request.env[model], request.env.registry['portal.mixin']):
             uid = request.session.uid or request.env.ref('base.public_user').id
             record_sudo = request.env[model].sudo().browse(res_id).exists()
             try:

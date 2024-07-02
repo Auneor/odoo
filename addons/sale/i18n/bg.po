@@ -19,17 +19,19 @@
 # B Dochev, 2023
 # aleksandar ivanov, 2023
 # Boris Stefanov <borkata@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # Martin Trigaux, 2023
 # TIhomir Nikolov <whltd.03@gmail.com>, 2023
-# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Turhan Aydin <taydin@unionproject.eu>, 2024
+# Rumena Georgieva <rumena.georgieva@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:23+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
+"Last-Translator: Rumena Georgieva <rumena.georgieva@gmail.com>, 2024\n"
 "Language-Team: Bulgarian (https://app.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +47,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_crm_team__sale_order_count
 msgid "# Sale Orders"
-msgstr ""
+msgstr "# Поръчки за продажба"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_report__nbr
@@ -79,7 +81,7 @@ msgstr "&amp;nbsp;"
 #. module: sale
 #: model:ir.actions.report,print_report_name:sale.action_report_pro_forma_invoice
 msgid "'PRO-FORMA - %s' % (object.name)"
-msgstr ""
+msgstr "'Проформа - %s' % (object.name)"
 
 #. module: sale
 #: model:ir.actions.report,print_report_name:sale.action_report_saleorder
@@ -110,7 +112,7 @@ msgstr ""
 #: code:addons/sale/static/src/js/tours/sale.js:0
 #, python-format
 msgid "<b>Set a price</b>."
-msgstr ""
+msgstr "<b>Задайте цена</b>."
 
 #. module: sale
 #: model:mail.template,body_html:sale.mail_template_sale_confirmation
@@ -390,6 +392,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid "<i class=\"fa fa-fw fa-check\"/> <b>Paid</b>"
 msgstr "Платено"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
+msgid "<i class=\"fa fa-fw fa-check\"/> <b>Reversed</b>"
+msgstr ""
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
@@ -2746,7 +2753,7 @@ msgstr "Метод за плащане"
 #. module: sale
 #: model:ir.model,name:sale.model_payment_provider
 msgid "Payment Provider"
-msgstr ""
+msgstr "Доставчик на разплащания"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -3786,11 +3793,6 @@ msgstr "Маркери"
 #: model:ir.model.fields,field_description:sale.field_sale_order__tax_country_id
 msgid "Tax Country"
 msgstr ""
-
-#. module: sale
-#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
-msgid "Tax ID"
-msgstr "Данъчен ИН "
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_tree

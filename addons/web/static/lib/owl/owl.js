@@ -1853,8 +1853,9 @@
     };
     const objectToString = Object.prototype.toString;
     const objectHasOwnProperty = Object.prototype.hasOwnProperty;
-    const SUPPORTED_RAW_TYPES = new Set(["Object", "Array", "Set", "Map", "WeakMap"]);
-    const COLLECTION_RAWTYPES = new Set(["Set", "Map", "WeakMap"]);
+    // Use arrays because Array.includes is faster than Set.has for small arrays
+    const SUPPORTED_RAW_TYPES = ["Object", "Array", "Set", "Map", "WeakMap"];
+    const COLLECTION_RAW_TYPES = ["Set", "Map", "WeakMap"];
     /**
      * extract "RawType" from strings like "[object RawType]" => this lets us ignore
      * many native objects such as Promise (whose toString is [object Promise])
@@ -1877,7 +1878,7 @@
         if (typeof value !== "object") {
             return false;
         }
-        return SUPPORTED_RAW_TYPES.has(rawType(value));
+        return SUPPORTED_RAW_TYPES.includes(rawType(value));
     }
     /**
      * Creates a reactive from the given object/callback if possible and returns it,
@@ -2047,7 +2048,7 @@
         const reactivesForTarget = reactiveCache.get(target);
         if (!reactivesForTarget.has(callback)) {
             const targetRawType = rawType(target);
-            const handler = COLLECTION_RAWTYPES.has(targetRawType)
+            const handler = COLLECTION_RAW_TYPES.includes(targetRawType)
                 ? collectionsProxyHandler(target, callback, targetRawType)
                 : basicProxyHandler(callback);
             const proxy = new Proxy(target, handler);
@@ -2624,7 +2625,7 @@
                             result.catch(() => { }),
                             new Promise((resolve) => setTimeout(() => resolve(TIMEOUT), 3000)),
                         ]).then((res) => {
-                            if (res === TIMEOUT && node.fiber === fiber) {
+                            if (res === TIMEOUT && node.fiber === fiber && node.status <= 2) {
                                 console.warn(timeoutError);
                             }
                         });
@@ -3162,8 +3163,14 @@
         makeRefWrapper,
     };
 
-    const bdom = { text, createBlock, list, multi, html, toggler, comment };
-    function parseXML$1(xml) {
+    /**
+     * Parses an XML string into an XML document, throwing errors on parser errors
+     * instead of returning an XML document containing the parseerror.
+     *
+     * @param xml the string to parse
+     * @returns an XML document corresponding to the content of the string
+     */
+    function parseXML(xml) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(xml, "text/xml");
         if (doc.getElementsByTagName("parsererror").length) {
@@ -3191,6 +3198,8 @@
         }
         return doc;
     }
+
+    const bdom = { text, createBlock, list, multi, html, toggler, comment };
     class TemplateSet {
         constructor(config = {}) {
             this.rawTemplates = Object.create(globalTemplates);
@@ -3209,6 +3218,7 @@
                     }
                 }
             }
+            this.getRawTemplate = config.getTemplate;
         }
         static registerTemplate(name, fn) {
             globalTemplates[name] = fn;
@@ -3238,15 +3248,16 @@
                 // empty string
                 return;
             }
-            xml = xml instanceof Document ? xml : parseXML$1(xml);
+            xml = xml instanceof Document ? xml : parseXML(xml);
             for (const template of xml.querySelectorAll("[t-name]")) {
                 const name = template.getAttribute("t-name");
                 this.addTemplate(name, template);
             }
         }
         getTemplate(name) {
+            var _a;
             if (!(name in this.templates)) {
-                const rawTemplate = this.rawTemplates[name];
+                const rawTemplate = ((_a = this.getRawTemplate) === null || _a === void 0 ? void 0 : _a.call(this, name)) || this.rawTemplates[name];
                 if (rawTemplate === undefined) {
                     let extraInfo = "";
                     try {
@@ -3504,7 +3515,7 @@
         const localVars = new Set();
         const tokens = tokenize(expr);
         let i = 0;
-        let stack = []; // to track last opening [ or {
+        let stack = []; // to track last opening (, [ or {
         while (i < tokens.length) {
             let token = tokens[i];
             let prevToken = tokens[i - 1];
@@ -3513,10 +3524,12 @@
             switch (token.type) {
                 case "LEFT_BRACE":
                 case "LEFT_BRACKET":
+                case "LEFT_PAREN":
                     stack.push(token.type);
                     break;
                 case "RIGHT_BRACE":
                 case "RIGHT_BRACKET":
+                case "RIGHT_PAREN":
                     stack.pop();
             }
             let isVar = token.type === "SYMBOL" && !RESERVED_WORDS.includes(token.value);
@@ -3627,6 +3640,13 @@
                 return key === "disabled";
         }
         return false;
+    }
+    /**
+     * Returns a template literal that evaluates to str. You can add interpolation
+     * sigils into the string if required
+     */
+    function toStringExpression(str) {
+        return `\`${str.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/, "\\${")}\``;
     }
     // -----------------------------------------------------------------------------
     // BlockDescription
@@ -3808,15 +3828,14 @@
                 mainCode.push(``);
                 for (let block of this.blocks) {
                     if (block.dom) {
-                        let xmlString = block.asXmlString();
-                        xmlString = xmlString.replace(/\\/g, "\\\\").replace(/`/g, "\\`");
+                        let xmlString = toStringExpression(block.asXmlString());
                         if (block.dynamicTagName) {
-                            xmlString = xmlString.replace(/^<\w+/, `<\${tag || '${block.dom.nodeName}'}`);
-                            xmlString = xmlString.replace(/\w+>$/, `\${tag || '${block.dom.nodeName}'}>`);
-                            mainCode.push(`let ${block.blockName} = tag => createBlock(\`${xmlString}\`);`);
+                            xmlString = xmlString.replace(/^`<\w+/, `\`<\${tag || '${block.dom.nodeName}'}`);
+                            xmlString = xmlString.replace(/\w+>`$/, `\${tag || '${block.dom.nodeName}'}>\``);
+                            mainCode.push(`let ${block.blockName} = tag => createBlock(${xmlString});`);
                         }
                         else {
-                            mainCode.push(`let ${block.blockName} = createBlock(\`${xmlString}\`);`);
+                            mainCode.push(`let ${block.blockName} = createBlock(${xmlString});`);
                         }
                     }
                 }
@@ -3994,7 +4013,7 @@
             const isNewBlock = !block || forceNewBlock;
             if (isNewBlock) {
                 block = this.createBlock(block, "comment", ctx);
-                this.insertBlock(`comment(\`${ast.value}\`)`, block, {
+                this.insertBlock(`comment(${toStringExpression(ast.value)})`, block, {
                     ...ctx,
                     forceNewBlock: forceNewBlock && !block,
                 });
@@ -4016,7 +4035,7 @@
             }
             if (!block || forceNewBlock) {
                 block = this.createBlock(block, "text", ctx);
-                this.insertBlock(`text(\`${value}\`)`, block, {
+                this.insertBlock(`text(${toStringExpression(value)})`, block, {
                     ...ctx,
                     forceNewBlock: forceNewBlock && !block,
                 });
@@ -4237,7 +4256,8 @@
                 expr = compileExpr(ast.expr);
                 if (ast.defaultValue) {
                     this.helpers.add("withDefault");
-                    expr = `withDefault(${expr}, \`${ast.defaultValue}\`)`;
+                    // FIXME: defaultValue is not translated
+                    expr = `withDefault(${expr}, ${toStringExpression(ast.defaultValue)})`;
                 }
             }
             if (!block || forceNewBlock) {
@@ -4490,7 +4510,7 @@
                     this.addLine(`${ctxVar}[zero] = ${bl};`);
                 }
             }
-            const key = `key + \`${this.generateComponentKey()}\``;
+            const key = this.generateComponentKey();
             if (isDynamic) {
                 const templateVar = generateId("template");
                 if (!this.staticDefs.find((d) => d.id === "call")) {
@@ -4542,12 +4562,12 @@
             else {
                 let value;
                 if (ast.defaultValue) {
-                    const defaultValue = ctx.translate ? this.translate(ast.defaultValue) : ast.defaultValue;
+                    const defaultValue = toStringExpression(ctx.translate ? this.translate(ast.defaultValue) : ast.defaultValue);
                     if (ast.value) {
-                        value = `withDefault(${expr}, \`${defaultValue}\`)`;
+                        value = `withDefault(${expr}, ${defaultValue})`;
                     }
                     else {
-                        value = `\`${defaultValue}\``;
+                        value = defaultValue;
                     }
                 }
                 else {
@@ -4558,12 +4578,12 @@
             }
             return null;
         }
-        generateComponentKey() {
+        generateComponentKey(currentKey = "key") {
             const parts = [generateId("__")];
             for (let i = 0; i < this.target.loopLevel; i++) {
                 parts.push(`\${key${i + 1}}`);
             }
-            return parts.join("__");
+            return `${currentKey} + \`${parts.join("__")}\``;
         }
         /**
          * Formats a prop name and value into a string suitable to be inserted in the
@@ -4654,7 +4674,6 @@
                 this.addLine(`${propVar}.slots = markRaw(Object.assign(${slotDef}, ${propVar}.slots))`);
             }
             // cmap key
-            const key = this.generateComponentKey();
             let expr;
             if (ast.isDynamic) {
                 expr = generateId("Comp");
@@ -4670,7 +4689,7 @@
                 // todo: check the forcenewblock condition
                 this.insertAnchor(block);
             }
-            let keyArg = `key + \`${key}\``;
+            let keyArg = this.generateComponentKey();
             if (ctx.tKeyExpr) {
                 keyArg = `${ctx.tKeyExpr} + ${keyArg}`;
             }
@@ -4743,7 +4762,7 @@
             }
             let key = this.target.loopLevel ? `key${this.target.loopLevel}` : "key";
             if (isMultiple) {
-                key = `${key} + \`${this.generateComponentKey()}\``;
+                key = this.generateComponentKey(key);
             }
             const props = ast.attrs ? this.formatPropObject(ast.attrs) : [];
             const scope = this.getPropString(props, dynProps);
@@ -4784,7 +4803,6 @@
             }
             let { block } = ctx;
             const name = this.compileInNewTarget("slot", ast.content, ctx);
-            const key = this.generateComponentKey();
             let ctxStr = "ctx";
             if (this.target.loopLevel || !this.hasSafeContext) {
                 ctxStr = generateId("ctx");
@@ -4797,7 +4815,8 @@
                 expr: `app.createComponent(null, false, true, false, false)`,
             });
             const target = compileExpr(ast.target);
-            const blockString = `${id}({target: ${target},slots: {'default': {__render: ${name}.bind(this), __ctx: ${ctxStr}}}}, key + \`${key}\`, node, ctx, Portal)`;
+            const key = this.generateComponentKey();
+            const blockString = `${id}({target: ${target},slots: {'default': {__render: ${name}.bind(this), __ctx: ${ctxStr}}}}, ${key}, node, ctx, Portal)`;
             if (block) {
                 this.insertAnchor(block);
             }
@@ -4956,9 +4975,9 @@
                 const isSelect = tagName === "select";
                 const isCheckboxInput = isInput && typeAttr === "checkbox";
                 const isRadioInput = isInput && typeAttr === "radio";
-                const hasLazyMod = attr.includes(".lazy");
-                const hasNumberMod = attr.includes(".number");
                 const hasTrimMod = attr.includes(".trim");
+                const hasLazyMod = hasTrimMod || attr.includes(".lazy");
+                const hasNumberMod = attr.includes(".number");
                 const eventType = isRadioInput ? "click" : isSelect || hasLazyMod ? "change" : "input";
                 model = {
                     baseExpr,
@@ -5505,41 +5524,6 @@
         normalizeTIf(el);
         normalizeTEscTOut(el);
     }
-    /**
-     * Parses an XML string into an XML document, throwing errors on parser errors
-     * instead of returning an XML document containing the parseerror.
-     *
-     * @param xml the string to parse
-     * @returns an XML document corresponding to the content of the string
-     */
-    function parseXML(xml) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(xml, "text/xml");
-        if (doc.getElementsByTagName("parsererror").length) {
-            let msg = "Invalid XML in template.";
-            const parsererrorText = doc.getElementsByTagName("parsererror")[0].textContent;
-            if (parsererrorText) {
-                msg += "\nThe parser has produced the following error message:\n" + parsererrorText;
-                const re = /\d+/g;
-                const firstMatch = re.exec(parsererrorText);
-                if (firstMatch) {
-                    const lineNumber = Number(firstMatch[0]);
-                    const line = xml.split("\n")[lineNumber - 1];
-                    const secondMatch = re.exec(parsererrorText);
-                    if (line && secondMatch) {
-                        const columnIndex = Number(secondMatch[0]) - 1;
-                        if (line[columnIndex]) {
-                            msg +=
-                                `\nThe error might be located at xml line ${lineNumber} column ${columnIndex}\n` +
-                                    `${line}\n${"-".repeat(columnIndex - 1)}^`;
-                        }
-                    }
-                }
-            }
-            throw new OwlError(msg);
-        }
-        return doc;
-    }
 
     function compile(template, options = {}) {
         // parsing
@@ -5565,7 +5549,7 @@
     }
 
     // do not modify manually. This file is generated by the release script.
-    const version = "2.2.7";
+    const version = "2.2.11";
 
     // -----------------------------------------------------------------------------
     //  Scheduler
@@ -5996,6 +5980,7 @@ See https://github.com/odoo/owl/blob/${hash}/doc/reference/app.md#configuration 
     exports.EventBus = EventBus;
     exports.OwlError = OwlError;
     exports.__info__ = __info__;
+    exports.batched = batched;
     exports.blockDom = blockDom;
     exports.loadFile = loadFile;
     exports.markRaw = markRaw;
@@ -6030,8 +6015,8 @@ See https://github.com/odoo/owl/blob/${hash}/doc/reference/app.md#configuration 
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    __info__.date = '2023-12-06T13:56:01.636Z';
-    __info__.hash = 'e94428a';
+    __info__.date = '2024-06-17T13:31:12.099Z';
+    __info__.hash = 'e7f405c';
     __info__.url = 'https://github.com/odoo/owl';
 
 

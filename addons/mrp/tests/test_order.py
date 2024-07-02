@@ -466,6 +466,29 @@ class TestMrpOrder(TestMrpCommon):
         wo.button_start()
         self.assertEqual(wo.qty_producing, 4, "Changing the qty_producing in the frontend is not persisted")
 
+    def test_recursive_work_orders(self):
+        """ When planning more than 322 work orders,
+            there is a recursion error
+            (with the default getrecursionlimit of 1000)
+        """
+        product_uom_id = self.env.ref('uom.product_uom_unit').id
+        mo_no_company = self.env['mrp.production'].create({
+            'product_id': self.product.id,
+            'product_uom_id': product_uom_id,
+        })
+        values = [
+            {
+                'name': f'Work order {n}',
+                'workcenter_id': self.workcenter_1.id,
+                'product_uom_id': product_uom_id,
+                'production_id': mo_no_company.id,
+                'duration': 60,
+            } for n in range(300)
+        ]
+        self.env['mrp.workorder'].create(values)
+        mo_no_company.action_confirm()
+        mo_no_company.button_plan()
+
     def test_update_quantity_5(self):
         bom = self.env['mrp.bom'].create({
             'product_id': self.product_6.id,
@@ -2921,6 +2944,23 @@ class TestMrpOrder(TestMrpCommon):
         self.assertEqual(wo.state, 'cancel', 'Workorders should be cancelled.')
         self.assertTrue(mo.workorder_ids.time_ids.date_end, 'The timers must stop after the cancellation of the MO')
 
+    def test_manual_duration(self):
+        production_form = Form(self.env['mrp.production'])
+        production_form.product_id = self.bom_4.product_id
+        production_form.bom_id = self.bom_4
+        production_form.product_qty = 1
+        production_form.product_uom_id = self.bom_4.product_id.uom_id
+
+        production = production_form.save()
+        production.action_confirm()
+
+        production_form = Form(production)
+        production_form.qty_producing = 1
+        production = production_form.save()
+        production.button_mark_done()
+
+        self.assertEqual(production.production_real_duration, production.workorder_ids.duration_expected)
+
     def test_starting_wo_twice(self):
         """
             Check that the work order is started only once when clicking the start button several times.
@@ -3824,3 +3864,98 @@ class TestMrpOrder(TestMrpCommon):
         production.button_mark_done()
 
         self.assertEqual(production.workorder_ids.duration_expected, init_duration_expected + 5)
+
+    def test_multi_edit_start_date_wo(self):
+        """
+        Test setting the start date for multiple workorders, checking if the finish date
+        will be set too. As if the finish date is not set the planned workorder will not
+        be shown in planning gantt view
+        """
+        mo = self.env['mrp.production'].create({
+            'product_id': self.product.id,
+            'product_uom_id': self.bom_1.product_uom_id.id,
+        })
+
+        wos = self.env['mrp.workorder'].create([
+            {
+                'name': 'Test order',
+                'workcenter_id': self.workcenter_1.id,
+                'product_uom_id': self.bom_1.product_uom_id.id,
+                'production_id': mo.id,
+                'duration_expected': 1.0
+            },
+            {
+                'name': 'Test order2',
+                'workcenter_id': self.workcenter_2.id,
+                'product_uom_id': self.bom_1.product_uom_id.id,
+                'production_id': mo.id,
+                'duration_expected': 2.0
+            }
+        ])
+        dt = datetime(2024, 1, 17, 11)
+        wos.date_planned_start = dt
+
+        self.assertEqual(wos[0].date_planned_start, dt)
+        self.assertEqual(wos[1].date_planned_start, dt)
+
+        self.assertEqual(wos[0].date_planned_finished, dt + timedelta(hours=1, minutes=1))
+        self.assertEqual(wos[1].date_planned_finished, dt + timedelta(hours=1, minutes=2))
+
+    @freeze_time('2017-01-01')
+    def test_expected_duration_alternative_wc(self):
+        """
+            Check that the fastest work center is used when planning the workorder.
+            - create two work centers with similar production capacity (1)
+                but the work_center_1 with a longer prepartion time for finished product.
+            1:/ produce 1 units > work_center_2 faster because
+                it does not need much time to start and to finish the production.
+            2/ - Create a second mo to produce one unit of P1
+                - work_center_1 faster because workcenter_2 is busy despite being faster
+                in preparation but it will finish later than workcenter 1.
+        """
+        workcenter_1 = self.env['mrp.workcenter'].create({
+            'name': 'wc1',
+            'default_capacity': 1,
+            'time_start': 1,
+            'time_stop': 1,
+            'time_efficiency': 100,
+        })
+        workcenter_2 = workcenter_1.copy({'name': 'wc2'})
+
+        workcenter_1.alternative_workcenter_ids = workcenter_2
+        workcenter_1.capacity_ids = [Command.create({'product_id': self.product_1.id, 'capacity': 1, 'time_start': 10})]
+        workcenter_2.capacity_ids = [Command.create({'product_id': self.product_1.id, 'capacity': 1, 'time_start': 5})]
+
+        self.product_1.uom_id = self.uom_unit.id
+        bom = self.env['mrp.bom'].create({
+            'product_id': self.product_1.id,
+            'product_tmpl_id': self.product_1.product_tmpl_id.id,
+            'product_uom_id': self.uom_unit.id,
+            'product_qty': 1.0,
+            'type': 'normal',
+            'operation_ids': [
+                (0, 0, {'name': 'Test', 'workcenter_id': workcenter_1.id, 'time_cycle': 60, 'sequence': 1}),
+            ],
+        })
+
+        # mo_1
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product_1
+        mo_form.bom_id = bom
+        mo_form.product_qty = 1
+        mo = mo_form.save()
+        mo.action_confirm()
+        mo.button_plan()
+        self.assertEqual(mo.workorder_ids[0].workcenter_id.id, workcenter_2.id)
+        self.assertEqual(mo.workorder_ids[0].duration_expected, 67)
+
+        # mo_2
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product_1
+        mo_form.bom_id = bom
+        mo_form.product_qty = 1
+        mo_2 = mo_form.save()
+        mo_2.action_confirm()
+        mo_2.button_plan()
+        self.assertEqual(mo_2.workorder_ids[0].workcenter_id.id, workcenter_1.id)
+        self.assertEqual(mo_2.workorder_ids[0].duration_expected, 72)

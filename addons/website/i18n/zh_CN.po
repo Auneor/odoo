@@ -10,21 +10,24 @@
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # digitalliuzg8888, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
-# E L, 2022
+# Decentrastates, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2023
 # Emily Jia <eji@odoo.com>, 2023
 # 苏州远鼎 <tiexinliu@126.com>, 2023
 # Raymond Yu <cl_yu@hotmail.com>, 2023
 # Martin Trigaux, 2023
-# Wil Odoo, 2023
-# Chloe Wang, 2023
+# Wil Odoo, 2024
+# Yazi Tian, 2024
+# 湘子 南 <1360857908@qq.com>, 2024
+# Chloe Wang, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: Chloe Wang, 2023\n"
+"Last-Translator: Chloe Wang, 2024\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,12 +49,20 @@ msgstr "’警告带有"
 
 #. module: website
 #. odoo-python
+#: code:addons/website/controllers/form.py:0
+#, python-format
+msgid "\"%s form submission\" <%s>"
+msgstr "\"%s 提交表格\" <%s>"
+
+#. module: website
+#. odoo-python
 #: code:addons/website/models/website_rewrite.py:0
 #, python-format
 msgid "\"URL from\" can not be empty."
 msgstr "\"来源网址\" 不能为空。"
 
 #. module: website
+#. odoo-python
 #: code:addons/website/models/website_rewrite.py:0
 #, python-format
 msgid "\"URL to\" can not be empty."
@@ -274,8 +285,6 @@ msgid "...and switch the timeline contents to fit your needs."
 msgstr "...并切换时间线内容以满足您的需求。"
 
 #. module: website
-#: model:website,contact_us_button_url:website.default_website
-#: model:website,contact_us_button_url:website.website2
 #: model_terms:ir.ui.view,arch_db:website.layout
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "/contactus"
@@ -511,6 +520,7 @@ msgstr "<b>添加</b> 选择的图像."
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/js/tours/tour_utils.js:0
 #: code:addons/website/static/src/js/tours/tour_utils.js:0
 #, python-format
 msgid "<b>Click Edit</b> to start designing your homepage."
@@ -1355,7 +1365,6 @@ msgid ""
 msgstr "一个卡片是灵活且可扩展的内容容器。它包括页眉和页脚选项，各种内容，上下文背景颜色和强大的显示选项。"
 
 #. module: website
-#: model:ir.model.fields,help:website.field_base_automation__website_published
 #: model:ir.model.fields,help:website.field_ir_actions_server__website_published
 #: model:ir.model.fields,help:website.field_ir_cron__website_published
 msgid ""
@@ -1446,6 +1455,13 @@ msgstr "关于我们"
 #: model_terms:ir.ui.view,arch_db:website.template_footer_minimalist
 msgid "About us"
 msgstr "关于我们"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+#, python-format
+msgid "Access Denied"
+msgstr "访问被拒绝"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_visitor__access_token
@@ -2079,7 +2095,6 @@ msgid "Autosizing"
 msgstr "自动尺寸"
 
 #. module: website
-#: model:ir.model.fields,field_description:website.field_base_automation__website_published
 #: model:ir.model.fields,field_description:website.field_ir_actions_server__website_published
 #: model:ir.model.fields,field_description:website.field_ir_cron__website_published
 msgid "Available on the Website"
@@ -3792,6 +3807,15 @@ msgid "Display this website when users visit this domain"
 msgstr "用户访问此域时显示此网站"
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/xml/website.editor.xml:0
+#, python-format
+msgid ""
+"Do not copy/paste code you do not understand, this could put your data at "
+"risk."
+msgstr "不要复制/粘贴您不理解的代码，这可能会使您的数据处于危险之中."
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
 msgid ""
 "Do you need specific information? Our specialists will help you with "
@@ -3813,6 +3837,7 @@ msgid "Do you want to install the \"%s\" App?"
 msgstr "您想安装 \"%s\" 这个应用程序?"
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links
 msgid "Documentation"
 msgstr "文档"
@@ -4254,7 +4279,6 @@ msgid "Extension View"
 msgstr "扩展视图"
 
 #. module: website
-#: model:ir.model.fields,field_description:website.field_base_automation__xml_id
 #: model:ir.model.fields,field_description:website.field_ir_actions_server__xml_id
 #: model:ir.model.fields,field_description:website.field_ir_cron__xml_id
 #: model:ir.model.fields,field_description:website.field_website_page__xml_id
@@ -4849,6 +4873,16 @@ msgid "Google Search Console"
 msgstr "Google 搜索控制台"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/res_config_settings.py:0
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+#, python-format
+msgid ""
+"Google doesn't need to be pinged anymore. It will automatically fetch your "
+"/sitemap.xml."
+msgstr "谷歌不需要再被监视了。它将自动获取 /sitemap.xml."
+
+#. module: website
 #: model:ir.model.fields,help:website.field_res_config_settings__google_search_console
 #: model:ir.model.fields,help:website.field_website__google_search_console
 msgid "Google key, or Enable to access first reply"
@@ -5103,6 +5137,13 @@ msgid "Hide For"
 msgstr "隐藏"
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_popup/000.js:0
+#, python-format
+msgid "Hide the cookies bar"
+msgstr "隐藏 cookies 通知列"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
 msgid "Hide this page from search results"
 msgstr "在搜索结果中隐藏该网页"
@@ -5262,7 +5303,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: website
-#: model:ir.model.fields,help:website.field_base_automation__xml_id
 #: model:ir.model.fields,help:website.field_ir_actions_server__xml_id
 #: model:ir.model.fields,help:website.field_ir_cron__xml_id
 msgid "ID of the action if defined in a XML file"
@@ -5342,6 +5382,15 @@ msgid ""
 "If you discard the current edits, all unsaved changes will be lost. You can "
 "cancel to return to edit mode."
 msgstr "如果您放弃当前的编辑，所有未保存的更改都将丢失。您可以取消以返回编辑模式。"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_embed_code/options.js:0
+#, python-format
+msgid ""
+"If you need to add analytics or marketing tags, inject code in your <head> "
+"or <body> instead. The option is in the \"Theme\" tab."
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -6487,6 +6536,7 @@ msgid "Men"
 msgstr "男士"
 
 #. module: website
+#: model:ir.model,name:website.model_ir_ui_menu
 #: model:ir.model.fields,field_description:website.field_website_menu__name
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
 msgid "Menu"
@@ -7021,12 +7071,6 @@ msgid "Normal"
 msgstr "正常"
 
 #. module: website
-#: model:website,prevent_zero_price_sale_text:website.default_website
-#: model:website,prevent_zero_price_sale_text:website.website2
-msgid "Not Available For Sale"
-msgstr "不可用于销售"
-
-#. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_pages_kanban_view
 msgid "Not Published"
 msgstr "未发布"
@@ -7406,7 +7450,10 @@ msgid "Page Layout"
 msgstr "网页布局"
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/components/dialog/page_properties.xml:0
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
+#, python-format
 msgid "Page Name"
 msgstr "网页名称"
 
@@ -7708,6 +7755,13 @@ msgstr "预制"
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/components/fullscreen_indication/fullscreen_indication.js:0
+#, python-format
+msgid "Press %(key)s to exit full screen"
+msgstr "按 %(key)s 离开全屏幕"
+
+#. module: website
+#. odoo-javascript
 #: code:addons/website/static/src/js/backend/view_hierarchy.js:0
 #, python-format
 msgid "Press %s for next %s"
@@ -7946,6 +8000,11 @@ msgstr "Qweb"
 #: model:ir.model,name:website.model_ir_qweb_field_contact
 msgid "Qweb Field Contact"
 msgstr "Qweb字段联系人"
+
+#. module: website
+#: model:ir.model,name:website.model_ir_qweb_field_html
+msgid "Qweb Field HTML"
+msgstr "Qweb 字段 HTML"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_chart_options
@@ -8740,6 +8799,13 @@ msgid "Show site map"
 msgstr "显示网站地图"
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_popup/000.js:0
+#, python-format
+msgid "Show the cookies bar"
+msgstr "显示 Cookies 通知栏"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Show/Hide on Desktop"
 msgstr "在桌面上显示/隐藏"
@@ -9338,6 +9404,17 @@ msgid "The chosen name already exists"
 msgstr "所选名称已存在"
 
 #. module: website
+#. odoo-python
+#: code:addons/website/models/res_company.py:0
+#, python-format
+msgid ""
+"The company %(company_name)r cannot be archived because it has a linked website %(website_name)r.\n"
+"Change that website's company first."
+msgstr ""
+"公司 %(company_name)r 不能存档，因为它有一个链接的网站 %(website_name)r.\n"
+"首先改变网站的公司."
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "The company this website belongs to"
 msgstr "该网站所属的公司"
@@ -9394,7 +9471,6 @@ msgid "The full URL to access the document through the website."
 msgstr "通过网站访问文档的完整网址。"
 
 #. module: website
-#: model:ir.model.fields,help:website.field_base_automation__website_url
 #: model:ir.model.fields,help:website.field_ir_actions_server__website_url
 #: model:ir.model.fields,help:website.field_ir_cron__website_url
 msgid "The full URL to access the server action through the website."
@@ -9634,6 +9710,7 @@ msgstr "该字体已存在，只能添加为本地字体，以替换服务器版
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/js/editor/snippets.options.js:0
 #: code:addons/website/static/src/xml/website.editor.xml:0
 #, python-format
 msgid "This font is hosted and served to your visitors by Google servers"
@@ -9701,6 +9778,13 @@ msgstr "此视图结构已修改"
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/systray_items/website_switcher.xml:0
+#, python-format
+msgid "This website does not have a domain configured."
+msgstr "该网站未设置网域名称。"
+
+#. module: website
+#. odoo-javascript
 #: code:addons/website/static/src/systray_items/website_switcher.js:0
 #, python-format
 msgid ""
@@ -9709,13 +9793,6 @@ msgid ""
 msgstr ""
 "网站未设置域名。为避免在编辑网站过程中出现意外行为，我们建议关闭（或刷新）其他浏览器标签。\n"
 "要删除此信息，请在网站设置中设置域名"
-
-#. module: website
-#. odoo-javascript
-#: code:addons/website/static/src/systray_items/website_switcher.xml:0
-#, python-format
-msgid "This website does not have a domain configured."
-msgstr "该网站未设置网域名称。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery_options
@@ -10753,7 +10830,6 @@ msgid "Website Pages"
 msgstr "网站网页"
 
 #. module: website
-#: model:ir.model.fields,field_description:website.field_base_automation__website_path
 #: model:ir.model.fields,field_description:website.field_ir_actions_server__website_path
 #: model:ir.model.fields,field_description:website.field_ir_cron__website_path
 msgid "Website Path"
@@ -10808,7 +10884,6 @@ msgid "Website URL"
 msgstr "网站网址"
 
 #. module: website
-#: model:ir.model.fields,field_description:website.field_base_automation__website_url
 #: model:ir.model.fields,field_description:website.field_ir_actions_server__website_url
 #: model:ir.model.fields,field_description:website.field_ir_cron__website_url
 msgid "Website Url"
@@ -11077,6 +11152,15 @@ msgstr "无法删除默认网站%s。尝试更改默认网站的设置"
 
 #. module: website
 #. odoo-python
+#: code:addons/website/models/website_menu.py:0
+#, python-format
+msgid ""
+"You cannot delete this website menu as this serves as the default parent "
+"menu for new websites (e.g., /shop, /event, ...)."
+msgstr "不能删除此网站菜单，因为它用作新网站（例如 /shop、/event...）的默认上级菜单。"
+
+#. module: website
+#. odoo-python
 #: code:addons/website/models/mixins.py:0
 #, python-format
 msgid "You do not have the rights to publish/unpublish"
@@ -11090,13 +11174,6 @@ msgid ""
 "You have hidden this page from search results. It won't be indexed by search"
 " engines."
 msgstr "您已从搜索结果中隐藏此网页。它不会被搜索引擎索引。"
-
-#. module: website
-#. odoo-python
-#: code:addons/website/models/res_config_settings.py:0
-#, python-format
-msgid "You haven't defined your domain"
-msgstr "您还没有定义您的域名"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.cookie_policy
@@ -11150,6 +11227,15 @@ msgstr "您的动态片段将显示在此处... 显示此消息是因为您没�
 #, python-format
 msgid "Your Email"
 msgstr "您的电子邮件"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_embed_code/000.js:0
+#, python-format
+msgid ""
+"Your Embed Code snippet doesn't have anything to display. Click on Edit to "
+"modify it."
+msgstr "您的嵌入代码片段没有任何要显示的内容。单击编辑来修改它."
 
 #. module: website
 #. odoo-javascript

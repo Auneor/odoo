@@ -29,20 +29,20 @@
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2022
 # Jussi Lehto, 2022
 # Jukka Paulin <jukka.paulin@gmail.com>, 2022
-# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Konsta Aavaranta, 2023
 # Martin Trigaux, 2023
 # Joakim Weckman, 2023
-# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
+# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2024
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-10 06:06+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -975,13 +975,13 @@ msgstr "Puskuri:"
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__limited_partners_loading
 #: model:ir.model.fields,help:point_of_sale.field_res_config_settings__pos_limited_partners_loading
 msgid ""
-"By default, 100 partners are loaded.\n"
+"By default, 10000 partners are loaded.\n"
 "When the session is open, we keep on loading all remaining partners in the background.\n"
 "In the meantime, you can use the 'Load Customers' button to load partners from database."
 msgstr ""
-"Oletusarvoisesti ladataan 100 kumppania.\n"
-"Kun istunto on avoinna, ladataan kaikki jäljellä olevat kumppanit taustalla.\n"
-"Voit ladata kumppaneita tietokannasta 'Lataa asiakkaat' -painikkeella."
+"Oletusarvoisesti ladataan 10000 kumppania.\n"
+"Kun istunto on avoinna, Odoo lataa kaikki loput kumppanit taustalla.\n"
+"Sillä välin voit ladata kumppaneita tietokannasta 'Lataa asiakkaat' -painikkeella."
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config__iface_print_via_proxy
@@ -1358,6 +1358,13 @@ msgstr "Sulje istunto ja kirjaa merkinnät"
 #: model:ir.model,name:point_of_sale.model_pos_close_session_wizard
 msgid "Close Session Wizard"
 msgstr "Ohjattu istunnon sulkeminen"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/js/models.js:0
+#, python-format
+msgid "Close anyway"
+msgstr "Sulje joka tapauksessa"
 
 #. module: point_of_sale
 #: model:ir.model.fields.selection,name:point_of_sale.selection__pos_session__state__closed
@@ -1824,8 +1831,8 @@ msgid "Customer Screen Warning"
 msgstr "Asiakkaan näytön varoitus"
 
 #. module: point_of_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/point_of_sale/static/src/js/Screens/PaymentScreen/PaymentScreen.js:0
 #: code:addons/point_of_sale/wizard/pos_payment.py:0
 #, python-format
@@ -2133,6 +2140,13 @@ msgstr "Hylkää"
 #: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__display_name
 msgid "Display Name"
 msgstr "Näyttönimi"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/js/models.js:0
+#, python-format
+msgid "Do not close"
+msgstr "Älä sulje"
 
 #. module: point_of_sale
 #. odoo-python
@@ -3267,6 +3281,13 @@ msgstr "Erän nimi"
 
 #. module: point_of_sale
 #. odoo-javascript
+#: code:addons/point_of_sale/static/src/xml/Screens/ReceiptScreen/OrderReceipt.xml:0
+#, python-format
+msgid "Lot Number"
+msgstr "Eränumero"
+
+#. module: point_of_sale
+#. odoo-javascript
 #: code:addons/point_of_sale/static/src/js/Screens/ProductScreen/OrderWidget.js:0
 #: code:addons/point_of_sale/static/src/js/Screens/ProductScreen/ProductScreen.js:0
 #, python-format
@@ -3513,6 +3534,11 @@ msgid "Newspaper Rack"
 msgstr "Sanomalehtiteline"
 
 #. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Seuraavan toimenpiteen kalenterimerkintä"
+
+#. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Seuraavan toimenpiteen eräpäivä"
@@ -3732,7 +3758,7 @@ msgstr "Yhteysvirhe"
 
 #. module: point_of_sale
 #. odoo-javascript
-#: code:addons/point_of_sale/static/src/js/Chrome.js:0
+#: code:addons/point_of_sale/static/src/js/models.js:0
 #, python-format
 msgid "Offline Orders"
 msgstr "Yhteydettömät tilaukset"
@@ -3780,6 +3806,14 @@ msgid ""
 msgstr ""
 "Tämän palautusrivin osalta sallitaan ainoastaan negatiivinen määrä. Klikkaa "
 "+/- muuttaaksesi palautettavaa määrää."
+
+#. module: point_of_sale
+#: code:addons/point_of_sale/models/pos_config.py:0
+#, python-format
+msgid "Only administrators can edit receipt headers and footers"
+msgstr ""
+"Vain järjestelmänvalvojat voivat muokata kuitin otsikoita ja alatunnisteiden"
+" alatunnisteita"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__only_round_cash_method
@@ -4024,8 +4058,8 @@ msgstr ""
 "tilausrivin."
 
 #. module: point_of_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/point_of_sale/models/pos_session.py:0
 #: code:addons/point_of_sale/static/src/xml/ChromeWidgets/DebugWidget.xml:0
 #: code:addons/point_of_sale/static/src/xml/ChromeWidgets/TicketButton.xml:0
@@ -4181,8 +4215,8 @@ msgid "Pay Order"
 msgstr "Maksa tilaus"
 
 #. module: point_of_sale
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/point_of_sale/static/src/js/Screens/ProductScreen/ProductScreen.js:0
 #: code:addons/point_of_sale/static/src/js/Screens/TicketScreen/TicketScreen.js:0
 #: code:addons/point_of_sale/static/src/xml/Screens/PaymentScreen/PaymentScreen.xml:0
@@ -4579,6 +4613,13 @@ msgstr "Kassan tuotekategoriat"
 #: model_terms:ir.ui.view,arch_db:point_of_sale.product_pos_category_tree_view
 msgid "PoS Product Category"
 msgstr "Kassan tuotekategoria"
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#, python-format
+msgid "PoS order %s can not be processed"
+msgstr "Kassan tilausta %s ei voida käsitellä"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_partner_property_form
@@ -5949,7 +5990,7 @@ msgstr "Jotkin sarjanumerot tai eränumerot puuttuvat"
 
 #. module: point_of_sale
 #. odoo-javascript
-#: code:addons/point_of_sale/static/src/js/Chrome.js:0
+#: code:addons/point_of_sale/static/src/js/models.js:0
 #, python-format
 msgid ""
 "Some orders could not be submitted to the server due to configuration "
@@ -5962,7 +6003,7 @@ msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
-#: code:addons/point_of_sale/static/src/js/Chrome.js:0
+#: code:addons/point_of_sale/static/src/js/models.js:0
 #, python-format
 msgid ""
 "Some orders could not be submitted to the server due to internet connection "
@@ -6296,6 +6337,21 @@ msgid ""
 msgstr "Kassa tukee vain pyöristyskäytäntöä \"Lisää pyöristysrivi\"."
 
 #. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#, python-format
+msgid ""
+"The Point of Sale order with the following reference %s was received by the "
+"Odoo server, but the order processing phase failed.<br/>The datas received "
+"from the point of sale has been saved in the attachments.<br/>Please contact"
+" your support service to assist you on restoring it"
+msgstr ""
+"Odoo-palvelin vastaanotti kassan tilauksen, jonka viite on %s, mutta "
+"tilauksen käsittelyvaihe epäonnistui.<br/>Kassasta saadut tiedot on "
+"tallennettu liitetiedostoihin.<br/>Ota yhteyttä ylläpitoon, joka auttaa "
+"sinua palauttamisessa"
+
+#. module: point_of_sale
 #. odoo-javascript
 #: code:addons/point_of_sale/static/src/js/Screens/PaymentScreen/PaymentScreen.js:0
 #, python-format
@@ -6424,12 +6480,10 @@ msgstr "Kassan laskutuspäiväkirjan %s on kuuluttava samaan yritykseen."
 #, python-format
 msgid ""
 "The maximum difference allowed is %s.\n"
-"\n"
-"                        Please contact your manager to accept the closing difference."
+"Please contact your manager to accept the closing difference."
 msgstr ""
 "Suurin sallittu ero on %s.\n"
-"\n"
-"                        Ota yhteyttä esimiehen sulkemiseron hyväksymiseksi."
+"Ota yhteyttä esimieheen sulkemiseron hyväksymiseksi."
 
 #. module: point_of_sale
 #. odoo-python

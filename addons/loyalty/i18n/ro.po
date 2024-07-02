@@ -5,17 +5,18 @@
 # Translators:
 # Foldi Robert <foldirobert@nexterp.ro>, 2022
 # Hongu Cosmin <cosmin513@gmail.com>, 2022
-# Martin Trigaux, 2022
-# Cozmin Candea <office@terrabit.ro>, 2023
-# Dorin Hongu <dhongu@gmail.com>, 2023
+# Martin Trigaux, 2024
+# Dorin Hongu <dhongu@gmail.com>, 2024
+# Cozmin Candea <office@terrabit.ro>, 2024
+# Betty Keresztesi, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:23+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2023\n"
+"Last-Translator: Betty Keresztesi, 2024\n"
 "Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -118,7 +119,6 @@ msgstr ""
 
 #. module: loyalty
 #. odoo-python
-#: code:addons/loyalty/models/loyalty_program.py:0
 #: code:addons/loyalty/models/loyalty_program.py:0
 #, python-format
 msgid "2+1 Free"
@@ -617,7 +617,7 @@ msgstr "Nr. Cupoane"
 #: code:addons/loyalty/models/loyalty_program.py:0
 #, python-format
 msgid "Coupon point(s)"
-msgstr ""
+msgstr "Punct(e) promoționale"
 
 #. module: loyalty
 #: model:loyalty.program,portal_point_name:loyalty.10_percent_coupon
@@ -756,7 +756,7 @@ msgstr "Reducere"
 #: model:ir.actions.act_window,name:loyalty.loyalty_program_discount_loyalty_action
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
 msgid "Discount & Loyalty"
-msgstr ""
+msgstr "Discount și loialitate"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__discount_applicability
@@ -769,7 +769,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:loyalty.selection__loyalty_program__program_type__promo_code
 #, python-format
 msgid "Discount Code"
-msgstr ""
+msgstr "Cod discount"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__discount_line_product_id
@@ -780,6 +780,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__discount_mode
 msgid "Discount Mode"
 msgstr ""
+
+#. module: loyalty
+#: model:ir.model.fields,field_description:loyalty.field_loyalty_program__payment_program_discount_product_id
+msgid "Discount Product"
+msgstr "Reducere produs"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__discount_product_domain
@@ -793,7 +798,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_rule_view_kanban
 #, python-format
 msgid "Discount code"
-msgstr ""
+msgstr "Cod discount"
 
 #. module: loyalty
 #. odoo-python
@@ -801,6 +806,11 @@ msgstr ""
 #: model:loyalty.program,portal_point_name:loyalty.10_percent_with_code
 #, python-format
 msgid "Discount point(s)"
+msgstr ""
+
+#. module: loyalty
+#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_reward_view_form
+msgid "Discount product"
 msgstr ""
 
 #. module: loyalty
@@ -902,7 +912,7 @@ msgstr "Urmăritori (Parteneri)"
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_generate_wizard__mode
 msgid "For"
-msgstr ""
+msgstr "Pentru"
 
 #. module: loyalty
 #. odoo-python
@@ -970,15 +980,15 @@ msgid "Generate Gift Cards"
 msgstr ""
 
 #. module: loyalty
-#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
-msgid "Generate eWallet"
-msgstr ""
-
-#. module: loyalty
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_program.py:0
 #, python-format
 msgid "Generate and share unique coupons with your customers."
+msgstr ""
+
+#. module: loyalty
+#: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form
+msgid "Generate eWallet"
 msgstr ""
 
 #. module: loyalty
@@ -1034,7 +1044,7 @@ msgstr ""
 #. module: loyalty
 #: model:ir.actions.act_window,name:loyalty.loyalty_program_gift_ewallet_action
 msgid "Gift cards & eWallet"
-msgstr ""
+msgstr "Carduri cadou și eWallet"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_generate_wizard__points_granted
@@ -1195,12 +1205,12 @@ msgstr ""
 #. module: loyalty
 #: model:ir.model,name:loyalty.model_loyalty_mail
 msgid "Loyalty Communication"
-msgstr ""
+msgstr "Comunicare loialitate"
 
 #. module: loyalty
 #: model:ir.model,name:loyalty.model_loyalty_card
 msgid "Loyalty Coupon"
-msgstr ""
+msgstr "Cupon de loialitate"
 
 #. module: loyalty
 #: model:ir.model,name:loyalty.model_loyalty_program
@@ -1272,7 +1282,7 @@ msgstr "Cantitatea minimă"
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__multi_product
 msgid "Multi Product"
-msgstr ""
+msgstr "Multi produs"
 
 #. module: loyalty
 #. odoo-python
@@ -1311,7 +1321,7 @@ msgstr "Numărul de erori"
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_card__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Numărul de mesaje care necesită acțiune"
 
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_card__message_has_error_counter
@@ -1369,7 +1379,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__point_name
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_rule__reward_point_name
 msgid "Portal Point Name"
-msgstr ""
+msgstr "Portal Point Name"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_program__portal_visible
@@ -1399,7 +1409,7 @@ msgid "Product Variant"
 msgstr "Variantă produs"
 
 #. module: loyalty
-#: model:ir.model.fields,help:loyalty.field_loyalty_program__discount_product_id
+#: model:ir.model.fields,help:loyalty.field_loyalty_program__payment_program_discount_product_id
 msgid "Product used in the sales order to apply the discount."
 msgstr "Produs utilizat în comanda de vânzare pentru aplicarea reducerii."
 
@@ -1449,13 +1459,6 @@ msgstr ""
 #. odoo-python
 #: code:addons/loyalty/models/loyalty_program.py:0
 #, python-format
-msgid "Promotion Program"
-msgstr ""
-
-#. module: loyalty
-#. odoo-python
-#: code:addons/loyalty/models/loyalty_program.py:0
-#, python-format
 msgid "Promo point(s)"
 msgstr ""
 
@@ -1465,6 +1468,13 @@ msgstr ""
 #: code:addons/loyalty/models/loyalty_program.py:0
 #, python-format
 msgid "Promos"
+msgstr ""
+
+#. module: loyalty
+#. odoo-python
+#: code:addons/loyalty/models/loyalty_program.py:0
+#, python-format
+msgid "Promotion Program"
 msgstr ""
 
 #. module: loyalty
@@ -1523,7 +1533,7 @@ msgstr ""
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__reward_product_ids
 msgid "Reward Products"
-msgstr ""
+msgstr "Produse recompensă"
 
 #. module: loyalty
 #: model:ir.model.fields,field_description:loyalty.field_loyalty_reward__reward_type
@@ -1663,7 +1673,7 @@ msgstr ""
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_reward__reward_product_ids
 msgid "These are the products that can be claimed with this rule."
-msgstr ""
+msgstr "Acestea sunt produsele care pot fi revendicate cu această regulă."
 
 #. module: loyalty
 #: model:ir.model.fields,help:loyalty.field_loyalty_reward__discount_max_amount
@@ -1840,7 +1850,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:loyalty.selection__loyalty_program__program_type__ewallet
 #, python-format
 msgid "eWallet"
-msgstr ""
+msgstr "eWallet"
 
 #. module: loyalty
 #: model_terms:ir.ui.view,arch_db:loyalty.loyalty_program_view_form

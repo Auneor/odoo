@@ -184,7 +184,7 @@ class SaleOrder(models.Model):
     currency_rate = fields.Float(
         string="Currency Rate",
         compute='_compute_currency_rate',
-        digits=(12, 6),
+        digits=0,
         store=True, precompute=True)
     user_id = fields.Many2one(
         comodel_name='res.users',
@@ -382,7 +382,7 @@ class SaleOrder(models.Model):
     def _compute_currency_rate(self):
         cache = {}
         for order in self:
-            order_date = order.date_order.date()
+            order_date = (order.date_order or fields.Datetime.now()).date()
             if not order.company_id:
                 order.currency_rate = order.currency_id.with_context(date=order_date).rate or 1.0
                 continue
@@ -559,9 +559,13 @@ class SaleOrder(models.Model):
                 lambda line: not line.display_type and not line._is_delivery()
             ).mapped(lambda line: line and line._expected_date())
             if dates_list:
-                order.expected_date = min(dates_list)
+                order.expected_date = order._select_expected_date(dates_list)
             else:
                 order.expected_date = False
+
+    def _select_expected_date(self, expected_dates):
+        self.ensure_one()
+        return min(expected_dates)
 
     def _compute_is_expired(self):
         today = fields.Date.today()
@@ -822,7 +826,8 @@ class SaleOrder(models.Model):
 
         self.with_context(context)._action_confirm()
 
-        if self.create_uid.has_group('sale.group_auto_done_setting'):  # Public user can confirm SO
+        if self[:1].create_uid.has_group('sale.group_auto_done_setting'):
+            # Public user can confirm SO, so we check the group on any record creator.
             self.action_done()
 
         return True
@@ -873,11 +878,6 @@ class SaleOrder(models.Model):
             )
 
     def action_done(self):
-        for order in self:
-            tx = order.sudo().transaction_ids._get_last()
-            if tx and tx.state == 'pending' and tx.provider_id.code == 'custom' and tx.provider_id.custom_mode == 'wire_transfer':
-                tx._set_done()
-                tx.write({'is_post_processed': True})
         self.write({'state': 'done'})
 
     def action_unlock(self):
@@ -1274,7 +1274,7 @@ class SaleOrder(models.Model):
 
         return groups
 
-    def _notify_by_email_prepare_rendering_context(self, message, msg_vals, model_description=False,
+    def _notify_by_email_prepare_rendering_context(self, message, msg_vals=False, model_description=False,
                                                    force_email_company=False, force_email_lang=False):
         render_context = super()._notify_by_email_prepare_rendering_context(
             message, msg_vals, model_description=model_description,

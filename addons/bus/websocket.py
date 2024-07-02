@@ -237,7 +237,7 @@ class Websocket:
         self._close_received = False
         self._timeout_manager = TimeoutManager()
         # Used for rate limiting.
-        self._incoming_frame_timestamps = deque(maxlen=type(self).RL_BURST)
+        self._incoming_frame_timestamps = deque(maxlen=self.RL_BURST)
         # Used to notify the websocket that bus notifications are
         # available.
         self.__notif_sock_w, self.__notif_sock_r = socket.socketpair()
@@ -260,7 +260,7 @@ class Websocket:
             try:
                 readables = {
                     selector_key[0].fileobj for selector_key in
-                    self.__selector.select(type(self).INACTIVITY_TIMEOUT)
+                    self.__selector.select(self.INACTIVITY_TIMEOUT)
                 }
                 if self._timeout_manager.has_timed_out() and self.state is ConnectionState.OPEN:
                     self.disconnect(
@@ -401,7 +401,7 @@ class Websocket:
             payload_length = struct.unpack('!H', recv_bytes(2))[0]
         elif payload_length == 127:
             payload_length = struct.unpack('!Q', recv_bytes(8))[0]
-        if payload_length > type(self).MESSAGE_MAX_SIZE:
+        if payload_length > self.MESSAGE_MAX_SIZE:
             raise PayloadTooLargeException()
 
         mask = recv_bytes(4)
@@ -449,7 +449,7 @@ class Websocket:
             if frame.opcode is not Opcode.CONTINUE:
                 raise ProtocolError("A continuation frame was expected")
             message_fragments.extend(frame.payload)
-            if len(message_fragments) > type(self).MESSAGE_MAX_SIZE:
+            if len(message_fragments) > self.MESSAGE_MAX_SIZE:
                 raise PayloadTooLargeException()
             if frame.fin:
                 return bytes(message_fragments)
@@ -588,9 +588,9 @@ class Websocket:
         `RateLimitExceededException`.
         """
         now = time.time()
-        if len(self._incoming_frame_timestamps) >= type(self).RL_BURST:
+        if len(self._incoming_frame_timestamps) >= self.RL_BURST:
             elapsed_time = now - self._incoming_frame_timestamps[0]
-            if elapsed_time < type(self).RL_DELAY * type(self).RL_BURST:
+            if elapsed_time < self.RL_DELAY * self.RL_BURST:
                 raise RateLimitExceededException()
         self._incoming_frame_timestamps.append(now)
 
@@ -600,11 +600,11 @@ class Websocket:
         registered for this event type. Every callback is given both the
         environment and the related websocket.
         """
-        if not type(self).__event_callbacks[event_type]:
+        if not self.__event_callbacks[event_type]:
             return
         with closing(acquire_cursor(self._db)) as cr:
             env = api.Environment(cr, self._session.uid, self._session.context)
-            for callback in type(self).__event_callbacks[event_type]:
+            for callback in self.__event_callbacks[event_type]:
                 try:
                     service_model.retrying(functools.partial(callback, env, self), env)
                 except Exception:
@@ -663,7 +663,7 @@ class TimeoutManager:
         # Custom keep alive timeout for each TimeoutManager to avoid multiple
         # connections timing out at the same time.
         self._keep_alive_timeout = (
-            type(self).KEEP_ALIVE_TIMEOUT + random.uniform(0, type(self).KEEP_ALIVE_TIMEOUT / 2)
+            self.KEEP_ALIVE_TIMEOUT + random.uniform(0, self.KEEP_ALIVE_TIMEOUT / 2)
         )
         self.timeout_reason = None
         # Start time recorded when we started awaiting an answer to a
@@ -700,7 +700,7 @@ class TimeoutManager:
         if now - self._opened_at >= self._keep_alive_timeout:
             self.timeout_reason = TimeoutReason.KEEP_ALIVE
             return True
-        if self._awaited_opcode and now - self._waiting_start_time >= type(self).TIMEOUT:
+        if self._awaited_opcode and now - self._waiting_start_time >= self.TIMEOUT:
             self.timeout_reason = TimeoutReason.NO_RESPONSE
             return True
         return False
@@ -812,11 +812,11 @@ class WebsocketConnectionHandler:
         """
         if not cls.websocket_allowed(request):
             raise ServiceUnavailable("Websocket is disabled in test mode")
-        cls._handle_public_configuration(request)
+        public_session = cls._handle_public_configuration(request)
         try:
             response = cls._get_handshake_response(request.httprequest.headers)
-            socket = request.httprequest.environ['socket']
-            session, db, httprequest = request.session, request.db, request.httprequest
+            socket = request.httprequest._HTTPRequest__environ['socket']
+            session, db, httprequest = (public_session or request.session), request.db, request.httprequest
             response.call_on_close(lambda: cls._serve_forever(
                 Websocket(socket, session),
                 db,
@@ -865,9 +865,11 @@ class WebsocketConnectionHandler:
         headers = request.httprequest.headers
         origin_url = urlparse(headers.get('origin'))
         if origin_url.netloc != headers.get('host') or origin_url.scheme != request.httprequest.scheme:
-            request.session = root.session_store.new()
-            request.session.update(get_default_session(), db=request.session.db)
-            request.session.is_explicit = True
+            session = root.session_store.new()
+            session.update(get_default_session(), db=request.session.db)
+            root.session_store.save(session)
+            return session
+        return None
 
     @classmethod
     def _assert_handshake_validity(cls, headers):

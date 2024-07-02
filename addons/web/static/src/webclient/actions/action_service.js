@@ -92,6 +92,7 @@ function makeActionManager(env) {
     let dialogCloseProm;
     let actionCache = {};
     let dialog = null;
+    let nextDialog = null;
 
     // The state action (or default user action if none) is loaded as soon as possible
     // so that the next "doAction" will have its action ready when needed.
@@ -741,7 +742,6 @@ function makeActionManager(env) {
         ControllerComponent.template = ControllerComponentTemplate;
         ControllerComponent.Component = controller.Component;
 
-        let nextDialog = null;
         if (action.target === "new") {
             cleanDomFromBootstrap();
             const actionDialogProps = {
@@ -764,6 +764,9 @@ function makeActionManager(env) {
                     cleanDomFromBootstrap();
                 },
             });
+            if (nextDialog) {
+                nextDialog.remove();
+            }
             nextDialog = {
                 remove: removeDialog,
                 onClose: onClose || options.onClose,
@@ -803,6 +806,7 @@ function makeActionManager(env) {
             Component: ControllerComponent,
             componentProps: controller.props,
         };
+        env.services.dialog.closeAll();
         env.bus.trigger("ACTION_MANAGER:UPDATE", controller.__info__);
         return Promise.all([currentActionProm, closingProm]).then((r) => r[0]);
     }
@@ -1522,6 +1526,7 @@ export const actionService = {
         "view", // for legacy view compatibility #action-serv-leg-compat-js-class
         "ui",
         "user",
+        "dialog",
     ],
     start(env) {
         return makeActionManager(env);
