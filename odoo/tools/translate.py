@@ -683,20 +683,22 @@ def trans_export(lang, modules, buffer, format, cr):
             # we now group the translations by source. That means one translation per source.
             grouped_rows = {}
             for module, type, name, res_id, src, trad, comments in rows:
-                row = grouped_rows.setdefault(src, {})
-                row.setdefault('modules', set()).add(module)
-                if not row.get('translation') and trad != src:
-                    row['translation'] = trad
-                row.setdefault('tnrs', []).append((type, name, res_id))
-                row.setdefault('comments', set()).update(comments)
+                row = grouped_rows.setdefault(src, [])
+                new_row = {}
+                new_row.setdefault('modules', set()).add(module)
+                new_row['translation'] = trad
+                new_row.setdefault('tnrs', []).append((type, name, res_id))
+                new_row.setdefault('comments', set()).update(comments)
+                row.append(new_row)
 
-            for src, row in sorted(grouped_rows.items()):
-                if not lang:
-                    # translation template, so no translation value
-                    row['translation'] = ''
-                elif not row.get('translation'):
-                    row['translation'] = ''
-                writer.write(row['modules'], row['tnrs'], src, row['translation'], row['comments'])
+            for src, rows in sorted(grouped_rows.items()):
+                for row in rows:
+                    if not lang:
+                        # translation template, so no translation value
+                        row['translation'] = ''
+                    elif not row.get('translation'):
+                        row['translation'] = ''
+                    writer.write(row['modules'], row['tnrs'], src, row['translation'], row['comments'])
 
         elif format == 'tgz':
             rows_by_module = defaultdict(list)
