@@ -8,6 +8,14 @@ export function clickQuotationButton() {
         },
     ];
 }
+export function clickSave() {
+    return [
+        {
+            content: 'Click on Save button',
+            trigger: '.control-button:contains("Save")',
+        },
+    ];
+}
 export function selectFirstOrder() {
     return [
         {
@@ -60,4 +68,13 @@ export function checkCustomerNotes(note) {
                 trigger: `.customer-note:contains(${note})`,
             }
         ];
+}
+
+export function checkOrdersListEmpty() {
+    return [
+        {
+            content: 'Check that the orders list is empty',
+            trigger: 'body:not(:has(.order-row))',
+        }
+    ];
 }

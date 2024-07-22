@@ -385,9 +385,9 @@ class HrEmployee(models.Model):
     @api.model
     def _get_contextual_employee(self):
         ctx = self.env.context
-        if 'employee_id' in ctx:
+        if self.env.context.get('employee_id') is not None:
             return self.browse(ctx.get('employee_id'))
-        if 'default_employee_id' in ctx:
+        if self.env.context.get('default_employee_id') is not None:
             return self.browse(ctx.get('default_employee_id'))
         return self.env.user.employee_id
 
@@ -579,7 +579,7 @@ class HrEmployee(models.Model):
                     virtual_remaining = 0
                     additional_leaves_duration = 0
                     for allocation in consumed_content:
-                        latest_accrual_bonus += allocation._get_future_leaves_on(date_to_simulate)
+                        latest_accrual_bonus += allocation and allocation._get_future_leaves_on(date_to_simulate)
                         date_accrual_bonus += consumed_content[allocation]['accrual_bonus']
                         virtual_remaining += consumed_content[allocation]['virtual_remaining_leaves']
                     for leave in content['to_recheck_leaves']:

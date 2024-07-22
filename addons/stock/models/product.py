@@ -307,11 +307,9 @@ class Product(models.Model):
         # this optimizes [('location_id', 'child_of', locations.ids)]
         # by avoiding the ORM to search for children locations and injecting a
         # lot of location ids into the main query
-        for location in locations:
-            loc_domain = loc_domain and ['|'] + loc_domain or loc_domain
-            loc_domain.append(('location_id.parent_path', '=like', location.parent_path + '%'))
-            dest_loc_domain = dest_loc_domain and ['|'] + dest_loc_domain or dest_loc_domain
-            dest_loc_domain.append(('location_dest_id.parent_path', '=like', location.parent_path + '%'))
+        paths_domain = expression.OR([[('parent_path', '=like', loc.parent_path + '%')] for loc in locations])
+        loc_domain = [('location_id', 'any', paths_domain)]
+        dest_loc_domain = [('location_dest_id', 'any', paths_domain)]
 
         return (
             loc_domain,
@@ -918,7 +916,10 @@ class ProductTemplate(models.Model):
 
     # Be aware that the exact same function exists in product.product
     def action_open_quants(self):
-        return self.product_variant_ids.filtered(lambda p: p.active or p.qty_available != 0).action_open_quants()
+        if (self.env.context.get('default_product_id')):
+            return self.env['product.product'].browse(self.env.context['default_product_id']).action_open_quants()
+        else:
+            return self.product_variant_ids.filtered(lambda p: p.active or p.qty_available != 0).action_open_quants()
 
     def action_update_quantity_on_hand(self):
         advanced_option_groups = [

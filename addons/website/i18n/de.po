@@ -6105,6 +6105,13 @@ msgid "Hide For"
 msgstr "Ausblenden für"
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_popup/000.js:0
+#, python-format
+msgid "Hide the cookies bar"
+msgstr "Die Cookies-Leiste ausblenden"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
 msgid "Hide this page from search results"
 msgstr "Diese Seite in Suchergebnissen ausblenden"
@@ -6560,7 +6567,7 @@ msgstr "Vererben"
 #: model:ir.model.fields,field_description:website.field_website_controller_page__inherit_id
 #: model:ir.model.fields,field_description:website.field_website_page__inherit_id
 msgid "Inherited View"
-msgstr "Geerbte Ansicht"
+msgstr "Vererbte Ansicht"
 
 #. module: website
 #. odoo-javascript
@@ -7067,7 +7074,7 @@ msgstr "Bezeichnung für die Formularaktion"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Labels Width"
-msgstr "Feldbreite"
+msgstr "Beschriftungsbreite"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_groups
@@ -10551,6 +10558,13 @@ msgstr "reCaptcha-Richtlinie anzeigen"
 #: model_terms:ir.ui.view,arch_db:website.view_view_form_extend
 msgid "Show site map"
 msgstr "Sitemap anzeigen"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_popup/000.js:0
+#, python-format
+msgid "Show the cookies bar"
+msgstr "Die Cookies-Leiste einblenden"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options

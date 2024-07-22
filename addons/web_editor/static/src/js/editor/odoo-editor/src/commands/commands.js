@@ -53,6 +53,7 @@ import {
     TEXT_STYLE_CLASSES,
     padLinkWithZws,
     isLinkEligibleForZwnbsp,
+    paragraphRelatedElements,
 } from '../utils/utils.js';
 
 const TEXT_CLASSES_REGEX = /\btext-[^\s]*\b/;
@@ -289,6 +290,9 @@ export const editorCommands = {
                     }
                 }
             }
+            // Contenteditable false property changes to true after the node is
+            // inserted into DOM.
+            const isNodeToInsertContentEditable = nodeToInsert.isContentEditable;
             if (insertBefore) {
                 currentNode.before(nodeToInsert);
                 insertBefore = false;
@@ -297,6 +301,17 @@ export const editorCommands = {
             }
             if (currentNode.tagName !== 'BR' && isShrunkBlock(currentNode)) {
                 currentNode.remove();
+            }
+            // If the first child of editable is contenteditable false element
+            // a chromium bug prevents selecting the container. Prepend a
+            // zero-width space so it's no longer the first child.
+            if (
+                !isNodeToInsertContentEditable &&
+                editor.editable.firstChild === nodeToInsert &&
+                nodeToInsert.nodeName === 'DIV'
+            ) {
+                const zws = document.createTextNode('\u200B');
+                nodeToInsert.before(zws);
             }
             currentNode = nodeToInsert;
         }
@@ -579,6 +594,14 @@ export const editorCommands = {
         }
 
         let target = [...(blocks.size ? blocks : li)];
+        if (blocks.size) {
+            // Remove hardcoded padding to have default padding of list element 
+            for (const block of blocks) {
+                if (block.style) {
+                    block.style.padding = "";
+                }
+            }
+        }
         while (target.length) {
             const node = target.pop();
             // only apply one li per ul
@@ -970,10 +993,7 @@ export const editorCommands = {
     insertHorizontalRule(editor) {
         const selection = editor.document.getSelection();
         const range = selection.getRangeAt(0);
-        const element = closestElement(
-            range.startContainer,
-            'P, PRE, H1, H2, H3, H4, H5, H6, BLOCKQUOTE',
-        );
+        const element = closestElement(range.startContainer, paragraphRelatedElements) || closestBlock(range.startContainer);
 
         if (element && ancestors(element).includes(editor.editable)) {
             element.before(editor.document.createElement('hr'));

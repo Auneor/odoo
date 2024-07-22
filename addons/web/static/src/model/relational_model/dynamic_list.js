@@ -250,7 +250,8 @@ export class DynamicList extends DataPoint {
             );
             this.model.notification.add(msg, { title: _t("Warning") });
         }
-        await this._removeRecords(records.map((r) => r.id));
+        this._removeRecords(records.map((r) => r.id));
+        await this._load(this.offset, this.limit, this.orderBy, this.domain);
         return unlinked;
     }
 
@@ -284,6 +285,7 @@ export class DynamicList extends DataPoint {
             this.model.dialog.add(AlertDialog, {
                 body: _t("No valid record to save"),
                 confirm: () => this.leaveEditMode({ discard: true }),
+                dismiss: () => this.leaveEditMode({ discard: true }),
             });
             return false;
         } else {
