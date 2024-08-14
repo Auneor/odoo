@@ -113,6 +113,7 @@ class PartnerCategory(models.Model):
     _order = 'name'
     _parent_store = True
 
+
     def _get_default_color(self):
         return randint(1, 11)
 
