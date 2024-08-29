@@ -178,6 +178,7 @@ export class Wysiwyg extends Component {
                 this.odooEditor.historyPauseSteps();
                 try {
                     this._processAndApplyColor(colorType, props.color, true);
+                    this.odooEditor._computeHistorySelection();
                 } finally {
                     this.odooEditor.historyUnpauseSteps();
                 }
@@ -1471,7 +1472,7 @@ export class Wysiwyg extends Component {
                 ...this.options.linkOptions,
                 editable: this.odooEditor.editable,
                 link,
-                needLabel: true,
+                needLabel: true && !link.querySelector('img'),
                 focusField: link.innerHTML ? 'url' : '',
                 onSave: (data) => {
                     if (!data) {
@@ -2444,9 +2445,10 @@ export class Wysiwyg extends Component {
                 fontawesome: 'fa-pencil-square-o',
                 isDisabled: () => !this.odooEditor.isSelectionInBlockRoot(),
                 callback: async () => {
+                    const uid = Array.isArray(session.user_id) ? session.user_id[0] : session.user_id;
                     const [user] = await this.orm.read(
                         'res.users',
-                        [session.uid],
+                        [uid],
                         ['signature'],
                     );
                     if (user && user.signature) {
