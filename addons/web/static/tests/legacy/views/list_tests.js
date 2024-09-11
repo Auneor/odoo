@@ -770,6 +770,37 @@ QUnit.module('Views', {
         list.destroy();
     });
 
+    QUnit.test('Multiple-page-action-request should contain context', async function (assert) {
+        assert.expect(1);
+        const list = await createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            context: { this_key_should_be_present_in_context: 1 },
+            arch: `
+                <tree limit="1">
+                    <header>
+                         <button name="x" type="object" class="btn_triggering_search_request" string="btn triggering search request"/>
+                    </header>
+                    <field name="foo" />
+                </tree>`,
+            mockRPC(route, args) {
+                if (args.method === 'search') {
+                    assert.deepEqual(args.kwargs.context, { this_key_should_be_present_in_context: 1 });
+                }
+                return this._super.call(this, ...arguments);
+            }
+        });
+        // Click to: Select all records on current page
+        await testUtils.dom.click(list.el.querySelector('.o_data_row .o_list_record_selector input[type="checkbox"]'));
+        // Click to: Select all records on ALL pages
+        await testUtils.dom.click(list.el.querySelector('.o_list_select_domain'));
+        // Click on action button to trigger "search" request
+        await testUtils.dom.click(list.el.querySelector('button[name="x"]'));
+
+        list.destroy();
+    });
+
     QUnit.test('column names (noLabel, label, string and default)', async function (assert) {
         assert.expect(4);
 
@@ -2230,6 +2261,37 @@ QUnit.module('Views', {
         await testUtils.dom.click(list.$('.o_list_selection_box .o_list_select_domain'));
         assert.containsOnce(list.$('.o_cp_buttons'), '.o_list_selection_box');
         assert.strictEqual(list.$('.o_list_selection_box').text().trim(), 'All 4 selected');
+
+        list.destroy();
+    });
+
+    QUnit.test('selection box in grouped list, multi pages)', async function (assert) {
+        assert.expect(8);
+
+        var list = await createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            groupBy: ['int_field'],
+            arch: '<tree groups_limit="2"><field name="foo"/><field name="bar"/></tree>',
+        });
+
+        assert.containsN(list, '.o_group_header', 2);
+        assert.containsNone(list.$('.o_cp_buttons'), '.o_list_selection_box');
+
+        // open first group and select all records of first page
+        await testUtils.dom.click(list.$('.o_group_header:first'));
+        assert.containsOnce(list, '.o_data_row');
+        await testUtils.dom.click(list.$('thead .o_list_record_selector input'));
+        assert.containsOnce(list.$('.o_cp_buttons'), '.o_list_selection_box');
+        assert.containsOnce(list.$('.o_list_selection_box'), '.o_list_select_domain');
+        assert.strictEqual(list.$('.o_list_selection_box').text().replace(/\s+/g, ' ').trim(),
+            '1 selected Select all'); // we don't know the total count, so we don't display it
+
+        // select all domain
+        await testUtils.dom.click(list.$('.o_list_selection_box .o_list_select_domain'));
+        assert.containsOnce(list.$('.o_cp_buttons'), '.o_list_selection_box');
+        assert.strictEqual(list.$('.o_list_selection_box').text().trim(), 'All selected');
 
         list.destroy();
     });

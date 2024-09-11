@@ -15,7 +15,7 @@ from urllib.parse import urlparse
 import idna
 import markupsafe
 from lxml import etree
-from lxml.html import clean
+from lxml.html import clean, defs
 from werkzeug import urls
 
 import odoo
@@ -34,8 +34,8 @@ tags_to_kill = ['base', 'embed', 'frame', 'head', 'iframe', 'link', 'meta',
 tags_to_remove = ['html', 'body']
 
 # allow new semantic HTML5 tags
-allowed_tags = clean.defs.tags | frozenset('article bdi section header footer hgroup nav aside figure main'.split() + [etree.Comment])
-safe_attrs = clean.defs.safe_attrs | frozenset(
+allowed_tags = defs.tags | frozenset('article bdi section header footer hgroup nav aside figure main'.split() + [etree.Comment])
+safe_attrs = defs.safe_attrs | frozenset(
     ['style',
      'data-o-mail-quote',  # quote detection
      'data-oe-model', 'data-oe-id', 'data-oe-field', 'data-oe-type', 'data-oe-expression', 'data-oe-translation-id', 'data-oe-nodeid',
@@ -189,6 +189,10 @@ def html_sanitize(src, silent=True, sanitize_tags=True, sanitize_attributes=Fals
     # html encode mako tags <% ... %> to decode them later and keep them alive, otherwise they are stripped by the cleaner
     src = src.replace(u'<%', misc.html_escape(u'<%'))
     src = src.replace(u'%>', misc.html_escape(u'%>'))
+
+    # On the specific case of Outlook desktop it adds unnecessary '<o:.*></o:.*>' tags which are parsed
+    # in '<p></p>' which may alter the appearance (eg. spacing) of the mail body
+    src = re.sub(r'</?o:.*?>', '', src)
 
     kwargs = {
         'page_structure': True,
@@ -351,7 +355,7 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
     html = html.replace('<em>', '/').replace('</em>', '/')
     html = html.replace('<tr>', '\n')
     html = html.replace('</p>', '\n')
-    html = re.sub('<br\s*/?>', '\n', html)
+    html = re.sub(r'<br\s*/?>', '\n', html)
     html = re.sub('<.*?>', ' ', html)
     html = html.replace(' ' * 2, ' ')
     html = html.replace('&gt;', '>')
@@ -443,7 +447,8 @@ def append_content_to_html(html, content, plaintext=True, preserve=False, contai
 
 def prepend_html_content(html_body, html_content):
     """Prepend some HTML content at the beginning of an other HTML content."""
-    html_content = type(html_content)(re.sub(r'(?i)(</?(?:html|body|head|!\s*DOCTYPE)[^>]*>)', '', html_content))
+    replacement = re.sub(r'(?i)(</?(?:html|body|head|!\s*DOCTYPE)[^>]*>)', '', html_content)
+    html_content = markupsafe.Markup(replacement) if isinstance(html_content, markupsafe.Markup) else replacement
     html_content = html_content.strip()
 
     body_match = re.search(r'<body[^>]*>', html_body) or re.search(r'<html[^>]*>', html_body)

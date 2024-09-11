@@ -15,17 +15,18 @@
 # Jiří Podhorecký, 2022
 # Martin Trigaux, 2022
 # SlavekB <slavek.banko@axis.cz>, 2023
-# Tomáš Píšek, 2023
 # Jakub Smolka, 2023
-# Aleš Fiala <f.ales1@seznam.cz>, 2023
+# Tomáš Píšek, 2023
+# Aleš Fiala <f.ales1@seznam.cz>, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:20+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:27+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,6 +47,29 @@ msgstr "záznamy"
 #, python-format
 msgid "# Code editor"
 msgstr "# Editor kódu"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/web_calendar.xml:0
+#, python-format
+msgid ""
+"#{ ['all', false].includes(filter.value) or !widget.avatar_field ? "
+"filter.label : '' }"
+msgstr ""
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "#{i.display_name} is current state"
+msgstr ""
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "#{i.display_name} is not current state"
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -227,7 +251,7 @@ msgstr "1 záznam"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
 msgid "<span class=\"text-nowrap\">$ 2,887.50</span>"
-msgstr ""
+msgstr "<span class=\"text-nowrap\">$ 2,887.50</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -235,6 +259,8 @@ msgid ""
 "<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">\n"
 "                                                       22,137.50</span></span>"
 msgstr ""
+"<span class=\"text-nowrap\">$ <span class=\"oe_currency_value\">\n"
+"                                                       22,137.50</span></span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -376,7 +402,7 @@ msgstr "<strong>Celkem</strong>"
 #: code:addons/web/static/src/search/favorite_menu/custom_favorite_item.js:0
 #, python-format
 msgid "A filter with same name already exists."
-msgstr ""
+msgstr "Filtr se stejným názvem již existuje."
 
 #. module: web
 #. openerp-web
@@ -434,7 +460,7 @@ msgstr "Přístup ke všem podnikovým aplikacím"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
 #, python-format
 msgid "Action"
 msgstr "Akce"
@@ -464,13 +490,6 @@ msgstr "Aktivace ladění položek"
 #, python-format
 msgid "Activate Tests Assets Debugging"
 msgstr "Aktivovat debugging testovacích assetů"
-
-#. module: web
-#. openerp-web
-#: code:addons/web/static/src/core/debug/debug_providers.js:0
-#, python-format
-msgid "Activate debug mode"
-msgstr ""
 
 #. module: web
 #. openerp-web
@@ -588,17 +607,17 @@ msgstr "Přidat k oblíbeným"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/legacy/xml/base.xml:0
-#, python-format
-msgid "Additional actions"
-msgstr ""
-
-#. module: web
-#. openerp-web
 #: code:addons/web/static/src/legacy/js/fields/relational_fields.js:0
 #, python-format
 msgid "Add: "
 msgstr "Přidat "
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
+#, python-format
+msgid "Additional actions"
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -802,6 +821,7 @@ msgstr "Opravdu na nich chcete provést následující aktualizaci"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Ascending"
 msgstr "Vzestupně"
@@ -870,6 +890,7 @@ msgstr "Odznaky"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Bar Chart"
@@ -1090,6 +1111,13 @@ msgstr "Vymazat podpis"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "Click to change current state to #{i.display_name}"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 #: code:addons/web/static/src/core/dialog/dialog.xml:0
 #: code:addons/web/static/src/core/notifications/notification.xml:0
@@ -1146,7 +1174,7 @@ msgstr "Firma"
 #: model:ir.model.fields,field_description:web.field_base_document_layout__company_details
 #: model_terms:ir.ui.view,arch_db:web.view_base_document_layout
 msgid "Company Details"
-msgstr ""
+msgstr "Detaily společnosti"
 
 #. module: web
 #: model:ir.model,name:web.model_base_document_layout
@@ -1320,7 +1348,7 @@ msgstr "Nemohu serializovat XML"
 msgid ""
 "Could not set the cover image: incorrect field (\"%s\") is provided in the "
 "view."
-msgstr ""
+msgstr "Nelze nastavit úvodní obrázek: v zobrazení je nesprávné pole („%s“)."
 
 #. module: web
 #. openerp-web
@@ -1568,6 +1596,7 @@ msgstr "Smazat řádek"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Descending"
 msgstr "Klesající"
@@ -1606,7 +1635,7 @@ msgstr "Zrušit změnu záznamu"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Discard record"
-msgstr ""
+msgstr "Zahodit záznam"
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__display_name
@@ -1653,7 +1682,7 @@ msgstr "Doména"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Domain node"
-msgstr ""
+msgstr "Uzel domény"
 
 #. module: web
 #. openerp-web
@@ -1706,6 +1735,7 @@ msgstr "Stáhnout náhled v PDF"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #, python-format
 msgid "Download xlsx"
@@ -1849,6 +1879,7 @@ msgstr "Všechno"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/pivot/pivot_view.xml:0
+#: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #, python-format
 msgid "Expand all"
 msgstr "Rozbalit vše"
@@ -1981,6 +2012,7 @@ msgstr "Filtry"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #, python-format
 msgid "Flip axis"
@@ -2379,6 +2411,7 @@ msgstr "Světle modrá"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Line Chart"
 msgstr "Čárový graf"
@@ -2521,14 +2554,14 @@ msgstr "Spravovat filtry"
 #: code:addons/web/static/src/legacy/js/fields/relational_fields.js:0
 #, python-format
 msgid "Many2many"
-msgstr ""
+msgstr "Many2many"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/js/fields/relational_fields.js:0
 #, python-format
 msgid "Many2one"
-msgstr ""
+msgstr "Many2one"
 
 #. module: web
 #. openerp-web
@@ -2718,7 +2751,7 @@ msgstr "Nové heslo"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "New Password (Confirmation)"
-msgstr ""
+msgstr "Nové heslo (potvrzení)"
 
 #. module: web
 #. openerp-web
@@ -2890,6 +2923,13 @@ msgstr "Není aktivní stav, klepnutím ho změňte"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/search/filter_menu/custom_filter_item.xml:0
+#, python-format
+msgid "Number using {{ DECIMAL_POINT }} as decimal separator."
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
@@ -3011,7 +3051,7 @@ msgstr "Při změně:"
 #: code:addons/web/static/src/legacy/js/fields/relational_fields.js:0
 #, python-format
 msgid "One2many"
-msgstr ""
+msgstr "One2many"
 
 #. module: web
 #: code:addons/web/controllers/main.py:0
@@ -3035,6 +3075,8 @@ msgid ""
 "Only types %(supported_types)s are supported for category (found type "
 "%(field_type)s)"
 msgstr ""
+"Pouze typy %(supported_types)s jsou podporovány pro kategorii (nalezený typ "
+"%(field_type)s)"
 
 #. module: web
 #: code:addons/web/models/models.py:0
@@ -3073,7 +3115,7 @@ msgstr "Otevřít zobrazení"
 #: code:addons/web/static/src/core/debug/debug_menu.xml:0
 #, python-format
 msgid "Open developer tools"
-msgstr ""
+msgstr "Otevřít vývojářské nástroje"
 
 #. module: web
 #. openerp-web
@@ -3118,14 +3160,14 @@ msgstr "Otevřít: "
 #: code:addons/web/static/src/legacy/js/views/calendar/calendar_controller.js:0
 #, python-format
 msgid "Open: %s"
-msgstr ""
+msgstr "Otevřít: %s"
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/js/views/list/list_renderer.js:0
 #, python-format
 msgid "Optional columns"
-msgstr ""
+msgstr "Volitelné sloupce"
 
 #. module: web
 #. openerp-web
@@ -3181,7 +3223,7 @@ msgstr "Strana: <span class=\"page\"/> / <span class=\"topage\"/>"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Pager"
-msgstr ""
+msgstr "Pager"
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__paperformat_id
@@ -3231,6 +3273,7 @@ msgstr "Zvolit barvu"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Pie Chart"
@@ -3373,12 +3416,12 @@ msgstr "Náhled"
 #. module: web
 #: model:ir.actions.report,name:web.action_report_externalpreview
 msgid "Preview External Report"
-msgstr ""
+msgstr "Náhled externího výkazu"
 
 #. module: web
 #: model:ir.actions.report,name:web.action_report_internalpreview
 msgid "Preview Internal Report"
-msgstr ""
+msgstr "Náhled interního výkazu"
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__preview_logo
@@ -3416,7 +3459,7 @@ msgstr "Minulý rok"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Previous menu"
-msgstr ""
+msgstr "Předchozí menu"
 
 #. module: web
 #. openerp-web
@@ -3433,6 +3476,7 @@ msgstr "Hlavní barva"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
 #: code:addons/web/static/src/legacy/xml/report.xml:0
 #: code:addons/web/static/src/legacy/xml/report.xml:0
 #, python-format
@@ -3441,10 +3485,10 @@ msgstr "Tisk"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/legacy/xml/report.xml:0
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
 #, python-format
 msgid "Printing options"
-msgstr ""
+msgstr "Možnosti tisku"
 
 #. module: web
 #. openerp-web
@@ -3615,7 +3659,7 @@ msgstr "Regenerovat balíčky assetů"
 #: code:addons/web/static/src/legacy/js/widgets/model_field_selector.js:0
 #, python-format
 msgid "Relation not allowed"
-msgstr ""
+msgstr "Vztah není povolen"
 
 #. module: web
 #. openerp-web
@@ -3707,7 +3751,7 @@ msgstr "Rozložení sestavy"
 #. module: web
 #: model:ir.actions.report,name:web.action_report_layout_preview
 msgid "Report Layout Preview"
-msgstr ""
+msgstr "Náhled rozložení dokumentu"
 
 #. module: web
 #. openerp-web
@@ -3820,7 +3864,7 @@ msgstr "Uložit výchozí"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Save record"
-msgstr ""
+msgstr "Uložit záznam"
 
 #. module: web
 #. openerp-web
@@ -3846,14 +3890,14 @@ msgstr "Vyhledat více..."
 #: code:addons/web/static/src/core/commands/command_service.js:0
 #, python-format
 msgid "Search for a command..."
-msgstr ""
+msgstr "Hledat příkaz..."
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Search for records"
-msgstr ""
+msgstr "Hledat záznamy"
 
 #. module: web
 #. openerp-web
@@ -4000,14 +4044,14 @@ msgstr "Nastavit úvodní obrázek"
 #: code:addons/web/static/src/legacy/js/fields/basic_fields.js:0
 #, python-format
 msgid "Set a kanban state..."
-msgstr ""
+msgstr "Nastavit stav kanban..."
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/js/fields/basic_fields.js:0
 #, python-format
 msgid "Set a priority..."
-msgstr ""
+msgstr "Nastavit prioritu..."
 
 #. module: web
 #. openerp-web
@@ -4021,14 +4065,14 @@ msgstr "Nastavte na svém uživateli časové pásmo"
 #: code:addons/web/static/src/legacy/js/fields/basic_fields.js:0
 #, python-format
 msgid "Set kanban state..."
-msgstr ""
+msgstr "Nastavit stav kanban..."
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/legacy/js/fields/basic_fields.js:0
 #, python-format
 msgid "Set priority..."
-msgstr ""
+msgstr "Nastavit prioritu..."
 
 #. module: web
 #. openerp-web
@@ -4059,7 +4103,7 @@ msgstr "Klávesové zkratky"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Show sub-fields"
-msgstr ""
+msgstr "Zobrazit podřízená pole"
 
 #. module: web
 #. openerp-web
@@ -4117,6 +4161,7 @@ msgstr "Speciální:"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Stacked"
 msgstr "Skládaný"
@@ -4172,6 +4217,14 @@ msgstr "Podpora"
 #, python-format
 msgid "Syntax error"
 msgstr "Chyba syntaxe"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "Tag color: #{colornames[color]}"
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -4247,6 +4300,8 @@ msgid ""
 "The content of this cell is too long for an XLSX file (more than %s "
 "characters). Please use the CSV format for this export."
 msgstr ""
+"Obsah této buňky je pro soubor XLSX příliš dlouhý (více než %s znaků). Pro "
+"tento export použijte prosím formát CSV."
 
 #. module: web
 #. openerp-web
@@ -4304,6 +4359,8 @@ msgid ""
 "There are too many rows (%s rows, limit: %s) to export as Excel 2007-2013 "
 "(.xlsx) format. Consider splitting the export."
 msgstr ""
+"Je příliš mnoho řádků (%s řádků, limit: %s) pro export do formátu Excel "
+"2007-2013 (.xlsx). Zvažte rozdělení exportu."
 
 #. module: web
 #. openerp-web
@@ -4441,7 +4498,7 @@ msgstr "Celkem"
 #: code:addons/web/static/src/legacy/js/widgets/translation_dialog.js:0
 #, python-format
 msgid "Translate: %s"
-msgstr ""
+msgstr "Přeložit: %s"
 
 #. module: web
 #. openerp-web
@@ -4458,6 +4515,8 @@ msgid ""
 "Try to add some records, or make sure that there is no\n"
 "                    active filter in the search bar."
 msgstr ""
+"Zkuste přidat nějaké záznamy, nebo se ujistěte, že není žádný\n"
+"                    aktivní filtr ve vyhledávací liště."
 
 #. module: web
 #. openerp-web
@@ -4630,7 +4689,7 @@ msgstr "Upgrade na budoucí verze"
 #: code:addons/web/static/src/legacy/js/views/kanban/kanban_record.js:0
 #, python-format
 msgid "Upload and Set"
-msgstr ""
+msgstr "Nahrát a nastavit"
 
 #. module: web
 #. openerp-web
@@ -4691,7 +4750,7 @@ msgstr "Nahrávání... (%s%%)"
 #: code:addons/web/static/src/legacy/js/views/kanban/kanban_column_quick_create.js:0
 #, python-format
 msgid "Use This For My Kanban"
-msgstr ""
+msgstr "Použijte to pro můj kanban"
 
 #. module: web
 #. openerp-web
@@ -4712,7 +4771,7 @@ msgstr "Uživatel"
 #: code:addons/web/static/src/core/errors/error_dialogs.js:0
 #, python-format
 msgid "User Error"
-msgstr ""
+msgstr "Chyba uživatele"
 
 #. module: web
 #. openerp-web
@@ -4782,7 +4841,7 @@ msgstr "Typ zobrazení"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "View switcher"
-msgstr ""
+msgstr "Zobrazit přepínač"
 
 #. module: web
 #. openerp-web
@@ -4809,7 +4868,7 @@ msgstr "Testy webu pro mobilní zařízení"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.qunit_suite
 msgid "Web Tests"
-msgstr ""
+msgstr "Webové testy"
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__website
@@ -4993,7 +5052,7 @@ msgstr "Vaše jméno"
 #: code:addons/web/static/src/legacy/js/views/kanban/kanban_record.js:0
 #, python-format
 msgid "[No widget %s]"
-msgstr ""
+msgstr "[Žádný widget %s]"
 
 #. module: web
 #. openerp-web
@@ -5034,6 +5093,14 @@ msgstr "asi před rokem"
 #, python-format
 msgid "about an hour ago"
 msgstr "asi před hodinou"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "all"
+msgstr "vše"
 
 #. module: web
 #. openerp-web
@@ -5215,7 +5282,7 @@ msgstr "je před"
 #: code:addons/web/static/src/search/filter_menu/custom_filter_item.js:0
 #, python-format
 msgid "is before or equal to"
-msgstr ""
+msgstr "je před nebo rovno"
 
 #. module: web
 #. openerp-web
@@ -5328,7 +5395,7 @@ msgstr "je pravda"
 #: code:addons/web/static/src/core/ui/block_ui.js:0
 #, python-format
 msgid "it's still loading..."
-msgstr ""
+msgstr "stále se to načítá..."
 
 #. module: web
 #. openerp-web
@@ -5365,6 +5432,13 @@ msgstr "menší nebo rovno"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/search/search_dropdown_item/search_dropdown_item.xml:0
+#, python-format
+msgid "menuitemcheckbox"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/js/views/file_upload_mixin.js:0
 #, python-format
 msgid "message: %s"
@@ -5378,6 +5452,13 @@ msgstr "zpráva: %s"
 #, python-format
 msgid "ms"
 msgstr "ms"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "new_template"
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -5440,6 +5521,13 @@ msgstr "nadřízený "
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/search/search_dropdown_item/search_dropdown_item.xml:0
+#, python-format
+msgid "props.checked ? 'true' : 'false'"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "props.fields"
@@ -5466,7 +5554,7 @@ msgstr "záznam(y)"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "records ?"
-msgstr ""
+msgstr "záznamy ?"
 
 #. module: web
 #. openerp-web
@@ -5496,6 +5584,14 @@ msgstr "vybráno"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "selected records,"
+msgstr "vybrané záznamy,"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "self"
 msgstr ""
 
 #. module: web

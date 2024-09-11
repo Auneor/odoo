@@ -20,15 +20,15 @@
 # Wahyu Setiawan <wahyusetiaaa@gmail.com>, 2022
 # whenwesober, 2022
 # Ryanto The <ry.the77@gmail.com>, 2022
-# Abe Manyo, 2023
+# Abe Manyo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:28+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:22+0000\n"
-"Last-Translator: Abe Manyo, 2023\n"
+"Last-Translator: Abe Manyo, 2024\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1434,7 +1434,7 @@ msgstr "Status Kehadiran HR"
 #. module: hr
 #: model:ir.ui.menu,name:hr.menu_hr_main
 msgid "Human Resources"
-msgstr "Personalia"
+msgstr "Sumber Daya Manusia"
 
 #. module: hr
 #: model:hr.job,name:hr.job_hrm
@@ -1506,7 +1506,7 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the resource "
 "record without removing it."
 msgstr ""
-"Jika kolom aktif diatur ke Salah, itu akan memungkinkan Anda untuk "
+"Jika kolom aktif diatur ke False, itu akan memungkinkan Anda untuk "
 "menyembunyikan data sumber daya tanpa menghapusnya."
 
 #. module: hr
@@ -1837,7 +1837,7 @@ msgstr "Deadline Kegiatan Saya"
 
 #. module: hr
 #. openerp-web
-#: code:addons/hr/static/src/xml/hr_templates.xml:0
+#: code:addons/hr/static/src/js/user_menu.js:0
 #, python-format
 msgid "My Profile"
 msgstr "Profil Saya"
@@ -2907,8 +2907,8 @@ msgstr "Ijin kerja yang sah untuk Belgium"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__visa_expire
 #: model:ir.model.fields,field_description:hr.field_res_users__visa_expire
-msgid "Visa Expire Date"
-msgstr "Visa Berakhir Tanggal"
+msgid "Visa Expiration Date"
+msgstr "Tanggal Kadaluwarsa Visa"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__visa_no

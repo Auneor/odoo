@@ -16,6 +16,7 @@ from odoo.tools import (
     email_domain_normalize, email_normalize, email_split, email_split_and_format,
     misc, formataddr,
     prepend_html_content,
+    config,
 )
 
 from . import test_mail_examples
@@ -63,7 +64,7 @@ class TestSanitizer(BaseCase):
             ("<DIV STYLE=\"background-image: url(&#1;javascript:alert('XSS'))\">"),  # div background + extra characters
             ("<IMG SRC='vbscript:msgbox(\"XSS\")'>"),  # VBscrip in an image
             ("<BODY ONLOAD=alert('XSS')>"),  # event handler
-            ("<BR SIZE=\"&{alert('XSS')}\>"),  # & javascript includes
+            ("<BR SIZE=\"&{alert('XSS')}\\>"),  # & javascript includes
             ("<LINK REL=\"stylesheet\" HREF=\"javascript:alert('XSS');\">"),  # style sheet
             ("<LINK REL=\"stylesheet\" HREF=\"http://ha.ckers.org/xss.css\">"),  # remote style sheet
             ("<STYLE>@import'http://ha.ckers.org/xss.css';</STYLE>"),  # remote style sheet 2
@@ -85,6 +86,46 @@ class TestSanitizer(BaseCase):
             self.assertIn(tag, sanitized_html, 'html_sanitize stripped too much of original html')
         for attr in ['javascript']:
             self.assertNotIn(attr, sanitized_html, 'html_sanitize did not remove enough unwanted attributes')
+
+    def test_outlook_mail_sanitize(self):
+        case = """<div class="WordSection1">
+<p class="MsoNormal">Here is a test mail<o:p></o:p></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal">With a break line<o:p></o:p></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class="MsoNormal">Then two<o:p></o:p></p>
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">
+<p class="MsoNormal"><b>From:</b> Mitchell Admin &lt;dummy@example.com&gt;
+<br>
+<b>Sent:</b> Monday, November 20, 2023 8:34 AM<br>
+<b>To:</b> test user &lt;dummy@example.com&gt;<br>
+<b>Subject:</b> test (#23)<o:p></o:p></p>
+</div>
+</div>"""
+
+        expected = """<div class="WordSection1">
+<p class="MsoNormal">Here is a test mail</p>
+<p class="MsoNormal"> </p>
+<p class="MsoNormal">With a break line</p>
+<p class="MsoNormal"> </p>
+<p class="MsoNormal"> </p>
+<p class="MsoNormal">Then two</p>
+<p class="MsoNormal"> </p>
+<div>
+<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">
+<p class="MsoNormal"><b>From:</b> Mitchell Admin &lt;dummy@example.com&gt;
+<br>
+<b>Sent:</b> Monday, November 20, 2023 8:34 AM<br>
+<b>To:</b> test user &lt;dummy@example.com&gt;<br>
+<b>Subject:</b> test (#23)</p>
+</div>
+</div></div>"""
+
+        result = html_sanitize(case)
+        self.assertEqual(result, expected)
 
     def test_sanitize_unescape_emails(self):
         not_emails = [
@@ -613,7 +654,7 @@ class TestEmailTools(BaseCase):
 
 
 class EmailConfigCase(TransactionCase):
-    @patch.dict("odoo.tools.config.options", {"email_from": "settings@example.com"})
+    @patch.dict(config.options, {"email_from": "settings@example.com"})
     def test_default_email_from(self, *args):
         """Email from setting is respected."""
         # ICP setting is more important

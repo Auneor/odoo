@@ -11,15 +11,16 @@
 # Odoo Thaidev <odoothaidev@gmail.com>, 2021
 # Martin Trigaux, 2021
 # Wichanon Jamwutthipreecha, 2022
-# Rasareeyar Lappiam, 2023
+# Rasareeyar Lappiam, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:19+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:25+0000\n"
-"Last-Translator: Rasareeyar Lappiam, 2023\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -129,13 +130,13 @@ msgstr "- ถึงเมื่อ"
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__10
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__10
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__11
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__11
 msgid "11"
-msgstr ""
+msgstr "11"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__12
@@ -147,19 +148,19 @@ msgstr "12"
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__13
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__13
 msgid "13"
-msgstr ""
+msgstr "13"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__14
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__14
 msgid "14"
-msgstr ""
+msgstr "14"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__15
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__15
 msgid "15"
-msgstr ""
+msgstr "15"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__16
@@ -171,13 +172,13 @@ msgstr "16"
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__17
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__17
 msgid "17"
-msgstr ""
+msgstr "17"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__18
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__18
 msgid "18"
-msgstr ""
+msgstr "18"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__19
@@ -201,7 +202,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__22
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__22
 msgid "22"
-msgstr ""
+msgstr "22"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__23
@@ -237,7 +238,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__28
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__28
 msgid "28"
-msgstr ""
+msgstr "28"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__29
@@ -249,13 +250,13 @@ msgstr ""
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__30
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__30
 msgid "30"
-msgstr ""
+msgstr "30"
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_day__31
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_day__31
 msgid "31"
-msgstr ""
+msgstr "31"
 
 #. module: project
 #. openerp-web
@@ -441,6 +442,14 @@ msgstr ""
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
 msgid ""
+"<span class=\"font-weight-bold oe_read_only\" attrs=\"{'invisible': [('alias_name', '!=', False)]}\" style=\"opacity: 0.7;\">Create tasks by sending an email to </span>\n"
+"                                        <span class=\"font-weight-bold oe_read_only text-dark\" attrs=\"{'invisible': [('alias_name', '=', False)]}\">Create tasks by sending an email to </span>\n"
+"                                        <span class=\"font-weight-bold oe_edit_only text-dark\">Create tasks by sending an email to </span>"
+msgstr ""
+
+#. module: project
+#: model_terms:ir.ui.view,arch_db:project.edit_project
+msgid ""
 "<span class=\"o_stat_text\">\n"
 "                                    Collaborators\n"
 "                                </span>"
@@ -486,14 +495,6 @@ msgstr "<span class=\"o_stat_text\">อัตรากำไรขั้นต�
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_form2
 msgid "<span class=\"o_stat_text\">in Recurrence</span>"
-msgstr ""
-
-#. module: project
-#: model_terms:ir.ui.view,arch_db:project.edit_project
-msgid ""
-"<span class=\"oe_read_only\" attrs=\"{'invisible': [('alias_name', '!=', False)]}\">Create tasks by sending an email to </span>\n"
-"                                        <span class=\"font-weight-bold oe_read_only\" attrs=\"{'invisible': [('alias_name', '=', False)]}\">Create tasks by sending an email to </span>\n"
-"                                        <span class=\"font-weight-bold oe_edit_only\">Create tasks by sending an email to </span>"
 msgstr ""
 
 #. module: project
@@ -863,6 +864,12 @@ msgid "Archived"
 msgstr "เก็บถาวร"
 
 #. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "Archived tasks cannot be recurring. Please unarchive the task first."
+msgstr ""
+
+#. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_confirmation_wizard
 msgid "Are you sure you want to continue?"
 msgstr "คุณแน่ใจหรือไม่ว่าต้องการดำเนินการต่อ?"
@@ -896,16 +903,6 @@ msgid "Assign to Me"
 msgstr ""
 
 #. module: project
-#: model_terms:ir.ui.view,help:project.project_sharing_project_task_view_kanban
-msgid " assignee"
-msgstr ""
-
-#. module: project
-#: model_terms:ir.ui.view,help:project.project_sharing_project_task_view_kanban
-msgid " assignees"
-msgstr ""
-
-#. module: project
 #. openerp-web
 #: code:addons/project/static/src/js/project_task_kanban_examples.js:0
 #, python-format
@@ -924,7 +921,6 @@ msgid "Assigned to"
 msgstr "มอบหมายให้"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:0
 #: model:ir.model.fields,field_description:project.field_project_task__user_ids
 #: model:ir.model.fields,field_description:project.field_project_task_burndown_chart_report__user_ids
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__user_ids
@@ -935,7 +931,6 @@ msgstr "มอบหมายให้"
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_tree
 #: model_terms:ir.ui.view,arch_db:project.view_task_project_user_search
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
-#, python-format
 msgid "Assignees"
 msgstr "ผู้รับมอบหมาย"
 
@@ -1107,6 +1102,26 @@ msgstr "Burndown Chart"
 #: model:project.task.type,legend_done:project.project_stage_1
 msgid "Buzz or set as done"
 msgstr "บัซหรือตั้งค่าว่าเสร็จแล้ว"
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__day
+msgid "By Day"
+msgstr ""
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__month
+msgid "By Month"
+msgstr ""
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__year
+msgid "By Year"
+msgstr ""
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__quarter
+msgid "By quarter"
+msgstr ""
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_delete_wizard_form
@@ -1574,40 +1589,6 @@ msgstr ""
 "                 การแก้ปัญหาของงานหรือประเด็นปัญหา"
 
 #. module: project
-#: model:ir.model.fields,help:project.field_project_project__privacy_visibility
-#: model:ir.model.fields,help:project.field_project_task__project_privacy_visibility
-msgid ""
-"People to whom this project and its tasks will be visible.\n"
-"\n"
-"- Invited internal users: when following a project, internal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
-" A user with the project > administrator access right level can still access this project and its tasks, even if they are not explicitly part of the followers.\n"
-"\n"
-"- All internal users: all internal users can access the project and all of its tasks without distinction.\n"
-"\n"
-"- Invited portal users and all internal users: all internal users can access the project and all of its tasks without distinction.\n"
-"When following a project, portal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
-"\n"
-"When a project is shared in read-only, the portal user is redirected to their portal. They can view the tasks, but not edit them.\n"
-"When a project is shared in edit, the portal user is redirected to the kanban and list views of the tasks. They can modify a selected number of fields on the tasks.\n"
-"\n"
-"In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
-msgstr ""
-"บุคคลที่โปรเจ็กต์นี้และงานของโปรเจ็กต์สามารถมองเห็นได้\n"
-"\n"
-"- ผู้ใช้ภายในที่ได้รับเชิญ: เมื่อติดตามโปรเจ็กต์ ผู้ใช้ภายในจะสามารถเข้าถึงงานทั้งหมดโดยไม่มีความแตกต่าง ไม่เช่นนั้น พวกเขาจะเข้าถึงได้เฉพาะงานเฉพาะที่พวกเขาติดตามเท่านั้น\n"
-"ผู้ใช้ที่มีระดับสิทธิ์การเข้าถึงโปรเจ็กต์ > ผู้ดูแลระบบยังคงสามารถเข้าถึงโปรเจ็กต์นี้และงานของโปรเจ็กต์ได้ แม้ว่าพวกเขาจะไม่ได้เป็นส่วนหนึ่งของผู้ติดตามอย่างชัดเจนก็ตาม\n"
-"\n"
-"- ผู้ใช้ภายในทั้งหมด: ผู้ใช้ภายในทุกคนสามารถเข้าถึงโปรเจ็กต์และงานทั้งหมดโดยไม่มีความแตกต่าง\n"
-"\n"
-"- ผู้ใช้พอร์ทัลที่ได้รับเชิญและผู้ใช้ภายในทั้งหมด: ผู้ใช้ภายในทั้งหมดสามารถเข้าถึงโปรเจ็กต์และงานทั้งหมดโดยไม่มีความแตกต่าง\n"
-"เมื่อติดตามโปรเจ็กต์ ผู้ใช้พอร์ทัลจะสามารถเข้าถึงงานทั้งหมดโดยไม่มีความแตกต่าง ไม่เช่นนั้น พวกเขาจะเข้าถึงได้เฉพาะงานเฉพาะที่พวกเขาติดตามเท่านั้น\n"
-"\n"
-"เมื่อมีการแชร์โปรเจ็กต์แบบอ่านอย่างเดียว ผู้ใช้พอร์ทัลจะถูกเปลี่ยนเส้นทางไปยังพอร์ทัลของพวกเขา พวกเขาสามารถดูงานได้ แต่ไม่สามารถแก้ไขได้\n"
-"เมื่อมีการแชร์โปรเจ็กต์ในการแก้ไข ผู้ใช้พอร์ทัลจะถูกเปลี่ยนเส้นทางไปยังคัมบังและมุมมองรายการของงาน พวกเขาสามารถแก้ไขฟิลด์จำนวนที่เลือกในงานได้\n"
-"\n"
-"ไม่ว่าในกรณีใด ผู้ใช้ภายในที่ไม่มีสิทธิ์การเข้าถึงโปรเจ็กต์ยังคงสามารถเข้าถึงงานได้ โดยมีเงื่อนไขว่าพวกเขาจะได้รับ URL ที่เกี่ยวข้อง (และพวกเขาเป็นส่วนหนึ่งของผู้ติดตามหากโปรเจ็กต์เป็นแบบส่วนตัว)"
-
-#. module: project
 #: model:ir.actions.server,name:project.unlink_project_action
 #: model:ir.actions.server,name:project.unlink_task_type_action
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_wizard
@@ -1993,6 +1974,7 @@ msgstr "วันศุกร์"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_search
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Future Activities"
 msgstr "กิจกรรมในอนาคต"
@@ -2383,10 +2365,29 @@ msgstr ""
 
 #. module: project
 #. openerp-web
+#: code:addons/project/static/src/js/project_list.js:0
+#, python-format
+msgid ""
+"It seems that some tasks are part of a recurrence. At least one of them must"
+" be kept as a model to create the next occurences."
+msgstr ""
+
+#. module: project
+#. openerp-web
 #: code:addons/project/static/src/js/project_form.js:0
 #: code:addons/project/static/src/js/project_list.js:0
 #, python-format
 msgid "It seems that this task is part of a recurrence."
+msgstr ""
+
+#. module: project
+#. openerp-web
+#: code:addons/project/static/src/js/project_form.js:0
+#: code:addons/project/static/src/js/project_list.js:0
+#, python-format
+msgid ""
+"It seems that this task is part of a recurrence. You must keep it as a model"
+" to create the next occurences."
 msgstr ""
 
 #. module: project
@@ -2541,6 +2542,7 @@ msgid "Last Updated on"
 msgstr "อัพเดทครั้งสุดท้ายเมื่อ"
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Late Activities"
 msgstr "กิจกรรม"
@@ -3034,7 +3036,7 @@ msgstr "จํานวนการดําเนินการ"
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_type__after
 #: model:ir.model.fields.selection,name:project.selection__project_task_recurrence__repeat_type__after
 msgid "Number of Repetitions"
-msgstr ""
+msgstr "จำนวนการทำซ้ำ"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task_type_delete_wizard__tasks_count
@@ -3163,7 +3165,7 @@ msgstr "งานที่เปิดอยู่"
 #: model_terms:ir.ui.view,arch_db:project.project_task_burndown_chart_report_view_search
 #: model_terms:ir.ui.view,arch_db:project.view_task_project_user_search
 msgid "Open tasks"
-msgstr ""
+msgstr "เปิดงาน"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__alias_force_thread_id
@@ -3252,6 +3254,40 @@ msgstr ""
 "โมเดลหลักถือนามแฝง "
 "โมเดลที่มีการอ้างอิงนามแฝงไม่จำเป็นต้องเป็นโมเดลที่กำหนดโดย alias_model_id "
 "(ตัวอย่าง: โครงการ (parent_model) และงาน (แบบจำลอง))"
+
+#. module: project
+#: model:ir.model.fields,help:project.field_project_project__privacy_visibility
+#: model:ir.model.fields,help:project.field_project_task__project_privacy_visibility
+msgid ""
+"People to whom this project and its tasks will be visible.\n"
+"\n"
+"- Invited internal users: when following a project, internal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+" A user with the project > administrator access right level can still access this project and its tasks, even if they are not explicitly part of the followers.\n"
+"\n"
+"- All internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"\n"
+"- Invited portal users and all internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"When following a project, portal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+"\n"
+"When a project is shared in read-only, the portal user is redirected to their portal. They can view the tasks, but not edit them.\n"
+"When a project is shared in edit, the portal user is redirected to the kanban and list views of the tasks. They can modify a selected number of fields on the tasks.\n"
+"\n"
+"In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
+msgstr ""
+"บุคคลที่โปรเจ็กต์นี้และงานของโปรเจ็กต์สามารถมองเห็นได้\n"
+"\n"
+"- ผู้ใช้ภายในที่ได้รับเชิญ: เมื่อติดตามโปรเจ็กต์ ผู้ใช้ภายในจะสามารถเข้าถึงงานทั้งหมดโดยไม่มีความแตกต่าง ไม่เช่นนั้น พวกเขาจะเข้าถึงได้เฉพาะงานเฉพาะที่พวกเขาติดตามเท่านั้น\n"
+"ผู้ใช้ที่มีระดับสิทธิ์การเข้าถึงโปรเจ็กต์ > ผู้ดูแลระบบยังคงสามารถเข้าถึงโปรเจ็กต์นี้และงานของโปรเจ็กต์ได้ แม้ว่าพวกเขาจะไม่ได้เป็นส่วนหนึ่งของผู้ติดตามอย่างชัดเจนก็ตาม\n"
+"\n"
+"- ผู้ใช้ภายในทั้งหมด: ผู้ใช้ภายในทุกคนสามารถเข้าถึงโปรเจ็กต์และงานทั้งหมดโดยไม่มีความแตกต่าง\n"
+"\n"
+"- ผู้ใช้พอร์ทัลที่ได้รับเชิญและผู้ใช้ภายในทั้งหมด: ผู้ใช้ภายในทั้งหมดสามารถเข้าถึงโปรเจ็กต์และงานทั้งหมดโดยไม่มีความแตกต่าง\n"
+"เมื่อติดตามโปรเจ็กต์ ผู้ใช้พอร์ทัลจะสามารถเข้าถึงงานทั้งหมดโดยไม่มีความแตกต่าง ไม่เช่นนั้น พวกเขาจะเข้าถึงได้เฉพาะงานเฉพาะที่พวกเขาติดตามเท่านั้น\n"
+"\n"
+"เมื่อมีการแชร์โปรเจ็กต์แบบอ่านอย่างเดียว ผู้ใช้พอร์ทัลจะถูกเปลี่ยนเส้นทางไปยังพอร์ทัลของพวกเขา พวกเขาสามารถดูงานได้ แต่ไม่สามารถแก้ไขได้\n"
+"เมื่อมีการแชร์โปรเจ็กต์ในการแก้ไข ผู้ใช้พอร์ทัลจะถูกเปลี่ยนเส้นทางไปยังคัมบังและมุมมองรายการของงาน พวกเขาสามารถแก้ไขฟิลด์จำนวนที่เลือกในงานได้\n"
+"\n"
+"ไม่ว่าในกรณีใด ผู้ใช้ภายในที่ไม่มีสิทธิ์การเข้าถึงโปรเจ็กต์ยังคงสามารถเข้าถึงงานได้ โดยมีเงื่อนไขว่าพวกเขาจะได้รับ URL ที่เกี่ยวข้อง (และพวกเขาเป็นส่วนหนึ่งของผู้ติดตามหากโปรเจ็กต์เป็นแบบส่วนตัว)"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__rating_percentage_satisfaction
@@ -3872,7 +3908,7 @@ msgstr ""
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_form2
 msgid "Repeat On"
-msgstr ""
+msgstr "ทำซ้ำใน"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task__repeat_on_month
@@ -3922,7 +3958,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project.field_project_task__repeat_number
 #: model:ir.model.fields,field_description:project.field_project_task_recurrence__repeat_number
 msgid "Repetitions"
-msgstr ""
+msgstr "การทำซ้ำ"
 
 #. module: project
 #: model:ir.ui.menu,name:project.menu_project_report
@@ -4145,6 +4181,7 @@ msgid "Show Project on Dashboard"
 msgstr "แสดงโปรเจ็กต์บนแดชบอร์ด"
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Show all records which has next action date is before today"
 msgstr "Show all records which has next action date is before today"
@@ -4506,7 +4543,7 @@ msgstr "งาน:"
 #. module: project
 #: model:mail.template,name:project.rating_project_request_email_template
 msgid "Task: Rating Request"
-msgstr ""
+msgstr "งาน: การขอคะแนน"
 
 #. module: project
 #: model:mail.template,name:project.mail_template_data_project_task
@@ -4514,6 +4551,7 @@ msgid "Task: Reception Acknowledgment"
 msgstr ""
 
 #. module: project
+#: code:addons/project/models/project.py:0
 #: code:addons/project/models/project.py:0
 #: model:ir.actions.act_window,name:project.act_project_project_2_project_task_all
 #: model:ir.actions.act_window,name:project.action_view_task
@@ -4842,6 +4880,7 @@ msgstr "วันนี้"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_search
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Today Activities"
 msgstr "กิจกรรมวันนี้"
@@ -5242,14 +5281,12 @@ msgid ""
 msgstr "คุณไม่สามารถลบขั้นตอนที่มีงานอยู่ได้ คุณควรลบงานทั้งหมดของพวกเขาก่อน"
 
 #. module: project
-#. odoo-python
 #: code:addons/project/models/project.py:0
 #, python-format
 msgid "You cannot read %s fields in task."
 msgstr "คุณไม่สามารถอ่านข้อมูล %sในงานได้"
 
 #. module: project
-#. odoo-python
 #: code:addons/project/models/project.py:0
 #, python-format
 msgid "You cannot write on %s fields in task."
@@ -5281,6 +5318,16 @@ msgid ""
 msgstr ""
 "คุณควรมีขั้นตอนส่วนตัวอย่างน้อยหนึ่งขั้นตอน "
 "สร้างขั้นตอนใหม่ซึ่งสามารถถ่ายโอนงานได้หลังจากที่ลบงานนี้ไปแล้ว"
+
+#. module: project
+#: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_kanban
+msgid "assignee"
+msgstr ""
+
+#. module: project
+#: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_kanban
+msgid "assignees"
+msgstr "ผู้รับมอบหมาย"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_quick_create_task_form

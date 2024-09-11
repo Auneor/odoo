@@ -39,7 +39,7 @@ import markupsafe
 import passlib.utils
 import pytz
 import werkzeug.utils
-from lxml import etree
+from lxml import etree, objectify
 
 import odoo
 import odoo.addons
@@ -60,6 +60,9 @@ SKIPPED_ELEMENT_TYPES = (etree._Comment, etree._ProcessingInstruction, etree.Com
 
 # Configure default global parser
 etree.set_default_parser(etree.XMLParser(resolve_entities=False))
+default_parser = etree.XMLParser(resolve_entities=False, remove_blank_text=True)
+default_parser.set_element_class_lookup(objectify.ObjectifyElementClassLookup())
+objectify.set_default_parser(default_parser)
 
 NON_BREAKING_SPACE = u'\N{NO-BREAK SPACE}'
 
@@ -126,11 +129,10 @@ def exec_pg_environ():
 def exec_pg_command(name, *args):
     prog = find_pg_tool(name)
     env = exec_pg_environ()
-    with open(os.devnull) as dn:
-        args2 = (prog,) + args
-        rc = subprocess.call(args2, env=env, stdout=dn, stderr=subprocess.STDOUT)
-        if rc:
-            raise Exception('Postgres subprocess %s error %s' % (args2, rc))
+    args2 = (prog,) + args
+    rc = subprocess.call(args2, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    if rc:
+        raise Exception('Postgres subprocess %s error %s' % (args2, rc))
 
 def exec_pg_command_pipe(name, *args):
     prog = find_pg_tool(name)
@@ -1593,7 +1595,7 @@ class DotDict(dict):
     """
     def __getattr__(self, attrib):
         val = self.get(attrib)
-        return DotDict(val) if type(val) is dict else val
+        return DotDict(val) if isinstance(val, dict) else val
 
 
 def get_diff(data_from, data_to, custom_style=False):

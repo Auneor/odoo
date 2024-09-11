@@ -150,7 +150,7 @@ TRANSLATED_ELEMENTS = {
 TRANSLATED_ATTRS = dict.fromkeys({
     'string', 'add-label', 'help', 'sum', 'avg', 'confirm', 'placeholder', 'alt', 'title', 'aria-label',
     'aria-keyshortcuts', 'aria-placeholder', 'aria-roledescription', 'aria-valuetext',
-    'value_label', 'data-tooltip',
+    'value_label', 'data-tooltip', 'data-editor-message', 'label',
 }, lambda e: True)
 
 def translate_attrib_value(node):
@@ -171,6 +171,7 @@ TRANSLATED_ATTRS.update(
 
 avoid_pattern = re.compile(r"\s*<!DOCTYPE", re.IGNORECASE | re.MULTILINE | re.UNICODE)
 node_pattern = re.compile(r"<[^>]*>(.*)</[^<]*>", re.DOTALL | re.MULTILINE | re.UNICODE)
+space_pattern = re.compile(r"[\s\uFEFF]*")  # web_editor uses \uFEFF as ZWNBSP
 
 
 def translate_xml_node(node, callback, parse, serialize):
@@ -183,7 +184,7 @@ def translate_xml_node(node, callback, parse, serialize):
 
     def nonspace(text):
         """ Return whether ``text`` is a string with non-space characters. """
-        return bool(text) and not text.isspace()
+        return bool(text) and not space_pattern.fullmatch(text)
 
     def translatable(node):
         """ Return whether the given node can be translated as a whole. """
@@ -734,23 +735,20 @@ class PoFileWriter:
         grouped_rows = {}
         modules = set([])
         for module, type, name, res_id, src, trad, comments in rows:
-            row = grouped_rows.setdefault(src, [])
-            new_row = {}
-            new_row.setdefault('modules', set()).add(module)
-            new_row['translation'] = trad
-            new_row.setdefault('tnrs', []).append((type, name, res_id))
-            new_row.setdefault('comments', set()).update(comments)
-            row.append(new_row)
+            row = grouped_rows.setdefault(src, {})
+            row.setdefault('modules', set()).add(module)
+            row['translation'] = trad
+            row.setdefault('tnrs', []).append((type, name, res_id))
+            row.setdefault('comments', set()).update(comments)
             modules.add(module)
 
-        for src, rows in sorted(grouped_rows.items()):
-            for row in rows:
-                if not self.lang:
-                    # translation template, so no translation value
-                    row['translation'] = ''
-                elif not row.get('translation'):
-                    row['translation'] = ''
-            self.add_entry(row['modules'], sorted(row['tnrs']), src, row['translation'], row['comments'])
+        for src, row in sorted(grouped_rows.items()):
+            if not self.lang:
+                # translation template, so no translation value
+                row['translation'] = ''
+            elif not row.get('translation'):
+                row['translation'] = ''
+            self.add_entry(sorted(row['modules']), sorted(row['tnrs']), src, row['translation'], row['comments'])
 
         import odoo.release as release
         self.po.header = "Translation of %s.\n" \
@@ -843,7 +841,7 @@ def trans_parse_rml(de):
         for m in n:
             if isinstance(m, SKIPPED_ELEMENT_TYPES) or not m.text:
                 continue
-            string_list = [s.replace('\n', ' ').strip() for s in re.split('\[\[.+?\]\]', m.text)]
+            string_list = [s.replace('\n', ' ').strip() for s in re.split(r'\[\[.+?\]\]', m.text)]
             for s in string_list:
                 if s:
                     res.append(s.encode("utf8"))
@@ -900,8 +898,8 @@ def _extract_translatable_qweb_terms(element, callback):
             # them all lower case.
             # https://www.w3schools.com/html/html5_syntax.asp
             # https://github.com/odoo/owl/blob/master/doc/reference/component.md#composition
-            if not el.tag[0].isupper() and 't-component' not in el.attrib:
-                for att in ('title', 'alt', 'label', 'placeholder', 'aria-label'):
+            if not el.tag[0].isupper() and 't-component' not in el.attrib and 't-set-slot' not in el.attrib:
+                for att in TRANSLATED_ATTRS:
                     if att in el.attrib:
                         _push(callback, el.attrib[att], el.sourceline)
             _extract_translatable_qweb_terms(el, callback)
@@ -950,7 +948,7 @@ class TranslationModuleReader:
         self._path_list = [(path, True) for path in odoo.addons.__path__]
         self._installed_modules = [
             m['name']
-            for m in self.env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'])
+            for m in self.env['ir.module.module'].search_read([('state', '=', 'installed')], fields=['name'], order='name')
         ]
 
         self._export_translatable_records()
@@ -1238,7 +1236,7 @@ def trans_load_data(cr, fileobj, fileformat, lang,
 
 def get_locales(lang=None):
     if lang is None:
-        lang = locale.getdefaultlocale()[0]
+        lang = locale.getlocale()[0]
 
     if os.name == 'nt':
         lang = _LOCALE2WIN32.get(lang, lang)

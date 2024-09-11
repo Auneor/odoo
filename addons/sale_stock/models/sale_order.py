@@ -303,13 +303,29 @@ class SaleOrderLine(models.Model):
          2. The quotation hasn't commitment_date, we compute the estimated delivery
             date based on lead time"""
         treated = self.browse()
+        all_move_ids = {
+            move.id
+            for line in self
+            if line.state == 'sale' 
+            for move in line.move_ids
+            if move.product_id == line.product_id
+        }
+        all_moves = self.env['stock.move'].browse(all_move_ids)
+        forecast_expected_date_per_move = dict(all_moves.mapped(lambda m: (m.id, m.forecast_expected_date)))
         # If the state is already in sale the picking is created and a simple forecasted quantity isn't enough
         # Then used the forecasted data of the related stock.move
         for line in self.filtered(lambda l: l.state == 'sale'):
             if not line.display_qty_widget:
                 continue
             moves = line.move_ids.filtered(lambda m: m.product_id == line.product_id)
-            line.forecast_expected_date = max(moves.filtered("forecast_expected_date").mapped("forecast_expected_date"), default=False)
+            line.forecast_expected_date = max(
+                (
+                    forecast_expected_date_per_move[move.id]
+                    for move in moves
+                    if forecast_expected_date_per_move[move.id]
+                ),
+                default=False,
+            )
             line.qty_available_today = 0
             line.free_qty_today = 0
             for move in moves:
@@ -603,6 +619,6 @@ class SaleOrderLine(models.Model):
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         line_products = self.filtered(lambda l: l.product_id.type in ['product', 'consu'])
         if line_products.mapped('qty_delivered') and float_compare(values['product_uom_qty'], max(line_products.mapped('qty_delivered')), precision_digits=precision) == -1:
-            raise UserError(_('You cannot decrease the ordered quantity below the delivered quantity.\n'
-                              'Create a return first.'))
+            raise UserError(_('You cannot decrease the ordered quantity of a sale order line below its delivered quantity.\n'
+                              'Create a return in your inventory first.'))
         super(SaleOrderLine, self)._update_line_quantity(values)

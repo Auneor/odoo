@@ -6,8 +6,9 @@
 # Martin Trigaux, 2021
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2021
 # Wil Odoo, 2023
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
-# Jolien De Paepe, 2023
+# Jolien De Paepe, 2024
+# Manon Rondou, 2024
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2024
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-24 09:03+0000\n"
 "PO-Revision-Date: 2021-09-14 12:18+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2024\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16599,7 +16600,7 @@ msgstr "Toon de font awesome marker niet"
 #: model:ir.model.fields.selection,name:base.selection__ir_actions_todo__state__done
 #: model:ir.model.fields.selection,name:base.selection__res_company__base_onboarding_company_state__done
 msgid "Done"
-msgstr "Gereed"
+msgstr "Afgehandeld"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.form_res_users_key_show
@@ -18368,6 +18369,12 @@ msgstr "Frankrijk  - Boekhouding"
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_reports
 msgid "France - Accounting Reports"
 msgstr "Frankrijk - Boekhoudkundige rapporten"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_fr_invoice_addr
+msgid "France - Adding Mandatory Invoice Mentions (Decree no. 2022-1299)"
+msgstr ""
+"Frankrijk - Verplichte factuurvermeldingen toevoegen (Decreet nr. 2022-1299)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_fr_fec
@@ -29327,6 +29334,12 @@ msgid "Scheduled Actions Triggers"
 msgstr "Geplande acties Triggers"
 
 #. module: base
+#: code:addons/base/models/ir_cron.py:0
+#, python-format
+msgid "Scheduled action disabled"
+msgstr "Geplande actie uitgeschakeld"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_ir_cron__user_id
 msgid "Scheduler User"
 msgstr "Geplande gebruiker"
@@ -29612,6 +29625,17 @@ msgstr "Verzend je verzendingen via Fedex en volg ze online"
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_ups
+msgid ""
+"This is the legacy integration with UPS that is no longer supported. Please "
+"install the new \"UPS Shipping\" module and uninstall this one as soon as "
+"possible. This integration will stop working in 2024."
+msgstr ""
+"Dit is de oudere integratie met UPS die niet langer wordt ondersteund. "
+"Installeer de nieuwe \"UPS Shipping\" module en verwijder deze zo snel "
+"mogelijk. Deze integratie stopt met werken in 2024."
+
+#. module: base
+#: model:ir.module.module,summary:base.module_delivery_ups_rest
 msgid "Send your shippings through UPS and track them online"
 msgstr "Verzend je verzendingen via USPS en volg ze online"
 
@@ -32049,6 +32073,16 @@ msgstr ""
 "%s"
 
 #. module: base
+#: code:addons/base/models/ir_cron.py:0
+#, python-format
+msgid ""
+"This scheduled action has been disabled because its interval number is not a"
+" strictly positive value."
+msgstr ""
+"Deze geplande actie is uitgeschakeld omdat het intervalnummer geen strikt "
+"positieve waarde is."
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_lang__thousands_sep
 msgid "Thousands Separator"
 msgstr "Duizend scheidingsteken"
@@ -32633,6 +32667,11 @@ msgstr "UNSPSC productcodes"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_delivery_ups
+msgid "UPS Shipping (Legacy)"
+msgstr "UPS Shipping (oud)"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_delivery_ups_rest
 msgid "UPS Shipping"
 msgstr "UPS verzending"
 
@@ -34297,6 +34336,16 @@ msgstr ""
 "Gelinkte actieve gebruikers : %(names)s"
 
 #. module: base
+#: code:addons/base/models/res_lang.py:0
+#, python-format
+msgid ""
+"You cannot archive the language in which Odoo was setup as it is used by "
+"automated processes."
+msgstr ""
+"Je kan de taal waarin Odoo is ingesteld niet archiveren, omdat deze gebruikt"
+" wordt door geautomatiseerde processen."
+
+#. module: base
 #: code:addons/base/models/res_partner.py:0
 #, python-format
 msgid "You cannot create recursive Partner hierarchies."
@@ -34361,6 +34410,17 @@ msgstr ""
 #, python-format
 msgid "You cannot delete the %s record."
 msgstr "Je kan het record %s niet verwijderen."
+
+#. module: base
+#: code:addons/base/models/res_users.py:0
+#, python-format
+msgid ""
+"You cannot delete the admin user because it is utilized in various places "
+"(such as security configurations,...). Instead, archive it."
+msgstr ""
+"Je kunt de admin-gebruiker niet verwijderen omdat deze op verschillende "
+"plaatsen wordt gebruikt (zoals in beveiligingsconfiguraties,...). Archiveer "
+"het in plaats daarvan."
 
 #. module: base
 #: code:addons/base/models/res_lang.py:0
@@ -34654,7 +34714,7 @@ msgstr "documentatie"
 #: model:ir.model.fields.selection,name:base.selection__base_language_install__state__done
 #: model:ir.model.fields.selection,name:base.selection__base_module_update__state__done
 msgid "done"
-msgstr "gereed"
+msgstr "afgehandeld"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_category_form
