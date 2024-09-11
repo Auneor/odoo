@@ -25,6 +25,8 @@ import {
     isVisibleEmpty,
     isNotEditableNode,
     createDOMPathGenerator,
+    closestElement,
+    ZERO_WIDTH_CHARS,
 } from '../utils/utils.js';
 
 Text.prototype.oDeleteBackward = function (offset, alreadyMoved = false) {
@@ -47,7 +49,7 @@ Text.prototype.oDeleteBackward = function (offset, alreadyMoved = false) {
     // Do remove the character, then restore the state of the surrounding parts.
     const restore = prepareUpdate(parentNode, firstSplitOffset, parentNode, secondSplitOffset);
     const isSpace = !isVisibleStr(middleNode) && !isInPre(middleNode);
-    const isZWS = middleNode.nodeValue === '\u200B';
+    const isZWS = ZERO_WIDTH_CHARS.includes(middleNode.nodeValue);
     middleNode.remove();
     restore();
 
@@ -58,7 +60,7 @@ Text.prototype.oDeleteBackward = function (offset, alreadyMoved = false) {
         getState(parentNode, firstSplitOffset, DIRECTIONS.LEFT).cType !== CTYPES.CONTENT
     ) {
         parentNode.oDeleteBackward(firstSplitOffset, alreadyMoved);
-        if (isZWS) {
+        if (isZWS && parentNode.isConnected) {
             fillEmpty(parentNode);
         }
         return;
@@ -73,7 +75,7 @@ const isDeletable = (node) => {
 }
 
 HTMLElement.prototype.oDeleteBackward = function (offset, alreadyMoved = false, offsetLimit) {
-    const contentIsZWS = this.textContent === '\u200B';
+    const contentIsZWS = ZERO_WIDTH_CHARS.includes(this.textContent);
     let moveDest;
     if (offset) {
         const leftNode = this.childNodes[offset - 1];
@@ -113,8 +115,8 @@ HTMLElement.prototype.oDeleteBackward = function (offset, alreadyMoved = false, 
             throw UNREMOVABLE_ROLLBACK_CODE;
         }
         const parentEl = this.parentNode;
-
-        if (!isBlock(this) || isVisibleEmpty(this)) {
+        const closestLi = closestElement(this, 'li');
+        if ((closestLi && !closestLi.previousElementSibling) || !isBlock(this) || isVisibleEmpty(this)) {
             /**
              * Backspace at the beginning of an inline node, nothing has to be
              * done: propagate the backspace. If the node was empty, we remove
@@ -163,7 +165,8 @@ HTMLElement.prototype.oDeleteBackward = function (offset, alreadyMoved = false, 
          */
         if (
             !this.previousElementSibling &&
-            ['BLOCKQUOTE', 'H1', 'H2', 'H3', 'PRE'].includes(this.nodeName)
+            ['BLOCKQUOTE', 'H1', 'H2', 'H3', 'PRE'].includes(this.nodeName) &&
+            !closestLi
         ) {
             const p = document.createElement('p');
             p.replaceChildren(...this.childNodes);
@@ -252,6 +255,12 @@ HTMLBRElement.prototype.oDeleteBackward = function (offset, alreadyMoved = false
     if (rightState & CTYPES.BLOCK_INSIDE) {
         this.parentElement.oDeleteBackward(parentOffset, alreadyMoved);
     } else {
+        HTMLElement.prototype.oDeleteBackward.call(this, offset, alreadyMoved);
+    }
+};
+
+HTMLTableCellElement.prototype.oDeleteBackward = function (offset, alreadyMoved = false) {
+    if (offset) {
         HTMLElement.prototype.oDeleteBackward.call(this, offset, alreadyMoved);
     }
 };
