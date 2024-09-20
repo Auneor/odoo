@@ -25,7 +25,9 @@ import types
 import unicodedata
 import werkzeug.utils
 import zipfile
-from collections import defaultdict, Iterable, Mapping, MutableMapping, MutableSet, OrderedDict
+from collections import defaultdict, OrderedDict
+from collections.abc import Iterable, Mapping, MutableMapping, MutableSet
+
 from itertools import islice, groupby as itergroupby, repeat
 from lxml import etree
 
@@ -139,7 +141,7 @@ def exec_pg_command_pipe(name, *args):
 #file_path_root = os.getcwd()
 #file_path_addons = os.path.join(file_path_root, 'addons')
 
-def file_open(name, mode="r", subdir='addons', pathinfo=False):
+def file_open(name, mode="r", subdir='addons', pathinfo=False, filter_ext=None):
     """Open a file from the OpenERP root, using a subdir folder.
 
     Example::
@@ -151,6 +153,7 @@ def file_open(name, mode="r", subdir='addons', pathinfo=False):
     @param mode file open mode
     @param subdir subdirectory
     @param pathinfo if True returns tuple (fileobject, filepath)
+    @param filter_ext: optional list of supported extensions (without leading dot)
 
     @return fileobject if pathinfo is False else (fileobject, filepath)
     """
@@ -173,7 +176,7 @@ def file_open(name, mode="r", subdir='addons', pathinfo=False):
         else:
             # It is outside the OpenERP root: skip zipfile lookup.
             base, name = os.path.split(name)
-        return _fileopen(name, mode=mode, basedir=base, pathinfo=pathinfo, basename=basename)
+        return _fileopen(name, mode=mode, basedir=base, pathinfo=pathinfo, basename=basename, filter_ext=filter_ext)
 
     if name.replace(os.sep, '/').startswith('addons/'):
         subdir = 'addons'
@@ -191,15 +194,15 @@ def file_open(name, mode="r", subdir='addons', pathinfo=False):
         for adp in adps:
             try:
                 return _fileopen(name2, mode=mode, basedir=adp,
-                                 pathinfo=pathinfo, basename=basename)
+                                 pathinfo=pathinfo, basename=basename, filter_ext=filter_ext)
             except IOError:
                 pass
 
     # Second, try to locate in root_path
-    return _fileopen(name, mode=mode, basedir=rtp, pathinfo=pathinfo, basename=basename)
+    return _fileopen(name, mode=mode, basedir=rtp, pathinfo=pathinfo, basename=basename, filter_ext=filter_ext)
 
 
-def _fileopen(path, mode, basedir, pathinfo, basename=None):
+def _fileopen(path, mode, basedir, pathinfo, basename=None, filter_ext=None):
     name = os.path.normpath(os.path.normcase(os.path.join(basedir, path)))
 
     import odoo.modules as addons
@@ -210,6 +213,9 @@ def _fileopen(path, mode, basedir, pathinfo, basename=None):
             break
     else:
         raise ValueError("Unknown path: %s" % name)
+
+    if filter_ext and not name.lower().endswith(filter_ext):
+        raise ValueError("Unsupported path: %s" % name)
 
     if basename is None:
         basename = name
@@ -1124,13 +1130,25 @@ def ignore(*exc):
     except exc:
         pass
 
-# Avoid DeprecationWarning while still remaining compatible with werkzeug pre-0.9
-if parse_version(getattr(werkzeug, '__version__', '0.0')) < parse_version('0.9.0'):
-    def html_escape(text):
-        return werkzeug.utils.escape(text, quote=True)
-else:
-    def html_escape(text):
-        return werkzeug.utils.escape(text)
+def html_escape(text):
+    """ Vendored from werkzeug.utils.escape which is deprecated in 2.0
+    Replace special characters "&", "<", ">" and (") to HTML-safe sequences.
+    There is a special handling for `None` which escapes to an empty string.
+    :param s: the string to escape.
+    """
+    if  text is None:
+        return ""
+    elif hasattr(text, "__html__"):
+        return str(text.__html__())
+    elif not isinstance(text, str):
+        text = str(text)
+    text = (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+    return text
 
 def babel_locale_parse(lang_code):
     try:
@@ -1158,9 +1176,9 @@ def formatLang(env, value, digits=None, grouping=True, monetary=False, dp=False,
         elif currency_obj:
             digits = currency_obj.decimal_places
         elif (hasattr(value, '_field') and getattr(value._field, 'digits', None)):
-                digits = value._field.digits[1]
-                if not digits and digits is not 0:
-                    digits = DEFAULT_DIGITS
+            digits = value._field.digits[1]
+            if not digits and digits != 0:
+                digits = DEFAULT_DIGITS
 
     if isinstance(value, pycompat.string_types) and not value:
         return ''

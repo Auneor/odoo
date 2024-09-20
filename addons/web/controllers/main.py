@@ -50,12 +50,8 @@ from odoo.service import db, security
 
 _logger = logging.getLogger(__name__)
 
-if hasattr(sys, 'frozen'):
-    # When running on compiled windows binary, we don't have access to package loader.
-    path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'views'))
-    loader = jinja2.FileSystemLoader(path)
-else:
-    loader = jinja2.PackageLoader('odoo.addons.web', "views")
+path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'views'))
+loader = jinja2.FileSystemLoader(path)
 
 env = jinja2.Environment(loader=loader, autoescape=True)
 env.filters["json"] = json.dumps
@@ -99,9 +95,8 @@ def redirect_with_hash(*args, **kw):
     return http.redirect_with_hash(*args, **kw)
 
 def abort_and_redirect(url):
-    r = request.httprequest
     response = werkzeug.utils.redirect(url, 302)
-    response = r.app.get_response(r, response, explicit_session=False)
+    response = http.root.get_response(request.httprequest, response, explicit_session=False)
     werkzeug.exceptions.abort(response)
 
 def ensure_db(redirect='/web/database/selector'):
@@ -222,7 +217,7 @@ def concat_xml(file_list):
         #elif root.tag != xml.tag:
         #    raise ValueError("Root tags missmatch: %r != %r" % (root.tag, xml.tag))
 
-        for child in xml.getchildren():
+        for child in list(xml):
             root.append(child)
     return ElementTree.tostring(root, 'utf-8'), checksum.hexdigest()
 
@@ -435,6 +430,11 @@ def binary_content(xmlid=None, model='ir.attachment', id=None, field='datas', un
         default_mimetype=default_mimetype, related_id=related_id, access_mode=access_mode, access_token=access_token,
         env=env)
 
+# Shared parameters for all login/signup flows
+SIGN_UP_REQUEST_PARAMS = {'db', 'login', 'debug', 'token', 'message', 'error', 'scope', 'mode',
+                          'redirect', 'redirect_hostname', 'email', 'name', 'partner_id',
+                          'password', 'confirm_password', 'city', 'country_id', 'lang'}
+
 #----------------------------------------------------------
 # Odoo Web web Controllers
 #----------------------------------------------------------
@@ -480,7 +480,7 @@ class Home(http.Controller):
         if not request.uid:
             request.uid = odoo.SUPERUSER_ID
 
-        values = request.params.copy()
+        values = {k: v for k, v in request.params.items() if k in SIGN_UP_REQUEST_PARAMS}
         try:
             values['databases'] = http.db_list()
         except odoo.exceptions.AccessDenied:
@@ -664,7 +664,7 @@ class Proxy(http.Controller):
         from werkzeug.wrappers import BaseResponse
 
         base_url = request.httprequest.base_url
-        return Client(request.httprequest.app, BaseResponse).get(path, base_url=base_url).data
+        return Client(http.root, BaseResponse).get(path, base_url=base_url).data
 
     @http.route('/web/proxy/post/<path:path>', type='http', auth='user', methods=['GET'])
     def post(self, path):
@@ -676,7 +676,7 @@ class Proxy(http.Controller):
             from werkzeug.wrappers import BaseResponse
             base_url = request.httprequest.base_url
             query_string = request.httprequest.query_string
-            client = Client(request.httprequest.app, BaseResponse)
+            client = Client(http.root, BaseResponse)
             headers = {'X-Openerp-Session-Id': request.session.sid}
             return client.post('/' + path, base_url=base_url, query_string=query_string,
                                headers=headers, data=data)
@@ -886,7 +886,7 @@ class Session(http.Controller):
             'state': json.dumps({'d': request.db, 'u': ICP.get_param('web.base.url')}),
             'scope': 'userinfo',
         }
-        return 'https://accounts.odoo.com/oauth2/auth?' + werkzeug.url_encode(params)
+        return 'https://accounts.odoo.com/oauth2/auth?' + werkzeug.urls.url_encode(params)
 
     @http.route('/web/session/destroy', type='json', auth="user")
     def destroy(self):
@@ -1169,7 +1169,7 @@ class Binary(http.Controller):
             try:
                 attachment = Model.create({
                     'name': filename,
-                    'datas': base64.encodestring(ufile.read()),
+                    'datas': base64.encodebytes(ufile.read()),
                     'datas_fname': filename,
                     'res_model': model,
                     'res_id': int(id)

@@ -13,7 +13,7 @@ except ImportError:
     slugify_lib = None
 
 import odoo
-from odoo import api, models
+from odoo import api, models, http
 from odoo.addons.base.models.ir_http import RequestUID, ModelConverter
 from odoo.http import request
 from odoo.tools import config, ustr, pycompat
@@ -166,7 +166,7 @@ def is_multilang_url(local_url, langs=None):
     url = local_url.partition('#')[0].split('?')
     path = url[0]
     query_string = url[1] if len(url) > 1 else None
-    router = request.httprequest.app.get_db_router(request.db).bind('')
+    router = http.root.get_db_router(request.db).bind('')
 
     def is_multilang_func(func):
         return (func and func.routing.get('website', False) and
@@ -418,8 +418,13 @@ class IrHttp(models.AbstractModel):
             raise Exception("Rerouting limit exceeded")
         request.httprequest.environ['PATH_INFO'] = path
         # void werkzeug cached_property. TODO: find a proper way to do this
-        for key in ('path', 'full_path', 'url', 'base_url'):
+        for key in ('full_path', 'url', 'base_url'):
             request.httprequest.__dict__.pop(key, None)
+        # since werkzeug 2.0 `path`` became an attribute and is not a cached property anymore
+        if hasattr(type(request.httprequest), 'path'): # cached property
+            request.httprequest.__dict__.pop('path', None)
+        else: # direct attribute
+            request.httprequest.path = '/' + path.lstrip('/')
 
         return cls._dispatch()
 
@@ -436,8 +441,8 @@ class IrHttp(models.AbstractModel):
             return cls._handle_exception(e)
 
         if getattr(request, 'is_frontend_multilang', False) and request.httprequest.method in ('GET', 'HEAD'):
-            generated_path = werkzeug.url_unquote_plus(path)
-            current_path = werkzeug.url_unquote_plus(request.httprequest.path)
+            generated_path = werkzeug.urls.url_unquote_plus(path)
+            current_path = werkzeug.urls.url_unquote_plus(request.httprequest.path)
             if generated_path != current_path:
                 if request.lang != cls._get_default_lang().code:
                     path = '/' + request.lang + path

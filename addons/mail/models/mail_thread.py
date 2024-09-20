@@ -21,7 +21,6 @@ except ImportError:
 from collections import namedtuple
 from email.message import Message
 from lxml import etree
-from werkzeug import url_encode
 from werkzeug import urls
 
 from odoo import _, api, exceptions, fields, models, tools
@@ -700,7 +699,7 @@ class MailThread(models.AbstractModel):
             token = self._notify_encode_link(base_link, params)
             params['token'] = token
 
-        link = '%s?%s' % (base_link, url_encode(params))
+        link = '%s?%s' % (base_link, urls.url_encode(params))
 
         if self and hasattr(self, 'get_base_url'):
             link = self[0].get_base_url() + link
@@ -1146,6 +1145,9 @@ class MailThread(models.AbstractModel):
         Alias, dest_aliases = self.env['mail.alias'], self.env['mail.alias']
         catchall_alias = self.env['ir.config_parameter'].sudo().get_param("mail.catchall.alias")
         bounce_alias = self.env['ir.config_parameter'].sudo().get_param("mail.bounce.alias")
+        alias_domain = self.env['ir.config_parameter'].sudo().get_param("mail.catchall.domain")
+        # activate strict alias domain check for stable, will be falsy by default to be backward compatible
+        alias_domain_check = tools.str2bool(self.env['ir.config_parameter'].sudo().get_param("mail.catchall.domain.strict", "False"))
         fallback_model = model
 
         # get email.message.Message variables for future processing
@@ -1164,6 +1166,7 @@ class MailThread(models.AbstractModel):
         email_to_localparts = [
             e.split('@', 1)[0].lower()
             for e in (tools.email_split(email_to) or [''])
+            if not alias_domain_check or (not alias_domain or e.endswith('@%s' % alias_domain))
         ]
 
         # Delivered-To is a safe bet in most modern MTAs, but we have to fallback on To + Cc values
@@ -1177,6 +1180,7 @@ class MailThread(models.AbstractModel):
         rcpt_tos_localparts = [
             e.split('@')[0].lower()
             for e in tools.email_split(rcpt_tos)
+            if not alias_domain_check or (not alias_domain or e.endswith('@%s' % alias_domain))
         ]
 
         # 0. Verify whether this is a bounced email and use it to collect bounce data and update notifications for customers
@@ -1236,23 +1240,27 @@ class MailThread(models.AbstractModel):
         msg_references = [ref for ref in tools.mail_header_msgid_re.findall(thread_references) if 'reply_to' not in ref]
         mail_messages = MailMessage.sudo().search([('message_id', 'in', msg_references)], limit=1, order='id desc, message_id')
         is_a_reply = bool(mail_messages)
+        alias_domain = [('alias_name', 'in', rcpt_tos_localparts)]
 
         # 1.1 Handle forward to an alias with a different model: do not consider it as a reply
-        if is_a_reply and reply_model and reply_thread_id:
-            alias_count = Alias.search_count([
+        if reply_model and reply_thread_id:
+            other_aliases = Alias.search([
+                '&',
                 ('alias_name', '!=', False),
                 ('alias_name', 'in', email_to_localparts),
-                ("alias_model_id.model", "!=", reply_model),
             ])
-            is_a_reply = alias_count == 0
+            for other_alias in other_aliases:
+                if other_alias.alias_model_id.model == reply_model:
+                    is_a_reply = bool(mail_messages)
+                    alias_domain.append(("alias_model_id.model", "=", reply_model))
+                    break
+                if other_alias.alias_model_id.model != reply_model:
+                    is_a_reply = False
 
         if is_a_reply:
             model, thread_id = mail_messages.model, mail_messages.res_id
             if not reply_private:  # TDE note: not sure why private mode as no alias search, copying existing behavior
-                dest_aliases = Alias.search([
-                    ('alias_name', 'in', rcpt_tos_localparts),
-                    ('alias_model_id.model', '=', model),
-                ], limit=1)
+                dest_aliases = Alias.search(alias_domain, limit=1)
 
             route = self.message_route_verify(
                 message, message_dict,
@@ -1281,7 +1289,7 @@ class MailThread(models.AbstractModel):
                 self._routing_create_bounce_email(email_from, body, message, reply_to=self.env.user.company_id.email)
                 return []
 
-            dest_aliases = Alias.search([('alias_name', 'in', rcpt_tos_localparts)])
+            dest_aliases = Alias.search(alias_domain)
             if dest_aliases:
                 routes = []
                 for alias in dest_aliases:
