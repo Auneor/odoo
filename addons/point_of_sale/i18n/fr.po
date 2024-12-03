@@ -3,7 +3,7 @@
 # 	* point_of_sale
 # 
 # Translators:
-# Richard Mouthier <rmo@odoo.com>, 2024
+# Richard Mouthier (RMO) <rmo@odoo.com>, 2024
 # Larissa Manderfeld, 2024
 # Jolien De Paepe, 2024
 # Wil Odoo, 2024
@@ -8537,6 +8537,17 @@ msgid "You cannot use the same journal on multiples cash payment methods."
 msgstr ""
 "Vous ne pouvez pas utiliser le même journal sur plusieurs modes de paiement "
 "en espèces."
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#, python-format
+msgid ""
+"You do not have permission to open a POS session. Please try opening a "
+"session with a different user"
+msgstr ""
+"Vous n'avez pas l'autorisation d'ouvrir une session PdV. Veuillez essayer "
+"d'ouvrir une session avec un autre utilisateur"
 
 #. module: point_of_sale
 #. odoo-python
