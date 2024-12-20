@@ -404,7 +404,7 @@ class Module(models.Model):
         install_mods = self.search([('state', 'in', list(install_states))])
         def must_install(module):
             states = {dep.state for dep in module.dependencies_id if dep.auto_install_required}
-            return states <= install_states and 'to install' in states and module not in install_mods.mapped('exclusion_ids')
+            return states <= install_states and 'to install' in states and module.name not in install_mods.mapped('exclusion_ids.name')
 
         modules = self
         while modules:
@@ -690,7 +690,7 @@ class Module(models.Model):
                     dep.module_id.state == 'installed'
                     and dep.module_id not in todo
                     and dep.module_id.name != 'studio_customization'
-                    and dep.module_id.name not in excluded_mods.name
+                    and dep.module_id.name not in excluded_mods.mapped('name')
                 ):
                     todo.append(dep.module_id)
 
