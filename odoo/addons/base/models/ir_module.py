@@ -428,11 +428,12 @@ class Module(models.Model):
         for module in install_mods:
             for exclusion in module.exclusion_ids:
                 if exclusion.name in install_names:
-                    raise UserError(_(
-                        'Modules "%(module)s" and "%(incompatible_module)s" are incompatible.',
-                        module=module.shortdesc,
-                        incompatible_module=exclusion.exclusion_id.shortdesc,
-                    ))
+                    return module.button_uninstall_wizard()
+                    # raise UserError(_(
+                    #     'Modules "%(module)s" and "%(incompatible_module)s" are incompatible.',
+                    #     module=module.shortdesc,
+                    #     incompatible_module=exclusion.exclusion_id.shortdesc,
+                    # ))
 
         # check category exclusions
         def closure(module):
