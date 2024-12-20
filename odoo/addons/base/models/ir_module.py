@@ -690,7 +690,7 @@ class Module(models.Model):
                     dep.module_id.state == 'installed'
                     and dep.module_id not in todo
                     and dep.module_id.name != 'studio_customization'
-                    and dep.module_id not in excluded_mods
+                    and dep.module_id.name not in excluded_mods.name
                 ):
                     todo.append(dep.module_id)
 
