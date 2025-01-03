@@ -6257,6 +6257,8 @@ msgid ""
 "The amount of your payment lines must be rounded to validate the transaction.\n"
 "The rounding precision is %s so you should set %s or %s as payment amount instead of %s."
 msgstr ""
+"支払明細の金額は、取引を検証するために丸める必要があります。\n"
+"丸め精度は%s です。支払額には %s または %s を設定して下さい。(%sの代わりに)"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -7407,7 +7409,7 @@ msgstr "アクティブなPoSセッションがある間は、連絡先を削除
 msgid ""
 "You do not have permission to open a POS session. Please try opening a "
 "session with a different user"
-msgstr ""
+msgstr "POSセッションを開く権限がありません。別のユーザでセッションを開いてみて下さい。"
 
 #. module: point_of_sale
 #. odoo-python
@@ -7608,7 +7610,7 @@ msgstr "予測"
 #: code:addons/point_of_sale/static/src/js/ChromeWidgets/CashMoveButton.js:0
 #, python-format
 msgid "in"
-msgstr "に"
+msgstr ":"
 
 #. module: point_of_sale
 #. odoo-javascript

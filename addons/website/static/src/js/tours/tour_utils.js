@@ -4,6 +4,7 @@ odoo.define("website.tour_utils", function (require) {
 const {_t} = require("web.core");
 const {Markup} = require('web.utils');
 var tour = require("web_tour.tour");
+const { getCookie } = require('web.utils.cookies');
 
 function addMedia(position = "right") {
     return {
@@ -24,6 +25,17 @@ function assertCssVariable(variableName, variableValue, trigger = 'iframe body')
                 throw new Error(`Failed precondition: ${variableName}=${styleValue} (should be ${variableValue})`);
             }
         },
+    };
+}
+function assertPathName(pathName, trigger) {
+    return {
+        content: `Check if we have been redirected to ${pathName}`,
+        trigger: trigger,
+        run: () => {
+            if (!window.location.pathname.startsWith(pathName)) {
+                console.error(`We should be on ${pathName}.`);
+            }
+        }
     };
 }
 
@@ -407,23 +419,24 @@ function selectElementInWeSelectWidget(
             run: `text ${elementName}`,
         });
     }
+    steps.push(clickOnElement(`${elementName} in the ${widgetName} widget`,
+        `we-select[data-name=${widgetName}] we-button:contains(${elementName})`));
     steps.push({
-        content: `Clicking on the ${elementName} in the ${widgetName} widget`,
-        trigger: `${we_select} we-button:contains("${elementName}")`,
-        run: "click",
-    });
-    steps.push({
-        content:
-            "Check we-select is set and wait a delay before continue the tour",
-        trigger: `${we_select}:contains(${elementName})`,
+        content: "Check we-select is set",
+        trigger: `we-select[data-name=${widgetName}]:contains(${elementName})`,
         async run() {
-            // fix underterministic error.
-            // When we-select is used twice a row too fast, the second we-select may not open.
-            // The first toggle is open, we click on it and almost at the same time, we click on the second one.
-            // There may be confusion with the active class.
-            // Add a delay before continue the tour solves this problem.
+            // TODO: remove this delay when macro.js has been fixed.
+            // This additionnal line fix an underterministic error.
+            // When we-select is used twice a row too fast,
+            // the second we-select may not open.
+            // The first toggle is open, we click on it and almost
+            // at the same time, we click on the second one.
+            // The problem comes from macro.js which does not give
+            // the DOM time to be stable before looking for the trigger.
+            // We add a delay to let the mutations take place and
+            // therefore wait for the DOM to stabilize.
             await new Promise((resolve) => setTimeout(resolve, 300));
-        },
+        }
     });
     return steps;
 }
@@ -442,7 +455,7 @@ function switchWebsite(websiteId, websiteName) {
     }, {
         content: `Switch to website '${websiteName}'`,
         extra_trigger: `iframe html:not([data-website-id="${websiteId}"])`,
-        trigger: `.o_website_switcher_container .dropdown-item:contains("${websiteName}")`,
+        trigger: `.o_website_switcher_container .dropdown-item[data-website-id=${websiteId}]:contains("${websiteName}")`,
     }, {
         content: "Wait for the iframe to be loaded",
         // The page reload generates assets for the new website, it may take
@@ -453,9 +466,24 @@ function switchWebsite(websiteId, websiteName) {
     }];
 }
 
+/**
+ * Switches to a different website by clicking on the website switcher.
+ * This function can only be used during test tours as it requires
+ * specific cookies to properly function.
+ *
+ * @param {string} websiteName - The name of the website to switch to.
+ * @returns {Array} - The steps required to perform the website switch.
+ */
+function testSwitchWebsite(websiteName) {
+    const websiteIdMapping = JSON.parse(getCookie('websiteIdMapping') || '{}');
+    const websiteId = websiteIdMapping[websiteName];
+    return switchWebsite(websiteId, websiteName)
+}
+
 return {
     addMedia,
     assertCssVariable,
+    assertPathName,
     changeBackground,
     changeBackgroundColor,
     changeColumnSize,
@@ -483,5 +511,6 @@ return {
     selectNested,
     selectSnippetColumn,
     switchWebsite,
+    testSwitchWebsite
 };
 });
