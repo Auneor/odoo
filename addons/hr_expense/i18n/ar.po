@@ -672,6 +672,8 @@ msgid ""
 "from the partner to fix the configuration. Cancel this invoice and start "
 "again."
 msgstr ""
+"هل أنت متأكد من أنك ترغب في إصدار فاتورة لشركتك؟ أزل اسم الشركة من خانة "
+"الشريك لإصلاح هذه التهيئة. قم بإلغاء هذه الفاتورة ثم ابدأ من جديد. "
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_account_analytic_applicability__business_domain
@@ -1640,6 +1642,14 @@ msgid "Phone bills, postage, etc."
 msgstr "فواتير الهاتف والبريد وما إلى ذلك."
 
 #. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid ""
+"Please specify an expense journal in order to generate accounting entries."
+msgstr ""
+
+#. module: hr_expense
 #. odoo-javascript
 #: code:addons/hr_expense/static/src/views/list.xml:0
 #, python-format
@@ -1905,7 +1915,7 @@ msgstr "ورقة"
 #: model:ir.model.fields,field_description:hr_expense.field_account_move__show_commercial_partner_warning
 #: model:ir.model.fields,field_description:hr_expense.field_account_payment__show_commercial_partner_warning
 msgid "Show Commercial Partner Warning"
-msgstr ""
+msgstr "عرض تحذير الشريك التجاري "
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_sheet_view_search
@@ -2140,6 +2150,27 @@ msgid ""
 msgstr ""
 "البريد الإلكتروني للعمل لبعض الموظفين مفقود. يرجى إضافته إلى استمارة الموظف."
 " "
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s) should have a bank account set."
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Go to Employee(s)"
+msgstr "الذهاب إلى الموظفين "
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s)"
+msgstr "الموظف (الموظفين) "
 
 #. module: hr_expense
 #. odoo-python

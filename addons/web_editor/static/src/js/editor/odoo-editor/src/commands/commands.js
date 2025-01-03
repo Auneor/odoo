@@ -206,7 +206,7 @@ export const editorCommands = {
             block.textContent !== "" && node.textContent !== "" &&
             (
                 block.nodeName === node.nodeName ||
-                ['BLOCKQUOTE', 'PRE', 'DIV'].includes(block.nodeName)
+                block.nodeName === 'DIV'
             ) && selection.anchorNode.oid !== 'root'
         );
 
@@ -364,12 +364,6 @@ export const editorCommands = {
             } else {
                 currentNode.after(nodeToInsert);
             }
-            if (
-                ['BLOCKQUOTE', 'PRE'].includes(block.nodeName) &&
-                paragraphRelatedElements.includes(nodeToInsert.nodeName)
-            ) {
-                nodeToInsert = setTagName(nodeToInsert, block.nodeName);
-            }
             let convertedList;
             if (
                 currentList &&
@@ -419,6 +413,17 @@ export const editorCommands = {
             lastPosition = [...paragraphRelatedElements, 'LI', 'UL', 'OL'].includes(currentNode.nodeName)
                 ? rightPos(lastLeaf(currentNode))
                 : rightPos(currentNode);
+        }
+        if (
+            lastPosition[0].nodeName === "A" &&
+            (lastPosition[1] === nodeSize(lastPosition[0]) || lastPosition[1] === 0) &&
+            isLinkEligibleForZwnbsp(editor.editable, lastPosition[0])
+        ) {
+            // In case the currentNode is different than A but the lastposition is A
+            // we need to pad the link with zws and adjust the selection accordingly
+            padLinkWithZws(editor.editable, lastPosition[0]);
+            currentNode = lastPosition[0].nextSibling;
+            lastPosition = getDeepestPosition(...rightPos(currentNode));
         }
         if (!editor.options.allowInlineAtRoot && lastPosition[0] === editor.editable) {
             // Correct the position if it happens to be in the editable root.
@@ -491,10 +496,10 @@ export const editorCommands = {
         }
         const isContextBlock = container => ['TD', 'DIV', 'LI'].includes(container.nodeName);
         if (!startContainer.isConnected || isContextBlock(startContainer)) {
-            startContainer = startContainerChild.parentNode;
+            startContainer = startContainerChild?.parentNode || startContainer;
         }
         if (!endContainer.isConnected || isContextBlock(endContainer)) {
-            endContainer = endContainerChild.parentNode;
+            endContainer = endContainerChild?.parentNode || endContainer;
         }
         const newRange = new Range();
         newRange.setStart(startContainer, startOffset);
@@ -670,12 +675,15 @@ export const editorCommands = {
             !descendants(block).some(descendant => selectedBlocks.includes(descendant))
         ));
         for (const node of deepestSelectedBlocks) {
-            if (node.nodeType === Node.TEXT_NODE && isWhitespace(node) && closestElement(node).isContentEditable) {
+            let nodeToToggle = closestBlock(node);
+            if (
+                ![...paragraphRelatedElements, 'LI'].includes(nodeToToggle.nodeName) &&
+                node.nodeType === Node.TEXT_NODE && isWhitespace(node) && closestElement(node).isContentEditable
+            ) {
                 node.remove();
             } else {
                 // Ensure nav-item lists are excluded from toggling
                 const isNavItemList = node => node.nodeName === 'LI' && node.classList.contains('nav-item');
-                let nodeToToggle = closestBlock(node);
                 nodeToToggle = isNavItemList(nodeToToggle) ? node : nodeToToggle;
                 if (!['OL', 'UL'].includes(nodeToToggle.tagName) && (nodeToToggle.isContentEditable || nodeToToggle.nodeType === Node.TEXT_NODE)) {
                     const closestLi = closestElement(nodeToToggle, 'li');

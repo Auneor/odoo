@@ -6,6 +6,7 @@
 # Anita Kosobucka, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2024
 # Damian Ratus, 2024
+# Marta Wacławek, 2024
 # Wil Odoo, 2024
 # 
 msgid ""
@@ -98,7 +99,7 @@ msgstr "1 %(exp_cur)s = %(rate)s %(comp_cur)s"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "2023-08-11"
-msgstr ""
+msgstr "2023-08-11"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.product_product_expense_form_view
@@ -1338,7 +1339,7 @@ msgstr "Menedżerowie mogą kontrolować wszystkie wydatki z tego miejsca."
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "Marc Demo"
-msgstr ""
+msgstr "Marc Demo"
 
 #. module: hr_expense
 #: model:product.template,name:hr_expense.expense_product_meal_product_template
@@ -1501,7 +1502,7 @@ msgstr "Liczba wydatków"
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__nb_account_move
 msgid "Number of Journal Entries"
-msgstr ""
+msgstr "Liczba wpisów w dzienniku"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__message_has_error_counter
@@ -1646,6 +1647,14 @@ msgstr "Płatności"
 #: model_terms:product.template,description:hr_expense.expense_product_communication_product_template
 msgid "Phone bills, postage, etc."
 msgstr "Rachunki telefoniczne, opłaty pocztowe itp."
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid ""
+"Please specify an expense journal in order to generate accounting entries."
+msgstr ""
 
 #. module: hr_expense
 #. odoo-javascript
@@ -1915,7 +1924,7 @@ msgstr "Karta"
 #: model:ir.model.fields,field_description:hr_expense.field_account_move__show_commercial_partner_warning
 #: model:ir.model.fields,field_description:hr_expense.field_account_payment__show_commercial_partner_warning
 msgid "Show Commercial Partner Warning"
-msgstr ""
+msgstr "Pokaż ostrzeżenie dla partnerów handlowych"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_sheet_view_search
@@ -2154,6 +2163,27 @@ msgid ""
 "The work email of some employees is missing. Please add it on the employee "
 "form"
 msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s) should have a bank account set."
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Go to Employee(s)"
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s)"
+msgstr "Pracowników"
 
 #. module: hr_expense
 #. odoo-python
@@ -2451,6 +2481,8 @@ msgid ""
 "You cannot delete only some entries linked to an expense report. All entries"
 " must be deleted at the same time."
 msgstr ""
+"Nie możesz usunąć tylko niektórych wpisów powiązanych z raportem wydatków. "
+"Wszystkie wpisy muszą być usunięte na raz."
 
 #. module: hr_expense
 #. odoo-python

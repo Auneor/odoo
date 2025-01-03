@@ -1626,6 +1626,17 @@ msgstr "تغيير كمية المنتج "
 
 #. module: stock
 #. odoo-python
+#: code:addons/stock/models/stock_move_line.py:0
+#, python-format
+msgid ""
+"Changing the Lot/Serial number for move lines with different products is not"
+" allowed."
+msgstr ""
+"لا يُسمح بتغيير رقم المجموعة/الرقم التسلسلي لبنود الحركة التي تحتوي على "
+"منتجات مختلفة. "
+
+#. module: stock
+#. odoo-python
 #: code:addons/stock/models/product_strategy.py:0
 #: code:addons/stock/models/stock_location.py:0
 #: code:addons/stock/models/stock_lot.py:0
@@ -3552,7 +3563,7 @@ msgstr "يعرض ترتيب التسلسل عند عرض المستودعات. "
 #: code:addons/stock/models/stock_rule.py:0
 #, python-format
 msgid "Global Visibility Days"
-msgstr "أيام الظهور العالمي "
+msgstr "أيام الظهور العامة "
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
@@ -8825,6 +8836,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
+msgid "The Lot/Serial number (%s) is linked to another product."
+msgstr "رقم المجموعة/الرقم التسلسلي (%s) مرتبط بمنتج آخر. "
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_quant.py:0
+#, python-format
 msgid ""
 "The Serial Number (%s) is already used in these location(s): %s.\n"
 "\n"
@@ -10544,7 +10562,7 @@ msgstr "لا يمكنك تغيير نوع منتج قد تم استخدامه ب
 #, python-format
 msgid ""
 "You can not create a snoozed orderpoint that is not manually triggered."
-msgstr ""
+msgstr "لا يمكنك إنشاء نقطة طلب خاملة لا يتم تشغيلها يدوياً. "
 
 #. module: stock
 #. odoo-python
@@ -10615,6 +10633,8 @@ msgid ""
 "You can only snooze manual orderpoints. You should rather archive 'auto-"
 "trigger' orderpoints if you do not want them to be triggered."
 msgstr ""
+"يمكنك فقط جعل نقاط الطلب اليدوية خاملة. من الأفضل أرشفة نقاط الطلب ذات "
+"'التشغيل الآلي' إذا كنت ترغب في ألا يتم تشغيلها. "
 
 #. module: stock
 #. odoo-python
@@ -10727,6 +10747,13 @@ msgstr ""
 "لا يمكنك تعبئة الكميات مباشرة من شحنات مختلفة إلى نفس الطرد من خلال نافذة "
 "العرض هذه. حاول إضافتها إلى عملية انتقاء على دفعات، ثم قم بحزمها في طرد "
 "هناك. "
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_quant.py:0
+#, python-format
+msgid "You cannot duplicate stock quants."
+msgstr "لا يمكنك نسخ كميات المخزون. "
 
 #. module: stock
 #. odoo-python

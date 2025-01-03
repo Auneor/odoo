@@ -7,6 +7,7 @@
 # 湘子 南 <1360857908@qq.com>, 2024
 # Jeffery CHEN <jeffery9@gmail.com>, 2024
 # Chloe Wang, 2024
+# Raymond Yu <cl_yu@hotmail.com>, 2024
 # Wil Odoo, 2024
 # 
 msgid ""
@@ -1625,6 +1626,14 @@ msgid "Phone bills, postage, etc."
 msgstr "电话费、邮费等"
 
 #. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid ""
+"Please specify an expense journal in order to generate accounting entries."
+msgstr "请指定费用日记账以生成会计分录。"
+
+#. module: hr_expense
 #. odoo-javascript
 #: code:addons/hr_expense/static/src/views/list.xml:0
 #, python-format
@@ -1885,7 +1894,7 @@ msgstr "表格"
 #: model:ir.model.fields,field_description:hr_expense.field_account_move__show_commercial_partner_warning
 #: model:ir.model.fields,field_description:hr_expense.field_account_payment__show_commercial_partner_warning
 msgid "Show Commercial Partner Warning"
-msgstr ""
+msgstr "显示商务合作伙伴警告"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_sheet_view_search
@@ -2113,6 +2122,27 @@ msgid ""
 "The work email of some employees is missing. Please add it on the employee "
 "form"
 msgstr "缺少某些员工的工作电子邮件。请在员工表格中添加"
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s) should have a bank account set."
+msgstr "雇员应开设银行账户。"
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Go to Employee(s)"
+msgstr "转到员工"
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s)"
+msgstr "员工"
 
 #. module: hr_expense
 #. odoo-python
@@ -2379,7 +2409,7 @@ msgstr ""
 #: code:addons/hr_expense/models/hr_expense_sheet.py:0
 #, python-format
 msgid "You cannot cancel an expense sheet linked to a journal entry"
-msgstr ""
+msgstr "你不能取消已关联到日记帐分录的费用支出表"
 
 #. module: hr_expense
 #. odoo-python

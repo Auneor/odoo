@@ -163,8 +163,8 @@ export class Wysiwyg extends Component {
                 // Deselect tables so the applied color can be seen
                 // without using `!important` (otherwise the selection
                 // hides it).
-                if (this.odooEditor.deselectTable() && hasValidSelection(this.odooEditor.editable)) {
-                    this.odooEditor.document.getSelection().collapseToStart();
+                if (hasValidSelection(this.odooEditor.editable)) {
+                    this.odooEditor.deselectTable();
                 }
                 this._updateEditorUI(this.lastMediaClicked && { target: this.lastMediaClicked });
             };
@@ -441,7 +441,7 @@ export class Wysiwyg extends Component {
             getPowerboxElement: () => {
                 const selection = (this.options.document || document).getSelection();
                 if (selection.isCollapsed && selection.rangeCount) {
-                    const baseNode = closestElement(selection.anchorNode, 'P:not([t-field]), DIV:not([t-field])');
+                    const baseNode = closestElement(selection.anchorNode, "P:not([t-field]), DIV:not([t-field]):not(.o_not_editable):not([contenteditable='false'])");
                     const fieldContainer = closestElement(selection.anchorNode, '[data-oe-field]');
                     if (!baseNode ||
                         (
@@ -1683,6 +1683,7 @@ export class Wysiwyg extends Component {
             close: () => restoreSelection(),
             ...this.options.mediaModalParams,
             ...params,
+            noVideos: !this.options.allowCommandVideo,
         });
     }
     // todo: test me
@@ -1699,15 +1700,9 @@ export class Wysiwyg extends Component {
             }, {
                 onPositioned: (popover) => {
                     restoreSelection();
-                    // Set the 'parentContextRect' option in 'options' when
-                    // 'getContextFromParentRect' is available. This facilitates
-                    // element positioning relative to a parent or reference
-                    // rectangle.
-                    const options = {};
-                    if (this.options.getContextFromParentRect) {
-                        options['parentContextRect'] = this.options.getContextFromParentRect();
-                    }
-                    const rangePosition = getRangePosition(popover, this.options.document, options);
+                    const rangePosition = getRangePosition(popover, this.options.document, {
+                        getContextFromParentRect: this.options.getContextFromParentRect,
+                    });
                     popover.style.top = rangePosition.top + 'px';
                     popover.style.left = rangePosition.left + 'px';
                     const oInputBox = popover.querySelector('input');
@@ -1761,11 +1756,29 @@ export class Wysiwyg extends Component {
                 params.node.replaceWith(element);
             }
             this.odooEditor.unbreakableStepUnactive();
-            this.odooEditor.historyStep();
+
+            if (params.node.matches(".oe_unremovable")) {
+                // The "oe_unremovable" class prevents element deletion and must
+                // be removed during the "historyStep" to allow media
+                // replacement. If the class remains, the "sanitize" function in
+                // "historyStep" will block the replacement.
+                params.node.classList.remove("oe_unremovable");
+                element.classList.remove("oe_unremovable");
+                this.odooEditor.historyStep();
+                this.odooEditor.observerUnactive("unremovable");
+                element.classList.add("oe_unremovable");
+                this.odooEditor.observerActive("unremovable");
+            } else {
+                this.odooEditor.historyStep();
+            }
+
             // Refocus again to save updates when calling `_onWysiwygBlur`
             this.odooEditor.editable.focus();
         } else {
-            return this.odooEditor.execCommand('insert', element);
+            const result = this.odooEditor.execCommand('insert', element);
+            // Refocus again to save updates when calling `_onWysiwygBlur`
+            this.odooEditor.editable.focus();
+            return result;
         }
 
         if (this.snippetsMenu) {
@@ -1948,12 +1961,11 @@ export class Wysiwyg extends Component {
         });
         $toolbar.find('#image-crop').click(() => this._showImageCrop());
         $toolbar.find('#image-transform').click(e => {
-            const sel = document.getSelection();
-            sel.removeAllRanges();
             if (!this.lastMediaClicked) {
                 return;
             }
             const $image = $(this.lastMediaClicked);
+            const imgTransformBtn = this.toolbarEl.querySelector('#image-transform');
             if ($image.data('transfo-destroy')) {
                 $image.removeData('transfo-destroy');
                 return;
@@ -1965,7 +1977,7 @@ export class Wysiwyg extends Component {
                 this.odooEditor.document.removeEventListener('keydown', keydown);
             }
             const mouseup = () => {
-                $('#image-transform').toggleClass('active', $image.is('[style*="transform"]'));
+                imgTransformBtn.classList.toggle('active', $image[0].matches('[style*="transform"]'));
             };
             $(this.odooEditor.document).on('mouseup', mouseup);
             const mousedown = mousedownEvent => {
@@ -1974,6 +1986,7 @@ export class Wysiwyg extends Component {
                 }
                 if ($(mousedownEvent.target).closest('#image-transform').length) {
                     $image.data('transfo-destroy', true).attr('style', ($image.attr('style') || '').replace(/[^;]*transform[\w:]*;?/g, ''));
+                    imgTransformBtn.classList.remove('active');
                 }
                 $image.trigger('content_changed');
             };
@@ -2172,6 +2185,9 @@ export class Wysiwyg extends Component {
         if (isProtected(anchorNode)) {
             return;
         }
+        if (this.odooEditor.document.querySelector(".transfo-container")) {
+            return;
+        }
 
         this.odooEditor.automaticStepSkipStack();
         // We need to use the editor's window so the tooltip displays in its
@@ -2261,6 +2277,7 @@ export class Wysiwyg extends Component {
             for (const button of this.toolbarEl.querySelectorAll('#image-width div')) {
                 button.classList.toggle('active', e.target.style.width === button.id);
             }
+            this.toolbarEl.querySelector('#image-transform').classList.toggle('active', e.target.matches('[style*="transform"]'));
             this._updateMediaJustifyButton();
             this._updateFaResizeButtons();
         }
@@ -2459,7 +2476,7 @@ export class Wysiwyg extends Component {
                 fontawesome: 'fa-pencil-square-o',
                 isDisabled: () => !this.odooEditor.isSelectionInBlockRoot(),
                 callback: async () => {
-                    const uid = Array.isArray(session.user_id) ? session.user_id[0] : session.user_id;
+                    const uid = (Array.isArray(session.user_id) ? session.user_id[0] : session.user_id)  | session.uid;
                     const [user] = await this.orm.read(
                         'res.users',
                         [uid],
@@ -2851,13 +2868,18 @@ export class Wysiwyg extends Component {
             }
         }
     }
+
+    _getDelayBlurSelectors() {
+        return [".oe-toolbar", ".oe-powerbox-wrapper", ".o_we_crop_widget"];
+    }
+
     _onDocumentMousedown(e) {
         if (!e.target.classList.contains('o_editable_date_field_linked')) {
             this.$editable.find('.o_editable_date_field_linked').removeClass('o_editable_date_field_linked');
         }
         const closestDialog = e.target.closest('.o_dialog, .o_web_editor_dialog');
         if (
-            e.target.closest('.oe-toolbar,.oe-powerbox-wrapper,.o_we_crop_widget') ||
+            e.target.closest(this._getDelayBlurSelectors().join(",")) ||
             (closestDialog && closestDialog.querySelector('.o_select_media_dialog, .o_link_dialog'))
         ) {
             this._shouldDelayBlur = true;
@@ -3578,7 +3600,7 @@ export class Wysiwyg extends Component {
         // command is being applied. Note that this needs to be done *before*
         // the command and not after because some commands (e.g. font-size)
         // rely on some elements not to have the class to fully work.
-        for (const node of OdooEditorLib.getSelectedNodes(this.$editable[0])) {
+        for (const node of OdooEditorLib.getTraversedNodes(this.$editable[0])) {
             const el = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
             const defaultTextEl = el.closest('.o_default_snippet_text');
             if (defaultTextEl) {

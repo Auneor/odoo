@@ -6,7 +6,7 @@
 # Antti Oksman <antti.oksman@web-veistamo.fi>, 2023
 # Kari Lindgren <karisatu@gmail.com>, 2023
 # Teemu Ahonen <teemu.ahonen@web-veistamo.fi>, 2023
-# Richard Mouthier <rmo@odoo.com>, 2023
+# Richard Mouthier (RMO) <rmo@odoo.com>, 2023
 # Erno Iipponen <erno.iipponen@web-veistamo.fi>, 2023
 # Konsta Aavaranta, 2023
 # Mikko Salmela <salmemik@gmail.com>, 2023
@@ -34,9 +34,9 @@
 # Martin Trigaux, 2023
 # Miika Nissi <miika.nissi@tawasta.fi>, 2023
 # artol <arto.leskinen@tek.fi>, 2023
-# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2024
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024
+# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
@@ -44,7 +44,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:28+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024\n"
+"Last-Translator: Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2024\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1446,6 +1446,13 @@ msgstr "PALUU"
 #, python-format
 msgid "BACK arrow"
 msgstr "PALUU-nuoli"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/search/control_panel/control_panel.js:0
+#, python-format
+msgid "Back to “%s”"
+msgstr ""
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__layout_background_image
@@ -3452,6 +3459,14 @@ msgstr ""
 #, python-format
 msgid "Go to URL"
 msgstr "Siirry URL-osoitteeseen"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/google_slide_viewer.js:0
+#: code:addons/web/static/src/views/fields/google_slide_viewer.xml:0
+#, python-format
+msgid "Google Slide Viewer"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -6605,6 +6620,13 @@ msgstr "Valitse näkymä"
 #, python-format
 msgid "Select all"
 msgstr "Valitse kaikki"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/list/list_controller.xml:0
+#, python-format
+msgid "Select all records matching the search"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -27599,7 +27621,7 @@ msgstr "valitut tietueet,"
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 #, python-format
 msgid "self"
-msgstr ""
+msgstr "self"
 
 #. module: web
 #. odoo-javascript
@@ -33700,14 +33722,14 @@ msgstr "zombie"
 #: code:addons/web/static/src/views/view_components/column_progress.xml:0
 #, python-format
 msgid "{{ bar.count }} {{ bar.string }}"
-msgstr ""
+msgstr "{{ bar.count }} {{ bar.string }}"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/kanban/kanban_column_quick_create.xml:0
 #, python-format
 msgid "{{ relatedFieldName }}..."
-msgstr ""
+msgstr "{{ relatedFieldName }}..."
 
 #. module: web
 #. odoo-javascript

@@ -885,7 +885,7 @@ msgstr "%s 모듈을 설치할 수 없습니다."
 #: code:addons/web_editor/static/src/components/upload_progress_toast/upload_service.js:0
 #, python-format
 msgid "Could not load the file \"%s\"."
-msgstr ""
+msgstr "파일 \"%s\"를 로드할 수 없습니다."
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
@@ -2356,7 +2356,7 @@ msgstr "영역"
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 #, python-format
 msgid "Preset #{number}"
-msgstr ""
+msgstr "사전 설정 #{number}"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3598,6 +3598,22 @@ msgstr "Xpro"
 #, python-format
 msgid "Yes"
 msgstr "예"
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/image_selector.js:0
+#, python-format
+msgid ""
+"You can not replace a field by this image. If you want to use this image, "
+"first save it on your computer and then upload it here."
+msgstr "이 이미지로 필드를 바꿀 수 없습니다. 사용하려면 먼저 이미지를 컴퓨터에 저장한 다음 여기에 업로드하세요."
+
+#. module: web_editor
+#. odoo-javascript
+#: code:addons/web_editor/static/src/components/media_dialog/image_selector.xml:0
+#, python-format
+msgid "You can not use this image in a field"
+msgstr "이 이미지는 필드에 사용할 수 없습니다."
 
 #. module: web_editor
 #. odoo-javascript

@@ -1414,6 +1414,13 @@ msgid "BACK arrow"
 msgstr "زر العودة "
 
 #. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/search/control_panel/control_panel.js:0
+#, python-format
+msgid "Back to “%s”"
+msgstr "العودة إلى “%s” "
+
+#. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__layout_background_image
 msgid "Background Image"
 msgstr "صورة الخلفية"
@@ -2656,7 +2663,7 @@ msgstr "يقوم بعرض أيقونة إذا كانت تواريخ الإدخا
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 #, python-format
 msgid "Displays or hides the time in the datetime value."
-msgstr ""
+msgstr "يقوم بعرض أو إخفاء الوقت في قيمة datetime. "
 
 #. module: web
 #. odoo-javascript
@@ -3410,6 +3417,14 @@ msgstr "احصل على هذه الميزة وأكثر بكثير مع نسخة 
 #, python-format
 msgid "Go to URL"
 msgstr "الذهاب إلى رابط URL "
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/google_slide_viewer.js:0
+#: code:addons/web/static/src/views/fields/google_slide_viewer.xml:0
+#, python-format
+msgid "Google Slide Viewer"
+msgstr "أداة عرض شرائح Google "
 
 #. module: web
 #. odoo-javascript
@@ -4399,7 +4414,7 @@ msgstr "الإجراءات الرئيسية "
 #: code:addons/web/static/src/search/custom_favorite_item/custom_favorite_item.xml:0
 #, python-format
 msgid "Make this filter available to other users"
-msgstr ""
+msgstr "اجعل هذا الفلتر متاحاً للمستخدمين الآخرين "
 
 #. module: web
 #. odoo-javascript
@@ -4615,7 +4630,7 @@ msgstr "تعديل الشرط "
 #: code:addons/web/static/src/views/fields/domain/domain_field.xml:0
 #, python-format
 msgid "Modify filter"
-msgstr ""
+msgstr "تعديل الفلتر "
 
 #. module: web
 #. odoo-javascript
@@ -6568,6 +6583,13 @@ msgstr "تحديد الكل "
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/list/list_controller.xml:0
+#, python-format
+msgid "Select all records matching the search"
+msgstr "قم بتحديد كافة السجلات المطابقة للبحث "
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/datetime/datetime_picker.js:0
 #, python-format
 msgid "Select century"
@@ -6750,7 +6772,7 @@ msgstr "إظهار نافذة عرض %s "
 #: code:addons/web/static/src/views/fields/domain/domain_field.xml:0
 #, python-format
 msgid "Show matching records"
-msgstr ""
+msgstr "إظهار السجلات المطابقة "
 
 #. module: web
 #. odoo-javascript
@@ -6765,7 +6787,7 @@ msgstr "إظهار الحقول الفرعية "
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 #, python-format
 msgid "Show time"
-msgstr ""
+msgstr "إظهار الوقت "
 
 #. module: web
 #. odoo-javascript
@@ -7755,7 +7777,7 @@ msgstr "استخدمها مع خيار 'التنسيق سهل الاستخدام
 #: code:addons/web/static/src/search/custom_favorite_item/custom_favorite_item.xml:0
 #, python-format
 msgid "Use this filter by default when opening this view"
-msgstr ""
+msgstr "استخدم هذا الفلتر بشكل افتراضي عند فتح نافذة العرض هذه "
 
 #. module: web
 #. odoo-javascript
@@ -27543,7 +27565,7 @@ msgstr "السجلات المحددة، "
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 #, python-format
 msgid "self"
-msgstr ""
+msgstr "ذاتي "
 
 #. module: web
 #. odoo-javascript

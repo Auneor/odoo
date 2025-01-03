@@ -14,6 +14,7 @@
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2024
 # Grega Vavtar <grega@hbs.si>, 2024
 # Katja Deržič, 2024
+# Gregor Flajs, 2024
 # Wil Odoo, 2024
 # 
 msgid ""
@@ -1611,7 +1612,7 @@ msgstr ""
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.res_config_settings_view_form
 msgid "Payment methods"
-msgstr ""
+msgstr "Načini plačila"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_res_company__company_expense_allowed_payment_method_line_ids
@@ -1627,6 +1628,14 @@ msgstr "Plačila"
 #. module: hr_expense
 #: model_terms:product.template,description:hr_expense.expense_product_communication_product_template
 msgid "Phone bills, postage, etc."
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid ""
+"Please specify an expense journal in order to generate accounting entries."
 msgstr ""
 
 #. module: hr_expense
@@ -2116,6 +2125,27 @@ msgid ""
 "The work email of some employees is missing. Please add it on the employee "
 "form"
 msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s) should have a bank account set."
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Go to Employee(s)"
+msgstr ""
+
+#. module: hr_expense
+#. odoo-python
+#: code:addons/hr_expense/models/hr_expense_sheet.py:0
+#, python-format
+msgid "Employee(s)"
+msgstr "Kader(i)"
 
 #. module: hr_expense
 #. odoo-python

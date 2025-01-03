@@ -15,6 +15,8 @@
 # Linas Versada <linaskrisiukenas@gmail.com>, 2023
 # Arminas Grigonis <arminas@versada.lt>, 2023
 # Martin Trigaux, 2023
+# Gailius Kazlauskas <gailius@vialaurea.lt>, 2024
+# myacc-pro, 2024
 # Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2024
 # 
 msgid ""
@@ -719,7 +721,7 @@ msgstr "Klaidų kiekis"
 #. module: website_event_exhibitor
 #: model:ir.model.fields,help:website_event_exhibitor.field_event_sponsor__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Pranešimų, kuriems reikia imtis veiksmų, skaičius"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,help:website_event_exhibitor.field_event_sponsor__message_has_error_counter
@@ -740,7 +742,7 @@ msgstr ""
 #. module: website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.event_sponsor_view_form
 msgid "Opening Hours"
-msgstr ""
+msgstr "Darbo valandos"
 
 #. module: website_event_exhibitor
 #: model:ir.model.fields,field_description:website_event_exhibitor.field_event_sponsor__hour_from
@@ -1114,7 +1116,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_event_exhibitor.exhibitor_main
 #, python-format
 msgid "starts in"
-msgstr ""
+msgstr "prasideda"
 
 #. module: website_event_exhibitor
 #. odoo-javascript

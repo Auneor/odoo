@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2024
 # Kseina Tyshchenko, 2024
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
 # Wil Odoo, 2024
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:26+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Wil Odoo, 2024\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1642,6 +1642,15 @@ msgstr "Ланцюгові переміщення існують"
 #: model:ir.model,name:stock.model_stock_change_product_qty
 msgid "Change Product Quantity"
 msgstr "Змінити кількість товару"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_move_line.py:0
+#, python-format
+msgid ""
+"Changing the Lot/Serial number for move lines with different products is not"
+" allowed."
+msgstr ""
 
 #. module: stock
 #. odoo-python
@@ -3466,12 +3475,12 @@ msgstr "Доступно до резерву в транзиті"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_product_product__free_qty
 msgid "Free To Use Quantity "
-msgstr "Вільне використання кількостей"
+msgstr "Доступна кількість"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
 msgid "Free to Use"
-msgstr "Безкоштовне використання"
+msgstr "Доступно"
 
 #. module: stock
 #. odoo-javascript
@@ -6092,7 +6101,7 @@ msgstr "Упаковка A"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_picking
 msgid "Package B"
-msgstr ""
+msgstr "Упаковка B"
 
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode_small
@@ -6313,7 +6322,7 @@ msgstr "Адреса партнера"
 #. module: stock
 #: model:ir.ui.menu,name:stock.menu_action_inventory_tree
 msgid "Physical Inventory"
-msgstr "Фізичний склад"
+msgstr "Коригування залишків"
 
 #. module: stock
 #. odoo-python
@@ -8890,6 +8899,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
+msgid "The Lot/Serial number (%s) is linked to another product."
+msgstr ""
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_quant.py:0
+#, python-format
 msgid ""
 "The Serial Number (%s) is already used in these location(s): %s.\n"
 "\n"
@@ -10854,6 +10870,13 @@ msgstr ""
 "Ви не можете напряму запакувати кількості з різних переміщень в одну "
 "упаковку за допомогою цього перегляду. Спробуйте додати їх до групового "
 "переміщення та запакуйте там."
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_quant.py:0
+#, python-format
+msgid "You cannot duplicate stock quants."
+msgstr ""
 
 #. module: stock
 #. odoo-python
