@@ -666,7 +666,8 @@ class IrAttachment(models.Model):
             Attachments.check('create', values={'res_model':res_model, 'res_id':res_id})
         return super().create(vals_list)
 
-    def _post_add_create(self):
+    def _post_add_create(self, **kwargs):
+        # TODO master: rename to _post_upload, better indicating its usage
         pass
 
     def generate_access_token(self):
