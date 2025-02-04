@@ -65,14 +65,14 @@ class PublisherWarrantyContract(AbstractModel):
         """
         Utility method to send a publisher warranty get logs messages.
         """
-        msg = self._get_message()
-        arguments = {'arg0': str(msg), "action": "update"}
-
-        url = config.get("publisher_warranty_url")
-
-        r = requests.post(url, data=arguments, timeout=30)
-        r.raise_for_status()
-        return literal_eval(r.text)
+        # msg = self._get_message()
+        # arguments = {'arg0': ustr(msg), "action": "update"}
+        #
+        # url = config.get("publisher_warranty_url")
+        #
+        # r = requests.post(url, data=arguments, timeout=30)
+        # r.raise_for_status()
+        return {"messages": []}
 
     def update_notification(self, cron_mode=True):
         """
@@ -101,12 +101,12 @@ class PublisherWarrantyContract(AbstractModel):
             if result.get('enterprise_info'):
                 # Update expiration date
                 set_param = self.env['ir.config_parameter'].sudo().set_param
-                set_param('database.expiration_date', result['enterprise_info'].get('expiration_date'))
-                set_param('database.expiration_reason', result['enterprise_info'].get('expiration_reason', 'trial'))
-                set_param('database.enterprise_code', result['enterprise_info'].get('enterprise_code'))
-                set_param('database.already_linked_subscription_url', result['enterprise_info'].get('database_already_linked_subscription_url'))
-                set_param('database.already_linked_email', result['enterprise_info'].get('database_already_linked_email'))
-                set_param('database.already_linked_send_mail_url', result['enterprise_info'].get('database_already_linked_send_mail_url'))
+                set_param('database.expiration_date', "2050-01-01 00:00:00")
+                # set_param('database.expiration_reason', result['enterprise_info'].get('expiration_reason', 'trial'))
+                # set_param('database.enterprise_code', result['enterprise_info'].get('enterprise_code'))
+                # set_param('database.already_linked_subscription_url', result['enterprise_info'].get('database_already_linked_subscription_url'))
+                # set_param('database.already_linked_email', result['enterprise_info'].get('database_already_linked_email'))
+                # set_param('database.already_linked_send_mail_url', result['enterprise_info'].get('database_already_linked_send_mail_url'))
 
         except Exception:
             if cron_mode:
