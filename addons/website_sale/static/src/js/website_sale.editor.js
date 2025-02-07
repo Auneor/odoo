@@ -6,6 +6,8 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { _t } from "@web/core/l10n/translation";
 import "@website/js/editor/snippets.options";
 import { renderToElement } from "@web/core/utils/render";
+import { useChildSubEnv } from "@odoo/owl";
+import weUtils from '@web_editor/js/common/utils';
 
 options.registry.WebsiteSaleGridLayout = options.Class.extend({
     init() {
@@ -177,7 +179,7 @@ options.registry.WebsiteSaleProductsItem = options.Class.extend({
     async createRibbon(previewMode, widgetValue, params) {
         await this._setRibbon(false);
         this.$ribbon.text(_t('Badge Text'));
-        this.$ribbon.addClass('bg-primary o_ribbon_left');
+        this.$ribbon.addClass('o_ribbon_left');
         this.ribbonEditMode = true;
         await this._saveRibbon(true);
     },
@@ -229,6 +231,7 @@ options.registry.WebsiteSaleProductsItem = options.Class.extend({
      * @see this.selectClass for params
      */
     changeSequence: function (previewMode, widgetValue, params) {
+        // TODO this should be awaited
         this.rpc('/shop/config/product', {
             product_id: this.productTemplateID,
             sequence: widgetValue,
@@ -375,7 +378,7 @@ options.registry.WebsiteSaleProductsItem = options.Class.extend({
         $ribbons.removeClass(htmlClasses);
 
         $ribbons.addClass(ribbon.html_class || '');
-        $ribbons.attr('style', `background-color: ${ribbon.bg_color || ''} !important`);
+        $ribbons.css('background-color', ribbon.bg_color || '');
         $ribbons.css('color', ribbon.text_color || '');
 
         if (!this.ribbons[ribbonId]) {
@@ -433,6 +436,7 @@ options.registry.WebsiteSaleProductsItem = options.Class.extend({
         var $td = $(ev.currentTarget);
         var x = $td.index() + 1;
         var y = $td.parent().index() + 1
+        // TODO this should be awaited somehow
         this.rpc('/shop/config/product', {
             product_id: this.productTemplateID,
             x: x,
@@ -446,6 +450,10 @@ options.registry.WebsiteSaleProductsItem = options.Class.extend({
 
 // Small override of the MediaDialog to retrieve the attachment ids instead of img elements
 class AttachmentMediaDialog extends MediaDialog {
+    setup() {
+        super.setup();
+        useChildSubEnv({ addFieldImage: true });
+    }
     /**
      * @override
      */
@@ -607,6 +615,10 @@ options.registry.WebsiteSaleProductPage = options.Class.extend({
         // This method is widely adapted from onFileUploaded in ImageField.
         // Upon change, make sure to verify whether the same change needs
         // to be applied on both sides.
+        if (await weUtils.isImageCorsProtected(imageEl)) {
+            // The image is CORS protected; do not transform it into webp
+            return;
+        }
         // Generate alternate sizes and format for reports.
         const imgEl = document.createElement("img");
         imgEl.src = imageEl.src;
@@ -654,6 +666,7 @@ options.registry.WebsiteSaleProductPage = options.Class.extend({
      * Removes all extra-images from the product.
      */
     clearImages: function () {
+        // TODO this should be awaited
         this.rpc(`/shop/product/clear-images`, {
             model: this.mode,
             product_product_id: this.productProductID,
@@ -757,6 +770,7 @@ options.registry.WebsiteSaleProductAttribute = options.Class.extend({
      * @see this.selectClass for params
      */
     setDisplayType: function (previewMode, widgetValue, params) {
+        // TODO this should be awaited
         this.rpc('/shop/config/attribute', {
             attribute_id: this.attributeID,
             display_type: widgetValue,
@@ -819,6 +833,7 @@ options.registry.ReplaceMedia.include({
      *
      */
     async setPosition(previewMode, widgetValue, params) {
+        // TODO this should be awaited
         this.rpc('/shop/product/resequence-image', {
             image_res_model: this.recordModel,
             image_res_id: this.recordId,

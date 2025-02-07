@@ -2008,29 +2008,29 @@ msgstr "Lugares disponíveis"
 #. module: event
 #: model:ir.actions.report,name:event.action_report_event_registration_badge
 msgid "Badge"
-msgstr "Medalha"
+msgstr "Crachá"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__badge_image
 msgid "Badge Background"
-msgstr "Fundo do emblema"
+msgstr "Fundo do crachá"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__badge_format
 msgid "Badge Dimension"
-msgstr "Dimensão do emblema"
+msgstr "Dimensão do crachá"
 
 #. module: event
 #: model:ir.actions.report,name:event.action_report_event_event_badge
 msgid "Badge Example"
-msgstr "Exemplo de emblema"
+msgstr "Exemplo de crachá"
 
 #. module: event
 #. odoo-python
 #: code:addons/event/controllers/main.py:0
 #, python-format
 msgid "Badges"
-msgstr "Emblemas"
+msgstr "Crachás"
 
 #. module: event
 #: model_terms:event.event,description:event.event_3
@@ -3132,6 +3132,13 @@ msgstr "Em andamento"
 #: model_terms:ir.ui.view,arch_db:event.res_config_settings_view_form
 msgid "Insert dynamic Google Maps in your email templates"
 msgstr "Insira Google Maps dinâmico nos seus modelos de e-mail"
+
+#. module: event
+#: model:ir.model.fields,help:event.field_event_event__date_tz
+msgid ""
+"Indicates the timezone in which the event dates/times will be displayed on "
+"the website."
+msgstr ""
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_mail__interval_nbr
@@ -4778,6 +4785,14 @@ msgstr "Semanas"
 #, python-format
 msgid "Welcome to"
 msgstr "Boas-vindas a"
+
+#. module: event
+#: model:ir.model.fields,help:event.field_event_event__date_begin
+#: model:ir.model.fields,help:event.field_event_registration__event_begin_date
+msgid ""
+"When the event is scheduled to take place (expressed in your local timezone "
+"on the form view)."
+msgstr ""
 
 #. module: event
 #: model_terms:event.event,description:event.event_0

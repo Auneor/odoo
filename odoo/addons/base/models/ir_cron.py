@@ -90,9 +90,9 @@ class ir_cron(models.Model):
             self = self.with_context(default_state='code')
         return super(ir_cron, self).default_get(fields_list)
 
-    @api.onchange('active', 'interval_number')
+    @api.onchange('active', 'interval_number', 'interval_type')
     def _onchange_interval_number(self):
-        if self.active and self.interval_number <= 0:
+        if self.active and (self.interval_number <= 0 or not self.interval_type):
             self.active = False
             return {'warning': {
                 'title': _("Scheduled action disabled"),
@@ -105,6 +105,7 @@ class ir_cron(models.Model):
             cron._try_lock()
             _logger.info('Manually starting job `%s`.', cron.name)
             cron.with_user(cron.user_id).with_context({'lastcall': cron.lastcall}).ir_actions_server_id.run()
+            self.env.flush_all()
             _logger.info('Job `%s` done.', cron.name)
             cron.lastcall = fields.Datetime.now()
         return True
@@ -390,6 +391,7 @@ class ir_cron(models.Model):
             _logger.info('Starting job `%s`.', cron_name)
             start_time = time.time()
             self.env['ir.actions.server'].browse(server_action_id).run()
+            self.env.flush_all()
             end_time = time.time()
             _logger.info('Job done: `%s` (%.3fs).', cron_name, end_time - start_time)
             if start_time and _logger.isEnabledFor(logging.DEBUG):
@@ -546,8 +548,12 @@ class ir_cron_trigger(models.Model):
     _allow_sudo_commands = False
 
     cron_id = fields.Many2one("ir.cron", index=True)
-    call_at = fields.Datetime()
+    call_at = fields.Datetime(index=True)
 
     @api.autovacuum
     def _gc_cron_triggers(self):
-        self.search([('call_at', '<', datetime.now() + relativedelta(weeks=-1))]).unlink()
+        domain = [('call_at', '<', datetime.now() + relativedelta(weeks=-1))]
+        records = self.search(domain, limit=models.GC_UNLINK_LIMIT)
+        if len(records) >= models.GC_UNLINK_LIMIT:
+            self.env.ref('base.autovacuum_job')._trigger()
+        return records.unlink()

@@ -11,20 +11,20 @@
 # Jonatan Gk, 2023
 # Óscar Fonseca <tecnico@pyming.com>, 2023
 # Arnau Ros, 2023
-# Josep Anton Belchi, 2023
 # Martin Trigaux, 2023
 # Quim - eccit <quim@eccit.com>, 2023
 # Ivan Espinola, 2023
 # marcescu, 2023
 # M Palau <mpalau@tda.ad>, 2023
 # Iván Infantes Castarnado, 2024
+# Josep Anton Belchi, 2024
 # Santiago Payà <santiagopim@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 21:55+0000\n"
+"POT-Creation-Date: 2024-08-13 10:27+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
 "Last-Translator: Santiago Payà <santiagopim@gmail.com>, 2024\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
@@ -247,7 +247,7 @@ msgstr "Nom del domini d'àlies"
 #. module: mail_group
 #: model:ir.model.fields,field_description:mail_group.field_mail_group__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "Pseudònim de correu"
 
 #. module: mail_group
 #: model:ir.model.fields,field_description:mail_group.field_mail_group__alias_name
@@ -507,6 +507,11 @@ msgid ""
 msgstr ""
 "Adreça del remitent. Aquest camp s'estableix quan no es troba cap soci "
 "coincident i reemplaça el camp author_id en la xerrada."
+
+#. module: mail_group
+#: model:ir.model.fields,help:mail_group.field_mail_group__alias_domain
+msgid "Email domain e.g. 'example.com' in 'odoo@example.com'"
+msgstr "Domini de correu electrònic p.ex. 'example.com' a 'odoo@example.com'"
 
 #. module: mail_group
 #: model_terms:ir.ui.view,arch_db:mail_group.mail_group_view_form
@@ -1000,6 +1005,13 @@ msgstr ""
 msgid "Only members can send email to the mailing list."
 msgstr ""
 "Només els membres poden enviar correu electrònic a la llista de correu."
+
+#. module: mail_group
+#. odoo-python
+#: code:addons/mail_group/models/mail_group.py:0
+#, python-format
+msgid "Only selected groups of users can send email to the mailing list."
+msgstr ""
 
 #. module: mail_group
 #: model:ir.model.fields,help:mail_group.field_mail_group__alias_force_thread_id
