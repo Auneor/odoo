@@ -144,6 +144,7 @@ class AccountPayment(models.Model):
         relation='account_move__account_payment',
         column1='payment_id',
         column2='invoice_id',
+        copy=False,
     )
     reconciled_invoice_ids = fields.Many2many('account.move', string="Reconciled Invoices",
         compute='_compute_stat_buttons_from_reconciliation',
@@ -334,8 +335,8 @@ class AccountPayment(models.Model):
         currency_id = self.currency_id.id
 
         # Compute a default label to set on the journal items.
-        liquidity_line_name = ''.join(x[1] for x in self._get_aml_default_display_name_list())
-        counterpart_line_name = ''.join(x[1] for x in self._get_aml_default_display_name_list())
+        liquidity_line_name = ''.join(x[1] for x in self._get_aml_default_display_name_list() if x[1])
+        counterpart_line_name = liquidity_line_name
 
         line_vals_list = [
             # Liquidity line.
@@ -1046,7 +1047,11 @@ class AccountPayment(models.Model):
         ''' draft -> posted '''
         # Do not allow posting if the account is required but not trusted
         for payment in self:
-            if payment.require_partner_bank_account and not payment.partner_bank_id.allow_out_payment:
+            if (
+                payment.require_partner_bank_account
+                and not payment.partner_bank_id.allow_out_payment
+                and payment.payment_type == 'outbound'
+            ):
                 raise UserError(_(
                     "To record payments with %(method_name)s, the recipient bank account must be manually validated. "
                     "You should go on the partner bank account of %(partner)s in order to validate it.",

@@ -1035,7 +1035,7 @@ msgstr "<strong>Deze offerte is geannuleerd.</strong>"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "<strong>Your Reference</strong>"
-msgstr "<strong>Je referentie</strong>"
+msgstr "<strong>Jouw referentie</strong>"
 
 #. module: sale
 #: model:ir.model.constraint,message:sale.constraint_sale_order_date_order_conditional_required
@@ -2237,6 +2237,12 @@ msgstr "Wizard korting"
 #: model:res.groups,name:sale.group_discount_per_so_line
 msgid "Discount on lines"
 msgstr "Korting op regels"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/wizard/sale_order_discount.py:0
+msgid "Discount- On products with the following taxes %(taxes)s"
+msgstr "Korting - Op producten met de volgende belastingen %(taxes)s"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -5799,7 +5805,7 @@ msgstr "Je orders"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid "Your Reference:"
-msgstr "Je referentie:"
+msgstr "Jouw referentie:"
 
 #. module: sale
 #. odoo-javascript

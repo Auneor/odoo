@@ -5,8 +5,8 @@
 # Translators:
 # Dylan Kiss, 2024
 # Jolien De Paepe, 2024
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2025
 # Wil Odoo, 2025
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2025
 # Manon Rondou, 2025
 # 
 msgid ""
@@ -1991,7 +1991,7 @@ msgid ""
 "Drag building blocks here to customize the header for\n"
 "                                    \""
 msgstr ""
-"Sleep hier bouwstenen om de header aan te passen voor\n"
+"Sleep hier bouwstenen om de kop aan te passen voor\n"
 "                                    \""
 
 #. module: website_sale
@@ -2216,6 +2216,15 @@ msgstr "Vullen"
 #: model_terms:ir.ui.view,arch_db:website_sale.address
 msgid "Fill in your address"
 msgstr "Vul je adres in"
+
+#. module: website_sale
+#. odoo-python
+#: code:addons/website_sale/models/product_template.py:0
+msgid ""
+"Final price may vary based on selection. Tax will be calculated at checkout."
+msgstr ""
+"De uiteindelijke prijs kan variëren op basis van de selectie. Btw wordt "
+"berekend bij het afrekenen."
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_website__fiscal_position_id
@@ -2910,7 +2919,7 @@ msgstr "Nieuw!"
 #. odoo-python
 #: code:addons/website_sale/models/website.py:0
 msgid "Newest Arrivals"
-msgstr "Nieuwste aankomsten"
+msgstr "Nieuw binnen"
 
 #. module: website_sale
 #: model:website.snippet.filter,name:website_sale.dynamic_filter_newest_products
@@ -3245,6 +3254,12 @@ msgstr "Betaaltransacties"
 
 #. module: website_sale
 #. odoo-python
+#: code:addons/website_sale/controllers/payment.py:0
+msgid "Payment is already being processed."
+msgstr "De betaling wordt verwerkt."
+
+#. module: website_sale
+#. odoo-python
 #: code:addons/website_sale/models/website_snippet_filter.py:0
 msgid "Pedal-based opening system"
 msgstr "Op pedaal gebaseerd openingssysteem"
@@ -3348,6 +3363,11 @@ msgstr "Prijs per eenheid"
 #: model:ir.model.fields,field_description:website_sale.field_website__pricelist_ids
 msgid "Price list available for this Ecommerce/Website"
 msgstr "Prijslijsten zijn beschikbaar voor deze e-commerce/website"
+
+#. module: website_sale
+#: model_terms:ir.ui.view,arch_db:website_sale.total
+msgid "Price will be updated after choosing a delivery method"
+msgstr "De prijs wordt bijgewerkt nadat je een bezorgmethode hebt gekozen."
 
 #. module: website_sale
 #: model:ir.model,name:website_sale.model_product_pricelist
@@ -4357,6 +4377,12 @@ msgstr "De #1"
 #: code:addons/website_sale/controllers/payment.py:0
 msgid "The access token is invalid."
 msgstr "Het toegangstoken is ongeldig."
+
+#. module: website_sale
+#. odoo-python
+#: code:addons/website_sale/controllers/payment.py:0
+msgid "The cart has already been paid. Please refresh the page."
+msgstr "Het winkelmandje is al betaald. Vernieuw de pagina."
 
 #. module: website_sale
 #. odoo-python
