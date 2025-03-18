@@ -408,11 +408,6 @@ msgid "54326786758"
 msgstr "54326786758"
 
 #. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_inventory
-msgid "98"
-msgstr "98"
-
-#. module: stock
 #. odoo-python
 #: code:addons/stock/models/stock_scrap.py:0
 #, python-format
@@ -4066,13 +4061,6 @@ msgid "Immediate Transfer"
 msgstr "Немедленное перемещение"
 
 #. module: stock
-#. odoo-python
-#: code:addons/stock/models/stock_quant.py:0
-#, python-format
-msgid "Import"
-msgstr "Импорт"
-
-#. module: stock
 #. odoo-javascript
 #: code:addons/stock/static/src/widgets/generate_serial.js:0
 #, python-format
@@ -6488,11 +6476,9 @@ msgstr "Присутствие зависит от типа операции."
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
 msgid ""
-"Press the CREATE button to define quantity for each product in your stock or"
-" import them from a spreadsheet throughout Favorites"
+"Press the \"New\" button to define the quantity for a product in your stock "
+"or import quantities from a spreadsheet via the Actions menu"
 msgstr ""
-"Нажмите кнопку CREATE, чтобы определить количество каждого продукта на "
-"складе или импортировать их из электронной таблицы в Избранное"
 
 #. module: stock
 #. odoo-javascript
@@ -8949,6 +8935,15 @@ msgstr "Партия/серийный номер (%s) связан с други
 
 #. module: stock
 #. odoo-python
+#: code:addons/stock/models/stock_picking.py:0
+#, python-format
+msgid ""
+"The Picking Operations report has been deleted so you cannot print at this "
+"time unless the report is restored."
+msgstr ""
+
+#. module: stock
+#. odoo-python
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
 msgid ""
@@ -10715,7 +10710,7 @@ msgstr "Вы не можете изменить тип продукта, кот�
 #, python-format
 msgid ""
 "You can not create a snoozed orderpoint that is not manually triggered."
-msgstr ""
+msgstr "Нельзя создать отложенный пункт заказа без ручного запуска."
 
 #. module: stock
 #. odoo-python
@@ -10788,6 +10783,8 @@ msgid ""
 "You can only snooze manual orderpoints. You should rather archive 'auto-"
 "trigger' orderpoints if you do not want them to be triggered."
 msgstr ""
+"Откладывать можно только ручные пункты заказа. Автоматические лучше "
+"архивировать, если вы не хотите их запускать."
 
 #. module: stock
 #. odoo-python
@@ -10918,7 +10915,7 @@ msgstr ""
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
 msgid "You cannot duplicate stock quants."
-msgstr ""
+msgstr "Вы не можете дублировать складские остатки."
 
 #. module: stock
 #. odoo-python

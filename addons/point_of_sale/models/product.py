@@ -82,6 +82,13 @@ class ProductTemplate(models.Model):
             raise UserError(_("Combo products cannot contains variants or attributes"))
         return super()._onchange_type()
 
+    def write(self, vals):
+        res = super(ProductTemplate, self).write(vals)
+        for product_template in self:
+            if "detailed_type" in vals and vals.get("detailed_type") != "combo":
+                product_template.combo_ids = False
+        return res
+
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
@@ -148,6 +155,7 @@ class ProductProduct(models.Model):
             for s in list(group):
                 if not((s.date_start and s.date_start > date.today()) or (s.date_end and s.date_end < date.today()) or (s.min_qty > quantity)):
                     supplier_list.append({
+                        'id': s.id,
                         'name': s.partner_id.name,
                         'delay': s.delay,
                         'price': s.price

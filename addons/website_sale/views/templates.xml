@@ -685,7 +685,7 @@
                                         <div t-if="a.display_type == 'color'" class="pt-1 pb-3">
                                             <t t-call="website_sale.o_wsale_offcanvas_color_attribute"/>
                                         </div>
-                                        <div t-elif="a.display_type in ('radio', 'pills', 'select')"
+                                        <div t-elif="a.display_type in ('radio', 'pills', 'select', 'multi')"
                                              class="list-group list-group-flush">
                                             <div t-foreach="a.value_ids" t-as="v" class="list-group-item border-0 ps-0 pb-0">
                                                 <div class="form-check mb-1">
@@ -2238,7 +2238,11 @@
                                  t-if="website_sale_order and website_sale_order.website_order_line">
                                 <div class="card-body p-0 p-lg-4">
                                     <t t-call="website_sale.total"/>
-                                    <t t-call="payment.express_checkout"/>
+                                    <t
+                                        t-if="website.account_on_checkout != 'mandatory' or
+                                              not website.is_public_user()"
+                                        t-call="payment.express_checkout"
+                                    />
                                     <t t-call="website_sale.navigation_buttons"/>
                                 </div>
                             </div>
@@ -2375,6 +2379,19 @@
                 <a role="button" class="d-none d-md-inline-block btn btn-primary ms-auto" href="/shop/print" target="_blank" aria-label="Print" title="Print"><i class="fa fa-print me-2"></i>Print</a>
             </div>
             <t t-if="tx_sudo.state == 'done'">
+                <div class="mb-4">
+                    <h5>
+                        <em>
+                            <span>Order</span>
+                            <span t-field="order.name" />
+                            <t t-if="order.state == 'sale'">
+                                <i class="fa fa-check-circle ms-1"/>
+                            </t>
+                        </em>
+                    </h5>
+                </div>
+            </t>
+            <t t-if="tx_sudo.state != 'done'">
                 <div class="mb-4">
                     <h5>
                         <em>
