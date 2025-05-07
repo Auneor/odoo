@@ -36256,7 +36256,7 @@ msgstr "Taulukko"
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_gelato
 msgid "Place orders through Gelato's print-on-demand service"
-msgstr ""
+msgstr "Tee tilaus Gelaton 'tulostus tarvittaessa' -palvelussa"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_project_forecast
@@ -42693,6 +42693,8 @@ msgid ""
 "This module allows connection to CodaBox and automatically imports CODA and "
 "SODA statements in Odoo."
 msgstr ""
+"Tämän moduulin avulla voit yhdistää CodaBoxiin ja tuoda automaattisesti "
+"CODA- ja SODA-tiliotteita Odooseen."
 
 #. module: base
 #: model:ir.module.module,description:base.module_account_online_payment

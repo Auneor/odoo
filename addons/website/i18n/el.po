@@ -12,10 +12,10 @@
 # Kostas Goutoudis <goutoudis@gmail.com>, 2024
 # Gerasimos Kanelatos, 2025
 # Iasonas Polydoros <j.polydoros@dileanity.com>, 2025
-# Maria Chalepiadou, 2025
 # Anastasia Mimou, 2025
 # Martin Trigaux, 2025
 # Agapi Psyllou, 2025
+# Maria Chalepiadou, 2025
 # Charalampos Loukas, 2025
 # 
 msgid ""
@@ -582,7 +582,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown
 msgid "45"
-msgstr ""
+msgstr "45"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_numbers_showcase
@@ -4077,7 +4077,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.s_image_gallery_options
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "Columns"
-msgstr ""
+msgstr "Στήλες"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_0_s_cover

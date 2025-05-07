@@ -412,12 +412,13 @@ class AccountPayment(models.Model):
             if not payment.state:
                 payment.state = 'draft'
             # in_process --> paid
-            if payment.state == 'in_process' and payment.outstanding_account_id:
-                move = payment.move_id
+            if (move := payment.move_id) and payment.state in ('paid', 'in_process'):
                 liquidity, _counterpart, _writeoff = payment._seek_for_lines()
-                if move and move.currency_id.is_zero(sum(liquidity.mapped('amount_residual'))):
-                    payment.state = 'paid'
-                    continue
+                payment.state = (
+                    'paid'
+                    if move.company_currency_id.is_zero(sum(liquidity.mapped('amount_residual'))) or not liquidity.account_id.reconcile else
+                    'in_process'
+                )
             if payment.state == 'in_process' and payment.invoice_ids and all(invoice.payment_state == 'paid' for invoice in payment.invoice_ids):
                 payment.state = 'paid'
 
@@ -979,10 +980,13 @@ class AccountPayment(models.Model):
             pay.move_id \
                 .with_context(skip_invoice_sync=True) \
                 .write({
+                'name': '/',  # Set the name to '/' to allow it to be changed
+                'date': pay.date,
                 'partner_id': pay.partner_id.id,
                 'currency_id': pay.currency_id.id,
                 'partner_bank_id': pay.partner_bank_id.id,
                 'line_ids': line_ids_commands,
+                'journal_id': pay.journal_id.id,
             })
 
     @api.model

@@ -95,6 +95,12 @@ class PosSession(models.Model):
 
     _sql_constraints = [('uniq_name', 'unique(name)', "The name of this POS Session must be unique!")]
 
+    def write(self, vals):
+        if vals.get('state') == 'closed':
+            for record in self:
+                record.config_id._notify(('CLOSING_SESSION', {'login_number': self.env.context.get('login_number', False)}))
+        return super().write(vals)
+
     @api.model
     def _load_pos_data_relations(self, model, response):
         model_fields = self.env[model]._fields
@@ -187,6 +193,10 @@ class PosSession(models.Model):
 
     def delete_opening_control_session(self):
         self.ensure_one()
+        if not self.exists():
+            return {
+                'status': 'success',
+            }
         if self.state != 'opening_control' or len(self.order_ids) > 0:
             raise UserError(_("You can only cancel a session that is in opening control state and has no orders."))
         self.sudo().unlink()
@@ -226,7 +236,8 @@ class PosSession(models.Model):
             cash_payment_method = session.payment_method_ids.filtered('is_cash_count')[:1]
             if cash_payment_method:
                 total_cash_payment = 0.0
-                result = self.env['pos.payment']._read_group([('session_id', '=', session.id), ('payment_method_id', '=', cash_payment_method.id)], aggregates=['amount:sum'])
+                captured_cash_payments_domain = AND([session._get_captured_payments_domain(),[('payment_method_id', '=', cash_payment_method.id)]])
+                result = self.env['pos.payment']._read_group(captured_cash_payments_domain, aggregates=['amount:sum'])
                 total_cash_payment = result[0][0] or 0.0
                 if session.state == 'closed':
                     total_cash = session.cash_real_transaction + total_cash_payment
@@ -569,7 +580,6 @@ class PosSession(models.Model):
             }
 
         self.post_close_register_message()
-        self.config_id._notify(('CLOSING_SESSION', {'login_number': self.env.context.get('login_number', False)}))
         return {'successful': True}
 
     def post_close_register_message(self):
@@ -897,7 +907,7 @@ class PosSession(models.Model):
                 base_lines = order.with_context(linked_to_pos=True)._prepare_tax_base_line_values()
                 AccountTax._add_tax_details_in_base_lines(base_lines, order.company_id)
                 AccountTax._round_base_lines_tax_details(base_lines, order.company_id)
-                AccountTax._add_accounting_data_in_base_lines_tax_details(base_lines, order.company_id)
+                AccountTax._add_accounting_data_in_base_lines_tax_details(base_lines, order.company_id, include_caba_tags=True)
                 tax_results = AccountTax._prepare_tax_lines(base_lines, order.company_id)
                 total_amount_currency = 0.0
                 for base_line, to_update in tax_results['base_lines_to_update']:
@@ -1080,7 +1090,7 @@ class PosSession(models.Model):
         destination_account = self._get_receivable_account(payment_method)
 
         account_payment = self.env['account.payment'].with_context(pos_payment=True).create({
-            'amount': abs(amounts['amount']),
+            'amount': abs(amounts['amount']) + diff_amount,
             'journal_id': payment_method.journal_id.id,
             'force_outstanding_account_id': outstanding_account.id,
             'destination_account_id': destination_account.id,
@@ -1389,10 +1399,10 @@ class PosSession(models.Model):
         else:
             product_name = ""
             product_uom = False
-        title = 'Sales' if sign == 1 else 'Refund'
-        name = '%s untaxed' % title
+        title = _('Sales') if sign == 1 else _('Refund')
+        name = _('%s untaxed', title)
         if applied_taxes:
-            name = '%s %s with %s' % (title, product_name, ', '.join([tax.name for tax in applied_taxes]))
+            name = _('%(title)s %(product_name)s with %(taxes)s', title=title, product_name=product_name, taxes=', '.join([tax.name for tax in applied_taxes]))
         partial_vals = {
             'name': name,
             'account_id': account_id,
