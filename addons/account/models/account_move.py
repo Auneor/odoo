@@ -2883,9 +2883,19 @@ class AccountMove(models.Model):
                 # A base line has been modified.
                 round_from_tax_lines = (
                     # The changed lines don't affect the taxes.
-                    all(not line.tax_ids and not move_base_lines_values_before.get(line, {}).get('tax_ids') for line in changed_lines)
+                    all(
+                        not line.tax_ids and not move_base_lines_values_before.get(line, {}).get('tax_ids')
+                        for line in changed_lines
+                    )
                     # Keep the tax lines amounts if an amount has been manually computed.
-                    or any_field_has_changed(move_tax_lines_values_before, tax_lines)
+                    or (
+                        list(move_tax_lines_values_before) != list(tax_lines)
+                        or any(
+                            self.env.is_protected(line._fields[fname], line)
+                            for line in tax_lines
+                            for fname in move_tax_lines_values_before[line]
+                        )
+                    )
                 )
 
                 # If the move has been created with all lines including the tax ones and the balance/amount_currency are provided on
@@ -5106,6 +5116,7 @@ class AccountMove(models.Model):
         }
 
     def action_update_fpos_values(self):
+        self.invoice_line_ids._compute_price_unit()
         self.invoice_line_ids._compute_tax_ids()
         self.line_ids._compute_account_id()
 
@@ -5585,9 +5596,9 @@ class AccountMove(models.Model):
             next_amount_to_pay = self.amount_residual
             next_payment_reference = self.name
             next_due_date = epd_installment['date_maturity']
-            discount_date = epd_installment['line'].discount_date
+            discount_date = epd_installment['line'].discount_date or fields.Date.context_today(self)
             discount_amount_currency = epd_installment['discount_amount_currency']
-            days_left = (discount_date - fields.Date.context_today(self)).days  # should never be lower than 0 since epd is valid
+            days_left = max(0, (discount_date - fields.Date.context_today(self)).days)  # should never be lower than 0 since epd is valid
             if days_left > 0:
                 discount_msg = _(
                     "Discount of %(amount)s if paid within %(days)s days",
