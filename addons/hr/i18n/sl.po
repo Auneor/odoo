@@ -16,14 +16,16 @@
 # Tomaž Jug <tomaz@editor.si>, 2023
 # Neun Pro, 2023
 # Katja Deržič, 2024
+# Wil Odoo, 2025
+# Aleš Pipan, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 13:31+0000\n"
+"POT-Creation-Date: 2025-02-10 08:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Katja Deržič, 2024\n"
+"Last-Translator: Aleš Pipan, 2025\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -642,25 +644,25 @@ msgstr "Avatar"
 #: model:ir.model.fields,field_description:hr.field_hr_employee__avatar_1024
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__avatar_1024
 msgid "Avatar 1024"
-msgstr ""
+msgstr "Avatar 1024"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__avatar_128
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__avatar_128
 msgid "Avatar 128"
-msgstr ""
+msgstr "Avatar 128"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__avatar_256
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__avatar_256
 msgid "Avatar 256"
-msgstr ""
+msgstr "Avatar 256"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__avatar_512
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__avatar_512
 msgid "Avatar 512"
-msgstr ""
+msgstr "Avatar 512"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
@@ -693,6 +695,11 @@ msgstr "ID značke"
 #: model:ir.model.fields,field_description:hr.field_hr_employee__bank_account_id
 msgid "Bank Account Number"
 msgstr "Številka bančnega računa"
+
+#. module: hr
+#: model:ir.model,name:hr.model_res_partner_bank
+msgid "Bank Accounts"
+msgstr "Bančni računi"
 
 #. module: hr
 #: model:ir.model,name:hr.model_base
@@ -1641,7 +1648,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr.field_hr_employee__barcode
 #: model:ir.model.fields,help:hr.field_res_users__barcode
 msgid "ID used for employee identification."
-msgstr ""
+msgstr "ID, ki se uporablja za identifikacijo zaposlenega."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__activity_exception_icon
@@ -1790,7 +1797,7 @@ msgstr "Zaposlitve"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__lang
 msgid "Lang"
-msgstr ""
+msgstr "Jezik"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_profile
@@ -2077,7 +2084,7 @@ msgstr ""
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Next Activity Calendar Event"
+msgstr "Naslednji dogodek v koledarju"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__activity_date_deadline
@@ -2239,7 +2246,7 @@ msgstr "Načrti"
 #: code:addons/hr/models/hr_employee_base.py:0
 #, python-format
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operacija ni podprta"
 
 #. module: hr
 #: model:ir.model.fields.selection,name:hr.selection__hr_employee__certificate__other
@@ -2584,15 +2591,11 @@ msgid "Register Departure"
 msgstr ""
 
 #. module: hr
+#. odoo-python
+#: code:addons/hr/models/hr_employee_base.py:0
 #: model:ir.model.fields,field_description:hr.field_hr_employee__related_contact_ids
 #: model:ir.model.fields,field_description:hr.field_hr_employee_base__related_contact_ids
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__related_contact_ids
-msgid "Related Contact"
-msgstr "Povezani stik"
-
-#. module: hr
-#. odoo-python
-#: code:addons/hr/models/hr_employee_base.py:0
 #, python-format
 msgid "Related Contacts"
 msgstr ""
@@ -3044,6 +3047,8 @@ msgid ""
 "This field is used in order to define in which timezone the resources will "
 "work."
 msgstr ""
+"To polje se uporablja za določitev časovnega pasu, v katerem bodo viri "
+"delovali."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__tz
