@@ -58,16 +58,16 @@ class ProductTemplate(models.Model):
         for template in self:
             archived_product = self.env['product.product'].search([('product_tmpl_id', '=', template.id), ('active', '=', False)], limit=1)
             if archived_product:
-                combo_choices_to_delete = self.env['pos.combo.line'].search([
+                combo_choices_to_delete = self.env['pos.combo.line'].sudo().search([
                     ('product_id', '=', archived_product.id)
                 ])
                 if combo_choices_to_delete:
                     # Delete old combo line
                     combo_ids = combo_choices_to_delete.mapped('combo_id')
-                    combo_choices_to_delete.unlink()
+                    combo_choices_to_delete.sudo().unlink()
                     # Create new combo line (one for each new variant) in each combo
                     new_variants = template.product_variant_ids.filtered(lambda v: v.active)
-                    self.env['pos.combo.line'].create([
+                    self.env['pos.combo.line'].sudo().create([
                         {
                             'product_id': variant.id,
                             'combo_id': combo_id.id,
@@ -115,7 +115,13 @@ class ProductProduct(models.Model):
         config = self.env['pos.config'].browse(pos_config_id)
 
         # Tax related
-        taxes = self.taxes_id.compute_all(price, config.currency_id, quantity, self)
+        tax_to_use = None
+        company = config.company_id
+        while not tax_to_use and company:
+            tax_to_use = self.taxes_id.filtered(lambda tax: tax.company_id.id == company.id)
+            if not tax_to_use:
+                company = company.parent_id
+        taxes = tax_to_use.compute_all(price, config.currency_id, quantity, self)
         grouped_taxes = {}
         for tax in taxes['taxes']:
             if tax['id'] in grouped_taxes:
