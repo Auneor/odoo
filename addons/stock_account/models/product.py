@@ -191,7 +191,9 @@ will update the cost of every lot/serial number in stock."),
         for product in self:
             value_sum, quantity_sum = group_mapping.get(product._origin, (0, 0))
             value_svl = company_id.currency_id.round(value_sum)
-            avg_cost = value_svl / quantity_sum if quantity_sum else 0
+            avg_cost = 0
+            if not float_is_zero(quantity_sum, precision_rounding=product.uom_id.rounding):
+                avg_cost = value_svl / quantity_sum
             product.value_svl = value_svl
             product.quantity_svl = quantity_sum
             product.avg_cost = avg_cost
@@ -338,7 +340,7 @@ will update the cost of every lot/serial number in stock."),
 
     def _get_fifo_candidates(self, company, lot=False):
         candidates_domain = self._get_fifo_candidates_domain(company, lot=lot)
-        return self.env["stock.valuation.layer"].sudo().search(candidates_domain).sorted(lambda svl: svl._candidate_sort_key())
+        return self.env["stock.valuation.layer"].sudo().search(candidates_domain)
 
     def _get_qty_taken_on_candidate(self, qty_to_take_on_candidates, candidate):
         return min(qty_to_take_on_candidates, candidate.remaining_qty)
@@ -446,7 +448,7 @@ will update the cost of every lot/serial number in stock."),
         new_svl_vals_manual = []
         real_time_svls_to_vacuum = ValuationLayer
 
-        for product in self:
+        for product in self.with_company(company.id):
             all_candidates = all_candidates_by_product[product.id]
             current_real_time_svls = ValuationLayer
             for svl_to_vacuum in svls_to_vacuum_by_product[product.id]:
