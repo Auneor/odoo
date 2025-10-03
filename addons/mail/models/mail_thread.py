@@ -2100,7 +2100,7 @@ class MailThread(models.AbstractModel):
         msg_values.update({
             'author_id': author_id,
             'author_guest_id': author_guest_id,
-            'email_from': email_from,
+            'email_from': "reponse-uniquement@mais.asso.fr",
             'model': self._name,
             'res_id': self.id,
             # content

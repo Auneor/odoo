@@ -485,7 +485,7 @@ class IrMailServer(models.Model):
            :rtype: email.message.EmailMessage
            :return: the new RFC2822 email message
         """
-        email_from = email_from or self._get_default_from_address()
+        email_from = "reponse-uniquement@mais.asso.fr"
         assert email_from, "You must either provide a sender address explicitly or configure "\
                            "using the combination of `mail.catchall.domain` and `mail.default.from` "\
                            "ICPs, in the server configuration file or with the "\
@@ -694,7 +694,7 @@ class IrMailServer(models.Model):
         if not smtp:
             smtp = self.connect(
                 smtp_server, smtp_port, smtp_user, smtp_password, smtp_encryption,
-                smtp_from=message['From'], ssl_certificate=smtp_ssl_certificate, ssl_private_key=smtp_ssl_private_key,
+                smtp_from='reponse-uniquement@mais.asso.fr', ssl_certificate=smtp_ssl_certificate, ssl_private_key=smtp_ssl_private_key,
                 smtp_debug=smtp_debug, mail_server_id=mail_server_id,)
 
         smtp_from, smtp_to_list, message = self._prepare_email_message(message, smtp)
