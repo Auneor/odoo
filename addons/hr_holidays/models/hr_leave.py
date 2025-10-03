@@ -121,8 +121,8 @@ class HolidaysRequest(models.Model):
             new_values.update([('request_date_from', date_from), ('request_date_to', date_to)])
 
             employee = self.env['hr.employee'].browse(values['employee_id']) if values.get('employee_id') else self.env.user.employee_id
-            default_start_time = self._get_start_or_end_from_attendance(7, datetime.now().date(), employee).time()
-            default_end_time = self._get_start_or_end_from_attendance(19, datetime.now().date(), employee).time()
+            default_start_time = self._get_start_or_end_from_attendance(7, values['date_from'].date(), employee).time()
+            default_end_time = self._get_start_or_end_from_attendance(19, values['date_to'].date(), employee).time()
             if values['date_from'].time() == default_start_time and values['date_to'].time() == default_end_time:
                 attendance_from, attendance_to = self._get_attendances(employee, date_from, date_to)
                 new_values['date_from'] = self._get_start_or_end_from_attendance(attendance_from.hour_from, date_from, employee)
@@ -709,6 +709,14 @@ class HolidaysRequest(models.Model):
                 continue
             if holiday.employee_id:
                 leave_days = mapped_days[holiday.employee_id.id][holiday.holiday_status_id.id]
+                allocation_exists = self.env['hr.leave.allocation'].search_count([
+                    ('employee_id', '=', holiday.employee_id.id),
+                    ('holiday_status_id', '=', holiday.holiday_status_id.id),
+                    ('state', '=', 'validate')
+                ], limit=1)
+                if not allocation_exists:
+                    raise ValidationError(_('You do not have any allocation for this time off type.\n'
+                                            'Please request an allocation before submitting your time off request.'))
                 if float_compare(leave_days['remaining_leaves'], 0, precision_digits=2) == -1\
                         or float_compare(leave_days['virtual_remaining_leaves'], 0, precision_digits=2) == -1:
                     raise ValidationError(_('The number of remaining time off is not sufficient for this time off type.\n'
