@@ -3,7 +3,7 @@
 
 import ldap
 import logging
-from ldap.filter import filter_format
+#from ldap.filter import filter_format
 
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import AccessDenied
@@ -85,7 +85,7 @@ class CompanyLDAP(models.Model):
     def _get_entry(self, conf, login):
         filter, dn, entry = False, False, False
         try:
-            filter = filter_format(conf['ldap_filter'], (login,))
+            filter = False
         except TypeError:
             _logger.warning('Could not format LDAP filter. Your filter should contain one \'%s\'.')
         if filter:
