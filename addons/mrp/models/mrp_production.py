@@ -587,7 +587,7 @@ class MrpProduction(models.Model):
                     if not (bom.operation_ids and (not bom_data['parent_line'] or bom_data['parent_line'].bom_id.operation_ids != bom.operation_ids)):
                         continue
                     for operation in bom.operation_ids:
-                        if operation._skip_operation_line(bom_data['product']):
+                        if operation._skip_operation_line(bom_data['product'] if not bom_data['parent_line'] else bom_data['parent_line']['product_id']):
                             continue
                         workorders_values += [{
                             'name': operation.name,
@@ -738,7 +738,7 @@ class MrpProduction(models.Model):
             days_delay = production.bom_id.produce_delay
             date_finished = production.date_start + relativedelta(days=days_delay)
             if production._should_postpone_date_finished(date_finished):
-                workorder_expected_duration = sum(self.workorder_ids.mapped('duration_expected'))
+                workorder_expected_duration = sum(production.workorder_ids.mapped('duration_expected'))
                 date_finished = date_finished + relativedelta(minutes=workorder_expected_duration or 60)
             production.date_finished = date_finished
 

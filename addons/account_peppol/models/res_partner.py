@@ -148,7 +148,7 @@ class ResPartner(models.Model):
     @api.depends('ubl_cii_format')
     def _compute_is_peppol_edi_format(self):
         for partner in self:
-            partner.is_peppol_edi_format = partner.ubl_cii_format not in (False, 'facturx', 'oioubl_201', 'ciusro')
+            partner.is_peppol_edi_format = partner.ubl_cii_format not in (False, 'facturx', 'oioubl_201', 'ciusro', 'ubl_tr')
 
     @api.depends('peppol_eas', 'peppol_endpoint', 'ubl_cii_format')
     def _compute_account_peppol_is_endpoint_valid(self):
@@ -194,4 +194,15 @@ class ResPartner(models.Model):
             edi_identification = f'{self.peppol_eas}:{self.peppol_endpoint}'.lower()
             self.account_peppol_validity_last_check = fields.Date.context_today(self)
             self.account_peppol_is_endpoint_valid = bool(self._check_peppol_participant_exists(edi_identification, ubl_cii_format=self.ubl_cii_format))
+
+            if (
+                not self.account_peppol_is_endpoint_valid
+                and self.peppol_eas in ('0208', '9925')
+            ):
+                inverse_eas = '9925' if self.peppol_eas == '0208' else '0208'
+                inverse_endpoint = f'BE{self.peppol_endpoint}' if self.peppol_eas == '0208' else self.peppol_endpoint[2:]
+                if self._check_peppol_participant_exists(f'{inverse_eas}:{inverse_endpoint}', ubl_cii_format=self.ubl_cii_format):
+                    self.peppol_eas = inverse_eas
+                    self.peppol_endpoint = inverse_endpoint
+                    self.account_peppol_is_endpoint_valid = True
         return False

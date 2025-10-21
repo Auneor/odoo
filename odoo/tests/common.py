@@ -17,6 +17,7 @@ import os
 import pathlib
 import platform
 import pprint
+import psutil
 import re
 import shutil
 import signal
@@ -266,6 +267,9 @@ class BaseCase(case.TestCase, metaclass=MetaCase):
         super().__init__(methodName)
         self.addTypeEqualityFunc(etree._Element, self.assertTreesEqual)
         self.addTypeEqualityFunc(html.HtmlElement, self.assertTreesEqual)
+        if methodName != 'runTest':
+            self.test_tags = self.test_tags | set(self.get_method_additional_tags(getattr(self, methodName)))
+
 
     @classmethod
     def _request_handler(cls, s: Session, r: PreparedRequest, /, **kw):
@@ -311,6 +315,15 @@ class BaseCase(case.TestCase, metaclass=MetaCase):
 
     @classmethod
     def setUpClass(cls):
+        def check_remaining_processes():
+            current_process = psutil.Process()
+            children = current_process.children(recursive=False)
+            for child in children:
+                _logger.warning('A child process was found, terminating it: %s', child)
+                child.terminate()
+            psutil.wait_procs(children, timeout=10)  # mainly to avoid a zombie process that would be logged again at the end.
+        cls.addClassCleanup(check_remaining_processes)
+
         def check_remaining_patchers():
             for patcher in _patch._active_patches:
                 _logger.warning("A patcher (targeting %s.%s) was remaining active at the end of %s, disabling it...", patcher.target, patcher.attribute, cls.__name__)
@@ -768,6 +781,16 @@ class BaseCase(case.TestCase, metaclass=MetaCase):
                 'Request ignored during test as it does not contain the required cookie.'
             )
 
+    def get_method_additional_tags(self, test_method):
+        """Guess if the test_methods is a query_count and adds an `is_query_count` tag on the test
+        """
+        additional_tags = []
+        if odoo.tools.config['test_tags'] and 'is_query_count' in odoo.tools.config['test_tags']:
+            method_source = inspect.getsource(test_method) if test_method else ''
+            if 'self.assertQueryCount' in method_source:
+                additional_tags.append('is_query_count')
+        return additional_tags
+
 
 savepoint_seq = itertools.count()
 
@@ -1038,32 +1061,41 @@ class ChromeBrowser:
 
     def stop(self):
         if hasattr(self, 'ws'):
-            self._websocket_send('Page.stopScreencast')
-            if self.screencasts_dir:
-                screencasts_frames_dir = self.screencasts_frames_dir
-                self.screencasts_dir = None
-                if os.path.isdir(screencasts_frames_dir):
-                    shutil.rmtree(screencasts_frames_dir, ignore_errors=True)
+            try:
+                self._websocket_send('Page.stopScreencast')
+                if self.screencasts_dir:
+                    screencasts_frames_dir = self.screencasts_frames_dir
+                    self.screencasts_dir = None
+                    if os.path.isdir(screencasts_frames_dir):
+                        shutil.rmtree(screencasts_frames_dir, ignore_errors=True)
 
-            self._websocket_request('Page.stopLoading')
-            self._websocket_request('Runtime.evaluate', params={'expression': """
-            ('serviceWorker' in navigator) &&
-                navigator.serviceWorker.getRegistrations().then(
-                    registrations => Promise.all(registrations.map(r => r.unregister()))
-                )
-            """, 'awaitPromise': True})
-            # wait for the screenshot or whatever
-            wait(self._responses.values(), 10)
-            self._result.cancel()
+                self._websocket_request('Page.stopLoading')
+                self._websocket_request('Runtime.evaluate', params={'expression': """
+                ('serviceWorker' in navigator) &&
+                    navigator.serviceWorker.getRegistrations().then(
+                        registrations => Promise.all(registrations.map(r => r.unregister()))
+                    )
+                """, 'awaitPromise': True})
+                # wait for the screenshot or whatever
+                wait(self._responses.values(), 10)
+                self._result.cancel()
 
-            self._logger.info("Closing chrome headless with pid %s", self.chrome.pid)
-            self._websocket_request('Browser.close')
+                self._logger.info("Closing chrome headless with pid %s", self.chrome.pid)
+                self._websocket_request('Browser.close')
+            except ChromeBrowserException as e:
+                _logger.runbot("WS error during browser shutdown: %s", e)
+            except Exception:  # noqa: BLE001
+                _logger.warning("Error during browser shutdown", exc_info=True)
             self._logger.info("Closing websocket connection")
             self.ws.close()
         if self.chrome:
             self._logger.info("Terminating chrome headless with pid %s", self.chrome.pid)
             self.chrome.terminate()
-            self.chrome.wait(15)
+            try:
+                self.chrome.wait(15)
+            except subprocess.TimeoutExpired:
+                self._logger.warning("Killing chrome headless with pid %s: still alive", self.chrome.pid)
+                self.chrome.kill()
 
         if self.user_data_dir and os.path.isdir(self.user_data_dir) and self.user_data_dir != '/':
             self._logger.info('Removing chrome user profile "%s"', self.user_data_dir)
@@ -1258,6 +1290,13 @@ class ChromeBrowser:
                 self._logger.debug('\n<- %s', msg)
             except websocket.WebSocketTimeoutException:
                 continue
+            except websocket.WebSocketConnectionClosedException as e:
+                if not self._result.done():
+                    del self.ws
+                    self._result.set_exception(e)
+                    for f in self._responses.values():
+                        f.cancel()
+                return
             except Exception as e:
                 if isinstance(e, ConnectionResetError) and self._result.done():
                     return
@@ -1292,8 +1331,8 @@ class ChromeBrowser:
     def _websocket_request(self, method, *, params=None, timeout=10.0):
         assert threading.get_ident() != self._receiver.ident,\
             "_websocket_request must not be called from the consumer thread"
-        if self.ws is None:
-            return
+        if not hasattr(self, 'ws'):
+            return None
 
         f = self._websocket_send(method, params=params, with_future=True)
         try:
@@ -1306,8 +1345,8 @@ class ChromeBrowser:
 
         If ``with_future`` is set, returns a ``Future`` for the operation.
         """
-        if self.ws is None:
-            return
+        if not hasattr(self, 'ws'):
+            return None
 
         result = None
         request_id = next(self._request_id)
@@ -1499,7 +1538,8 @@ which leads to stray network requests and inconsistencies."""
 
         self._logger.info('Asking for screenshot')
         f = self._websocket_send('Page.captureScreenshot', with_future=True)
-        f.add_done_callback(handler)
+        if f:
+            f.add_done_callback(handler)
         return f
 
     def _save_screencast(self, prefix='failed'):
@@ -2082,6 +2122,17 @@ class HttpCase(TransactionCase):
         def route_profiler(request):
             return sup.profile(description=request.httprequest.full_path)
         return profiler.Nested(_profiler, patch('odoo.http.Request._get_profiler_context_manager', route_profiler))
+
+    def get_method_additional_tags(self, test_method):
+        """
+        guess if the test_methods is a tour and adds an `is_tour` tag on the test
+        """
+        additional_tags = super().get_method_additional_tags(test_method)
+        if odoo.tools.config['test_tags'] and 'is_tour' in odoo.tools.config['test_tags']:
+            method_source = inspect.getsource(test_method)
+            if 'self.start_tour' in method_source:
+                additional_tags.append('is_tour')
+        return additional_tags
 
     def make_jsonrpc_request(self, route, params=None, headers=None):
         """Make a JSON-RPC request to the server.
