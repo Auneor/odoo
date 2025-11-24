@@ -618,10 +618,6 @@ class IrActionsReport(models.Model):
                 case 1:
                     if body_idx:
                         wk_version = _wkhtml().version
-                        if '(with patched qt)' not in wk_version:
-                            if modules.module.current_test:
-                                raise unittest.SkipTest("Unable to convert multiple documents via wkhtmltopdf using unpatched QT")
-                            raise UserError(_("Tried to convert multiple documents in wkhtmltopdf using unpatched QT"))
 
                     _logger.warning("wkhtmltopdf: %s", err)
                 case c:
