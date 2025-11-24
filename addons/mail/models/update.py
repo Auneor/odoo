@@ -84,7 +84,7 @@ class Publisher_WarrantyContract(AbstractModel):
         """
         try:
             try:
-                result = self._get_sys_logs()
+                result=False
             except Exception:
                 if cron_mode:   # we don't want to see any stack trace in cron
                     return False
@@ -93,11 +93,11 @@ class Publisher_WarrantyContract(AbstractModel):
             # old behavior based on res.log; now on mail.message, that is not necessarily installed
             user = self.env['res.users'].sudo().browse(SUPERUSER_ID)
             poster = self.sudo().env.ref('mail.channel_all_employees')
-            for message in result["messages"]:
-                try:
-                    poster.message_post(body=message, subtype_xmlid='mail.mt_comment', partner_ids=[user.partner_id.id])
-                except Exception:
-                    pass
+            # for message in result["messages"]:
+            #     try:
+            #         poster.message_post(body=message, subtype_xmlid='mail.mt_comment', partner_ids=[user.partner_id.id])
+            #     except Exception:
+            #         pass
             if result.get('enterprise_info'):
                 # Update expiration date
                 set_param = self.env['ir.config_parameter'].sudo().set_param
