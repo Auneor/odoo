@@ -3662,6 +3662,56 @@ test("one2many kanban: conditional create/delete actions", async () => {
     });
 });
 
+test("one2many kanban: conditional write action", async () => {
+    Partner._records[0].p = [2, 4];
+
+    await mountView({
+        type: "form",
+        resModel: "partner",
+        arch: `
+            <form>
+                <field name="bar"/>
+                <field name="p" options="{'write': [('bar', '=', True)]}">
+                    <kanban>
+                        <templates>
+                            <t t-name="card">
+                                <field name="name"/>
+                                <field name="bar" widget="boolean_toggle"/>
+                            </t>
+                        </templates>
+                    </kanban>
+                    <form>
+                        <field name="name"/>
+                        <field name="foo"/>
+                    </form>
+                </field>
+            </form>`,
+        resId: 1,
+    });
+
+    expect(".o_kanban_record:first span").toHaveText("second record");
+    expect(".o_field_widget[name=bar]:first input").toBeChecked();
+
+    // bar is initially true -> edit action is available
+    expect(".o_kanban_record:first .o_field_widget[name=bar] input").toBeEnabled();
+    expect(".o-kanban-button-new").toHaveCount(1); // can create
+    await contains(".o_kanban_record:first").click();
+    expect(".o_dialog .o_form_renderer").toHaveClass("o_form_editable");
+    await contains(".o_dialog .o_field_widget[name=name] input").edit("second record edited");
+    await contains(".modal .o_form_button_save").click();
+    expect(".o_kanban_record:first span").toHaveText("second record edited");
+
+    // set bar false -> edit action is no longer available
+    await contains('.o_field_widget[name="bar"] input').click();
+    expect(".o_kanban_record:first .o_field_widget[name=bar] input").not.toBeEnabled();
+    expect(".o-kanban-button-new").toHaveCount(1); // can still create
+    await contains(".o_kanban_record:first").click();
+    expect(".o_dialog .o_form_renderer").toHaveClass("o_form_readonly");
+    expect(".o_dialog .o_form_button_save").toHaveCount(0);
+    await contains(".modal .o_form_button_cancel").click();
+    expect(".o_dialog").toHaveCount(0);
+});
+
 test.tags("desktop");
 test("editable one2many list, pager is updated on desktop", async () => {
     Turtle._records.push({ id: 4, turtle_foo: "stephen hawking" });
@@ -13489,4 +13539,86 @@ test("edit o2m with default_order on a field not in view (2)", async () => {
     await contains(".modal .o_field_widget[name=turtle_foo] input").edit("kawa2");
     await contains(".modal-footer .o_form_button_save").click();
     expect(queryAllTexts(".o_data_cell.o_list_char")).toEqual(["blip", "kawa2", "yop"]);
+});
+
+test("one2many list with aggregates in first column", async () => {
+    Partner._records[0].turtles = [1, 2, 3];
+
+    await mountView({
+        type: "form",
+        resModel: "partner",
+        arch: `
+            <form>
+                <field name="turtles">
+                    <list>
+                        <field name="turtle_int" sum="My sum"/>
+                        <field name="display_name"/>
+                    </list>
+                </field>
+            </form>`,
+        resId: 1,
+    });
+
+    expect(queryAllTexts(".o_data_cell")).toEqual([
+        "0",
+        "leonardo",
+        "9",
+        "donatello",
+        "21",
+        "raphael",
+    ]);
+    expect(`tfoot td:first`).toHaveText("30");
+});
+
+test.tags("desktop");
+test("one2many list with monetary aggregates and different currencies", async () => {
+    class Currency extends models.Model {
+        _name = "res.currency";
+
+        name = fields.Char();
+        symbol = fields.Char();
+        position = fields.Selection({
+            selection: [
+                ["after", "A"],
+                ["before", "B"],
+            ],
+        });
+        inverse_rate = fields.Float();
+
+        _records = [
+            { id: 1, name: "USD", symbol: "$", position: "before", inverse_rate: 1 },
+            { id: 2, name: "EUR", symbol: "€", position: "after", inverse_rate: 0.5 },
+        ];
+    }
+    defineModels([Currency]);
+
+    Turtle._fields.amount = fields.Monetary({ currency_field: "currency", default: 100 });
+    Turtle._fields.currency = fields.Many2one({ relation: "res.currency", default: 1 });
+    Turtle._records[2].currency = 2;
+    Partner._records[0].turtles = [1, 2, 3];
+
+    await mountView({
+        type: "form",
+        resModel: "partner",
+        arch: `
+            <form>
+                <field name="turtles">
+                    <list>
+                        <field name="amount" sum="My sum"/>
+                        <field name="currency"/>
+                    </list>
+                </field>
+            </form>`,
+        resId: 1,
+    });
+
+    expect(queryAllTexts(".o_data_cell.o_list_number")).toEqual([
+        "$ 100.00",
+        "$ 100.00",
+        "100.00 €",
+    ]);
+    expect(`tfoot`).toHaveText("$ 250.00?");
+    await contains("tfoot span sup").hover();
+    expect(".o_multi_currency_popover").toHaveCount(1);
+    expect(".o_multi_currency_popover").toHaveText("500.00 € at $ 0.50");
 });

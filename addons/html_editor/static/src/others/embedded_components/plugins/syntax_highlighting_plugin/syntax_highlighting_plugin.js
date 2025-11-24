@@ -41,6 +41,7 @@ export class SyntaxHighlightingPlugin extends Plugin {
         "protectedNode",
         "embeddedComponents",
     ];
+    /** @type {import("plugins").EditorResources} */
     resources = {
         mount_component_handlers: this.setupNewCodeBlock.bind(this),
         normalize_handlers: (root) => this.addCodeBlocks(root, true),
@@ -48,7 +49,11 @@ export class SyntaxHighlightingPlugin extends Plugin {
         post_redo_handlers: () => this.addCodeBlocks(this.editable, true),
         clean_for_save_handlers: withSequence(0, ({ root }) => this.cleanForSave(root)),
         // Ensure focus can be preserved within the textarea:
-        is_node_editable_predicates: (node) => node?.classList?.contains("o_prism_source"),
+        is_node_editable_predicates: (node) => {
+            if (node?.classList?.contains("o_prism_source")) {
+                return true;
+            }
+        },
     };
 
     setup() {

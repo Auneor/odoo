@@ -18,13 +18,14 @@
 # Martin Trigaux, 2023
 # Tomaž Jug <tomaz@editor.si>, 2023
 # "Tiffany Chang (tic)" <tic@odoo.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 18:37+0000\n"
-"PO-Revision-Date: 2025-09-16 21:23+0000\n"
-"Last-Translator: \"Tiffany Chang (tic)\" <tic@odoo.com>\n"
+"POT-Creation-Date: 2025-11-07 18:35+0000\n"
+"PO-Revision-Date: 2025-11-10 15:46+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Slovenian <https://translate.odoo.com/projects/odoo-19/"
 "account/sl/>\n"
 "Language: sl\n"
@@ -306,6 +307,18 @@ msgstr ""
 #. odoo-python
 #: code:addons/account/models/account_document_import_mixin.py:0
 msgid "'%(filename)s' (type=%(type)s)"
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/accrued_orders.py:0
+msgid "(*) Goods Delivered not Invoiced (perpetual valuation)"
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/accrued_orders.py:0
+msgid "(*) Goods Invoiced not Delivered (perpetual valuation)"
 msgstr ""
 
 #. module: account
@@ -1230,14 +1243,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
-"<small class=\"form-text text-muted\">\n"
-"                    Izberete lahko, kako želite, da vam pošiljamo račune in "
-"v kateri elektronski obliki..\n"
-"                </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -2769,11 +2778,9 @@ msgstr "Premiki obračunavanja"
 #. odoo-python
 #: code:addons/account/wizard/accrued_orders.py:0
 msgid ""
-"Accrual entry created on %(date)s: %(accrual_entry)s.                    And "
-"its reverse entry: %(reverse_entry)s."
+"Accrual entry created on %(date)s: %(accrual_entry)s.                And its "
+"reverse entry: %(reverse_entry)s."
 msgstr ""
-"Vnos obračuna ustvarjen dne %(date)s: %(accrual_entry)s.                    "
-"In njegov obratni vnos: %(reverse_entry)s."
 
 #. module: account
 #. odoo-python
@@ -4385,6 +4392,22 @@ msgid "Batch Payments"
 msgstr "Paketna plačila"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, activate the cron to enable "
+"batch sending of invoices."
+msgstr ""
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, contact your system "
+"administrator to activate the cron to enable batch sending of invoices."
+msgstr ""
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_resequence/account_resequence.xml:0
 msgid "Before"
@@ -4551,7 +4574,7 @@ msgstr "Proračuni"
 #. module: account
 #: model:account.account,name:account.2_account_account_us_buildings
 msgid "Buildings"
-msgstr ""
+msgstr "Stavbe"
 
 #. module: account
 #: model:ir.model,name:account.model_account_document_import_mixin
@@ -5180,6 +5203,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -5439,7 +5463,7 @@ msgstr "Izračunani saldo"
 #. module: account
 #: model:account.account,name:account.2_account_account_us_computers
 msgid "Computers"
-msgstr ""
+msgstr "Računalniki"
 
 #. module: account
 #: model:ir.model,name:account.model_res_config_settings
@@ -5562,7 +5586,7 @@ msgstr "Prispevki"
 #. module: account
 #: model:ir.ui.menu,name:account.account_audit_control_menu
 msgid "Control"
-msgstr ""
+msgstr "Nadzor"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_amounts_to_settle
@@ -6769,6 +6793,12 @@ msgid "Default taxes used when selling the product"
 msgstr "Privzeti davki, ki se uporabljajo pri prodaji izdelka"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr ""
+
+#. module: account
 #: model:account.account,name:account.1_deferred_revenue
 #: model:account.account,name:account.2_account_account_us_deferred_revenue
 msgid "Deferred Revenue"
@@ -6839,7 +6869,7 @@ msgstr "Vrsta zakasnitve"
 #. odoo-javascript
 #: code:addons/account/static/src/components/section_and_note_fields_backend/section_and_note_fields_backend.xml:0
 msgid "Delete"
-msgstr ""
+msgstr "Izbriši"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__partner_shipping_id
@@ -8142,6 +8172,12 @@ msgid "Expired"
 msgstr "Poteklo"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Export ZIP"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_column__expression_label
 msgid "Expression Label"
 msgstr "Oznaka izraza"
@@ -8293,7 +8329,7 @@ msgstr "Izpolnite podrobnosti o izdelku ali si oglejte predlog."
 #. odoo-javascript
 #: code:addons/account/static/src/components/product_catalog/search/search_panel.xml:0
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #. module: account
 #. odoo-python
@@ -8779,7 +8815,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.2_account_account_us_fuel
 msgid "Fuel"
-msgstr ""
+msgstr "Gorivo"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_register__installments_mode__full
@@ -8888,6 +8924,12 @@ msgstr "Pridobite rezultat integritete zgoščene vrednosti v obliki PDF."
 #: model:ir.model.fields.selection,name:account.selection__account_lock_exception__lock_date_field__fiscalyear_lock_date
 msgid "Global Lock Date"
 msgstr "Datum globalnega zaklepanja"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid "Go to cron configuration"
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -9012,6 +9054,12 @@ msgstr "Je fiskalen položaj spremenjen"
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__has_iban_warning
 msgid "Has Iban Warning"
 msgstr "Ima opozorilo o IBAN-u"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__journal_has_invalid_statements
+#: model:ir.model.fields,field_description:account.field_account_journal__has_invalid_statements
+msgid "Has Invalid Statements"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__has_message
@@ -10001,18 +10049,22 @@ msgstr ""
 "od vrednosti \"Od\"."
 
 #. module: account
-#. odoo-python
-#: code:addons/account/models/account_report.py:0
-msgid ""
-"Invalid domain for expression '%(label)s' of line '%(line)s': %(formula)s"
+#: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
+msgid "Invalid Statement(s)"
 msgstr ""
-"Neveljavna domena za izraz '%(label)s' na liniji '%(line)s': %(formula)s"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/company.py:0
 msgid "Invalid fiscal year last day"
 msgstr "Neveljaven zadnji dan poslovnega leta"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_report.py:0
+msgid ""
+"Invalid formula for expression '%(label)s' of line '%(line)s': %(formula)s"
+msgstr ""
 
 #. module: account
 #: model:account.account,name:account.2_account_account_us_inventory_valuation
@@ -10295,6 +10347,7 @@ msgstr "Zaračunano"
 
 #. module: account
 #. odoo-python
+#: code:addons/account/controllers/download_docs.py:0
 #: code:addons/account/controllers/portal.py:0
 #: model:ir.actions.act_window,name:account.action_move_out_invoice
 #: model:ir.actions.act_window,name:account.action_move_out_invoice_type
@@ -11118,7 +11171,7 @@ msgstr "Preostalo za plačilo:"
 #. module: account
 #: model:account.account,name:account.2_account_account_us_legal
 msgid "Legal"
-msgstr ""
+msgstr "Pravno"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__invoice_legal_notes
@@ -11308,7 +11361,7 @@ msgstr "Logotip"
 #. module: account
 #: model:ir.ui.menu,name:account.account_logs_menu
 msgid "Logs"
-msgstr ""
+msgstr "Dnevniki"
 
 #. module: account
 #: model:onboarding.onboarding.step,done_text:account.onboarding_onboarding_step_base_document_layout
@@ -12547,7 +12600,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.2_account_account_us_office_supplies
 msgid "Office Supplies"
-msgstr ""
+msgstr "Pisarniško oskrbovanje"
 
 #. module: account
 #: model:account.account,description:account.2_account_account_us_furniture
@@ -13574,6 +13627,12 @@ msgstr ""
 "preskočena."
 
 #. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
+msgstr ""
+
+#. module: account
 #: model:account.group,name:account.2_us_group_61
 msgid "Payroll Expenses"
 msgstr ""
@@ -13718,6 +13777,7 @@ msgstr "URL dostop do portala"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
+#: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Post"
 msgstr "Vknjiži"
 
@@ -13891,7 +13951,7 @@ msgstr "Cena"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__price_difference_account_id
 msgid "Price Difference Account"
-msgstr ""
+msgstr "Konto razlik v ceni"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__price_include
@@ -14382,6 +14442,12 @@ msgid "Reconciled Lines Excluding Exchange Diff"
 msgstr ""
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
 msgid "Reconciled Statement Lines"
 msgstr "Usklajene vrstice izpiska"
@@ -14856,6 +14922,7 @@ msgstr "Obrnjeno na"
 
 #. module: account
 #: model:ir.ui.menu,name:account.account_audit_menu
+#: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Review"
 msgstr "Pregled"
 
@@ -15892,12 +15959,12 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.2_account_account_us_software
 msgid "Software"
-msgstr ""
+msgstr "Programska oprema"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.validate_account_move_view
 msgid "Some"
-msgstr ""
+msgstr "Nekateri"
 
 #. module: account
 #. odoo-python
@@ -16867,7 +16934,7 @@ msgstr ""
 #. module: account
 #: model:account.account,name:account.2_account_account_us_technology
 msgid "Technology"
-msgstr ""
+msgstr "Tehnologija"
 
 #. module: account
 #: model:account.account,name:account.2_account_account_us_internet
@@ -16933,7 +17000,7 @@ msgstr "Pravila in pogoji"
 #. odoo-javascript
 #: code:addons/account/static/src/components/tests_shared_js_python/test_shared_js_python.xml:0
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_external_value__text_value
@@ -17286,7 +17353,7 @@ msgstr "Država, iz katere se bodo uporabljala davčna poročila za to podjetje"
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "The currency rate must be strictly positive."
-msgstr ""
+msgstr "Devizni tečaj mora biti strogo pozitiven."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__currency_id
@@ -18823,7 +18890,7 @@ msgstr "Prenesi na %s"
 #. module: account
 #: model:account.group,name:account.2_us_group_661
 msgid "Travel Expenses"
-msgstr ""
+msgstr "Potni stroški"
 
 #. module: account
 #: model:account.account,description:account.2_account_account_us_public_transportation
@@ -19459,7 +19526,7 @@ msgstr ""
 #: model:account.account,name:account.2_account_account_us_vehicles
 #: model:account.account,name:account.2_account_account_us_vehicles_expense
 msgid "Vehicles"
-msgstr ""
+msgstr "Vozila"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment__partner_type__supplier
@@ -19602,12 +19669,6 @@ msgid ""
 msgstr ""
 "Želite si še olajšati življenje in avtomatizirati potrjevanje računov pri "
 "tem ponudniku?"
-
-#. module: account
-#. odoo-javascript
-#: code:addons/account/static/src/components/json_checkboxes/json_checkboxes.xml:0
-msgid "Warning"
-msgstr "Opozorilo"
 
 #. module: account
 #. odoo-python
@@ -19849,6 +19910,14 @@ msgstr ""
 "1/ kliknite na zgornji desni gumb »Vnosi v dnevnik« v tem obrazcu dnevnika\n"
 "2/ nato filtrirajte po vnosih »Osnutek«\n"
 "3/ izberite jih vse in jih objavite ali izbrišite prek menija z dejanji"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_bank_statement_line.py:0
+msgid ""
+"You can not delete a transaction from a valid statement.\n"
+"If you want to delete it, please remove the statement first."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -21241,6 +21310,33 @@ msgid ""
 "{{ object.company_id.name }} Self-billing invoice (Ref {{ object.name or 'n/"
 "a' }})"
 msgstr ""
+
+#~ msgid ""
+#~ "Accrual entry created on %(date)s: %(accrual_entry)s.                    "
+#~ "And its reverse entry: %(reverse_entry)s."
+#~ msgstr ""
+#~ "Vnos obračuna ustvarjen dne %(date)s: %"
+#~ "(accrual_entry)s.                    In njegov obratni vnos: %"
+#~ "(reverse_entry)s."
+
+#~ msgid ""
+#~ "Invalid domain for expression '%(label)s' of line '%(line)s': %(formula)s"
+#~ msgstr ""
+#~ "Neveljavna domena za izraz '%(label)s' na liniji '%(line)s': %(formula)s"
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    Izberete lahko, kako želite, da vam pošiljamo račune "
+#~ "in v kateri elektronski obliki..\n"
+#~ "                </small>"
+
+#~ msgid "Warning"
+#~ msgstr "Opozorilo"
 
 #~ msgid "%s (Copy)"
 #~ msgstr "%s (Kopija)"

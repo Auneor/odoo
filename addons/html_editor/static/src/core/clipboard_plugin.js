@@ -69,6 +69,8 @@ export const CLIPBOARD_WHITELISTS = {
         "img-thumbnail",
         "rounded",
         "rounded-circle",
+        // Odoo tables
+        "o_table",
         "table",
         "table-bordered",
         /^padding-/,
@@ -93,6 +95,20 @@ const ONLY_LINK_REGEX = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
 /**
  * @typedef {Object} ClipboardShared
  * @property {ClipboardPlugin['pasteText']} pasteText
+ */
+
+/**
+ * @typedef {((img: HTMLImageElement) => void)[]} added_image_handlers
+ * @typedef {(() => void)[]} after_paste_handlers
+ * @typedef {(() => void)[]} before_paste_handlers
+ *
+ * @typedef {((selection: EditorSelection, text: string) => boolean)[]} paste_text_overrides
+ *
+ * @typedef {((
+ *     clonedContents: DocumentFragment,
+ *     selection: EditorSelection
+ *   ) => void | clonedContents)[]} clipboard_content_processors
+ * @typedef {((textContent: string) => string)[]} clipboard_text_processors
  */
 
 export class ClipboardPlugin extends Plugin {

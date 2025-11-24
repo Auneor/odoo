@@ -93,7 +93,8 @@
                 </tbody>
                 <tfoot t-on-click="() => props.list.leaveEditMode()" class="o_list_footer cursor-default" t-att-class="{o_sample_data_disabled: props.list.model.useSampleModel}">
                     <tr>
-                        <td t-att-colspan="getGroupNameCellColSpan()">
+                        <t t-set="groupNameCellColspan" t-value="getGroupNameCellColSpan()"/>
+                        <td t-if="groupNameCellColspan > 0" t-att-colspan="groupNameCellColspan">
                             <button
                                 t-if="props.list.isGrouped and canCreateGroup and !state.showGroupInput"
                                 class="btn btn-link o_list_group_add"
@@ -221,7 +222,7 @@
                         <t t-foreach="groupByButtons[group.groupByField.name]" t-as="button" t-key="button.id">
                             <t t-if="!evalInvisible(button.invisible, group.record)">
                                 <t t-if="button.clickParams.type === 'edit'">
-                                    <button t-att-title="button.title" class="btn" t-on-click="() => this.editGroupRecord(group)" tabindex="-1">
+                                    <button t-att-title="button.title" class="btn" t-on-click.stop="() => this.editGroupRecord(group)" tabindex="-1">
                                         <i t-attf-class="fa fa-fw {{button.icon}} o_button_icon"/>
                                     </button>
                                 </t>

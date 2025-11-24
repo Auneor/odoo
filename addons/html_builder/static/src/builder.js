@@ -26,6 +26,12 @@ import { withSequence } from "@html_editor/utils/resource";
 import { getHtmlStyle } from "@html_editor/utils/formatting";
 import { isVisible } from "@html_builder/utils/utils";
 
+/**
+ * @typedef {(() => void)[]} on_mobile_preview_clicked
+ * @typedef {(() => void)[]} trigger_dom_updated
+ * @typedef {{ Component: Component; props: object; }[]} lower_panel_entries
+ */
+
 export class Builder extends Component {
     static template = "html_builder.Builder";
     static components = { BlockTab, CustomizeTab };
@@ -180,7 +186,6 @@ export class Builder extends Component {
                         wrapWithSaveSnippetHandlers
                     ),
                 snippetModel: this.snippetModel,
-                getShared: () => this.editor.shared,
                 updateInvisibleElementsPanel: () => this.updateInvisibleEls(),
                 allowCustomStyle: true,
                 allowTargetBlank: true,
@@ -292,11 +297,11 @@ export class Builder extends Component {
         if (tab === "theme" || tab === "blocks") {
             this.colorPresetToShow = presetId;
             this.activeTargetEl = this.activeTargetEl || this.getActiveTarget();
-            this.editor.shared["builderOptions"].deactivateContainers();
+            this.editor.shared.builderOptions.deactivateContainers();
         } else if (this.activeTargetEl) {
             if (isVisible(this.activeTargetEl)) {
                 // Reactivate the previously active element.
-                this.editor.shared["builderOptions"].updateContainers(this.activeTargetEl);
+                this.editor.shared.builderOptions.updateContainers(this.activeTargetEl);
             }
             this.activeTargetEl = null;
         }

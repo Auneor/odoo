@@ -21,12 +21,15 @@
 # Janik Vonrotz <login@janikvonrotz.ch>, 2023
 # "Dylan Kiss (dyki)" <dyki@odoo.com>, 2025.
 # "Larissa Manderfeld (lman)" <lman@odoo.com>, 2025.
+# Adrian Böttcher <boettcher@top-arbeitsschutz.de>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Michael Hofer <michael.hofer@nordicdrinks.ch>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 18:37+0000\n"
-"PO-Revision-Date: 2025-10-01 11:09+0000\n"
+"POT-Creation-Date: 2025-11-07 18:35+0000\n"
+"PO-Revision-Date: 2025-11-12 15:01+0000\n"
 "Last-Translator: \"Larissa Manderfeld (lman)\" <lman@odoo.com>\n"
 "Language-Team: German <https://translate.odoo.com/projects/odoo-19/account/"
 "de/>\n"
@@ -284,7 +287,7 @@ msgstr "%s - privater Anteil (Steuern)"
 #. odoo-python
 #: code:addons/account/models/sequence_mixin.py:0
 msgid "%s is not a stored field"
-msgstr "%s Ist kein gespeichertes Feld"
+msgstr "%s ist kein gespeichertes Feld"
 
 #. module: account
 #. odoo-python
@@ -315,6 +318,18 @@ msgstr "„%(filename)s“ (extrahiert aus „%(root_filename)s”, type=%(type)
 #: code:addons/account/models/account_document_import_mixin.py:0
 msgid "'%(filename)s' (type=%(type)s)"
 msgstr "„%(filename)s“ (type=%(type)s)"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/accrued_orders.py:0
+msgid "(*) Goods Delivered not Invoiced (perpetual valuation)"
+msgstr "(*) Gelieferte, aber abgerechnete Waren (fortlaufende Bewertung)"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/accrued_orders.py:0
+msgid "(*) Goods Invoiced not Delivered (perpetual valuation)"
+msgstr "(*) Abgerechnte, aber gelieferte Waren (fortlaufende Bewertung)"
 
 #. module: account
 #: model:ir.actions.server,name:account.action_move_block_payment
@@ -595,7 +610,7 @@ msgstr "30 Tage"
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_advance
 msgid "30% Advance End of Following Month"
-msgstr "30 % im Voraus zum Ende des Folgemonats"
+msgstr "30  % im Voraus zum Ende des Folgemonats"
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_advance_60days
@@ -1407,14 +1422,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.portal_my_details
 msgid ""
 "<small class=\"form-text text-muted\">\n"
-"                    You can choose how you want us to send your invoices, "
-"and with which electronic format.\n"
-"                </small>"
+"                        You can choose how you want us to send your "
+"invoices, and with which electronic format.\n"
+"                    </small>"
 msgstr ""
 "<small class=\"form-text text-muted\">\n"
-"                    Sie können auswählen, wie Sie uns unsere Rechnungen und "
-"in welchem Format Sie sie senden möchten.\n"
-"                </small>"
+"                        Sie können auswählen, wie Sie uns unsere Rechnungen "
+"und in welchem Format Sie sie senden möchten.\n"
+"                    </small>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -3122,12 +3137,11 @@ msgstr "Abgrenzungsbuchungen"
 #. odoo-python
 #: code:addons/account/wizard/accrued_orders.py:0
 msgid ""
-"Accrual entry created on %(date)s: %(accrual_entry)s.                    And "
-"its reverse entry: %(reverse_entry)s."
+"Accrual entry created on %(date)s: %(accrual_entry)s.                And its "
+"reverse entry: %(reverse_entry)s."
 msgstr ""
-"Abgrenzungsbuchung erstellt am %(date)s: %"
-"(accrual_entry)s.                    Und seine Gegenbuchung %"
-"(reverse_entry)s."
+"Abgrenzungsbuchung erstellt am %(date)s: %(accrual_entry)"
+"s.                    Und seine Gegenbuchung %(reverse_entry)s."
 
 #. module: account
 #. odoo-python
@@ -4755,6 +4769,27 @@ msgid "Batch Payments"
 msgstr "Sammelzahlungen"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, activate the cron to enable "
+"batch sending of invoices."
+msgstr ""
+"Der Versand von Sammelrechnungen ist nicht verfügbar. Aktivieren Sie den "
+"Cron-Job, um den Sammelversand von Rechnungen zu ermöglichen."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid ""
+"Batch invoice sending is unavailable. Please, contact your system "
+"administrator to activate the cron to enable batch sending of invoices."
+msgstr ""
+"Der Sammelversand von Rechnungen ist nicht verfügbar. Kontaktieren Sie Ihren "
+"Systemadministrator, um den Cron zu aktivieren, um den Sammelversand von "
+"Rechnungen zu aktivieren."
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_resequence/account_resequence.xml:0
 msgid "Before"
@@ -5564,6 +5599,7 @@ msgstr "Schließen"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_payment_method__code
 #: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
 #: model:ir.model.fields,field_description:account.field_account_report_line__code
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_list
@@ -5910,6 +5946,8 @@ msgid ""
 "Consider paying the amount with %(btn_start)searly payment discount%"
 "(btn_end)s instead."
 msgstr ""
+"Erwägen Sie, den Betrag mit einem %(btn_start)sFrühzahlerrabatt%(btn_end)s "
+"zu begleichen."
 
 #. module: account
 #: model:account.account,description:account.2_account_account_us_buildings
@@ -6811,7 +6849,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Cut-Off"
-msgstr "Beendigung"
+msgstr "Abgrenzung"
 
 #. module: account
 #. odoo-python
@@ -7169,6 +7207,12 @@ msgstr "Standardsteuer für den Einkauf eines Produktes."
 #: model:ir.model.fields,help:account.field_product_template__taxes_id
 msgid "Default taxes used when selling the product"
 msgstr "Standardsteuer für den Verkauf eines Produktes."
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Default value for 'company_id' for %(record)s is not an integer"
+msgstr "Der Standardwert für „company_id“ für %(record)s ist keine Ganzzahl"
 
 #. module: account
 #: model:account.account,name:account.1_deferred_revenue
@@ -8570,6 +8614,12 @@ msgid "Expired"
 msgstr "Abgelaufen"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+msgid "Export ZIP"
+msgstr "ZIP exportieren"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_column__expression_label
 msgid "Expression Label"
 msgstr "Ausdrucksbezeichnung"
@@ -9330,6 +9380,12 @@ msgstr "Globales Sperrdatum"
 
 #. module: account
 #. odoo-python
+#: code:addons/account/wizard/account_move_send_batch_wizard.py:0
+msgid "Go to cron configuration"
+msgstr "Zur Cron-Konfiguration"
+
+#. module: account
+#. odoo-python
 #: code:addons/account/models/account_move.py:0
 #: code:addons/account/models/company.py:0
 msgid "Go to the configuration panel"
@@ -9455,6 +9511,12 @@ msgstr "Hat geänderte Steuerposition"
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__has_iban_warning
 msgid "Has Iban Warning"
 msgstr "Hat IBAN-Warnung"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__journal_has_invalid_statements
+#: model:ir.model.fields,field_description:account.field_account_journal__has_invalid_statements
+msgid "Has Invalid Statements"
+msgstr "Hat ungültige Kontoauszüge"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__has_message
@@ -10467,18 +10529,23 @@ msgstr ""
 "Bereich festlegen und „Bis“ sollte größer als „Von“ sein."
 
 #. module: account
-#. odoo-python
-#: code:addons/account/models/account_report.py:0
-msgid ""
-"Invalid domain for expression '%(label)s' of line '%(line)s': %(formula)s"
-msgstr ""
-"Ungültige Domain für Ausdruck „%(label)s“ der Zeile „%(line)s“: %(formula)s"
+#: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
+msgid "Invalid Statement(s)"
+msgstr "Ungültige/r Kontoauszug/-auszüge"
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/company.py:0
 msgid "Invalid fiscal year last day"
 msgstr "Ungültiger letzter Tag des Geschäftsjahres"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_report.py:0
+msgid ""
+"Invalid formula for expression '%(label)s' of line '%(line)s': %(formula)s"
+msgstr ""
+"Ungültige Formel für Ausdruck „%(label)s“ von Zeile '%(line)s': %(formula)s"
 
 #. module: account
 #: model:account.account,name:account.2_account_account_us_inventory_valuation
@@ -10766,6 +10833,7 @@ msgstr "Abgerechnet"
 
 #. module: account
 #. odoo-python
+#: code:addons/account/controllers/download_docs.py:0
 #: code:addons/account/controllers/portal.py:0
 #: model:ir.actions.act_window,name:account.action_move_out_invoice
 #: model:ir.actions.act_window,name:account.action_move_out_invoice_type
@@ -12489,7 +12557,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account.selection__account_cash_rounding__rounding_method__half-up
 #: model:ir.model.fields.selection,name:account.selection__account_report__integer_rounding__half-up
 msgid "Nearest"
-msgstr "Nächste halbe Zah"
+msgstr "Nächste halbe Zahl"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__need_cancel_request
@@ -14109,6 +14177,12 @@ msgstr ""
 "haben, werden übersprungen."
 
 #. module: account
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,help:account.field_account_move__reconciled_payment_ids
+msgid "Payments that have been reconciled with this invoice."
+msgstr "Zahlungen, die mit dieser Rechnung abgestimmt wurden."
+
+#. module: account
 #: model:account.group,name:account.2_us_group_61
 msgid "Payroll Expenses"
 msgstr "Lohnkosten"
@@ -14259,6 +14333,7 @@ msgstr "Portalzugriffs-URL"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
+#: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Post"
 msgstr "Buchen"
 
@@ -14935,6 +15010,12 @@ msgid "Reconciled Lines Excluding Exchange Diff"
 msgstr "Abgestimmte Zeilen ausschließlich der Wechselkursdifferenz"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__reconciled_payment_ids
+#: model:ir.model.fields,field_description:account.field_account_move__reconciled_payment_ids
+msgid "Reconciled Payments"
+msgstr "Abgestimmte Zahlungen"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_statement_line_ids
 msgid "Reconciled Statement Lines"
 msgstr "Abgestimmte Kontoauszugszeilen"
@@ -15415,8 +15496,9 @@ msgstr "Gutgeschrieben am"
 
 #. module: account
 #: model:ir.ui.menu,name:account.account_audit_menu
+#: model_terms:ir.ui.view,arch_db:account.view_move_line_tree
 msgid "Review"
-msgstr "Konfigurieren"
+msgstr "Prüfung"
 
 #. module: account
 #: model:onboarding.onboarding.step,button_text:account.onboarding_onboarding_step_chart_of_accounts
@@ -16906,7 +16988,7 @@ msgstr "Steuer 2,9 %"
 #: model_terms:account.tax,description:account.2_account_tax_us_purchase_4
 #: model_terms:account.tax,description:account.2_account_tax_us_sale_4
 msgid "Tax 4%"
-msgstr "Steier 4 %"
+msgstr "Steuer 4 %"
 
 #. module: account
 #: model:account.tax.group,name:account.2_account_tax_group_us_4_2
@@ -19161,7 +19243,7 @@ msgstr "Zu zahlen"
 #: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "To Review"
-msgstr "Zu Prüfen"
+msgstr "Zu prüfen"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -20282,12 +20364,6 @@ msgstr ""
 "Rechnungsvalidierung von diesem Lieferanten automatisieren?"
 
 #. module: account
-#. odoo-javascript
-#: code:addons/account/static/src/components/json_checkboxes/json_checkboxes.xml:0
-msgid "Warning"
-msgstr "Warnung"
-
-#. module: account
 #. odoo-python
 #: code:addons/account/models/account_move.py:0
 msgid "Warning for Cash Rounding Method: %s"
@@ -20541,6 +20617,18 @@ msgstr ""
 "2/ Filtern Sie dann nach „Entwurf“\n"
 "3/ Wählen Sie alle Einträge aus und buchen oder löschen Sie sie über das "
 "Aktionsmenü"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_bank_statement_line.py:0
+msgid ""
+"You can not delete a transaction from a valid statement.\n"
+"If you want to delete it, please remove the statement first."
+msgstr ""
+"Es ist nicht möglich, eine Transaktion aus einem gültigen Kontoauszug zu "
+"löschen.\n"
+"Wenn Sie diese Transaktion entfernen möchten, löschen Sie zunächst den "
+"gesamten Kontoauszug."
 
 #. module: account
 #. odoo-python
@@ -21967,6 +22055,8 @@ msgid ""
 "{{ object.company_id.name }} Self-billing credit note (Ref {{ object.name or "
 "'n/a' }})"
 msgstr ""
+"{{ object.company_id.name }} Selbstfakturierte Gutschrift (Ref. "
+"{{ object.name or 'n/a' }})"
 
 #. module: account
 #: model:mail.template,subject:account.email_template_edi_self_billing_invoice
@@ -21974,6 +22064,68 @@ msgid ""
 "{{ object.company_id.name }} Self-billing invoice (Ref {{ object.name or 'n/"
 "a' }})"
 msgstr ""
+"{{ object.company_id.name }} Selbstfakturierte Rechnung (Ref. {{ object.name "
+"or 'n/a' }})"
+
+#~ msgid ""
+#~ "Accrual entry created on %(date)s: %(accrual_entry)s.                    "
+#~ "And its reverse entry: %(reverse_entry)s."
+#~ msgstr ""
+#~ "Abgrenzungsbuchung erstellt am %(date)s: %"
+#~ "(accrual_entry)s.                    Und seine Gegenbuchung %"
+#~ "(reverse_entry)s."
+
+#~ msgid "Automatic Tax Mapping (AvaTax)"
+#~ msgstr "Automatische Steuerzuordnung (AvaTax)"
+
+#~ msgid "Bookkeeper"
+#~ msgstr "Buchhalter"
+
+#~ msgid ""
+#~ "Invalid domain for expression '%(label)s' of line '%(line)s': %(formula)s"
+#~ msgstr ""
+#~ "Ungültige Domain für Ausdruck „%(label)s“ der Zeile „%(line)s“: %"
+#~ "(formula)s"
+
+#~ msgid "Invoicing & Banks"
+#~ msgstr "Rechnungsstellung & Banken"
+
+#~ msgid "Read-only"
+#~ msgstr "Schreibgeschützt"
+
+#~ msgid ""
+#~ "access to all Accounting features, including reporting, asset management, "
+#~ "analytic accounting, without configuration rights."
+#~ msgstr ""
+#~ "Zugriff auf alle Buchhaltungsfunktionen, einschließlich Berichte, "
+#~ "Anlagenverwaltung, Kostenrechnung, ohne Konfigurationsrechte."
+
+#~ msgid ""
+#~ "access to all the accounting data but in readonly mode, no actions "
+#~ "allowed."
+#~ msgstr ""
+#~ "Zugriff auf alle Buchhaltungsdaten, jedoch im schreibgeschützten Modus, "
+#~ "keine Aktionen zulässig."
+
+#~ msgid ""
+#~ "adds the accounting dashboard, bank management and follow-up reports."
+#~ msgstr ""
+#~ "fügt das Buchhaltungsdashboard, die Bankverwaltung und die Mahnberichte "
+#~ "hinzu."
+
+#~ msgid ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    You can choose how you want us to send your invoices, "
+#~ "and with which electronic format.\n"
+#~ "                </small>"
+#~ msgstr ""
+#~ "<small class=\"form-text text-muted\">\n"
+#~ "                    Sie können auswählen, wie Sie uns unsere Rechnungen "
+#~ "und in welchem Format Sie sie senden möchten.\n"
+#~ "                </small>"
+
+#~ msgid "Warning"
+#~ msgstr "Warnung"
 
 #~ msgid "%s (Copy)"
 #~ msgstr "%s (Kopie)"
