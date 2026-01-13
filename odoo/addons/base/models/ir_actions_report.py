@@ -623,7 +623,6 @@ class IrActionsReport(models.Model):
                 case 1:
                     if body_idx:
                         wk_version = _wkhtml().version
-                    _logger.warning("wkhtmltopdf: %s", err)
                 case c:
                     message = _(
                         'Wkhtmltopdf failed (error code: %(error_code)s). Memory limit too low or maximum file number of subprocess reached. Message : %(message)s',
