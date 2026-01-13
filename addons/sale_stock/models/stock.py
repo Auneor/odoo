@@ -29,6 +29,8 @@ class StockMove(models.Model):
         for move in self:
             if move.sale_line_id and not move.description_picking_manual:
                 sale_line_id = move.sale_line_id.with_context(lang=move.sale_line_id.order_id.partner_id.lang)
+                if move.description_picking == move.product_id.display_name:
+                    move.description_picking = ''
                 move.description_picking = (sale_line_id._get_sale_order_line_multiline_description_variants() + '\n' + move.description_picking).strip()
 
     def _action_synch_order(self):
@@ -120,6 +122,14 @@ class StockMove(models.Model):
 
     def _get_all_related_sm(self, product):
         return super()._get_all_related_sm(product) | self.filtered(lambda m: m.sale_line_id.product_id == product)
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'product_id' in vals:
+            for move in self:
+                if move.sale_line_id and move.product_id != move.sale_line_id.product_id:
+                    move.sale_line_id = False
+        return res
 
     def _prepare_procurement_values(self):
         res = super()._prepare_procurement_values()

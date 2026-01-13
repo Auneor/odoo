@@ -637,7 +637,10 @@ class DiscussChannel(models.Model):
                 'guest_id': guest.id,
                 'channel_id': channel.id,
             } for guest in guests - existing_members.guest_id]
-            new_members = self.env['discuss.channel.member'].create(members_to_create)
+            if channel.parent_channel_id and channel.parent_channel_id.has_access("write"):
+                new_members = self.env["discuss.channel.member"].sudo().create(members_to_create)
+            else:
+                new_members = self.env["discuss.channel.member"].create(members_to_create)
             all_new_members += new_members
             for member in new_members:
                 payload = {
@@ -737,6 +740,7 @@ class DiscussChannel(models.Model):
                     "body_html": body,
                     "email_from": self.env.user.partner_id.email_formatted,
                     "email_to": addr,
+                    "message_type": "user_notification",
                     "model": "discuss.channel",
                     "res_id": self.id,
                     "subject": self.env._("%(author_name)s has invited you to a channel")
@@ -1156,13 +1160,14 @@ class DiscussChannel(models.Model):
         post_joined_message=True,
     ):
         """
-        :param channel: channel to add the persona to
         :param guest_name: name of the persona
         :param post_joined_message: whether to post a message to the channel
             to notify that the persona joined
-        :param create_member_params dict: optional parameters to pass to the
+
+        :param dict create_member_params: optional parameters to pass to the
             channel member create function.
-        :return tuple(partner, guest):
+
+        :rtype: tuple[partner, guest]
         """
         self.ensure_one()
         guest = self.env["mail.guest"]
