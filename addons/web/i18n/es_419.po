@@ -9,15 +9,16 @@
 # Wil Odoo, 2025
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2025
 # Fernanda Alvarez, 2025
-# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025.
+# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025, 2026.
 # "Patricia Gutiérrez (pagc)" <pagc@odoo.com>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:38+0000\n"
-"PO-Revision-Date: 2025-10-21 01:40+0000\n"
-"Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
+"POT-Creation-Date: 2026-01-29 18:36+0000\n"
+"PO-Revision-Date: 2026-01-31 17:01+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
 "odoo-17/web/es_419/>\n"
 "Language: es_419\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: web
 #. odoo-javascript
@@ -612,8 +613,8 @@ msgstr "<span id=\"line_tax_ids\">Impuesto del 15%</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
-msgid "<span itemprop=\"name\">Deco Addict</span>"
-msgstr "<span itemprop=\"name\">Deco Addict</span>"
+msgid "<span itemprop=\"name\">Acme Corporation</span>"
+msgstr "<span itemprop=\"name\">Corporación Acme</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -1071,7 +1072,7 @@ msgstr "Adoptar y firmar"
 #: code:addons/web/static/src/core/signature/signature_dialog.js:0
 #, python-format
 msgid "Adopt Your Signature"
-msgstr "Adopte su firma"
+msgstr "Agregar firma"
 
 #. module: web
 #. odoo-javascript
@@ -4198,7 +4199,7 @@ msgstr "Cargar"
 #: code:addons/web/static/src/webclient/settings_form_view/widgets/res_config_dev_tool.xml:0
 #, python-format
 msgid "Load demo data"
-msgstr "Cargar datos de prueba"
+msgstr "Cargar datos de demostración"
 
 #. module: web
 #. odoo-javascript
@@ -7278,7 +7279,7 @@ msgstr "Alternar menú desplegable"
 #: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0
 #, python-format
 msgid "Toggle Search Panel"
-msgstr "Alternar panel de búsqueda"
+msgstr "Mostrar u ocultar panel de búsqueda"
 
 #. module: web
 #. odoo-javascript
@@ -15055,7 +15056,7 @@ msgstr "prohibido "
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "forever"
-msgstr "para siempre "
+msgstr "para siempre"
 
 #. module: web
 #. odoo-javascript
@@ -15643,21 +15644,21 @@ msgstr "estrella brillante "
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "goal"
-msgstr "portería "
+msgstr "portería"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "goal cage"
-msgstr "portería "
+msgstr "portería"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "goal net"
-msgstr "portería "
+msgstr "portería"
 
 #. module: web
 #. odoo-javascript
@@ -30127,3 +30128,6 @@ msgstr "“vacante”"
 #, python-format
 msgid "ココ"
 msgstr "aquí"
+
+#~ msgid "<span itemprop=\"name\">Deco Addict</span>"
+#~ msgstr "<span itemprop=\"name\">Deco Addict</span>"

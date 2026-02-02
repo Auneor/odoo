@@ -2,12 +2,15 @@ import json
 from contextlib import contextmanager
 from freezegun import freeze_time
 from requests import Session, PreparedRequest, Response
-from urllib.parse import unquote
+from unittest.mock import patch
+from urllib.parse import parse_qs, quote_plus
 from psycopg2 import IntegrityError
 
 from odoo.exceptions import ValidationError, UserError
 from odoo.tests.common import tagged, TransactionCase
 from odoo.tools import mute_logger
+
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
 
 ID_CLIENT = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
 FAKE_UUID = 'yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy'
@@ -49,11 +52,8 @@ class TestPeppolParticipant(TransactionCase):
                     'migration_key': 'test_key',
                 }
             },
+            '/api/peppol/1/get_all_documents': {'result': {'messages': []}},
         }
-
-    @staticmethod
-    def _smp_xml(pid: str) -> bytes:
-        return f"""<?xml version='1.0' encoding='UTF-8'?><smp:ServiceGroup xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:id="http://busdox.org/transport/identifiers/1.0/" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:smp="http://busdox.org/serviceMetadata/publishing/1.0/"><id:ParticipantIdentifier scheme="iso6523-actorid-upis">{pid}</id:ParticipantIdentifier></smp:ServiceGroup>""".encode()
 
     @classmethod
     def _request_handler(cls, s: Session, r: PreparedRequest, /, **kw):
@@ -61,12 +61,27 @@ class TestPeppolParticipant(TransactionCase):
         response.status_code = 200
 
         # mock SMP participant lookup: 200 if pid in SMP_OK_IDS, else 404
-        if 'iso6523-actorid-upis%3A%3A' in r.url:
-            pid = unquote(r.url).rpartition('::')[-1]  # e.g. "0208:0000000000"
-            if pid in SMP_OK_IDS:
-                response._content = cls._smp_xml(pid)
+        if r.path_url.startswith('/api/peppol/1/lookup'):
+            peppol_identifier = parse_qs(r.path_url.rsplit('?')[1])['peppol_identifier'][0]
+            if peppol_identifier in SMP_OK_IDS:
+                response.json = lambda: {
+                    "result": {
+                        "identifier": peppol_identifier,
+                        "smp_base_url": "http://example.com/smp",
+                        "ttl": 60,
+                        "service_group_url": "http://example.com/smp/iso6523-actorid-upis%3A%3A" + quote_plus(peppol_identifier),
+                        "services": []
+                    }
+                }
             else:
                 response.status_code = 404
+                response.json = lambda: {
+                    "error": {
+                        "code": "NOT_FOUND",
+                        "message": "no naptr record",
+                        "retryable": False,
+                    },
+                }
             return response
 
         url = r.path_url
@@ -114,8 +129,10 @@ class TestPeppolParticipant(TransactionCase):
     def _set_context(self, other_context):
         previous_context = self.env.context
         self.env.context = dict(previous_context, **other_context)
-        yield self
-        self.env.context = previous_context
+        try:
+            yield self
+        finally:
+            self.env.context = previous_context
 
     def test_create_participant_missing_data(self):
         # creating a participant without eas/endpoint/document should not be possible
@@ -124,14 +141,6 @@ class TestPeppolParticipant(TransactionCase):
             'account_peppol_endpoint': False,
         })
         with self.assertRaises(ValidationError), self.cr.savepoint():
-            settings.button_create_peppol_proxy_user()
-
-    def test_create_participant_already_exists(self):
-        # creating a participant that already exists on Peppol network should not be possible
-        vals = self._get_participant_vals()
-        vals['account_peppol_eas'] = '0208'
-        settings = self.env['res.config.settings'].create(vals)
-        with self.assertRaises(UserError), self.cr.savepoint():
             settings.button_create_peppol_proxy_user()
 
     def test_create_success_participant(self):
@@ -291,7 +300,6 @@ class TestPeppolParticipant(TransactionCase):
         self.assertFalse(edi_user_1.active)
 
     def test_restore_user_in_draft_state(self):
-        """Test recovery when IAP-side is in KYC state (should set to not_verified and not keep in `not_registered`)"""
         settings = self.env['res.config.settings'].create(self._get_participant_vals())
         settings.button_create_peppol_proxy_user()
         edi_user = self.env.company.account_edi_proxy_client_ids
@@ -300,14 +308,15 @@ class TestPeppolParticipant(TransactionCase):
         edi_user.active = False
         edi_user.company_id.account_peppol_proxy_state = 'not_registered'
 
-        # mock IAP returning draft state (thus still in KYC)
-        with self._set_context({'peppol_state': 'draft'}):
-            result = self.env['account_edi_proxy_client.user']._try_recover_peppol_proxy_users(edi_user.company_id)
+        # mock IAP returning draft state
+        with self._set_context({'peppol_state': 'active'}):
+            user_vals = {**self._get_participant_vals(), 'account_peppol_endpoint': '0000000000'}
+            # user tries to re-register with same endpoint -> recovery kicks in
+            self.env['res.config.settings'].create(user_vals).button_create_peppol_proxy_user()
 
-        # should recover user and set state to not_verified
-        self.assertEqual(result, edi_user)
+        # should recover user and set state to active
         self.assertTrue(edi_user.active)
-        self.assertEqual(edi_user.company_id.account_peppol_proxy_state, 'not_verified')
+        self.assertEqual(edi_user.company_id.account_peppol_proxy_state, 'active')
 
     def test_cron_recovery_multi_company(self):
         """Test cron recovery works correctly across multi companies"""
@@ -565,3 +574,23 @@ class TestPeppolParticipant(TransactionCase):
             # handle malformed response gracefully
             self.assertIsNone(result)
             self.assertFalse(edi_user.active)
+
+    def test_deregister_with_client_gone_error(self):
+        """Test deregistration succeeds even when proxy returns client_gone error"""
+        settings = self.env['res.config.settings'].create(self._get_participant_vals())
+        settings.button_create_peppol_proxy_user()
+        self.env['account_edi_proxy_client.user']._cron_peppol_get_participant_status()
+        self.assertEqual(self.env.company.account_peppol_proxy_state, 'active')
+
+        original_make_request = self.env['account_edi_proxy_client.user']._make_request
+
+        def mock_make_request(self, url, params=None):
+            if 'cancel_peppol_registration' in url:
+                raise AccountEdiProxyError('client_gone', 'Client no longer exists on proxy')
+            return original_make_request(url, params)
+
+        with patch.object(self.registry['account_edi_proxy_client.user'], '_make_request', mock_make_request):
+            settings.button_deregister_peppol_participant()
+
+        # Should successfully deregister despite client_gone error
+        self.assertEqual(self.env.company.account_peppol_proxy_state, 'not_registered')

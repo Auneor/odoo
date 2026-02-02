@@ -1814,7 +1814,8 @@ export class PosStore extends Reactive {
         return this.get_order().paymentlines.find(
             (paymentLine) =>
                 paymentLine.payment_method.use_payment_terminal === terminalName &&
-                !paymentLine.is_done()
+                !paymentLine.is_done() &&
+                paymentLine.get_payment_status() !== "retry"
         );
     }
     /**
@@ -1876,6 +1877,14 @@ export class PosStore extends Reactive {
         }
         await this._loadMissingPricelistItems(products);
         this._loadProductProduct(products);
+    }
+    async getProductById(productId) {
+        let product = this.db.get_product_by_id(productId);
+        if (!product) {
+            await this._addProducts([productId], false);
+            product = this.db.get_product_by_id(productId);
+        }
+        return product;
     }
     async _loadProductByIds(productIds) {
         return await this.orm.call("pos.session", "get_pos_ui_product_product_by_params", [

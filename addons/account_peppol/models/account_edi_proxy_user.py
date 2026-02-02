@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, api, fields, models, modules, tools
+from odoo import _, api, fields, models, tools
 from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
 from odoo.addons.account_peppol.tools.demo_utils import handle_demo
 from odoo.exceptions import UserError
@@ -22,7 +22,6 @@ class AccountEdiProxyClientUser(models.Model):
     # HELPER METHODS
     # -------------------------------------------------------------------------
 
-
     def _make_request(self, url, params=False):
         if self.proxy_type == 'peppol':
             return self._make_request_peppol(url, params=params)
@@ -30,27 +29,7 @@ class AccountEdiProxyClientUser(models.Model):
 
     @handle_demo
     def _make_request_peppol(self, url, params=False):
-        # extends account_edi_proxy_client to update peppol_proxy_state
-        # of archived users
-        try:
-            result = super()._make_request(url, params)
-        except AccountEdiProxyError as e:
-            if (
-                e.code == 'no_such_user'
-                and not self.active
-                # only soft-delete the user in case we were actually waiting for a migration
-                and self.company_id.account_peppol_migration_key
-                and not self.company_id.account_edi_proxy_client_ids.filtered(lambda u: u.proxy_type == 'peppol')
-            ):
-                self.company_id.write({
-                    'account_peppol_proxy_state': 'not_registered',
-                    'account_peppol_migration_key': False,
-                })
-                # commit the above changes before raising below
-                if not tools.config['test_enable'] and not modules.module.current_test:
-                    self.env.cr.commit()
-            raise AccountEdiProxyError(e.code, e.message)
-        return result
+        return super()._make_request(url, params)
 
     def _get_proxy_urls(self):
         urls = super()._get_proxy_urls()
@@ -90,7 +69,7 @@ class AccountEdiProxyClientUser(models.Model):
         # explicitly check with active_test, see https://github.com/odoo/odoo/commit/4c46b696f3af73c982ba92f25d71afe8fc825ed0
         if any((
             company.with_context(active_test=True).account_edi_proxy_client_ids.filtered(lambda user: user.proxy_type == 'peppol'),
-            company.account_peppol_migration_key,
+            company.sudo().account_peppol_migration_key,
             company.account_peppol_proxy_state != 'not_registered',
         )):
             return
@@ -114,29 +93,20 @@ class AccountEdiProxyClientUser(models.Model):
             return
 
         try:
-            with self.env.cr.savepoint():
-                # fetch state from IAP and update user if relevant
-                # _peppol_get_participant_status ignores errors, and here we want to know if it failed
-                # _make_request_peppol won't commit on no_such_user error because it only does so if account_peppol_migration_key is set
-                proxy_user = user._make_request(f"{user._get_server_url()}/api/peppol/1/participant_status")
+            # fetch state from IAP and update user if relevant
+            # _peppol_get_participant_status ignores errors, and here we want to know if it failed
+            # _make_request_peppol won't commit on no_such_user error
+            proxy_user = user._make_request(f"{user._get_server_url()}/api/peppol/1/participant_status")
 
-                state_map = {
-                    'active': 'active',
-                    'verified': 'pending',
-                    'rejected': 'rejected',
-                    'canceled': 'canceled',
-                    # IAP-side is still draft (needs phone confirmation)
-                    # set to not_verified to match normal registration flow
-                    'draft': 'not_verified'
-                }
+            state_map = {'active': 'active', 'verified': 'pending', 'rejected': 'rejected'}
 
-                if proxy_user.get('peppol_state') in state_map:
-                    user.company_id.account_peppol_proxy_state = state_map[proxy_user['peppol_state']]
-                    user.active = True
-                else:
-                    # NOTE: this shouldn't happen, but if it does, we will have refreshed the token
-                    # but as it's an unknown state, there is not much we can do with that information
-                    return
+            if proxy_user.get('peppol_state') in state_map:
+                user.company_id.account_peppol_proxy_state = state_map[proxy_user['peppol_state']]
+                user.active = True
+            else:
+                # NOTE: this shouldn't happen, but if it does, we will have refreshed the token
+                # but as it's an unknown state, there is not much we can do with that information
+                return
         except AccountEdiProxyError as e:
             _logger.info("Tried unsuccessfully to recover EDI proxy user id=%s (%s)", user.id, e)
         else:
@@ -220,6 +190,7 @@ class AccountEdiProxyClientUser(models.Model):
                             default_move_type='in_invoice',
                             default_peppol_move_state=content['state'],
                             default_peppol_message_uuid=uuid,
+                            default_journal_id=journal.id,
                         )\
                         ._create_document_from_attachment(attachment.id)
                     move._message_log(body=_('Peppol document has been received successfully'))
@@ -322,15 +293,25 @@ class AccountEdiProxyClientUser(models.Model):
                 proxy_user = edi_user._make_request(
                     f"{edi_user._get_server_url()}/api/peppol/1/participant_status")
             except AccountEdiProxyError as e:
-                _logger.error('Error while updating Peppol participant status: %s', e)
+                if e.code == 'client_gone':
+                    # reset the connection if it was archived/deleted on IAP side
+                    edi_user.sudo().company_id._reset_peppol_configuration()
+                else:
+                    # don't auto-deregister users on any other errors to avoid settings client-side to states
+                    # that are not recoverable without user action if an error on IAP side ever occurs
+                    _logger.error('Error while updating Peppol participant status: %s', e)
                 continue
 
-            state_map = {
+            local_state = {
+                'draft': 'not_registered',
                 'active': 'active',
                 'verified': 'pending',
                 'rejected': 'rejected',
-                'canceled': 'canceled',
-            }
+            }.get(proxy_user.get('peppol_state'))
 
-            if proxy_user['peppol_state'] in state_map:
-                edi_user.company_id.account_peppol_proxy_state = state_map[proxy_user['peppol_state']]
+            if local_state == 'not_registered':
+                edi_user.sudo().company_id._reset_peppol_configuration()
+            elif local_state:
+                edi_user.company_id.account_peppol_proxy_state = local_state
+            else:
+                _logger.warning("Received unknown Peppol state '%s' for EDI proxy user id=%s", proxy_user.get('peppol_state'), edi_user.id)

@@ -3,17 +3,18 @@
 # * web
 #
 # Translators:
-# Ryoko Tsuda <ryoko@quartile.co>, 2024
+# Ryoko Tsuda <ryoko@quartile.co>, 2024, 2025.
 # Martin Trigaux, 2024
 # Wil Odoo, 2025
 # Junko Augias, 2025
-# "Junko Augias (juau)" <juau@odoo.com>, 2025.
+# "Junko Augias (juau)" <juau@odoo.com>, 2025, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:38+0000\n"
-"PO-Revision-Date: 2025-10-04 01:41+0000\n"
+"POT-Creation-Date: 2026-01-29 18:36+0000\n"
+"PO-Revision-Date: 2026-01-29 08:39+0000\n"
 "Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
 "Language-Team: Japanese <https://translate.odoo.com/projects/odoo-17/web/ja/"
 ">\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: web
 #. odoo-javascript
@@ -608,8 +609,8 @@ msgstr "<span id=\"line_tax_ids\">税 15%</span>"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
-msgid "<span itemprop=\"name\">Deco Addict</span>"
-msgstr "<span itemprop=\"name\">Deco Addict</span>"
+msgid "<span itemprop=\"name\">Acme Corporation</span>"
+msgstr ""
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -967,7 +968,7 @@ msgstr "カスタムグループ追加"
 #: code:addons/web/static/src/core/tree_editor/tree_editor.xml:0
 #, python-format
 msgid "Add New Rule"
-msgstr "新しい規則を追加"
+msgstr "新しいルールを追加"
 
 #. module: web
 #. odoo-javascript
@@ -1081,7 +1082,7 @@ msgstr "アフリカ"
 #: code:addons/web/static/src/legacy/js/core/dialog.js:0
 #, python-format
 msgid "Alert"
-msgstr "警告"
+msgstr "アラート"
 
 #. module: web
 #. odoo-javascript
@@ -4057,7 +4058,7 @@ msgstr "ラベルフィールド"
 #: code:addons/web/static/src/views/fields/field_tooltip.xml:0
 #, python-format
 msgid "Label:"
-msgstr "得る："
+msgstr "ラベル:"
 
 #. module: web
 #. odoo-python
@@ -4471,7 +4472,7 @@ msgstr "モデル"
 #: code:addons/web/static/src/webclient/actions/debug_items.js:0
 #, python-format
 msgid "Model Record Rules"
-msgstr "モデルレコード規則"
+msgstr "モデルレコードルール"
 
 #. module: web
 #. odoo-javascript
@@ -4541,14 +4542,14 @@ msgstr "月"
 #: code:addons/web/static/src/views/form/button_box/button_box.xml:0
 #, python-format
 msgid "More"
-msgstr "さらに"
+msgstr "その他"
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/statusbar/statusbar_field.xml:0
 #, python-format
 msgid "More..."
-msgstr "さらに"
+msgstr "さらに表示"
 
 #. module: web
 #. odoo-javascript
@@ -4714,7 +4715,7 @@ msgstr "新しいプロパティ"
 #: code:addons/web/static/src/core/tree_editor/tree_editor.xml:0
 #, python-format
 msgid "New Rule"
-msgstr "新しい規則"
+msgstr "新しいルール"
 
 #. module: web
 #. odoo-javascript
@@ -6645,7 +6646,7 @@ msgstr "スマイリー & 感情"
 #: code:addons/web/static/src/model/relational_model/dynamic_list.js:0
 #, python-format
 msgid "Some records could not be duplicated"
-msgstr "重複できないレコードがあります"
+msgstr "一部のレコードは複製できませんでした"
 
 #. module: web
 #. odoo-python
@@ -6998,7 +6999,7 @@ msgstr "ドメインに非リテラルを含めてはいけません"
 #: code:addons/web/static/src/core/utils/files.js:0
 #, python-format
 msgid "The file is not an image, resizing is not possible"
-msgstr ""
+msgstr "ファイルが画像でないため、サイズ変更できません"
 
 #. module: web
 #. odoo-javascript
@@ -7015,7 +7016,7 @@ msgstr "処理が中断されました。処理に時間がかかりすぎてい
 #: code:addons/web/static/src/core/utils/files.js:0
 #, python-format
 msgid "The resizing of the image failed"
-msgstr ""
+msgstr "画像のサイズ変更に失敗しました"
 
 #. module: web
 #. odoo-javascript
@@ -7787,7 +7788,7 @@ msgstr "ローレコードデータを見る"
 #: code:addons/web/static/src/webclient/actions/debug_items.js:0
 #, python-format
 msgid "View Record Rules"
-msgstr "レコード規則を参照"
+msgstr "レコードルールを参照"
 
 #. module: web
 #. odoo-javascript
@@ -12532,7 +12533,7 @@ msgstr "だんご"
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "dark"
-msgstr "暗い"
+msgstr "ダーク"
 
 #. module: web
 #. odoo-javascript
@@ -20062,7 +20063,7 @@ msgstr "お月見"
 #: code:addons/web/static/src/webclient/settings_form_view/widgets/res_config_invite_users.xml:0
 #, python-format
 msgid "more"
-msgstr "さらに"
+msgstr "その他"
 
 #. module: web
 #. odoo-javascript
@@ -20798,7 +20799,7 @@ msgstr "装飾カバーがついたノート"
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "notes"
-msgstr "音符"
+msgstr "メモ"
 
 #. module: web
 #. odoo-javascript
@@ -20875,7 +20876,7 @@ msgstr "おでん"
 #: code:addons/web/static/src/core/tree_editor/tree_editor.xml:0
 #, python-format
 msgid "of the following rules:"
-msgstr "以下の規則の："
+msgstr "以下のルールの："
 
 #. module: web
 #. odoo-javascript
@@ -30094,3 +30095,6 @@ msgstr "“空”"
 #, python-format
 msgid "ココ"
 msgstr "ココ"
+
+#~ msgid "<span itemprop=\"name\">Deco Addict</span>"
+#~ msgstr "<span itemprop=\"name\">Deco Addict</span>"
