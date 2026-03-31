@@ -21,6 +21,7 @@ class AccountMove(models.Model):
     )
 
     def _l10n_sa_is_simplified(self):
+        # DEPRECATED - to be removed in master
         """
             Returns True if the customer is an individual, i.e: The invoice is B2C
         :return:
@@ -298,6 +299,14 @@ class AccountMove(models.Model):
             'total_amount': invoice_vals['vals']['monetary_total_vals']['tax_inclusive_amount'],
             'total_tax': invoice_vals['vals']['tax_total_vals'][-1]['tax_amount'],
         }
+
+    def _retry_edi_documents_error_hook(self):
+        ''' Overriden to reset the attachment and allow re-submission of ZATCA invoices,
+            Ensures that reciepts on POS are updated after a failed submission.
+        '''
+        zatca = self.env.ref('l10n_sa_edi.edi_sa_zatca')
+        self.filtered(lambda m: m._get_edi_document(zatca))._detach_attachments()
+        return super()._retry_edi_documents_error_hook()
 
 
 class AccountMoveLine(models.Model):

@@ -12,10 +12,12 @@ import {
 import { fillEmpty, unwrapContents } from "@html_editor/utils/dom";
 import {
     isEmptyBlock,
+    isEmptyTextNode,
     isRedundantElement,
     isTextNode,
     isWhitespace,
     isZwnbsp,
+    PROTECTED_QWEB_SELECTOR,
 } from "@html_editor/utils/dom_info";
 import { closestElement, descendants, selectElements } from "@html_editor/utils/dom_traversal";
 import { isCSSColor } from "@web/core/utils/colors";
@@ -181,9 +183,11 @@ export class ColorPlugin extends Plugin {
                         .getTargetedNodes()
                         .filter(
                             (n) =>
-                                isTextNode(n) ||
-                                (mode === "backgroundColor" &&
-                                    n.classList.contains("o_selected_td"))
+                                (isTextNode(n) ||
+                                    n.matches?.(`t, ${PROTECTED_QWEB_SELECTOR}`) ||
+                                    (mode === "backgroundColor" &&
+                                        n.classList.contains("o_selected_td"))) &&
+                                this.dependencies.selection.isNodeEditable(n)
                         );
                     return hasAnyNodesColor(nodes, mode);
                 };
@@ -226,8 +230,8 @@ export class ColorPlugin extends Plugin {
         if (selection.isCollapsed) {
             let zws;
             if (
-                selection.anchorNode.nodeType !== Node.TEXT_NODE &&
-                selection.anchorNode.textContent !== "\u200b"
+                selection.anchorNode.nodeType === Node.TEXT_NODE &&
+                selection.anchorNode.textContent === "\u200b"
             ) {
                 zws = selection.anchorNode;
             } else {
@@ -264,12 +268,12 @@ export class ColorPlugin extends Plugin {
         const targetedFieldNodes = new Set(
             this.dependencies.selection
                 .getTargetedNodes()
-                .map((n) => closestElement(n, "*[t-field],*[t-out],*[t-esc]"))
+                .map((node) => closestElement(node, PROTECTED_QWEB_SELECTOR))
                 .filter(Boolean)
         );
 
-        const getFonts = (selectedNodes) => {
-            return selectedNodes.flatMap((node) => {
+        const getFonts = (selectedNodes) =>
+            selectedNodes.flatMap((node) => {
                 let font =
                     closestElement(node, "font") ||
                     closestElement(
@@ -335,6 +339,18 @@ export class ColorPlugin extends Plugin {
                             selectedChildren,
                             splitnode
                         );
+                        // After splitting we need to clear the new nodes created by
+                        // `splitElement` that contains only empty text nodes.
+                        // We also need to update the outer cursor.
+                        for (const child of font.parentElement.children) {
+                            if (
+                                child.childNodes.length &&
+                                [...child.childNodes].every((node) => isEmptyTextNode(node))
+                            ) {
+                                cursors.update(callbacksForCursorUpdate.remove(child));
+                                child.remove();
+                            }
+                        }
                         if (isGradientBeingUpdated) {
                             const classRegex =
                                 mode === "color" ? TEXT_CLASSES_REGEX : BG_CLASSES_REGEX;
@@ -409,7 +425,6 @@ export class ColorPlugin extends Plugin {
                 }
                 return font;
             });
-        };
 
         for (const fieldNode of targetedFieldNodes) {
             this.colorElement(fieldNode, color, mode);

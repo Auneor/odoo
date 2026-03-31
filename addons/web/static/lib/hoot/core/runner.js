@@ -984,6 +984,8 @@ export class Runner {
                 continue;
             }
 
+            logger.logTest(test);
+
             // Suppress console errors and warnings if test is in "todo" mode
             // (and not in debug).
             const restoreConsole = handleConsoleIssues(test, !this.debug);
@@ -1051,14 +1053,7 @@ export class Runner {
 
             // Log test errors and increment counters
             this.expectHooks.after(this);
-            if (lastResults.pass) {
-                logger.logTest(test);
-
-                if (this.state.failedIds.has(test.id)) {
-                    this.state.failedIds.delete(test.id);
-                    storageSet(STORAGE.failed, [...this.state.failedIds]);
-                }
-            } else {
+            if (!lastResults.pass) {
                 this._failed++;
 
                 const failReasons = [];
@@ -1091,6 +1086,9 @@ export class Runner {
                     this.state.failedIds.add(test.id);
                     storageSet(STORAGE.failed, [...this.state.failedIds]);
                 }
+            } else if (this.state.failedIds.has(test.id)) {
+                this.state.failedIds.delete(test.id);
+                storageSet(STORAGE.failed, [...this.state.failedIds]);
             }
 
             await this._callbacks.call("after-post-test", test, handleError);
@@ -1153,6 +1151,17 @@ export class Runner {
         }
 
         await this._callbacks.call("after-all", this, logger.error);
+
+        if (this.headless) {
+            // Log root suite results in headless
+            const restoreLogLevel = logger.setLogLevel("suites");
+            for (const suite of this.suites.values()) {
+                if (!suite.parent) {
+                    logger.logSuite(suite);
+                }
+            }
+            restoreLogLevel();
+        }
 
         const { passed, failed, assertions } = this.reporting;
         if (failed > 0) {
@@ -1730,7 +1739,7 @@ export class Runner {
         this._populateState = false;
 
         if (!this.state.tests.length) {
-            throw new HootError(`no tests to run`, { level: "critical" });
+            logger.logGlobal(`no tests to run`);
         }
 
         // Reduce non-included suites & tests info to a miminum
@@ -1796,11 +1805,14 @@ export class Runner {
             return ev.preventDefault();
         }
 
-        if (this.state.currentTest && !(error instanceof HootError)) {
+        if (this.state.currentTest) {
             // Handle the error in the current test
             const handled = this._handleErrorInTest(ev, error);
             if (handled) {
-                return ev.preventDefault();
+                if (!(error instanceof HootError)) {
+                    ev.preventDefault();
+                }
+                return;
             }
         } else {
             this._handleGlobalError(ev, error);
