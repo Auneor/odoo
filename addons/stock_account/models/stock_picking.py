@@ -3,7 +3,8 @@
 
 from odoo import api, models, fields
 from odoo.exceptions import ValidationError
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -16,6 +17,7 @@ class StockPicking(models.Model):
             return
         for picking in self:
             if picking._is_date_in_lock_period():
+                _logger.info(f"Problem with picking {picking}")
                 raise ValidationError(self.env._("You cannot modify the scheduled date of operation %s because it falls within a locked fiscal period.", picking.display_name))
 
     def _compute_is_date_editable(self):
