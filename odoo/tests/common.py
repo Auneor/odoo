@@ -470,9 +470,6 @@ class BaseCase(case.TestCase, metaclass=MetaCase):
 
             The second form is convenient when used with :func:`users`.
         """
-        if not 'is_query_count' in self.test_tags:
-            # change into warning in master
-            self._logger.info('assertQueryCount is used but the test is not tagged `is_query_count`')
         if self.warm:
             # mock random in order to avoid random bus gc
             with patch('random.random', lambda: 1):
@@ -729,9 +726,10 @@ class BaseCase(case.TestCase, metaclass=MetaCase):
         """Guess if the test_methods is a query_count and adds an `is_query_count` tag on the test
         """
         additional_tags = []
-        method_source = inspect.getsource(test_method) if test_method else ''
-        if 'self.assertQueryCount' in method_source:
-            additional_tags.append('is_query_count')
+        if odoo.tools.config['test_tags'] and 'is_query_count' in odoo.tools.config['test_tags']:
+            method_source = inspect.getsource(test_method) if test_method else ''
+            if 'self.assertQueryCount' in method_source:
+                additional_tags.append('is_query_count')
         return additional_tags
 
 savepoint_seq = itertools.count()
@@ -907,19 +905,27 @@ def fchain(future, next_callback):
     return new_future
 
 
-def save_test_file(test_name, content, prefix, extension='png', logger=_logger, document_type='Screenshot', date_format="%Y%m%d_%H%M%S_%f"):
+def save_test_file(test_name, content, prefix, extension='png', logger=_logger, document_type='Screenshot', date_format="%Y%m%d_%H%M%S_%f", loglevel=logging.RUNBOT, directory=''):
     assert re.fullmatch(r'\w*_', prefix)
     assert re.fullmatch(r'[a-z]+', extension)
     assert re.fullmatch(r'\w+', test_name)
     now = datetime.now().strftime(date_format)
-    screenshots_dir = pathlib.Path(odoo.tools.config['screenshots']) / get_db_name() / 'screenshots'
-    screenshots_dir.mkdir(parents=True, exist_ok=True)
-    fname = f'{prefix}{now}_{test_name}.{extension}'
-    full_path = screenshots_dir / fname
+    dest = pathlib.Path(odoo.tools.config['screenshots']) / get_db_name() / directory
+    dest.mkdir(parents=True, exist_ok=True)
+    full_path = dest / f'{prefix}{now}_{test_name}.{extension}'
+    full_path.write_bytes(content)
+    logger.log(loglevel, "%s in: %s", document_type, full_path)
 
-    with full_path.open('wb') as f:
-        f.write(content)
-    logger.runbot(f'{document_type} in: {full_path}')
+
+if os.name == 'posix' and platform.system() != 'Darwin':
+    # since the introduction of pointer compression in Chrome 80 (v8 v8.0),
+    # the memory reservation algorithm requires more than 8GiB of
+    # virtual mem for alignment this exceeds our default memory limits.
+    def _preexec():
+        import resource  # noqa: PLC0415
+        resource.setrlimit(resource.RLIMIT_AS, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
+else:
+    _preexec = None
 
 
 class ChromeBrowser:
@@ -1051,24 +1057,18 @@ class ChromeBrowser:
                 if os.path.exists(bin_):
                     return bin_
 
+        self._logger.warning('Chrome executable not found')
         raise unittest.SkipTest("Chrome executable not found")
 
-    def _chrome_without_limit(self, cmd):
-        if os.name == 'posix' and platform.system() != 'Darwin':
-            # since the introduction of pointer compression in Chrome 80 (v8 v8.0),
-            # the memory reservation algorithm requires more than 8GiB of
-            # virtual mem for alignment this exceeds our default memory limits.
-            def preexec():
-                import resource
-                resource.setrlimit(resource.RLIMIT_AS, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
-        else:
-            preexec = None
-
-        # pylint: disable=subprocess-popen-preexec-fn
-        return subprocess.Popen(cmd, stderr=subprocess.DEVNULL, preexec_fn=preexec)
-
     def _spawn_chrome(self, cmd):
-        proc = self._chrome_without_limit(cmd)
+        # pylint: disable=subprocess-popen-preexec-fn
+        proc = subprocess.Popen(
+            cmd,
+            stderr=subprocess.DEVNULL,
+            preexec_fn=_preexec,
+            env={**os.environ, 'TMPDIR': self.user_data_dir},
+        )  # noqa: PLW1509
+
         port_file = pathlib.Path(self.user_data_dir, 'DevToolsActivePort')
         for _ in range(CHECK_BROWSER_ITERATIONS):
             time.sleep(CHECK_BROWSER_SLEEP)
@@ -1076,6 +1076,22 @@ class ChromeBrowser:
                 with port_file.open('r', encoding='utf-8') as f:
                     self.devtools_port = int(f.readline())
                     return proc.pid
+
+        if proc.poll() is None:
+            proc.terminate()
+            try:
+                proc.wait(5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
+        self._logger.warning(
+            'Chrome headless failed to start:\n%s',
+            pathlib.Path(self.user_data_dir, "chrome_debug.log").read_text(encoding="utf-8"),
+        )
+        # since the chrome never started, it's not going to be `stop`-ed so we
+        # need to cleanup the directory here
+        shutil.rmtree(self.user_data_dir, ignore_errors=True)
+
         raise unittest.SkipTest(f'Failed to detect chrome devtools port after {BROWSER_WAIT :.1f}s.')
 
     def _chrome_start(self):
@@ -1099,6 +1115,8 @@ class ChromeBrowser:
             '--disable-device-discovery-notifications': '',
             '--disable-namespace-sandbox': '',
             '--user-data-dir': self.user_data_dir,
+            '--enable-logging': '',
+            '--v': str(int(os.environ.get("ODOO_BROWSER_LOG_VERBOSITY", "0"))),
             '--disable-translate': '',
             # required for tours that use Youtube autoplay conditions (namely website_slides' "course_tour")
             '--autoplay-policy': 'no-user-gesture-required',
@@ -1106,6 +1124,7 @@ class ChromeBrowser:
             '--remote-debugging-port': str(self.remote_debugging_port),
             '--no-sandbox': '',
             '--disable-gpu': '',
+            '--mute-audio': '',
             '--remote-allow-origins': '*',
             # '--enable-precise-memory-info': '', # uncomment to debug memory leaks in qunit suite
             # '--js-flags': '--expose-gc', # uncomment to debug memory leaks in qunit suite
@@ -1220,6 +1239,13 @@ class ChromeBrowser:
                 self._logger.debug('\n<- %s', msg)
             except websocket.WebSocketTimeoutException:
                 continue
+            except websocket.WebSocketConnectionClosedException as e:
+                if not self._result.done():
+                    del self.ws
+                    self._result.set_exception(e)
+                    for f in self._responses.values():
+                        f.cancel()
+                return
             except Exception as e:
                 if isinstance(e, ConnectionResetError) and self._result.done():
                     return
@@ -1254,8 +1280,8 @@ class ChromeBrowser:
     def _websocket_request(self, method, *, params=None, timeout=10.0):
         assert threading.get_ident() != self._receiver.ident,\
             "_websocket_request must not be called from the consumer thread"
-        if self.ws is None:
-            return
+        if not hasattr(self, 'ws'):
+            return None
 
         f = self._websocket_send(method, params=params, with_future=True)
         try:
@@ -1268,8 +1294,8 @@ class ChromeBrowser:
 
         If ``with_future`` is set, returns a ``Future`` for the operation.
         """
-        if self.ws is None:
-            return
+        if not hasattr(self, 'ws'):
+            return None
 
         result = None
         request_id = next(self._request_id)
@@ -1454,19 +1480,13 @@ which leads to stray network requests and inconsistencies."""
             if not base_png:
                 self._logger.runbot("Couldn't capture screenshot: expected image data, got %r", base_png)
                 return
-
             decoded = base64.b64decode(base_png, validate=True)
-            fname = '{}{:%Y%m%d_%H%M%S_%f}{}.png'.format(
-                prefix, datetime.now(),
-                suffix or '_%s' % self.test_class.__name__)
-            full_path = os.path.join(self.screenshots_dir, fname)
-            with open(full_path, 'wb') as f:
-                f.write(decoded)
-            self._logger.runbot('Screenshot in: %s', full_path)
+            save_test_file(self.test_class.__name__, decoded, prefix, logger=self._logger, directory='screenshots')
 
         self._logger.info('Asking for screenshot')
         f = self._websocket_send('Page.captureScreenshot', with_future=True)
-        f.add_done_callback(handler)
+        if f:
+            f.add_done_callback(handler)
         return f
 
     def _save_screencast(self, prefix='failed'):
@@ -1571,17 +1591,30 @@ which leads to stray network requests and inconsistencies."""
             raise ChromeBrowserException("Running code returned an error: %s" % res)
 
         err = ChromeBrowserException("failed")
+        save_log = functools.partial(
+            save_test_file,
+            self.test_class.__name__,
+            pathlib.Path(self.user_data_dir, "chrome_debug.log").read_bytes(),
+            prefix='chrome_log_',
+            extension='txt',
+            document_type="Chrome Log",
+            logger=self._logger,
+            directory='chrome_logs',
+        )
         try:
             # if the runcode was a promise which took some time to execute,
             # discount that from the timeout
             if self._result.result(time.time() - start + timeout) and not self.had_failure:
+                save_log(loglevel=logging.INFO)
                 return
         except CancelledError:
             # regular-ish shutdown
+            save_log(loglevel=logging.INFO)
             return
         except Exception as e:
             err = e
 
+        save_log()
         self.take_screenshot()
         self._save_screencast()
         if isinstance(err, ChromeBrowserException):
@@ -1965,7 +1998,8 @@ class HttpCase(TransactionCase):
         if watch and self.browser.dev_tools_frontend_url:
             _logger.warning('watch mode is only suitable for local testing - increasing tour timeout to 3600')
             timeout = max(timeout*10, 3600)
-            debug_front_end = f'http://127.0.0.1:{self.browser.devtools_port}{self.browser.dev_tools_frontend_url}'
+            devtool_query_string = self.browser.dev_tools_frontend_url.partition('/inspector.html')[2]
+            debug_front_end = f'http://127.0.0.1:{self.browser.devtools_port}/devtools/inspector.html{devtool_query_string}'
             self.browser._chrome_without_limit([self.browser.executable, debug_front_end])
             time.sleep(3)
         try:
@@ -2038,9 +2072,6 @@ class HttpCase(TransactionCase):
         """Wrapper for `browser_js` to start the given `tour_name` with the
         optional delay between steps `step_delay`. Other arguments from
         `browser_js` can be passed as keyword arguments."""
-        if not 'is_tour' in self.test_tags:
-            # change it into warning in master
-            self._logger.info('start_tour was called from a test not tagged `is_tour`')
         step_delay = ', %s' % step_delay if step_delay else ''
         code = kwargs.pop('code', "odoo.startTour('%s'%s)" % (tour_name, step_delay))
         ready = kwargs.pop('ready', "odoo.__DEBUG__.services['web_tour.tour'].tours['%s'].ready" % tour_name)
@@ -2061,9 +2092,10 @@ class HttpCase(TransactionCase):
         guess if the test_methods is a tour and adds an `is_tour` tag on the test
         """
         additional_tags = super().get_method_additional_tags(test_method)
-        method_source = inspect.getsource(test_method)
-        if 'self.start_tour' in method_source:
-            additional_tags.append('is_tour')
+        if odoo.tools.config['test_tags'] and 'is_tour' in odoo.tools.config['test_tags']:
+            method_source = inspect.getsource(test_method)
+            if 'self.start_tour' in method_source:
+                additional_tags.append('is_tour')
         return additional_tags
 
 # kept for backward compatibility
