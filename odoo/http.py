@@ -133,7 +133,7 @@ from datetime import datetime
 from io import BytesIO
 from os.path import join as opj
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlsplit
 from zlib import adler32
 
 import babel.core
@@ -1338,10 +1338,34 @@ class Response(Proxy):
     flatten = ProxyFunc(None)
 
     def __init__(self, *args, **kwargs):
-        response = args[0] if len(args) == 1 and isinstance(args[0], _Response) else _Response(*args, **kwargs)
+        response = None
+        if len(args) == 1:
+            arg = args[0]
+            if isinstance(arg, Response):
+                response = arg._wrapped__
+            elif isinstance(arg, _Response):
+                response = arg
+            elif isinstance(arg, werkzeug.wrappers.Response):
+                response = _Response.load(arg)
+        if response is None:
+            response = _Response(*args, **kwargs)
+
         super().__init__(response)
         if 'set_cookie' in response.__dict__:
             self.__dict__['set_cookie'] = response.__dict__['set_cookie']
+
+
+__wz_get_response = HTTPException.get_response
+
+
+def get_response(self, environ=None, scope=None):
+    if scope is None:  # compatible with werkzeug 0.16.x
+        return Response(__wz_get_response(self, environ))
+    else:
+        return Response(__wz_get_response(self, environ, scope))  # werkzeug 2.0.2
+
+
+HTTPException.get_response = get_response
 
 
 werkzeug_abort = werkzeug.exceptions.abort
@@ -1697,7 +1721,8 @@ class Request:
         if isinstance(location, URL):
             location = location.to_url()
         if local:
-            location = '/' + url_parse(location).replace(scheme='', netloc='').to_url().lstrip('/\\')
+            location = url_parse(location).replace(scheme='', netloc='').to_url().lstrip('/\\')
+            location = '/' + urlsplit(location).geturl().lstrip('/\\')
         if self.db:
             return self.env['ir.http']._redirect(location, code)
         return werkzeug.utils.redirect(location, code, Response=Response)
@@ -2142,7 +2167,7 @@ class Application:
         if ((netloc and netloc != host) or (path_netloc and path_netloc != host)):
             return None
 
-        if (module not in self.statics or static != 'static' or not resource):
+        if (static != 'static' or not resource or module not in self.statics):
             return None
 
         try:

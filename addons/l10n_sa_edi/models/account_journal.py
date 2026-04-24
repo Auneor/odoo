@@ -108,14 +108,13 @@ class AccountJournal(models.Model):
 
         # If the invoice wasn't sent to ZATCA because of a timeout, it will retain its existing chain index
         # Make sure there are no opened invoices with the journal's existing sequence
-        move_ids = self.env['account.move'].search(
-            [
-                ('journal_id', '=', self.id),
-                ('l10n_sa_chain_index', '!=', 0)
-            ]
-        )
-        stuck_moves = [move for move in move_ids if not move._l10n_sa_is_in_chain()]
-        if stuck_moves:
+        has_stuck_moves = self.env['account.edi.document'].search([
+            ('move_id.journal_id', '=', self.id),
+            ('move_id.l10n_sa_chain_index', '!=', 0),
+            ('edi_format_id.code', '=', 'sa_zatca'),
+            ('state', '=', 'to_send'),
+        ], limit=1)
+        if has_stuck_moves:
             raise UserError(_("Oops! The journal is stuck. Please submit the pending invoices to ZATCA and try again."))
 
     def _l10n_sa_edi_set_csr_fields(self):
@@ -611,7 +610,7 @@ class AccountJournal(models.Model):
             # In the 401+ cases, it is like the server is overloaded e.g. and we still need to resend later.  We do not
             # erase the index chain (excepted) because for ZATCA, one ICV (index chain) needs to correspond to one invoice.
             status_code = ex.response.status_code
-            if status_code != 400:
+            if status_code not in {400, 409}:
                 return {
                     'error': (Markup("<b>[%s]</b>") % status_code) + _("Server returned an unexpected error: %(error)s",
                                error=(request_response.text or str(ex))),
@@ -636,6 +635,9 @@ class AccountJournal(models.Model):
                 'blocking_level': 'error'
             }
         response_data['status_code'] = request_response.status_code
+
+        if status_code == 409:
+            return response_data
 
         val_res = response_data.get('validationResults', {})
         if not request_response.ok and (val_res.get('errorMessages') or val_res.get('warningMessages')):
