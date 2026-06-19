@@ -1587,7 +1587,7 @@ class MailThread(models.AbstractModel):
                 encoding = part.get_content_charset()  # None if attachment
 
                 # Correcting MIME type for PDF files
-                if part.get('Content-Type', '').startswith('pdf;'):
+                if part.get('Content-Type', '').startswith('pdf;') or part.get('Content-Type','').startswith('base64'):
                     part.replace_header('Content-Type', 'application/pdf' + part.get('Content-Type', '')[3:])
 
                 content = part.get_content()
