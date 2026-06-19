@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* base_vat
-# 
+#
 # Translators:
 # Murat Kaplan <muratk@projetgrup.com>, 2023
 # abc Def <hdogan1974@gmail.com>, 2023
@@ -11,27 +11,26 @@
 # Ayhan Kızıltan, 2024
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2024
 # Deniz Guvener_Odoo <degu@odoo.com>, 2025
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-10 10:34+0000\n"
+"POT-Creation-Date: 2026-05-22 17:40+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
 "Last-Translator: Deniz Guvener_Odoo <degu@odoo.com>, 2025\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: base_vat
 #. odoo-python
 #: code:addons/base_vat/models/res_partner.py:0
 #, python-format
-msgid ""
-"10XXXXXXXXY or 20XXXXXXXXY or 15XXXXXXXXY or 16XXXXXXXXY or 17XXXXXXXXY"
+msgid "10XXXXXXXXY or 20XXXXXXXXY or 15XXXXXXXXY or 16XXXXXXXXY or 17XXXXXXXXY"
 msgstr ""
 "10XXXXXXXXY veya 20XXXXXXXXY veya 15XXXXXXXXY veya 16XXXXXXXXY veya "
 "17XXXXXXXXY"
@@ -40,8 +39,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/base_vat/models/res_partner.py:0
 #, python-format
-msgid "17291716060 (NIN) or 1729171602 (VKN)"
-msgstr "17291716060 (NIN) veya 1729171602 (VKN)"
+msgid "11111111111 (NIN) or 2222222222 (VKN)"
+msgstr ""
 
 #. module: base_vat
 #. odoo-python
@@ -49,13 +48,6 @@ msgstr "17291716060 (NIN) veya 1729171602 (VKN)"
 #, python-format
 msgid "1792060346001 or 1792060346"
 msgstr "1792060346001 veya 1792060346"
-
-#. module: base_vat
-#. odoo-python
-#: code:addons/base_vat/models/res_partner.py:0
-#, python-format
-msgid "3101012009"
-msgstr ""
 
 #. module: base_vat
 #. odoo-python
@@ -77,6 +69,11 @@ msgstr "49-098-576 veya 49098576"
 #, python-format
 msgid "AR200-5536168-2 or 20055361682"
 msgstr "AR200-5536168-2 veya 20055361682"
+
+#. module: base_vat
+#: model:ir.actions.server,name:base_vat.vies_iap_check_update_ir_actions_server
+msgid "Base VAT: Sync updates from IAP VIES"
+msgstr ""
 
 #. module: base_vat
 #. odoo-python
@@ -101,16 +98,6 @@ msgstr "Şirketler"
 #: model:ir.model,name:base_vat.model_res_config_settings
 msgid "Config Settings"
 msgstr "Yapılandırma Ayarları"
-
-#. module: base_vat
-#. odoo-python
-#: code:addons/base_vat/models/res_partner.py:0
-#, python-format
-msgid ""
-"Connection with the VIES server failed. The VAT number %s could not be "
-"validated."
-msgstr ""
-"VIES sunucusuyla bağlantı başarısız oldu. Şu KDV numarası %s doğrulanamadı."
 
 #. module: base_vat
 #: model:ir.model,name:base_vat.model_res_partner
@@ -173,14 +160,21 @@ msgid ""
 "If this checkbox is ticked, the default fiscal position that applies will "
 "depend upon the output of the verification by the European VIES Service."
 msgstr ""
-"Bu onay kutusu işaretlenirse, uygulanacak varsayılan mali konum, Avrupa VIES"
-" Hizmeti tarafından yapılan doğrulamanın sonucuna bağlı olacaktır."
+"Bu onay kutusu işaretlenirse, uygulanacak varsayılan mali konum, Avrupa VIES "
+"Hizmeti tarafından yapılan doğrulamanın sonucuna bağlı olacaktır."
 
 #. module: base_vat
 #: model:ir.model.fields,field_description:base_vat.field_res_partner__vies_valid
 #: model:ir.model.fields,field_description:base_vat.field_res_users__vies_valid
 msgid "Intra-Community Valid"
 msgstr "Topluluk İçi Geçerli"
+
+#. module: base_vat
+#. odoo-python
+#: code:addons/base_vat/models/res_partner.py:0
+#, python-format
+msgid "Invalid IAP VIES endpoint"
+msgstr ""
 
 #. module: base_vat
 #. odoo-python
@@ -216,18 +210,34 @@ msgstr ""
 #: code:addons/base_vat/models/res_partner.py:0
 #, python-format
 msgid ""
-"The %(vat_label)s number [%(wrong_vat)s] for %(record_label)s does not seem to be valid. \n"
+"The %(vat_label)s number [%(wrong_vat)s] for %(record_label)s does not seem "
+"to be valid. \n"
 "Note: the expected format is %(expected_format)s"
 msgstr ""
-"%(record_label)s için %(vat_label)s numarası [%(wrong_vat)s] geçerli görünmüyor.\n"
+"%(record_label)s için %(vat_label)s numarası [%(wrong_vat)s] geçerli "
+"görünmüyor.\n"
 "Not: beklenen biçim %(expected_format)s"
 
 #. module: base_vat
 #. odoo-python
 #: code:addons/base_vat/models/res_partner.py:0
 #, python-format
-msgid "The VAT number %s could not be interpreted by the VIES server."
-msgstr "%s KDV numarası VIES sunucusu tarafından yorumlanamadı."
+msgid "The Intra-Community validity has been updated to: %s."
+msgstr ""
+
+#. module: base_vat
+#. odoo-python
+#: code:addons/base_vat/models/res_partner.py:0
+#, python-format
+msgid "The VIES check failed. Please check the Tax ID manually."
+msgstr ""
+
+#. module: base_vat
+#. odoo-python
+#: code:addons/base_vat/models/res_partner.py:0
+#, python-format
+msgid "The VIES check is pending. The status will be updated soon."
+msgstr ""
 
 #. module: base_vat
 #. odoo-python
@@ -245,21 +255,11 @@ msgstr ""
 #: code:addons/base_vat/models/account_fiscal_position.py:0
 #, python-format
 msgid ""
-"The country of the foreign VAT number could not be detected. Please assign a"
-" country to the fiscal position or set a country group"
+"The country of the foreign VAT number could not be detected. Please assign a "
+"country to the fiscal position or set a country group"
 msgstr ""
-"Yabancı KDV numarasının ülkesi tespit edilemedi. Lütfen mali koşula bir ülke"
-" atayın veya bir ülke grubu ayarlayın"
-
-#. module: base_vat
-#. odoo-python
-#: code:addons/base_vat/models/res_partner.py:0
-#, python-format
-msgid ""
-"The request for VAT validation was not processed. VIES service has responded"
-" with the following error: %s"
-msgstr ""
-"KDV doğrulama isteği işlenemedi. VIES servisi şu hatayla yanıt verdi: %s"
+"Yabancı KDV numarasının ülkesi tespit edilemedi. Lütfen mali koşula bir ülke "
+"atayın veya bir ülke grubu ayarlayın"
 
 #. module: base_vat
 #. odoo-python
@@ -297,8 +297,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/base_vat/models/res_partner.py:0
 #, python-format
-msgid "either 11 digits for CPF or 14 digits for CNPJ"
-msgstr "CPF için 11 hane veya CNPJ için 14 hane olmalıdır."
+msgid "either 11 digits for CPF or 14 characters for CNPJ"
+msgstr ""
 
 #. module: base_vat
 #. odoo-python
@@ -313,3 +313,30 @@ msgstr "mali koşul [%s]"
 #, python-format
 msgid "partner [%s]"
 msgstr "kontak [%s]"
+
+#, python-format
+#~ msgid "either 11 digits for CPF or 14 digits for CNPJ"
+#~ msgstr "CPF için 11 hane veya CNPJ için 14 hane olmalıdır."
+
+#, python-format
+#~ msgid ""
+#~ "Connection with the VIES server failed. The VAT number %s could not be "
+#~ "validated."
+#~ msgstr ""
+#~ "VIES sunucusuyla bağlantı başarısız oldu. Şu KDV numarası %s "
+#~ "doğrulanamadı."
+
+#, python-format
+#~ msgid "The VAT number %s could not be interpreted by the VIES server."
+#~ msgstr "%s KDV numarası VIES sunucusu tarafından yorumlanamadı."
+
+#, python-format
+#~ msgid ""
+#~ "The request for VAT validation was not processed. VIES service has "
+#~ "responded with the following error: %s"
+#~ msgstr ""
+#~ "KDV doğrulama isteği işlenemedi. VIES servisi şu hatayla yanıt verdi: %s"
+
+#, python-format
+#~ msgid "17291716060 (NIN) or 1729171602 (VKN)"
+#~ msgstr "17291716060 (NIN) veya 1729171602 (VKN)"

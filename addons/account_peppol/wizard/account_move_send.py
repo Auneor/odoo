@@ -4,6 +4,7 @@
 from base64 import b64encode
 
 from odoo import api, fields, models, _
+from odoo.addons.account.models.company import PEPPOL_DEFAULT_COUNTRIES
 from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
 
 
@@ -45,7 +46,12 @@ class AccountMoveSend(models.TransientModel):
     @api.depends('enable_peppol')
     def _compute_checkbox_send_peppol(self):
         for wizard in self:
-            wizard.checkbox_send_peppol = wizard.enable_peppol and not wizard.peppol_warning
+            countries = wizard.move_ids.partner_id.commercial_partner_id.mapped('country_code')
+            wizard.checkbox_send_peppol = (
+                wizard.enable_peppol
+                and not wizard.peppol_warning
+                and any(country in PEPPOL_DEFAULT_COUNTRIES for country in countries)
+            )
 
     def _compute_checkbox_send_mail(self):
         super()._compute_checkbox_send_mail()
@@ -88,7 +94,7 @@ class AccountMoveSend(models.TransientModel):
                 lambda partner: not partner.is_peppol_edi_format
             )
             wizard.enable_peppol = (
-                wizard.company_id.account_peppol_proxy_state == 'active'
+                wizard.company_id.account_peppol_proxy_state in ('active', 'sender')
                 and (
                     wizard.enable_ubl_cii_xml
                     or any(m.ubl_cii_xml_id and m.peppol_move_state not in ('processing', 'done') for m in wizard.move_ids)
@@ -162,11 +168,11 @@ class AccountMoveSend(models.TransientModel):
         params = {'documents': []}
         invoices_data_peppol = {}
         for invoice, invoice_data in invoices_data.items():
-            if invoice_data.get('send_peppol'):
+            if invoice_data.get('send_peppol') and invoice.peppol_move_state not in ('processing', 'done'):
                 if invoice_data.get('ubl_cii_xml_attachment_values'):
                     xml_file = invoice_data['ubl_cii_xml_attachment_values']['raw']
                     filename = invoice_data['ubl_cii_xml_attachment_values']['name']
-                elif invoice.ubl_cii_xml_id and invoice.peppol_move_state not in ('processing', 'canceled', 'done'):
+                elif invoice.ubl_cii_xml_id and invoice.peppol_move_state != 'canceled':
                     xml_file = invoice.ubl_cii_xml_id.raw
                     filename = invoice.ubl_cii_xml_id.name
                 else:
@@ -182,6 +188,11 @@ class AccountMoveSend(models.TransientModel):
                 if not partner.account_peppol_is_endpoint_valid:
                     invoice.peppol_move_state = 'error'
                     invoice_data['error'] = _('Please verify partner configuration in partner settings.')
+                    continue
+
+                if invoice._is_exportable_as_self_invoice() and not partner._can_receive_self_billing(invoice.partner_id.commercial_partner_id.ubl_cii_format):
+                    invoice.peppol_move_state = 'error'
+                    invoice_data['error'] = _('The partner has indicated it does not accept this document type, so you cannot send this invoice via Peppol.')
                     continue
 
                 if len(xml_file) > 64000000:
@@ -236,15 +247,25 @@ class AccountMoveSend(models.TransientModel):
                         for key in ['pdf_attachment_values', 'ubl_cii_xml_attachment_values']
                         if invoice_data.get(key)
                     ]
+                    if not base_attachments and invoice.ubl_cii_xml_id:
+                        base_attachments.append((invoice.ubl_cii_xml_id.name, invoice.ubl_cii_xml_id.raw))
                     attachments_embedded = [
                         (attachment.name, attachment.raw)
                         for attachment in attachments_linked
                     ] + base_attachments
 
-                    invoice.with_context(no_new_invoice=True).message_post(
+                    new_message = invoice.with_context(no_new_invoice=True, no_document=True).message_post(
                         body=attachments_linked_message,
                         attachments=attachments_embedded,
                     )
+
+                    if new_message.attachment_ids.ids:
+                        self.env.cr.execute("UPDATE ir_attachment SET res_id = NULL WHERE id IN %s", [tuple(new_message.attachment_ids.ids)])
+                        new_message.attachment_ids.invalidate_recordset(['res_id', 'res_model'], flush=False)
+                    new_message.attachment_ids.write({
+                        'res_model': new_message._name,
+                        'res_id': new_message.id,
+                    })
 
         if self._can_commit():
             self._cr.commit()

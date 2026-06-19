@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* spreadsheet
+# * spreadsheet
 #
 # Translators:
 # F Hariri <fhari1234@gmail.com>, 2023
@@ -15,20 +15,22 @@
 # Hanna Kheradroosta, 2023
 # Martin Trigaux, 2023
 # Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2025
-#
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:38+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2025\n"
-"Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-01-24 17:01+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Persian <https://translate.odoo.com/projects/odoo-17/"
+"spreadsheet/fa/>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -124,20 +126,13 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"(1) Search starting at first item. \n"
-"      (-1) Search starting at last item. \n"
-"      (2) Perform a binary search that relies on lookup_array being sorted "
-"in ascending order. If not sorted, invalid results will be returned. \n"
-"      (-2) Perform a binary search that relies on lookup_array being sorted "
-"in descending order. If not sorted, invalid results will be returned.\n"
-"      "
+"(1) Search starting at first item.       (-1) Search starting at last "
+"item.       (2) Perform a binary search that relies on lookup_array being "
+"sorted in ascending order. If not sorted, invalid results will be "
+"returned.       (-2) Perform a binary search that relies on lookup_array "
+"being sorted in descending order. If not sorted, invalid results will be "
+"returned.      "
 msgstr ""
-"(1) جستجو از اولین مورد شروع می‌شود.  \n"
-"(-1) جستجو از آخرین مورد شروع می‌شود.  \n"
-"(2) یک جستجوی دودویی انجام دهید که بر اساس مرتب شدن lookup_array به صورت "
-"صعودی است. اگر مرتب نشده باشد، نتایج نامعتبر بازگردانده می‌شود.  \n"
-"(-2) یک جستجوی دودویی انجام دهید که بر اساس مرتب شدن lookup_array به صورت "
-"نزولی است. اگر مرتب نشده باشد، نتایج نامعتبر بازگردانده می‌شود."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -187,6 +182,13 @@ msgstr "2 ستون"
 #, python-format
 msgid "2 rows"
 msgstr "2 سطر"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "A"
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -477,6 +479,13 @@ msgstr "مقدار مطلق"
 #, python-format
 msgid "Absolute value of a number."
 msgstr "مقدار مطلق یک عدد."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid "Access Error"
+msgstr "خطای دسترسی"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2633,10 +2642,7 @@ msgid "Does not contain"
 msgstr "شامل نمی‌شود"
 
 #. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.js:0
 #: model_terms:ir.ui.view,arch_db:spreadsheet.public_spreadsheet_layout
-#, python-format
 msgid "Download"
 msgstr "دانلود"
 
@@ -3158,27 +3164,6 @@ msgstr "عملکرد [[FUNCTION_NAME]] هیچ نتیجه‌ای پیدا نکر�
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
-"pairs."
-msgstr ""
-"تابع [[FUNCTION_NAME]] انتظار دارد که criteria_range و criterion به صورت جفت "
-"باشند."
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension"
-msgstr ""
-"ماژول /home/esmaeil/m_t/spreadsheet تابع [[FUNCTION_NAME]] انتظار دارد تا "
-"criteria_range دارای ابعاد یکسان باشد."
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
 
@@ -3586,11 +3571,8 @@ msgstr "در ارزیابی [[FUNCTION_NAME]]، نمی‌توان '%s' را در
 #, python-format
 msgid ""
 "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must be "
-"equal to the \n"
-"        number of rows of the second matrix (%s)."
+"equal to the         number of rows of the second matrix (%s)."
 msgstr ""
-"در [[FUNCTION_NAME]]، تعداد ستون‌های ماتریس اول (%s) باید برابر با تعداد "
-"سطرهای ماتریس دوم (%s) باشد."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10941,13 +10923,9 @@ msgstr ""
 #, python-format
 msgid ""
 "Whether or not to remove empty text messages from the split results. The "
-"default behavior is to treat \n"
-"        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
-"values are added between consecutive delimiters."
+"default behavior is to treat         consecutive delimiters as one (if "
+"TRUE). If FALSE, empty cells values are added between consecutive delimiters."
 msgstr ""
-"آیا پیام‌های متنی خالی از نتایج تفکیک حذف شوند یا خیر. رفتار پیش‌فرض این است "
-"که جداکننده‌های متوالی به عنوان یکی در نظر گرفته شوند (اگر TRUE). اگر FALSE "
-"باشد، مقادیر سلول‌های خالی بین جداکننده‌های متوالی اضافه می‌شوند."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10963,11 +10941,8 @@ msgstr "آیا پرداخت‌ها در پایان (0) یا ابتدای (1) ه�
 #, python-format
 msgid ""
 "Whether the array should be scanned by column. True scans the array by "
-"column and false (default) \n"
-"      scans the array by row."
+"column and false (default)       scans the array by row."
 msgstr ""
-"آیا آرایه باید بر اساس ستون اسکن شود. True آرایه را به صورت ستونی و false "
-"(پیش‌فرض) آرایه را به صورت ردیفی اسکن می‌کند."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11162,6 +11137,21 @@ msgstr "شما نمی‌توانید سلول‌ها را درون یک فیلت
 #, python-format
 msgid "You cannot create overlapping filters."
 msgstr "شما نمی‌توانید فیلترهای همپوشان ایجاد کنید."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid ""
+"You don't have the rights to export data. Please contact an Administrator."
+msgstr "شما حق خروج داده ها را ندارید. لطفا با یک مدیر تماس بگیرید."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Z"
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11401,10 +11391,81 @@ msgstr "فردا"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.xml:0
+#, python-format
+msgid "x"
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "yesterday"
 msgstr "دیروز"
+
+#, python-format
+#~ msgid ""
+#~ "(1) Search starting at first item. \n"
+#~ "      (-1) Search starting at last item. \n"
+#~ "      (2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in ascending order. If not sorted, invalid results will be "
+#~ "returned. \n"
+#~ "      (-2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in descending order. If not sorted, invalid results will be "
+#~ "returned.\n"
+#~ "      "
+#~ msgstr ""
+#~ "(1) جستجو از اولین مورد شروع می‌شود.  \n"
+#~ "(-1) جستجو از آخرین مورد شروع می‌شود.  \n"
+#~ "(2) یک جستجوی دودویی انجام دهید که بر اساس مرتب شدن lookup_array به صورت "
+#~ "صعودی است. اگر مرتب نشده باشد، نتایج نامعتبر بازگردانده می‌شود.  \n"
+#~ "(-2) یک جستجوی دودویی انجام دهید که بر اساس مرتب شدن lookup_array به صورت "
+#~ "نزولی است. اگر مرتب نشده باشد، نتایج نامعتبر بازگردانده می‌شود."
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
+#~ "pairs."
+#~ msgstr ""
+#~ "تابع [[FUNCTION_NAME]] انتظار دارد که criteria_range و criterion به صورت "
+#~ "جفت باشند."
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range to have the same "
+#~ "dimension"
+#~ msgstr ""
+#~ "ماژول /home/esmaeil/m_t/spreadsheet تابع [[FUNCTION_NAME]] انتظار دارد تا "
+#~ "criteria_range دارای ابعاد یکسان باشد."
+
+#, python-format
+#~ msgid ""
+#~ "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must "
+#~ "be equal to the \n"
+#~ "        number of rows of the second matrix (%s)."
+#~ msgstr ""
+#~ "در [[FUNCTION_NAME]]، تعداد ستون‌های ماتریس اول (%s) باید برابر با تعداد "
+#~ "سطرهای ماتریس دوم (%s) باشد."
+
+#, python-format
+#~ msgid ""
+#~ "Whether or not to remove empty text messages from the split results. The "
+#~ "default behavior is to treat \n"
+#~ "        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
+#~ "values are added between consecutive delimiters."
+#~ msgstr ""
+#~ "آیا پیام‌های متنی خالی از نتایج تفکیک حذف شوند یا خیر. رفتار پیش‌فرض این "
+#~ "است که جداکننده‌های متوالی به عنوان یکی در نظر گرفته شوند (اگر TRUE). اگر "
+#~ "FALSE باشد، مقادیر سلول‌های خالی بین جداکننده‌های متوالی اضافه می‌شوند."
+
+#, python-format
+#~ msgid ""
+#~ "Whether the array should be scanned by column. True scans the array by "
+#~ "column and false (default) \n"
+#~ "      scans the array by row."
+#~ msgstr ""
+#~ "آیا آرایه باید بر اساس ستون اسکن شود. True آرایه را به صورت ستونی و false "
+#~ "(پیش‌فرض) آرایه را به صورت ردیفی اسکن می‌کند."
 
 #, python-format
 #~ msgid ""

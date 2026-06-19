@@ -3,13 +3,13 @@
 # * sale_timesheet
 #
 # Translators:
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-20 18:37+0000\n"
-"PO-Revision-Date: 2025-12-13 08:03+0000\n"
+"POT-Creation-Date: 2025-12-29 18:38+0000\n"
+"PO-Revision-Date: 2026-06-14 20:58+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Hindi <https://translate.odoo.com/projects/odoo-17/"
 "sale_timesheet/hi/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. module: sale_timesheet
 #. odoo-python
@@ -112,7 +112,7 @@ msgstr ""
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.hr_timesheet_line_form_inherit
 msgid "<span class=\"o_stat_text\">Sales Order</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">सेल्स ऑर्डर</span>"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.portal_my_task_inherit
@@ -156,6 +156,12 @@ msgid ""
 "this sale line\n"
 "  - Stock Moves: the quantity comes from confirmed pickings\n"
 msgstr ""
+"प्रॉडक्ट कॉन्फ़िगरेशन के अनुसार, डिलीवर की गई मात्रा को ऑटोमैटिक तरीके से कैलकुलेट करें:\n"
+"  - मैन्युअल: मात्रा को लाइन पर मैन्युअल रूप से सेट करें\n"
+"  - एनालिटिक फ्रॉम एक्सपेंसेस: जितने खर्चे दर्ज किए गए हैं, उनकी कुल संख्या ही डिलीवरी "
+"मात्रा होगी\n"
+"  - टाइमशीट: मात्रा इस सेल लाइन से जुड़े टास्क पर दर्ज किए गए घंटों का योग है\n"
+"  - स्टॉक मूव्स: मात्रा पुष्टि की गई पिकिंग से आती है\n"
 
 #. module: sale_timesheet
 #: model:ir.model,name:sale_timesheet.model_account_move_reversal
@@ -171,7 +177,7 @@ msgstr ""
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_project__allocated_hours
 msgid "Allocated Hours"
-msgstr ""
+msgstr "आवंटित किए हुए घंटे"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_create_invoice__amount_to_invoice
@@ -213,7 +219,7 @@ msgstr ""
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_account_analytic_line__allow_billable
 msgid "Billable"
-msgstr ""
+msgstr "बिल करने योग्य"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_timesheets_analysis_report__billable_time
@@ -318,7 +324,7 @@ msgstr "कीमत"
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_sale_line_employee_map__cost_currency_id
 msgid "Cost Currency"
-msgstr ""
+msgstr "लागत की करेंसी"
 
 #. module: sale_timesheet
 #: model:ir.actions.act_window,name:sale_timesheet.project_project_action_multi_create_invoice
@@ -418,7 +424,7 @@ msgstr ""
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_update_default_description
 msgid "Delivered"
-msgstr ""
+msgstr "डिलीवर किया गया"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_create_invoice_view_form
@@ -662,6 +668,11 @@ msgid ""
 "Create a task and track hours: Create a task on the sales order validation "
 "and track the work hours."
 msgstr ""
+"ऑर्डर पर मात्रा मैनुअल रूप से सेट करें: बिना एनालिटिक अकाउंट बनाए, दर्ज की गई मात्रा के "
+"आधार पर इनवॉइस बनाएं.\n"
+"कॉन्ट्रैक्ट पर टाइमशीट: संबंधित टाइमशीट पर ट्रैक किए गए घंटों के आधार पर इनवॉइस बनाएं.\n"
+"टास्क बनाएं और घंटे ट्रैक करें: सेल्स ऑर्डर की पुष्टि होने पर टास्क बनाएं और काम के घंटों को "
+"ट्रैक करें।"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_timesheets_analysis_report__margin
@@ -678,7 +689,7 @@ msgstr "सामग्री"
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_sale_order_line__qty_delivered_method
 msgid "Method to update delivered qty"
-msgstr ""
+msgstr "डिलीवर की गई मात्रा को अपडेट करने का तरीका"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.product_template_view_search_sale_timesheet
@@ -719,13 +730,13 @@ msgstr ""
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.timesheet_view_search
 msgid "Non-Billable"
-msgstr ""
+msgstr "गैर-बिल योग्य"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.hr_timesheet_line_form_inherit
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.hr_timesheet_line_tree_inherit
 msgid "Non-billable"
-msgstr ""
+msgstr "गैर-बिल योग्य"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_timesheets_analysis_report__non_billable_time
@@ -735,7 +746,7 @@ msgstr ""
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.portal_my_timesheets_inherit
 msgid "Not Billed"
-msgstr ""
+msgstr "बिल नहीं किया गया"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_timesheets_analysis_report__timesheet_revenues
@@ -780,7 +791,7 @@ msgstr "ऑपरेशन काम नहीं करता"
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_account_analytic_line__order_id
 msgid "Order Reference"
-msgstr ""
+msgstr "ऑर्डर रेफ़रेंस"
 
 #. module: sale_timesheet
 #: model:ir.model.fields.selection,name:sale_timesheet.selection__account_analytic_line__timesheet_invoice_type__other_costs
@@ -839,7 +850,7 @@ msgstr "प्रोजेक्ट"
 #. module: sale_timesheet
 #: model:ir.model,name:sale_timesheet.model_project_sale_line_employee_map
 msgid "Project Sales line, employee mapping"
-msgstr ""
+msgstr "प्रोजेक्ट सेल्स लाइन, कर्मचारी मैपिंग"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_product_product__project_template_id
@@ -877,7 +888,7 @@ msgstr "कोटेशन"
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_update_default_description
 msgid "Remaining"
-msgstr ""
+msgstr "बचा हुआ"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_sharing_inherit_project_task_view_form
@@ -970,12 +981,12 @@ msgstr "सेल्स ऑर्डर"
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.timesheet_view_search
 #, python-format
 msgid "Sales Order Item"
-msgstr ""
+msgstr "सेल्स ऑर्डर आइटम"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_update_default_description
 msgid "Sales Order Items"
-msgstr ""
+msgstr "सेल्स ऑर्डर आइटम"
 
 #. module: sale_timesheet
 #: model:ir.model,name:sale_timesheet.model_sale_order_line
@@ -1002,6 +1013,14 @@ msgid ""
 "timesheets on this project specifically. It will bypass the timesheet cost "
 "set on the employee."
 msgstr ""
+"सेल्स ऑर्डर आइटम जो संबंधित कर्मचारी के टाइमशीट पर डिफ़ॉल्ट रूप से चुना जाएगा. यह प्रोजेक्ट "
+"और टास्क पर निर्धारित सेल्स ऑर्डर आइटम को बायपास करता है और अगर ज़रूरी हो, तो प्रत्येक "
+"टाइमशीट एंट्री पर इसे बदला जा सकता है. दूसरे शब्दों में, यह उदाहरण के लिए, कर्मचारी की "
+"विशेषज्ञता, कौशल या अनुभव के आधार पर उनकी बिलिंग दर निर्धारित करता है.\n"
+"अगर आप एक ही सर्विस को अलग-अलग रेट पर बिल करना चाहते हैं, तो आपको दो अलग सेल्स ऑर्डर "
+"आइटम बनाने होंगे, क्योंकि एक आइटम की एक ही कीमत हो सकती है.\n"
+"आप इस प्रोजेक्ट के लिए खास तौर पर कर्मचारियों का प्रति घंटा कंपनी खर्च भी तय कर सकते हैं. "
+"यह कर्मचारी के सामान्य रेट की जगह ले लेगा।"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_account_analytic_line__so_line
@@ -1019,14 +1038,14 @@ msgstr ""
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_project_task__sale_order_id
 msgid "Sales order to which the task is linked."
-msgstr ""
+msgstr "सेल्स ऑर्डर जिससे टास्क जुड़ा हुआ है।"
 
 #. module: sale_timesheet
 #. odoo-python
 #: code:addons/sale_timesheet/controllers/portal.py:0
 #, python-format
 msgid "Search in Invoice"
-msgstr ""
+msgstr "इनवॉइस में खोजें"
 
 #. module: sale_timesheet
 #. odoo-python
@@ -1040,7 +1059,7 @@ msgstr ""
 #: code:addons/sale_timesheet/controllers/portal.py:0
 #, python-format
 msgid "Search in Sales Order Item"
-msgstr ""
+msgstr "सेल्स ऑर्डर आइटम में खोजें"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_sale_order__project_id
@@ -1210,11 +1229,12 @@ msgid ""
 "senior consultants would deliver the same service (= consultancy), but at a "
 "different rate because of their level of seniority."
 msgstr ""
-"अगर आप अलग-अलग ग्राहकों को अलग-अलग दरों पर अलग-अलग सेवाएं बिल करना चाहते हैं, तो टास्क दर सही है. "
-"अगर आप किए गए काम के हर घंटे या दिन के लिए एक तय दर पर बिल करते हैं, भले ही काम करने वाला कर्मचारी "
-"कोई भी हो, तो तय दर (fixed rate) सही है. अगर आपके कर्मचारी एक ही सेवा को अलग-अलग दरों पर देते हैं"
-", तो कर्मचारी दर (employee rate) बेहतर है. उदाहरण के लिए, जूनियर और सीनियर सलाहकार एक ही सेवा "
-"(सलाहकार) देंगे, लेकिन उनके अनुभव के स्तर के कारण अलग-अलग दर पर।"
+"अगर आप अलग-अलग ग्राहकों को अलग-अलग दरों पर अलग-अलग सेवाएं बिल करना चाहते हैं, तो "
+"टास्क दर सही है. अगर आप किए गए काम के हर घंटे या दिन के लिए एक तय दर पर बिल करते हैं, "
+"भले ही काम करने वाला कर्मचारी कोई भी हो, तो तय दर (fixed rate) सही है. अगर आपके "
+"कर्मचारी एक ही सेवा को अलग-अलग दरों पर देते हैं, तो कर्मचारी दर (employee rate) बेहतर "
+"है. उदाहरण के लिए, जूनियर और सीनियर सलाहकार एक ही सेवा (सलाहकार) देंगे, लेकिन उनके "
+"अनुभव के स्तर के कारण अलग-अलग दर पर।"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_project_sale_line_employee_map__cost
@@ -1437,7 +1457,7 @@ msgstr "कुल:"
 #: model:ir.model.fields,field_description:sale_timesheet.field_product_product__service_type
 #: model:ir.model.fields,field_description:sale_timesheet.field_product_template__service_type
 msgid "Track Service"
-msgstr ""
+msgstr "सर्विस ट्रैक करें"
 
 #. module: sale_timesheet
 #: model_terms:ir.actions.act_window,help:sale_timesheet.action_timesheet_from_invoice
@@ -1446,7 +1466,8 @@ msgid ""
 "Track your working hours by projects every day and invoice this time to your "
 "customers."
 msgstr ""
-"हर दिन प्रोजेक्ट के अनुसार अपने काम के घंटों को ट्रैक करें और इस समय का इनवॉइस अपने ग्राहकों को भेजें।"
+"हर दिन प्रोजेक्ट के अनुसार अपने काम के घंटों को ट्रैक करें और इस समय का इनवॉइस अपने ग्राहकों "
+"को भेजें।"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_create_sale_order_line__price_unit
@@ -1573,7 +1594,7 @@ msgstr ""
 #: code:addons/sale_timesheet/models/sale_order.py:0
 #, python-format
 msgid "remaining"
-msgstr ""
+msgstr "बचा हुआ"
 
 #~ msgid "About us"
 #~ msgstr "हमारे बारे में"

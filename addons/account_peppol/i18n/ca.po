@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* account_peppol
+# * account_peppol
 #
 # Translators:
 # CristianCruzParra, 2023
@@ -18,20 +18,23 @@
 # Josep Anton Belchi, 2025
 # Santiago Payà <santiagopim@gmail.com>, 2025
 # Noemi Pla, 2025
-#
+# "Noemi Pla Garcia (nopl)" <nopl@odoo.com>, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-25 18:35+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Noemi Pla, 2025\n"
-"Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
+"POT-Creation-Date: 2026-04-24 17:37+0000\n"
+"PO-Revision-Date: 2026-04-25 17:00+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Catalan <https://translate.odoo.com/projects/odoo-17/"
+"account_peppol/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
@@ -106,10 +109,8 @@ msgstr ""
 #, python-format
 msgid ""
 "A participant with these details has already been registered on the network. "
-"If you have previously registered to a Peppol service, please deregister."
+"If you continue, Odoo will register this company as sender only."
 msgstr ""
-"Ja ha estat registrat a la xarxa un participant amb aquestes dades. Si t'has "
-"registrat prèviament en un servei Peppol, si us plau, dona't de baixa:"
 
 #. module: account_peppol
 #. odoo-python
@@ -118,6 +119,15 @@ msgstr ""
 msgid "A purchase journal must be used to receive Peppol documents."
 msgstr ""
 "Per a poder rebre documents Peppol, cal fer servir un diari de compres."
+
+#. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"A receiver connection is already registered for this participant. Please "
+"deregister that receiver connection first."
+msgstr ""
 
 #. module: account_peppol
 #: model:ir.model,name:account_peppol.model_account_edi_proxy_client_user
@@ -155,6 +165,14 @@ msgid "Active"
 msgstr "Actiu"
 
 #. module: account_peppol
+#. odoo-javascript
+#: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
+#: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.xml:0
+#, python-format
+msgid "Allow reception"
+msgstr "Permetre recepció"
+
+#. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid "Application status:"
 msgstr "Estat de l'aplicació:"
@@ -168,6 +186,11 @@ msgstr ""
 "factures electròniques."
 
 #. module: account_peppol
+#: model:ir.model.fields.selection,name:account_peppol.selection__res_company__account_peppol_proxy_state__sender
+msgid "Can send but not receive"
+msgstr "Pot enviar però no rebre"
+
+#. module: account_peppol
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
@@ -179,18 +202,11 @@ msgstr ""
 "desregistreu-vos."
 
 #. module: account_peppol
-#. odoo-python
-#: code:addons/account_peppol/models/res_config_settings.py:0
+#. odoo-javascript
+#: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
 #, python-format
-msgid "Can't cancel registration with this status: %s"
-msgstr "No es pot cancel·lar el registre amb aquest estat: %s"
-
-#. module: account_peppol
-#. odoo-python
-#: code:addons/account_peppol/models/res_config_settings.py:0
-#, python-format
-msgid "Can't deregister with this status: %s"
-msgstr "No es pot desregistrar amb aquest estat: %s"
+msgid "Cancel"
+msgstr "Cancel·la"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.account_peppol_view_move_form
@@ -298,6 +314,11 @@ msgstr "De prova"
 #: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
 #, python-format
 msgid "Deregister from Peppol"
+msgstr ""
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
+msgid "Disable the reception."
 msgstr ""
 
 #. module: account_peppol
@@ -415,9 +436,23 @@ msgid "Not verified"
 msgstr "No verificat"
 
 #. module: account_peppol
+#. odoo-javascript
+#: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
+#, python-format
+msgid "OK"
+msgstr "OK"
+
+#. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
 msgid "Odoo"
 msgstr "Odoo"
+
+#. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/models/res_config_settings.py:0
+#, python-format
+msgid "Only sender-only connections can be reactivated for reception."
+msgstr ""
 
 #. module: account_peppol
 #: model:ir.model.fields.selection,name:account_peppol.selection__account_edi_proxy_client_user__proxy_type__peppol
@@ -532,6 +567,11 @@ msgid "Peppol Ready invoices"
 msgstr "Factures llestes per a Peppol"
 
 #. module: account_peppol
+#: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__peppol_use_parent_company
+msgid "Peppol Use Parent Company"
+msgstr ""
+
+#. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_view_tree
 msgid "Peppol Validity"
 msgstr ""
@@ -605,12 +645,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Please enter the mobile number in the correct international format.\n"
-"For example: +32123456789, where +32 is the country code.\n"
-"Currently, only European countries are supported."
+"For example: +32123456789, where +32 is the country code."
 msgstr ""
-"Si us plau, introduïu el número de mòbil en format internacional.\n"
-"Per exemple: +32123456789, on +32 és el codi de país.\n"
-"Actualment només es suporten països europeus."
 
 #. module: account_peppol
 #. odoo-python
@@ -671,6 +707,13 @@ msgstr "Registra com a usuari PEPPOL user"
 #: model:ir.model.fields.selection,name:account_peppol.selection__res_company__account_peppol_proxy_state__rejected
 msgid "Rejected"
 msgstr "Rebutjada"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
+msgid ""
+"Route your vendor bills elsewhere while maintaining the ability to send "
+"customer invoices."
+msgstr ""
 
 #. module: account_peppol
 #: model:ir.model.fields,field_description:account_peppol.field_account_edi_proxy_client_user__peppol_verification_code
@@ -788,6 +831,15 @@ msgstr ""
 #. odoo-python
 #: code:addons/account_peppol/wizard/account_move_send.py:0
 #, python-format
+msgid ""
+"The partner has indicated it does not accept this document type, so you "
+"cannot send this invoice via Peppol."
+msgstr ""
+
+#. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/wizard/account_move_send.py:0
+#, python-format
 msgid "The partner is missing Peppol EAS and/or Endpoint identifier."
 msgstr "El contacte no té Peppol EAS o un identificador de punt d'accés."
 
@@ -846,6 +898,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
 msgid "This invoice has also been"
 msgstr "Aquesta factura també ha estat"
+
+#. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"This peppol identification is already used by %(parent_name)s. Please use "
+"something else."
+msgstr ""
 
 #. module: account_peppol
 #. odoo-python
@@ -968,6 +1029,17 @@ msgid "We sent a verification code to"
 msgstr ""
 
 #. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/models/account_journal.py:0
+#, python-format
+msgid ""
+"You can't change the type of a journal used for Peppol invoice reception toa "
+"type different than 'Purchase'.\n"
+"Please change the journal used for Peppol reception before changing the type "
+"of this journal."
+msgstr ""
+
+#. module: account_peppol
 #. odoo-javascript
 #: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
 #, python-format
@@ -1025,6 +1097,24 @@ msgstr "per enviar factures, però aquesta"
 #: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
 msgid "uses"
 msgstr "utilitza"
+
+#, python-format
+#~ msgid ""
+#~ "A participant with these details has already been registered on the "
+#~ "network. If you have previously registered to a Peppol service, please "
+#~ "deregister."
+#~ msgstr ""
+#~ "Ja ha estat registrat a la xarxa un participant amb aquestes dades. Si "
+#~ "t'has registrat prèviament en un servei Peppol, si us plau, dona't de "
+#~ "baixa:"
+
+#, python-format
+#~ msgid "Can't cancel registration with this status: %s"
+#~ msgstr "No es pot cancel·lar el registre amb aquest estat: %s"
+
+#, python-format
+#~ msgid "Can't deregister with this status: %s"
+#~ msgstr "No es pot desregistrar amb aquest estat: %s"
 
 #~ msgid "Cannot receive this format"
 #~ msgstr "No es pot rebre aquest format"

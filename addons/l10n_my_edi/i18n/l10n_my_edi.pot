@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-18 19:02+0000\n"
-"PO-Revision-Date: 2025-12-18 19:02+0000\n"
+"POT-Creation-Date: 2026-04-03 19:08+0000\n"
+"PO-Revision-Date: 2026-04-03 19:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -254,16 +254,6 @@ msgstr ""
 #: model:ir.model.fields.selection,name:l10n_my_edi.selection__product_template__l10n_my_edi_classification_code__045
 msgid ""
 "(045) Self-billed - Non-monetary payment to agents, dealers or distributors"
-msgstr ""
-
-#. module: l10n_my_edi
-#: model_terms:ir.ui.view,arch_db:l10n_my_edi.view_company_form_inherit_l10n_my_myinvois
-msgid "202001234567"
-msgstr ""
-
-#. module: l10n_my_edi
-#: model_terms:ir.ui.view,arch_db:l10n_my_edi.view_partner_form_inherit_l10n_my_myinvois
-msgid "202001234568"
 msgstr ""
 
 #. module: l10n_my_edi
@@ -1090,6 +1080,11 @@ msgstr ""
 msgid ""
 "This document has already been submitted and was deemed invalid.\n"
 "Please correct the document based on the previous error, or wait before retrying."
+msgstr ""
+
+#. module: l10n_my_edi
+#: model:ir.model.constraint,message:l10n_my_edi.constraint_account_edi_proxy_client_user_unique_identification_l10n_my_edi
+msgid "This edi identification is already assigned to an active user"
 msgstr ""
 
 #. module: l10n_my_edi

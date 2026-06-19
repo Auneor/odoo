@@ -12,13 +12,13 @@
 # lhmflexerp <lhm@flexerp.dk>, 2024
 # Sanne Kristensen <sanne@vkdata.dk>, 2024
 # Kira Petersen, 2025
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:38+0000\n"
-"PO-Revision-Date: 2025-11-15 17:01+0000\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-05-16 08:10+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Danish <https://translate.odoo.com/projects/odoo-17/"
 "spreadsheet/da/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -117,13 +117,12 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"(1) Search starting at first item. \n"
-"      (-1) Search starting at last item. \n"
-"      (2) Perform a binary search that relies on lookup_array being sorted "
-"in ascending order. If not sorted, invalid results will be returned. \n"
-"      (-2) Perform a binary search that relies on lookup_array being sorted "
-"in descending order. If not sorted, invalid results will be returned.\n"
-"      "
+"(1) Search starting at first item.       (-1) Search starting at last "
+"item.       (2) Perform a binary search that relies on lookup_array being "
+"sorted in ascending order. If not sorted, invalid results will be "
+"returned.       (-2) Perform a binary search that relies on lookup_array "
+"being sorted in descending order. If not sorted, invalid results will be "
+"returned.      "
 msgstr ""
 
 #. module: spreadsheet
@@ -174,6 +173,13 @@ msgstr "2 kolonner"
 #, python-format
 msgid "2 rows"
 msgstr "2 rækker"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "A"
+msgstr "A"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -437,6 +443,13 @@ msgstr ""
 #, python-format
 msgid "Absolute value of a number."
 msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid "Access Error"
+msgstr "Adgangsfejl"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1424,7 +1437,7 @@ msgstr "Afkrydsningsfelt"
 #: code:addons/spreadsheet/static/src/global_filters/components/filter_text_value/filter_text_value.xml:0
 #, python-format
 msgid "Choose a value..."
-msgstr ""
+msgstr "Vælg en værdi ..."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2548,10 +2561,7 @@ msgid "Does not contain"
 msgstr "Indeholder ikke"
 
 #. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.js:0
 #: model_terms:ir.ui.view,arch_db:spreadsheet.public_spreadsheet_layout
-#, python-format
 msgid "Download"
 msgstr "Download"
 
@@ -3071,26 +3081,6 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
-"pairs."
-msgstr ""
-"Funktion [[FUNCTION_NAME]] forventer criteria_range og criterion kommer i "
-"par."
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension"
-msgstr ""
-"Funktion [[FUNCTION_NAME]] forventer criteria_range har den samme dimension"
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
 
@@ -3486,8 +3476,7 @@ msgstr ""
 #, python-format
 msgid ""
 "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must be "
-"equal to the \n"
-"        number of rows of the second matrix (%s)."
+"equal to the         number of rows of the second matrix (%s)."
 msgstr ""
 
 #. module: spreadsheet
@@ -4251,7 +4240,7 @@ msgstr "Slå en værdi op."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Lookup"
-msgstr ""
+msgstr "Slå op"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10661,9 +10650,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Whether or not to remove empty text messages from the split results. The "
-"default behavior is to treat \n"
-"        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
-"values are added between consecutive delimiters."
+"default behavior is to treat         consecutive delimiters as one (if "
+"TRUE). If FALSE, empty cells values are added between consecutive delimiters."
 msgstr ""
 
 #. module: spreadsheet
@@ -10680,8 +10668,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Whether the array should be scanned by column. True scans the array by "
-"column and false (default) \n"
-"      scans the array by row."
+"column and false (default)       scans the array by row."
 msgstr ""
 
 #. module: spreadsheet
@@ -10867,6 +10854,23 @@ msgstr ""
 #, python-format
 msgid "You cannot create overlapping filters."
 msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid ""
+"You don't have the rights to export data. Please contact an Administrator."
+msgstr ""
+"Du har ikke rettigheder til at eksportere data. Kontakt venligst en "
+"administrator."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Z"
+msgstr "Z"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11104,7 +11108,30 @@ msgstr "i morgen"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.xml:0
+#, python-format
+msgid "x"
+msgstr "x"
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "yesterday"
 msgstr ""
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
+#~ "pairs."
+#~ msgstr ""
+#~ "Funktion [[FUNCTION_NAME]] forventer criteria_range og criterion kommer i "
+#~ "par."
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range to have the same "
+#~ "dimension"
+#~ msgstr ""
+#~ "Funktion [[FUNCTION_NAME]] forventer criteria_range har den samme "
+#~ "dimension"

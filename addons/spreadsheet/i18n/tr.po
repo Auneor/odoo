@@ -25,13 +25,13 @@
 # Cengiz Cokay Global Nonwoven, 2024
 # Hakan Türkün, 2025
 # Deniz Guvener_Odoo <degu@odoo.com>, 2025
-# Weblate <noreply-mt-weblate@weblate.org>, 2025.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:38+0000\n"
-"PO-Revision-Date: 2025-12-20 08:39+0000\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-01-24 17:01+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Turkish <https://translate.odoo.com/projects/odoo-17/"
 "spreadsheet/tr/>\n"
@@ -134,21 +134,13 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"(1) Search starting at first item. \n"
-"      (-1) Search starting at last item. \n"
-"      (2) Perform a binary search that relies on lookup_array being sorted "
-"in ascending order. If not sorted, invalid results will be returned. \n"
-"      (-2) Perform a binary search that relies on lookup_array being sorted "
-"in descending order. If not sorted, invalid results will be returned.\n"
-"      "
+"(1) Search starting at first item.       (-1) Search starting at last "
+"item.       (2) Perform a binary search that relies on lookup_array being "
+"sorted in ascending order. If not sorted, invalid results will be "
+"returned.       (-2) Perform a binary search that relies on lookup_array "
+"being sorted in descending order. If not sorted, invalid results will be "
+"returned.      "
 msgstr ""
-"(1) İlk öğeden başlayarak ara. \n"
-"      (-1) Son öğeden başlayarak ara. \n"
-"      (2) arama_dizisi’nin artan düzende sıralı olmasına dayanan ikili arama "
-"yap. Sıralı değilse, geçersiz sonuçlar döndürülür. \n"
-"      (-2) arama_dizisi’nin azalan düzende sıralı olmasına dayanan ikili "
-"arama yap. Sıralı değilse, geçersiz sonuçlar döndürülür.\n"
-"      "
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -198,6 +190,13 @@ msgstr "2 sütun"
 #, python-format
 msgid "2 rows"
 msgstr "2 satır"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "A"
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -392,7 +391,8 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "A range or array constant containing the dates to consider holidays."
-msgstr "Tatil olarak dikkate alınacak tarihleri içeren aralık veya dizi sabiti."
+msgstr ""
+"Tatil olarak dikkate alınacak tarihleri içeren aralık veya dizi sabiti."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -451,12 +451,12 @@ msgid ""
 "number of days between start_date and end_date, assuming start_date and "
 "end_date were no more than one year apart)."
 msgstr ""
-"Zaman birimi için bir metin kısaltması. Kabul edilen değerler: \"Y\" ("
-"başlangıç_tarihi ile bitiş_tarihi arasındaki tam yıl sayısı), \"M\" ("
-"başlangıç_tarihi ile bitiş_tarihi arasındaki tam ay sayısı), \"D\" ("
-"başlangıç_tarihi ile bitiş_tarihi \"YM\" (tam yıllar çıkarıldıktan sonra "
-"başlangıç_tarihi ile bitiş_tarihi arasındaki tam ay sayısı), \"YD\" ("
-"başlangıç_tarihi ile bitiş_tarihi en fazla bir yıl arayla olduğunda "
+"Zaman birimi için bir metin kısaltması. Kabul edilen değerler: \"Y\" "
+"(başlangıç_tarihi ile bitiş_tarihi arasındaki tam yıl sayısı), \"M\" "
+"(başlangıç_tarihi ile bitiş_tarihi arasındaki tam ay sayısı), \"D\" "
+"(başlangıç_tarihi ile bitiş_tarihi \"YM\" (tam yıllar çıkarıldıktan sonra "
+"başlangıç_tarihi ile bitiş_tarihi arasındaki tam ay sayısı), \"YD\" "
+"(başlangıç_tarihi ile bitiş_tarihi en fazla bir yıl arayla olduğunda "
 "başlangıç_tarihi ile bitiş_tarihi arasındaki gün sayısı)."
 
 #. module: spreadsheet
@@ -486,6 +486,13 @@ msgstr "Mutlak değer"
 #, python-format
 msgid "Absolute value of a number."
 msgstr "Bir sayının mutlak değeri."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid "Access Error"
+msgstr "Erişim Hatası"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -675,7 +682,8 @@ msgstr "Medyan değeri hesaplarken dikkate alınacak ek değerler veya aralıkla
 #, python-format
 msgid ""
 "Additional values or ranges to consider when calculating the minimum value."
-msgstr "Minimum değeri hesaplarken dikkate alınacak ek değerler veya aralıklar."
+msgstr ""
+"Minimum değeri hesaplarken dikkate alınacak ek değerler veya aralıklar."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1366,7 +1374,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Calculates the sum of squares of the differences of values in two array."
-msgstr "İki dizideki değerler arasındaki farkların kareleri toplamını hesaplar."
+msgstr ""
+"İki dizideki değerler arasındaki farkların kareleri toplamını hesaplar."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2647,10 +2656,7 @@ msgid "Does not contain"
 msgstr "İçermez"
 
 #. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.js:0
 #: model_terms:ir.ui.view,arch_db:spreadsheet.public_spreadsheet_layout
-#, python-format
 msgid "Download"
 msgstr "İndir"
 
@@ -3181,26 +3187,6 @@ msgstr "Fonksiyon [[FONKSİYON_ADI]] herhangi bir sonuç bulamadı."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
-"pairs."
-msgstr ""
-"[[FUNCTION_NAME]] işlevi, ölçüt_aralığı ve ölçütün çiftler halinde olmasını "
-"bekliyor."
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension"
-msgstr ""
-"[[FUNCTION_NAME]] işlevi ölçüt_aralığının aynı boyuta sahip olmasını bekliyor"
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
 "Fonksiyon [[FUNCTION_NAME]], %s için sayı değerleri bekliyor, ancak boolean "
@@ -3342,8 +3328,8 @@ msgid ""
 "Given a general exponential form of y = b*m^x for a curve fit, calculates b "
 "if TRUE or forces b to be 1 and only calculates the m values if FALSE."
 msgstr ""
-"Bir eğri uydurma için y = bm^x genel üstel formu verildiğinde, DOĞRU ise b’"
-"yi hesaplar, YANLIŞ ise b’yi 1’e zorlar ve yalnızca m değerlerini hesaplar."
+"Bir eğri uydurma için y = bm^x genel üstel formu verildiğinde, DOĞRU ise "
+"b’yi hesaplar, YANLIŞ ise b’yi 1’e zorlar ve yalnızca m değerlerini hesaplar."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3354,9 +3340,9 @@ msgid ""
 "TRUE or forces b to be 0 and only calculates the m values if FALSE, i.e. "
 "forces the curve fit to pass through the origin."
 msgstr ""
-"Bir eğri uydurma için y = mx+b genel lineer formu verildiğinde, DOĞRU ise b’"
-"yi hesaplar, YANLIŞ ise b’yi 0’a zorlar ve yalnızca m değerlerini hesaplar; "
-"yani eğri uydurmayı orijinden geçmeye zorlar."
+"Bir eğri uydurma için y = mx+b genel lineer formu verildiğinde, DOĞRU ise "
+"b’yi hesaplar, YANLIŞ ise b’yi 0’a zorlar ve yalnızca m değerlerini "
+"hesaplar; yani eğri uydurmayı orijinden geçmeye zorlar."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3611,12 +3597,8 @@ msgstr "[[FUNCTION_NAME]] değerlendirmesinde, '%s' içinde '%s' bulunamıyor."
 #, python-format
 msgid ""
 "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must be "
-"equal to the \n"
-"        number of rows of the second matrix (%s)."
+"equal to the         number of rows of the second matrix (%s)."
 msgstr ""
-"[[FONKSİYON_ADI]] içinde ilk matrisin (%s) sütun sayısı, ikinci matrisin (%s)"
-" satır sayısına \n"
-"        eşit olmalıdır."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5113,8 +5095,8 @@ msgid ""
 "Pasting from the context menu is not supported in this browser. Use keyboard "
 "shortcuts ctrl+c / ctrl+v instead."
 msgstr ""
-"Bağlam menüsünden yapıştırma bu tarayıcıda desteklenmiyor. Bunun yerine ctrl+"
-"c / ctrl+v klavye kısayollarını kullanın."
+"Bağlam menüsünden yapıştırma bu tarayıcıda desteklenmiyor. Bunun yerine "
+"ctrl+c / ctrl+v klavye kısayollarını kullanın."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -5491,14 +5473,16 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Result couldn't be automatically expanded. Please insert more columns."
-msgstr "Sonuç otomatik olarak genişletilemedi. Lütfen daha fazla sütun ekleyin."
+msgstr ""
+"Sonuç otomatik olarak genişletilemedi. Lütfen daha fazla sütun ekleyin."
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Result couldn't be automatically expanded. Please insert more rows."
-msgstr "Sonuç otomatik olarak genişletilemedi. Lütfen daha fazla satır ekleyin."
+msgstr ""
+"Sonuç otomatik olarak genişletilemedi. Lütfen daha fazla satır ekleyin."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -6831,7 +6815,8 @@ msgstr ""
 #, python-format
 msgid ""
 "The column number (not name) of the cell reference. A is column number 1. "
-msgstr "Hücre başvurusunun sütun numarası (adı değil). A sütun numarası 1’dir. "
+msgstr ""
+"Hücre başvurusunun sütun numarası (adı değil). A sütun numarası 1’dir. "
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8367,7 +8352,8 @@ msgstr "Bölen sayı."
 msgid ""
 "The number to have its sign reversed. Equivalently, the number to multiply "
 "by -1."
-msgstr "İşareti ters çevrilecek sayı. Başka bir deyişle -1 ile çarpılacak sayı."
+msgstr ""
+"İşareti ters çevrilecek sayı. Başka bir deyişle -1 ile çarpılacak sayı."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8846,7 +8832,8 @@ msgstr "kriter1 ile karşılaştırılacak aralık."
 msgid ""
 "The range to consider for the search. Should be a single column or a single "
 "row."
-msgstr "Aramanın yapılacağı aralık. Tek bir sütun veya tek bir satır olmalıdır."
+msgstr ""
+"Aramanın yapılacağı aralık. Tek bir sütun veya tek bir satır olmalıdır."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -8983,8 +8970,8 @@ msgid ""
 "The return (as a percentage) earned on reinvestment of income received from "
 "the investment."
 msgstr ""
-"Yatırımdan elde edilen gelirlerin yeniden yatırılmasıyla kazanılan getiri ("
-"yüzde olarak)."
+"Yatırımdan elde edilen gelirlerin yeniden yatırılmasıyla kazanılan getiri "
+"(yüzde olarak)."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10026,7 +10013,8 @@ msgstr "Yuvarlama yapılacak basamak sayısı; her zaman aşağı yuvarlama yap�
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The value to round to places number of places, always rounding up."
-msgstr "Yuvarlama yapılacak basamak sayısı; her zaman yukarı yuvarlama yapılır."
+msgstr ""
+"Yuvarlama yapılacak basamak sayısı; her zaman yukarı yuvarlama yapılır."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10990,7 +10978,8 @@ msgstr "Bir değerin #YOK hatası olup olmadığı."
 #, python-format
 msgid ""
 "Whether or not to divide text around each character contained in delimiter."
-msgstr "Ayırıcı içindeki her karakterin etrafında metnin bölünüp bölünmeyeceği."
+msgstr ""
+"Ayırıcı içindeki her karakterin etrafında metnin bölünüp bölünmeyeceği."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10998,14 +10987,9 @@ msgstr "Ayırıcı içindeki her karakterin etrafında metnin bölünüp bölün
 #, python-format
 msgid ""
 "Whether or not to remove empty text messages from the split results. The "
-"default behavior is to treat \n"
-"        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
-"values are added between consecutive delimiters."
+"default behavior is to treat         consecutive delimiters as one (if "
+"TRUE). If FALSE, empty cells values are added between consecutive delimiters."
 msgstr ""
-"Bölme sonuçlarından boş metinlerin kaldırılıp kaldırılmayacağı. Varsayılan "
-"davranış, \n"
-"        ardışık ayırıcıların tek bir ayırıcı olarak kabul edilmesidir (DOĞRU "
-"ise). YANLIŞ ise, ardışık ayırıcıların arasına boş hücre değerleri eklenir."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11023,12 +11007,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Whether the array should be scanned by column. True scans the array by "
-"column and false (default) \n"
-"      scans the array by row."
+"column and false (default)       scans the array by row."
 msgstr ""
-"Dizinin sütunlara göre taranıp taranmayacağı. Doğru, sütunlara göre tararken "
-"yanlış (varsayılan) \n"
-"      satırlara göre tarar."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11222,6 +11202,22 @@ msgstr "Mevcut bir filtrenin içindeki hücreler birleştirilemez."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "You cannot create overlapping filters."
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid ""
+"You don't have the rights to export data. Please contact an Administrator."
+msgstr ""
+"Verileri dışa aktarma haklarınız yok. Lütfen bir Yönetici ile temas kurun."
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Z"
 msgstr ""
 
 #. module: spreadsheet
@@ -11464,7 +11460,83 @@ msgstr "yarın"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.xml:0
+#, python-format
+msgid "x"
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "yesterday"
 msgstr "dün"
+
+#, python-format
+#~ msgid ""
+#~ "(1) Search starting at first item. \n"
+#~ "      (-1) Search starting at last item. \n"
+#~ "      (2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in ascending order. If not sorted, invalid results will be "
+#~ "returned. \n"
+#~ "      (-2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in descending order. If not sorted, invalid results will be "
+#~ "returned.\n"
+#~ "      "
+#~ msgstr ""
+#~ "(1) İlk öğeden başlayarak ara. \n"
+#~ "      (-1) Son öğeden başlayarak ara. \n"
+#~ "      (2) arama_dizisi’nin artan düzende sıralı olmasına dayanan ikili "
+#~ "arama yap. Sıralı değilse, geçersiz sonuçlar döndürülür. \n"
+#~ "      (-2) arama_dizisi’nin azalan düzende sıralı olmasına dayanan ikili "
+#~ "arama yap. Sıralı değilse, geçersiz sonuçlar döndürülür.\n"
+#~ "      "
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
+#~ "pairs."
+#~ msgstr ""
+#~ "[[FUNCTION_NAME]] işlevi, ölçüt_aralığı ve ölçütün çiftler halinde "
+#~ "olmasını bekliyor."
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range to have the same "
+#~ "dimension"
+#~ msgstr ""
+#~ "[[FUNCTION_NAME]] işlevi ölçüt_aralığının aynı boyuta sahip olmasını "
+#~ "bekliyor"
+
+#, python-format
+#~ msgid ""
+#~ "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must "
+#~ "be equal to the \n"
+#~ "        number of rows of the second matrix (%s)."
+#~ msgstr ""
+#~ "[[FONKSİYON_ADI]] içinde ilk matrisin (%s) sütun sayısı, ikinci matrisin "
+#~ "(%s) satır sayısına \n"
+#~ "        eşit olmalıdır."
+
+#, python-format
+#~ msgid ""
+#~ "Whether or not to remove empty text messages from the split results. The "
+#~ "default behavior is to treat \n"
+#~ "        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
+#~ "values are added between consecutive delimiters."
+#~ msgstr ""
+#~ "Bölme sonuçlarından boş metinlerin kaldırılıp kaldırılmayacağı. "
+#~ "Varsayılan davranış, \n"
+#~ "        ardışık ayırıcıların tek bir ayırıcı olarak kabul edilmesidir "
+#~ "(DOĞRU ise). YANLIŞ ise, ardışık ayırıcıların arasına boş hücre değerleri "
+#~ "eklenir."
+
+#, python-format
+#~ msgid ""
+#~ "Whether the array should be scanned by column. True scans the array by "
+#~ "column and false (default) \n"
+#~ "      scans the array by row."
+#~ msgstr ""
+#~ "Dizinin sütunlara göre taranıp taranmayacağı. Doğru, sütunlara göre "
+#~ "tararken yanlış (varsayılan) \n"
+#~ "      satırlara göre tarar."

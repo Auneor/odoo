@@ -1,24 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* spreadsheet
+# * spreadsheet
 #
 # Translators:
 # Wil Odoo, 2023
 # Rasareeyar Lappiam, 2024
 #
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 18:38+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Rasareeyar Lappiam, 2024\n"
-"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-01-24 17:01+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Thai <https://translate.odoo.com/projects/odoo-17/spreadsheet/"
+"th/>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -112,20 +115,13 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"(1) Search starting at first item. \n"
-"      (-1) Search starting at last item. \n"
-"      (2) Perform a binary search that relies on lookup_array being sorted "
-"in ascending order. If not sorted, invalid results will be returned. \n"
-"      (-2) Perform a binary search that relies on lookup_array being sorted "
-"in descending order. If not sorted, invalid results will be returned.\n"
-"      "
+"(1) Search starting at first item.       (-1) Search starting at last "
+"item.       (2) Perform a binary search that relies on lookup_array being "
+"sorted in ascending order. If not sorted, invalid results will be "
+"returned.       (-2) Perform a binary search that relies on lookup_array "
+"being sorted in descending order. If not sorted, invalid results will be "
+"returned.      "
 msgstr ""
-"(1) ค้นหาโดยเริ่มจากรายการแรก\n"
-"(-1) ค้นหาเริ่มต้นที่รายการสุดท้าย\n"
-"(2) ทำการค้นหาแบบไบนารี่โดยอาศัย lookup_array ซึ่งเรียงลำดับจากน้อยไปหามาก "
-"หากไม่เรียงลำดับ ผลลัพธ์ที่ไม่ถูกต้องจะถูกส่งกลับ\n"
-"(-2) ทำการค้นหาแบบไบนารี่โดยอาศัย lookup_array เรียงลำดับจากมากไปน้อย หากไม่เรียงลำดับ "
-"ผลลัพธ์ที่ไม่ถูกต้องจะถูกส่งกลับ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -175,6 +171,13 @@ msgstr "2 คอลัมน์"
 #, python-format
 msgid "2 rows"
 msgstr "2 แถว"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "A"
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -446,6 +449,13 @@ msgstr "ค่าสัมบูรณ์"
 #, python-format
 msgid "Absolute value of a number."
 msgstr "ค่าสัมบูรณ์ของตัวเลข"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid "Access Error"
+msgstr "การเข้าถึงผิดพลาด"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -2566,10 +2576,7 @@ msgid "Does not contain"
 msgstr "ไม่มี"
 
 #. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.js:0
 #: model_terms:ir.ui.view,arch_db:spreadsheet.public_spreadsheet_layout
-#, python-format
 msgid "Download"
 msgstr "ดาวน์โหลด"
 
@@ -3085,23 +3092,6 @@ msgstr "ฟังก์ชัน [[FUNCTION_NAME]] ไม่พบผลลั�
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
-"pairs."
-msgstr "ฟังก์ชัน [[FUNCTION_NAME]] คาดว่า criteria_range และเกณฑ์จะจับคู่กัน"
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension"
-msgstr "ฟังก์ชัน [[FUNCTION_NAME]] คาดว่า criteria_range จะมีมิติเดียวกัน"
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
 
@@ -3508,11 +3498,8 @@ msgstr "ในการประเมิน [[FUNCTION_NAME]] ไม่พบ '
 #, python-format
 msgid ""
 "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must be "
-"equal to the \n"
-"        number of rows of the second matrix (%s)."
+"equal to the         number of rows of the second matrix (%s)."
 msgstr ""
-"ใน [[FUNCTION_NAME]] จำนวนคอลัมน์ของเมทริกซ์แรก (%s) จะต้องเท่ากับ\n"
-"       จำนวนแถวของเมทริกซ์ตัวที่สอง (%s)"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10747,13 +10734,9 @@ msgstr "ว่าจะแบ่งข้อความรอบตัวอั
 #, python-format
 msgid ""
 "Whether or not to remove empty text messages from the split results. The "
-"default behavior is to treat \n"
-"        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
-"values are added between consecutive delimiters."
+"default behavior is to treat         consecutive delimiters as one (if "
+"TRUE). If FALSE, empty cells values are added between consecutive delimiters."
 msgstr ""
-"ไม่ว่าจะลบข้อความว่างออกจากผลลัพธ์การแยกหรือไม่ ลักษณะการทำงานเริ่มต้นคือให้ถือว่า\n"
-"       ตัวคั่นที่อยู่ติดกันเป็นหนึ่งเดียว (ถ้าเป็น TRUE) ถ้าเป็น FALSE "
-"ระบบจะเพิ่มค่าเซลล์ว่างระหว่างตัวคั่นที่อยู่ติดกัน"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10769,11 +10752,8 @@ msgstr "ไม่ว่าการชำระเงินจะครบกำ
 #, python-format
 msgid ""
 "Whether the array should be scanned by column. True scans the array by "
-"column and false (default) \n"
-"      scans the array by row."
+"column and false (default)       scans the array by row."
 msgstr ""
-"ควรสแกนอาร์เรย์ตามคอลัมน์หรือไม่ True สแกนอาร์เรย์ตามคอลัมน์ และ false (ค่าเริ่มต้น) \n"
-"     สแกนอาร์เรย์ตามแถว"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10958,6 +10938,21 @@ msgstr "คุณไม่สามารถผสานเซลล์ภาย
 #, python-format
 msgid "You cannot create overlapping filters."
 msgstr "คุณไม่สามารถสร้างตัวกรองที่ทับซ้อนกันได้"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/actions/spreadsheet_download_action.js:0
+#, python-format
+msgid ""
+"You don't have the rights to export data. Please contact an Administrator."
+msgstr "คุณไม่มีสิทธิ์ในการส่งออกข้อมูล โปรดติดต่อผู้ดูแลระบบ"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Z"
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11195,10 +11190,77 @@ msgstr "พรุ่งนี้"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.xml:0
+#, python-format
+msgid "x"
+msgstr ""
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "yesterday"
 msgstr "เมื่อวาน"
+
+#, python-format
+#~ msgid ""
+#~ "(1) Search starting at first item. \n"
+#~ "      (-1) Search starting at last item. \n"
+#~ "      (2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in ascending order. If not sorted, invalid results will be "
+#~ "returned. \n"
+#~ "      (-2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in descending order. If not sorted, invalid results will be "
+#~ "returned.\n"
+#~ "      "
+#~ msgstr ""
+#~ "(1) ค้นหาโดยเริ่มจากรายการแรก\n"
+#~ "(-1) ค้นหาเริ่มต้นที่รายการสุดท้าย\n"
+#~ "(2) ทำการค้นหาแบบไบนารี่โดยอาศัย lookup_array ซึ่งเรียงลำดับจากน้อยไปหามาก "
+#~ "หากไม่เรียงลำดับ ผลลัพธ์ที่ไม่ถูกต้องจะถูกส่งกลับ\n"
+#~ "(-2) ทำการค้นหาแบบไบนารี่โดยอาศัย lookup_array เรียงลำดับจากมากไปน้อย "
+#~ "หากไม่เรียงลำดับ ผลลัพธ์ที่ไม่ถูกต้องจะถูกส่งกลับ"
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
+#~ "pairs."
+#~ msgstr "ฟังก์ชัน [[FUNCTION_NAME]] คาดว่า criteria_range และเกณฑ์จะจับคู่กัน"
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range to have the same "
+#~ "dimension"
+#~ msgstr "ฟังก์ชัน [[FUNCTION_NAME]] คาดว่า criteria_range จะมีมิติเดียวกัน"
+
+#, python-format
+#~ msgid ""
+#~ "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must "
+#~ "be equal to the \n"
+#~ "        number of rows of the second matrix (%s)."
+#~ msgstr ""
+#~ "ใน [[FUNCTION_NAME]] จำนวนคอลัมน์ของเมทริกซ์แรก (%s) จะต้องเท่ากับ\n"
+#~ "       จำนวนแถวของเมทริกซ์ตัวที่สอง (%s)"
+
+#, python-format
+#~ msgid ""
+#~ "Whether or not to remove empty text messages from the split results. The "
+#~ "default behavior is to treat \n"
+#~ "        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
+#~ "values are added between consecutive delimiters."
+#~ msgstr ""
+#~ "ไม่ว่าจะลบข้อความว่างออกจากผลลัพธ์การแยกหรือไม่ ลักษณะการทำงานเริ่มต้นคือให้ถือว่า\n"
+#~ "       ตัวคั่นที่อยู่ติดกันเป็นหนึ่งเดียว (ถ้าเป็น TRUE) ถ้าเป็น FALSE "
+#~ "ระบบจะเพิ่มค่าเซลล์ว่างระหว่างตัวคั่นที่อยู่ติดกัน"
+
+#, python-format
+#~ msgid ""
+#~ "Whether the array should be scanned by column. True scans the array by "
+#~ "column and false (default) \n"
+#~ "      scans the array by row."
+#~ msgstr ""
+#~ "ควรสแกนอาร์เรย์ตามคอลัมน์หรือไม่ True สแกนอาร์เรย์ตามคอลัมน์ และ false (ค่าเริ่มต้น) \n"
+#~ "     สแกนอาร์เรย์ตามแถว"
 
 #, python-format
 #~ msgid ""
