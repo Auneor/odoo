@@ -77,7 +77,7 @@ class Menu(models.Model):
         - Menus with children cannot be added as a submenu under another menu.
         """
         for record in self:
-            parent_menu = record.parent_id.sudo() if record.parent_id else None
+            parent_menu = record.parent_id.sudo() if record.parent_id else self.env[self._name]
 
             # Check hierarchy level
             level = 0
@@ -88,14 +88,13 @@ class Menu(models.Model):
                 if level > 2:
                     raise UserError(_("Menus cannot have more than two levels of hierarchy."))
 
-            if parent_menu:
-                # Mega menu constraint
-                if parent_menu.is_mega_menu or (record.is_mega_menu and (parent_menu.parent_id or record.child_id)):
-                    raise UserError(_("A mega menu cannot have a parent or child menu."))
+            # Mega menu constraint
+            if parent_menu.is_mega_menu or (record.is_mega_menu and (parent_menu.parent_id or record.child_id)):
+                raise UserError(_("A mega menu cannot have a parent or child menu."))
 
-                # Submenu structure constraint
-                if record.child_id and (parent_menu.parent_id or record.child_id.child_id):
-                    raise UserError(_("Menus with child menus cannot be added as a submenu."))
+            # Submenu structure constraint
+            if record.child_id and (parent_menu.parent_id or record.child_id.child_id):
+                raise UserError(_("Menus with child menus cannot be added as a submenu."))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -186,7 +185,7 @@ class Menu(models.Model):
             url = self.page_id.sudo().url
         else:
             url = self.url
-            if url and not self.url.startswith('/'):
+            if url and not url.startswith('/') and url not in ('#top', '#bottom'):
                 if '@' in self.url:
                     if not self.url.startswith('mailto'):
                         url = 'mailto:%s' % self.url
@@ -305,13 +304,15 @@ class Menu(models.Model):
             if not menu['url'] or '#' in menu['url']:
                 # Multiple case possible
                 # 1. `#` => menu container (dropdown, ..)
-                # 2. `#anchor` => anchor on current page
-                # 3. `/url#something` => valid internal URL
-                # 4. https://google.com#smth => valid external URL
+                # 2. `#top` or `#bottom` => special anchors valid for any page
+                # 3. `#anchor` => anchor on current page
+                # 4. `/url#something` => valid internal URL
+                # 5. https://google.com#smth => valid external URL
                 if menu_id.page_id:
                     menu_id.page_id = None
-                if request and menu['url'] and menu['url'].startswith('#') and len(menu['url']) > 1:
-                    # Working on case 2.: prefix anchor with referer URL
+                if request and menu['url'] and menu['url'].startswith('#') and \
+                        len(menu['url']) > 1 and menu['url'] not in ['#top', '#bottom']:
+                    # Working on case 3.: prefix anchor with referer URL
                     referer_url = werkzeug.urls.url_parse(request.httprequest.headers.get('Referer', '')).path
                     menu['url'] = referer_url + menu['url']
             else:

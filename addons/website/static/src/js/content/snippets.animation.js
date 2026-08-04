@@ -452,14 +452,14 @@ var registry = publicWidget.registry;
 registry.slider = publicWidget.Widget.extend({
     selector: '.carousel',
     disabledInEditableMode: false,
-    edit_events: {
-        'content_changed': '_onContentChanged',
-    },
 
     /**
      * @override
      */
     start: function () {
+        if (this.editableMode) {
+            window.top.$(this.$el[0]).on('content_changed', () => this._onContentChanged());
+        }
         this.$('img').on('load.slider', () => this._computeHeights());
         this._computeHeights();
         // Initialize carousel and pause if in edit mode.
@@ -2075,7 +2075,7 @@ registry.TextHighlight = publicWidget.Widget.extend({
                 // entire `.o_text_highlight` element, so we need to observe
                 // the highlight units (`.o_text_highlight_item`) and do the
                 // adjustment only once for the whole container.
-                topTextEls.forEach(async topTextEl => {
+                topTextEls.forEach(topTextEl => {
                     // We don't need to track old items, they will be removed
                     // after the adaptation.
                     [...topTextEl.querySelectorAll(".o_text_highlight_item")].forEach(unit => {

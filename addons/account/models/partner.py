@@ -804,7 +804,7 @@ class ResPartner(models.Model):
                  against the provided or guessed country. None if no country was available
                  for the check, and no conclusion could be made with certainty.
         """
-        return default_country.code.lower()
+        return default_country.code.lower() if default_country else None
 
     @api.model
     def _build_vat_error_message(self, country_code, wrong_vat, record_label):
@@ -903,7 +903,7 @@ class ResPartner(models.Model):
     def _retrieve_partner_with_name(self, name, extra_domain):
         if not name:
             return None
-        return self.env['res.partner'].search([('name', 'ilike', name)] + extra_domain, limit=2)
+        return self.env['res.partner'].search([('name', '=ilike', name)] + extra_domain, limit=1)
 
     def _retrieve_partner(self, name=None, phone=None, mail=None, vat=None, domain=None, company=None):
         '''Search all partners and find one that matches one of the parameters.

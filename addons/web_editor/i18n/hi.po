@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:38+0000\n"
-"PO-Revision-Date: 2026-01-17 08:20+0000\n"
+"POT-Creation-Date: 2026-04-03 18:40+0000\n"
+"PO-Revision-Date: 2026-07-14 15:02+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Hindi <https://translate.odoo.com/projects/odoo-17/web_editor/"
 "hi/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. module: web_editor
 #. odoo-javascript
@@ -83,16 +83,6 @@ msgid "(URL or Embed)"
 msgstr "(यूआरएल या एम्बेड किया गया)"
 
 #. module: web_editor
-#: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
-msgid "100%"
-msgstr ""
-
-#. module: web_editor
-#: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
-msgid "1977"
-msgstr ""
-
-#. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -106,16 +96,6 @@ msgstr ""
 #, python-format
 msgid "2 columns"
 msgstr "2 कॉलम"
-
-#. module: web_editor
-#: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
-msgid "25"
-msgstr ""
-
-#. module: web_editor
-#: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
-msgid "25%"
-msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -170,21 +150,11 @@ msgid "5 Stars"
 msgstr "5 स्टार"
 
 #. module: web_editor
-#: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
-msgid "50%"
-msgstr "50%"
-
-#. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "5x"
-msgstr ""
-
-#. module: web_editor
-#: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
-msgid "90"
 msgstr ""
 
 #. module: web_editor
@@ -361,22 +331,22 @@ msgstr "अलर्ट"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Align Center"
-msgstr ""
+msgstr "बीच में अलाइन करें"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Align Left"
-msgstr ""
+msgstr "बाईं तरफ़ अलाइन करें"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Align Right"
-msgstr ""
+msgstr "दाईं तरफ़ अलाइन करें"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Alignment"
-msgstr ""
+msgstr "अलाइनमेंट"
 
 #. module: web_editor
 #. odoo-javascript
@@ -513,7 +483,7 @@ msgstr "इतिहास"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Background Color"
-msgstr ""
+msgstr "बैकग्राउंड कलर"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
@@ -558,7 +528,7 @@ msgstr "बैनर से जुड़ी वार्निंग"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Banners"
-msgstr ""
+msgstr "बैनर"
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_base
@@ -623,7 +593,7 @@ msgstr "बोल्ड"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Border"
-msgstr ""
+msgstr "बॉर्डर"
 
 #. module: web_editor
 #. odoo-javascript
@@ -964,7 +934,7 @@ msgstr "डेलीमोशन"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Dashed"
-msgstr ""
+msgstr "डैश्ड"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1093,14 +1063,14 @@ msgstr "डॉक्यूमेंट्स"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Dotted"
-msgstr ""
+msgstr "डॉटेड"
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "Double"
-msgstr ""
+msgstr "डबल"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1357,7 +1327,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/backend.xml:0
 #, python-format
 msgid "Fullscreen"
-msgstr ""
+msgstr "फुलस्क्रीन"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1538,7 +1508,7 @@ msgstr "हेडिंग 6"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 #, python-format
 msgid "Height"
-msgstr ""
+msgstr "लंबाई"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1829,7 +1799,7 @@ msgstr "बाईं तरफ़ डालें"
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Insert media"
-msgstr ""
+msgstr "मीडिया डालें"
 
 #. module: web_editor
 #. odoo-javascript
@@ -1864,7 +1834,7 @@ msgstr "अपना हस्ताक्षर डालें"
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.xml:0
 #, python-format
 msgid "Instagram"
-msgstr ""
+msgstr "Instagram"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2270,7 +2240,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Padding"
-msgstr ""
+msgstr "पैडिंग"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2798,7 +2768,7 @@ msgstr "शैडो"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_background_options
 #, python-format
 msgid "Shape"
-msgstr ""
+msgstr "शेप"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3116,7 +3086,7 @@ msgstr "थीम"
 #: code:addons/web_editor/static/src/xml/wysiwyg_colorpicker.xml:0
 #, python-format
 msgid "Theme colors"
-msgstr ""
+msgstr "थीम रंग"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3311,7 +3281,7 @@ msgstr "तस्वीर को बदलें (और ठीक करने
 #: code:addons/web_editor/static/src/xml/backend.xml:0
 #, python-format
 msgid "Translate"
-msgstr ""
+msgstr "अनुवाद करें"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3526,7 +3496,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "XL"
-msgstr ""
+msgstr "XL"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -3692,7 +3662,7 @@ msgstr ""
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
 msgid "screen"
-msgstr ""
+msgstr "स्क्रीन"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3704,9 +3674,12 @@ msgstr "वीडियो"
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "वेबसॉकेट मैसेज हैंडलिंग"
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "www.example.com"
 msgstr ""
+
+#~ msgid "50%"
+#~ msgstr "50%"

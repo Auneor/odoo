@@ -137,7 +137,15 @@ def upsert_en(model, fnames, rows, conflict):
     conf = ", ".join(conflict)
     excluded = ", ".join(
         (
-            f"COALESCE({table}.{quote(fname)}, '{{}}'::jsonb) || EXCLUDED.{quote(fname)}"
+            f"""CASE
+                WHEN {table}.{quote(fname)}->>'en_US' IS DISTINCT FROM EXCLUDED.{quote(fname)}->>'en_US'
+                    -- the source text changed: existing translations were
+                    -- made for a source that no longer exists, drop them so
+                    -- they get reloaded fresh instead of being kept as if
+                    -- they still applied to the current source
+                    THEN EXCLUDED.{quote(fname)}
+                ELSE COALESCE({table}.{quote(fname)}, '{{}}'::jsonb) || EXCLUDED.{quote(fname)}
+               END"""
             if model._fields[fname].translate is True
             else f"EXCLUDED.{quote(fname)}"
         )
@@ -149,8 +157,6 @@ def upsert_en(model, fnames, rows, conflict):
         RETURNING id
     """
 
-    # for translated fields, we can actually erase the json value, as
-    # translations will be reloaded after this
     def identity(val):
         return val
 
@@ -2264,6 +2270,7 @@ class IrModelData(models.Model):
 
         # query xml_ids by prefix
         result = []
+        self.flush_model()
         cr = self.env.cr
         for prefix, suffixes in bymodule.items():
             query = """
@@ -2422,7 +2429,10 @@ class IrModelData(models.Model):
                         field_.setup(model)
                         has_shared_field = True
         if has_shared_field:
-            lazy_property.reset_all(self.env.registry)
+            registry = self.env.registry
+            lazy_property.reset_all(registry)
+            registry._field_trigger_trees.clear()
+            registry._is_modifying_relations.clear()
 
         # to collect external ids of records that cannot be deleted
         undeletable_ids = []

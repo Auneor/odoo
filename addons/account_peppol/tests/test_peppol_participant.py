@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, quote_plus
 from psycopg2 import IntegrityError
 
 from odoo.exceptions import ValidationError, UserError
+from odoo.tests import Form
 from odoo.tests.common import tagged, TransactionCase
 from odoo.tools import mute_logger
 
@@ -38,6 +39,7 @@ class TestPeppolParticipant(TransactionCase):
                 }
             },
             '/api/peppol/1/activate_participant': {'result': {}},
+            '/api/peppol/1/register_sender': {'result': {}},
             '/iap/account_edi/2/create_user': {
                 'result': {
                     'id_client': cls.env.context.get('mock_id_client', ID_CLIENT),
@@ -594,3 +596,87 @@ class TestPeppolParticipant(TransactionCase):
 
         # Should successfully deregister despite client_gone error
         self.assertEqual(self.env.company.account_peppol_proxy_state, 'not_registered')
+
+    def test_do_not_reset_peppol_endpoint(self):
+        be_country = self.env.ref('base.be')
+        self.env.company.write({
+            'country_id': be_country.id,
+            'vat': 'BE0477472701',
+        })
+        settings = self.env['res.config.settings'].create({
+            'account_peppol_eas': '0088',
+            'account_peppol_endpoint': '88888888888',
+            'account_peppol_phone_number': '+32483123456',
+            'account_peppol_contact_email': 'yourcompany@test.example.com',
+        })
+        settings.button_create_peppol_proxy_user()
+        self.env['account_edi_proxy_client.user']._cron_peppol_get_participant_status()
+        self.env.company.vat = 'BE0475646428'
+        self.assertRecordValues(self.env.company.partner_id, [{
+            'peppol_eas': '0088',
+            'peppol_endpoint': '88888888888',
+        }])
+
+        with Form(self.env.company.partner_id) as partner:
+            # Test with NewID record
+            partner.vat = 'BE0477472701'
+        self.assertRecordValues(self.env.company.partner_id, [{
+            'peppol_eas': '0088',
+            'peppol_endpoint': '88888888888',
+        }])
+
+        company_partner = self.env.company.partner_id
+
+        other_company = self.env['res.company'].create({'name': 'new company 3', 'country_id': be_country.id})
+        self.env = self.env(context=dict(allowed_company_ids=other_company.ids))
+        # Do not raise even if no access to a registered company
+
+        company_partner.vat = 'BE0477472701'
+        self.assertRecordValues(company_partner, [{
+            'peppol_eas': '0088',
+            'peppol_endpoint': '88888888888',
+        }])
+
+        self.env.company.vat = 'BE0475646428'
+        self.assertRecordValues(self.env.company.partner_id, [{
+            'peppol_eas': '0208',
+            'peppol_endpoint': '0475646428',
+        }])
+
+    def test_create_child_company_sender_only(self):
+        """Test that when a child company attempts to register on Peppol using the exact same endpoint as its already active parent company"""
+        vals = self._get_participant_vals()
+        parent_company = self.env['res.company'].create({
+            'name': 'Parent Company',
+            'peppol_eas': vals['account_peppol_eas'],
+            'peppol_endpoint': vals['account_peppol_endpoint'],
+        })
+
+        child_company = self.env['res.company'].create({
+            'name': 'Child Company Connection',
+            'parent_id': parent_company.id,
+            'peppol_eas': vals['account_peppol_eas'],
+            'peppol_endpoint': vals['account_peppol_endpoint'],
+        })
+
+        self.env['account_edi_proxy_client.user'].sudo().create({
+            'id_client': 'parent_client',
+            'company_id': parent_company.id,
+            'proxy_type': 'peppol',
+            'edi_mode': 'test',
+            'edi_identification': f"{vals['account_peppol_eas']}:{vals['account_peppol_endpoint']}",
+            'refresh_token': FAKE_UUID,
+            'private_key': '1234',
+        })
+
+        settings = self.env['res.config.settings'].with_company(child_company).create(vals)
+        settings.button_create_peppol_proxy_user()
+
+        self.assertEqual(child_company.account_peppol_proxy_state, 'sender')
+        self.assertTrue(settings.peppol_use_parent_company)
+
+        child_user = self.env['account_edi_proxy_client.user'].search([
+            ('company_id', '=', child_company.id),
+            ('proxy_type', '=', 'peppol'),
+        ])
+        self.assertEqual(child_user.edi_identification, f"{vals['account_peppol_eas']}:{vals['account_peppol_endpoint']}")

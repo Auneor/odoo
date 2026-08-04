@@ -7,12 +7,13 @@
 # Wil Odoo, 2025
 #
 # "Tony Ng (ngto)" <ngto@odoo.com>, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-29 18:37+0000\n"
-"PO-Revision-Date: 2026-01-10 08:03+0000\n"
+"POT-Creation-Date: 2026-07-03 17:37+0000\n"
+"PO-Revision-Date: 2026-04-25 08:03+0000\n"
 "Last-Translator: \"Tony Ng (ngto)\" <ngto@odoo.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.odoo.com/"
 "projects/odoo-17/account_edi_ubl_cii/zh_Hant/>\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -33,6 +34,11 @@ msgid ""
 msgstr ""
 "%s 應已在公司識別碼欄位中，設定 KVK 或 OIN 號碼，或已設定為 Peppol 電子地址"
 "（EAS 代碼 0106 或 0190）。"
+
+#. module: account_edi_ubl_cii
+#: model:ir.actions.server,name:account_edi_ubl_cii.action_group_ungroup_lines_by_tax
+msgid "(Un)Group lines by tax"
+msgstr "按稅種將資料行分組/取消分組"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0002
@@ -222,7 +228,7 @@ msgstr "0216 - OVT代碼"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0218
 msgid "0218 - Unified registration number (Latvia)"
-msgstr ""
+msgstr "0218 - 統一註冊編號（拉脫維亞）"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0221
@@ -232,7 +238,7 @@ msgstr "0221 - 合資格發票開具人的註冊號（日本）"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0225
 msgid "0225 - FRCTC Electronic Address (France)"
-msgstr ""
+msgstr "0225 - FRCTC 電子位址（法國）"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0230
@@ -242,17 +248,12 @@ msgstr "0230 - 國家電子發票框架（馬來西亞）"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0235
 msgid "0235 - UAE Tax Identification Number (TIN)"
-msgstr ""
+msgstr "0235 - 阿聯酋稅務識別號碼 (TIN)"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__0240
 msgid "0240 - Register of legal persons (France)"
-msgstr ""
-
-#. module: account_edi_ubl_cii
-#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
-msgid "1.0"
-msgstr "1.0"
+msgstr "0240 - 法人登記冊（法國）"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9901
@@ -408,7 +409,7 @@ msgstr "9943 - 馬耳他增值稅號"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9944
 msgid "9944 - Netherlands VAT number"
-msgstr "9944 - 荷蘭增值稅號"
+msgstr "9944 - 荷蘭增值稅號碼"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9945
@@ -480,6 +481,11 @@ msgstr ""
 "的。\"/>"
 
 #. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
+msgid "A"
+msgstr "A"
+
+#. module: account_edi_ubl_cii
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 #, python-format
@@ -491,7 +497,7 @@ msgstr "偵測到 %s 的付款。"
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 #, python-format
 msgid "A rounding amount of %s was detected."
-msgstr ""
+msgstr "偵測到捨入，金額為 %s。"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_a_nz
@@ -501,34 +507,27 @@ msgstr "澳洲紐西蘭 BIS 賬單 3.0"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__an
 msgid "AN - O.F.T.P. (ODETTE File Transfer Protocol)"
-msgstr ""
+msgstr "AN - O.F.T.P. (ODETTE 檔案傳輸協定)"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__aq
 msgid "AQ - X.400 address for mail text"
-msgstr ""
+msgstr "AQ - X.400 位址，用於郵件文字"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__as
 msgid "AS - AS2 exchange"
-msgstr ""
+msgstr "AS - AS2 交換"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__au
 msgid "AU - File Transfer Protocol"
-msgstr ""
+msgstr "澳洲 - 檔案傳輸協定（FTP）"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_move_send
 msgid "Account Move Send"
 msgstr "賬戶分錄傳送"
-
-#. module: account_edi_ubl_cii
-#. odoo-python
-#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
-#, python-format
-msgid "Articles 226 items 11 to 15 Directive 2006/112/EN"
-msgstr "指令 2006/112/EN 第 226 條，第 11 至 15 項目"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -563,6 +562,20 @@ msgstr "BIS 賬單 3.0 新加坡"
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_de
 msgid "BIS3 DE (XRechnung)"
 msgstr "BIS3 DE (XRechnung)"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "Cannot decode origin file, try by importing it again"
+msgstr "未能解碼來源文件，請嘗試再次匯入。"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "Cannot find the origin file, try by importing it again"
+msgstr "找不到來源文件，請嘗試再次匯入。"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move_send__checkbox_ubl_cii_label
@@ -657,12 +670,12 @@ msgstr "EDI 格式"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__em
 msgid "EM - Electronic mail"
-msgstr ""
+msgstr "EM - 電子郵件"
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
-msgid "EN 16931"
-msgstr "EN 16931"
+msgid "EXTENDED"
+msgstr ""
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -701,6 +714,14 @@ msgstr "啟用 UBL CII XML"
 #, python-format
 msgid "Errors occurred while creating the EDI document (format: %s):"
 msgstr "建立 EDI 文件時發生錯誤(格式: %s)："
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#: code:addons/account_edi_ubl_cii/models/account_edi_xml_ubl_20.py:0
+#, python-format
+msgid "Exempt from tax"
+msgstr "豁免徵稅"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -751,13 +772,20 @@ msgstr "匯入發票的格式: %s"
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields,field_description:account_edi_ubl_cii.field_res_company__invoice_is_ubl_cii
 msgid "Generate Peppol format by default"
-msgstr "預設產生 Peppol 格式"
+msgstr "預設生成 Peppol 格式"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "Grouped lines by tax"
+msgstr "已按稅種分組的資料行"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields,field_description:account_edi_ubl_cii.field_res_partner__hide_peppol_fields
 #: model:ir.model.fields,field_description:account_edi_ubl_cii.field_res_users__hide_peppol_fields
 msgid "Hide Peppol Fields"
-msgstr ""
+msgstr "隱藏 Peppol 欄位"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -858,6 +886,21 @@ msgstr "報表動作"
 #. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
 #, python-format
+msgid ""
+"Reverse charge: In the absence of a written objection within one month of "
+"receipt of the invoice, the customer is deemed to acknowledge that they are "
+"a taxable person required to file periodic returns. If this condition is not "
+"met, the customer will be liable for the payment of the tax, interest, and "
+"penalties due in relation to this condition."
+msgstr ""
+"反向徵收：若客戶在收到發票後一個月內未有提出書面反對，客戶將被視為承認自己為"
+"納稅人，須定期提交稅務申報。若客戶未能滿足此條件，須承擔因此而產生的稅款、利"
+"息及罰款。"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#, python-format
 msgid "Rounding"
 msgstr "四捨五入"
 
@@ -919,6 +962,13 @@ msgstr "供應商的增值稅編號似乎無效。其格式應為：NO179728982M
 #, python-format
 msgid "The VAT of the %s should be prefixed with its country code."
 msgstr "增值稅 %s應加上其國家代碼。"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_common.py:0
+#, python-format
+msgid "The bank account couldn't be fetched: %s"
+msgstr "未能讀取銀行賬戶資訊：%s"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -1012,6 +1062,13 @@ msgid "UBL/CII File"
 msgstr "UBL/CII 檔案"
 
 #. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "Ungrouped lines from %s"
+msgstr "已將資料行從 %s 取消分組"
+
+#. module: account_edi_ubl_cii
 #: model:ir.model.fields,help:account_edi_ubl_cii.field_res_partner__peppol_endpoint
 #: model:ir.model.fields,help:account_edi_ubl_cii.field_res_users__peppol_endpoint
 msgid ""
@@ -1021,10 +1078,24 @@ msgstr "BIS 賬單 3.0 及其衍生產品使用的唯一標識符，又稱為「
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "Unknown partner"
+msgstr "未知的合作夥伴"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
 #: code:addons/account_edi_ubl_cii/wizard/account_move_send.py:0
 #, python-format
 msgid "Unsupported file type via %s"
-msgstr ""
+msgstr "%s 不支援檔案類型"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "Untaxed"
+msgstr "未連稅"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
@@ -1042,6 +1113,28 @@ msgstr "XRechnung CIUS"
 
 #. module: account_edi_ubl_cii
 #. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "You can only (un)group lines of a draft invoice"
+msgstr "只限草稿發票的資料行，才可分組/取消分組。"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid ""
+"You can only (un)group lines of an invoice not linked to a purchase order"
+msgstr "只限未連結至採購訂單的發票，其資料行才可進行分組/取消分組。"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_move.py:0
+#, python-format
+msgid "You can only group lines of an invoice"
+msgstr "只限發票的資料行，才可進行分組。"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
 #: code:addons/account_edi_ubl_cii/models/account_edi_xml_cii_facturx.py:0
 #, python-format
 msgid ""
@@ -1051,6 +1144,11 @@ msgid ""
 msgstr ""
 "每個發票資料行應至少包含一項稅費。[BR-CO-04] - 每個發票行 (BG-25) 應依照已開"
 "立發票項目的增值稅類別代碼 (BT-151) 進行分類。"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__ubl_cii_format__zugferd
+msgid "ZUGFeRD (CII)"
+msgstr "ZUGFeRD (CII)"
 
 #. module: account_edi_ubl_cii
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
@@ -1066,3 +1164,13 @@ msgstr "fx"
 #: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.account_invoice_pdfa_3_facturx_metadata
 msgid "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
 msgstr "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
+
+#~ msgid "EN 16931"
+#~ msgstr "EN 16931"
+
+#, python-format
+#~ msgid "Articles 226 items 11 to 15 Directive 2006/112/EN"
+#~ msgstr "指令 2006/112/EN 第 226 條，第 11 至 15 項目"
+
+#~ msgid "1.0"
+#~ msgstr "1.0"

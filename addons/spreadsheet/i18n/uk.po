@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-22 18:37+0000\n"
-"PO-Revision-Date: 2026-01-24 17:01+0000\n"
+"POT-Creation-Date: 2026-04-24 17:38+0000\n"
+"PO-Revision-Date: 2026-07-15 19:04+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Ukrainian <https://translate.odoo.com/projects/odoo-17/"
 "spreadsheet/uk/>\n"
@@ -22,11 +22,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
-"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && "
-"(n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && "
-"(n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 ))"
-" ? 2: 3);\n"
-"X-Generator: Weblate 5.14.3\n"
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -122,23 +121,19 @@ msgstr ""
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"(1) Search starting at first item. \n"
-"      (-1) Search starting at last item. \n"
-"      (2) Perform a binary search that relies on lookup_array being sorted "
-"in ascending order. If not sorted, invalid results will be returned. \n"
-"      (-2) Perform a binary search that relies on lookup_array being sorted "
-"in descending order. If not sorted, invalid results will be returned.\n"
-"      "
+"(1) Search starting at first item.       (-1) Search starting at last "
+"item.       (2) Perform a binary search that relies on lookup_array being "
+"sorted in ascending order. If not sorted, invalid results will be "
+"returned.       (-2) Perform a binary search that relies on lookup_array "
+"being sorted in descending order. If not sorted, invalid results will be "
+"returned.      "
 msgstr ""
-"(1) Пошук, починаючи з першого елемента.\n"
-"(-1) Пошук, починаючи з останнього елемента.\n"
-"(2) Виконайте подвійний пошук, який покладається на lookup_array, сортований "
-"у порядку зростання. Якщо не відсортовано, будуть повернуті недійсні "
-"результати.\n"
-"(-2) Виконати подвійний пошук, який покладається на lookup_array, сортований "
-"у порядку спадання. Якщо не відсортовано, будуть повернуті недійсні "
-"результати.\n"
-"      "
+"(1) Пошук, починаючи з першого елемента. (-1) Пошук, починаючи з останнього "
+"елемента. (2) Виконайте бінарний пошук, який спирається на сортування "
+"lookup_array у порядку зростання. Якщо не відсортовано, будуть повернуті "
+"недійсні результати. (-2) Виконайте бінарний пошук, який спирається на "
+"сортування lookup_array у порядку спадання. Якщо не відсортовано, будуть "
+"повернуті недійсні результати."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -188,6 +183,13 @@ msgstr "2 колонки"
 #, python-format
 msgid "2 rows"
 msgstr "2 рядки"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "A"
+msgstr "A"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -1888,7 +1890,7 @@ msgstr "Конвертує вказаний рядок у верхній рег�
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Converts a string to a numeric value."
-msgstr ""
+msgstr "Конвертує рядок на числове значення."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3179,26 +3181,10 @@ msgstr "Функція [[FUNCTION_NAME]] не знайшла жодного ре
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
-"pairs."
-msgstr "Функція [[FUNCTION_NAME]] очікує criteria_range і створення у парі."
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension"
-msgstr ""
-"Функція [[FUNCTION_NAME]] очікує criteria_range, щоб мати однаковий вимір"
-
-#. module: spreadsheet
-#. odoo-javascript
-#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a boolean."
 msgstr ""
+"Функція [[FUNCTION_NAME]] очікує числових значень для %s, але отримує "
+"бульове."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3207,6 +3193,7 @@ msgstr ""
 msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got a string."
 msgstr ""
+"Функція [[FUNCTION_NAME]] очікує числових значень для %s, але отримує рядок."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3216,6 +3203,8 @@ msgid ""
 "Function [[FUNCTION_NAME]] expects number values for %s, but got an empty "
 "value."
 msgstr ""
+"Функція [[FUNCTION_NAME]] очікує числові значення для %s, але отримує "
+"порожнє значення."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -3606,11 +3595,10 @@ msgstr "У значенні [[FUNCTION_NAME]] не можливо знайти '
 #, python-format
 msgid ""
 "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must be "
-"equal to the \n"
-"        number of rows of the second matrix (%s)."
+"equal to the         number of rows of the second matrix (%s)."
 msgstr ""
-"В [[FUNCTION_NAME]], кількість стовпців першої матриці (%s) має дорівнювати\n"
-"       кількості рядків другої матриці (%s)."
+"В [[FUNCTION_NAME]], кількість стовпців першої матриці (%s) має дорівнювати "
+"кількості рядків другої матриці (%s)."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -6700,21 +6688,21 @@ msgstr "База (%s) повинна бути між 2 та 36 включно."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The base (%s) must be strictly positive."
-msgstr ""
+msgstr "База (%s) повинна бути строго позитивною."
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The base must be different from 1."
-msgstr ""
+msgstr "Основа має бути відмінною від 1."
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The base of the logarithm."
-msgstr ""
+msgstr "Основа логарифма."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -7367,6 +7355,8 @@ msgid ""
 "The first and second arguments of [[FUNCTION_NAME]] must be non-empty "
 "matrices."
 msgstr ""
+"Перший та другий аргументи функції [[FUNCTION_NAME]] мають бути непорожніми "
+"матрицями."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -7872,7 +7862,7 @@ msgstr "Логарифм числа, основа e (число Ейлера)."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The logarithm of a number, for a given base."
-msgstr ""
+msgstr "Логарифм числа за заданою основою."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -9665,7 +9655,7 @@ msgstr "Значення, для якого потрібно обчислити 
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The value for which to calculate the logarithm."
-msgstr ""
+msgstr "Значення, для якого потрібно обчислити логарифм."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -10641,7 +10631,7 @@ msgstr "Зміна значення від ключового значення"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Value for parameter %s is missing in [[FUNCTION_NAME]]."
-msgstr ""
+msgstr "Значення параметра %s відсутні в [[FUNCTION_NAME]]."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11014,14 +11004,12 @@ msgstr "Розділяти текст навколо кожного символ
 #, python-format
 msgid ""
 "Whether or not to remove empty text messages from the split results. The "
-"default behavior is to treat \n"
-"        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
-"values are added between consecutive delimiters."
+"default behavior is to treat         consecutive delimiters as one (if "
+"TRUE). If FALSE, empty cells values are added between consecutive delimiters."
 msgstr ""
 "Чи видаляти порожні текстові повідомлення з результатів розділення. За "
-"замовчуванням послідовні роздільники\n"
-" розглядаються як один (якщо TRUE). Якщо FALSE, значення порожніх клітинок "
-"додаються між послідовними роздільниками."
+"замовчуванням послідовні роздільники трактуються як один (якщо TRUE). Якщо "
+"FALSE, значення порожніх комірок додаються між послідовними роздільниками."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11039,12 +11027,10 @@ msgstr ""
 #, python-format
 msgid ""
 "Whether the array should be scanned by column. True scans the array by "
-"column and false (default) \n"
-"      scans the array by row."
+"column and false (default)       scans the array by row."
 msgstr ""
-"Чи слід сканувати масив за стовпцями. True сканує масив за стовпцями, а "
-"false (за замовчуванням) \n"
-"сканує масив за рядками."
+"Чи слід сканувати масив по стовпцях. Значення True сканує масив по стовпцях, "
+"а false (за замовчуванням) сканує масив по рядках."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11250,6 +11236,13 @@ msgstr "Ви не маєте прав на експорт даних. Зверн
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Z"
+msgstr "Z"
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/pivot/pivot_functions.js:0
 #, python-format
 msgid "[[FUNCTION_NAME]] cannot be called from the spreadsheet."
@@ -11291,6 +11284,8 @@ msgid ""
 "[[FUNCTION_NAME]] expects the provided values of %(argName)s to be a non-"
 "empty matrix."
 msgstr ""
+"Функція [[FUNCTION_NAME]] очікує, що надані значення %(argName)s будуть "
+"непорожньою матрицею."
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11467,7 +11462,7 @@ msgstr "start_date (%s) має бути на або до end_date (%s)."
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "the string to be converted"
-msgstr ""
+msgstr "рядок, який потрібно перетворити"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11485,10 +11480,84 @@ msgstr "завтра"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/public_readonly_app/public_readonly.xml:0
+#, python-format
+msgid "x"
+msgstr "x"
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "yesterday"
 msgstr "вчора"
+
+#, python-format
+#~ msgid ""
+#~ "(1) Search starting at first item. \n"
+#~ "      (-1) Search starting at last item. \n"
+#~ "      (2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in ascending order. If not sorted, invalid results will be "
+#~ "returned. \n"
+#~ "      (-2) Perform a binary search that relies on lookup_array being "
+#~ "sorted in descending order. If not sorted, invalid results will be "
+#~ "returned.\n"
+#~ "      "
+#~ msgstr ""
+#~ "(1) Пошук, починаючи з першого елемента.\n"
+#~ "(-1) Пошук, починаючи з останнього елемента.\n"
+#~ "(2) Виконайте подвійний пошук, який покладається на lookup_array, "
+#~ "сортований у порядку зростання. Якщо не відсортовано, будуть повернуті "
+#~ "недійсні результати.\n"
+#~ "(-2) Виконати подвійний пошук, який покладається на lookup_array, "
+#~ "сортований у порядку спадання. Якщо не відсортовано, будуть повернуті "
+#~ "недійсні результати.\n"
+#~ "      "
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in "
+#~ "pairs."
+#~ msgstr "Функція [[FUNCTION_NAME]] очікує criteria_range і створення у парі."
+
+#, python-format
+#~ msgid ""
+#~ "Function [[FUNCTION_NAME]] expects criteria_range to have the same "
+#~ "dimension"
+#~ msgstr ""
+#~ "Функція [[FUNCTION_NAME]] очікує criteria_range, щоб мати однаковий вимір"
+
+#, python-format
+#~ msgid ""
+#~ "In [[FUNCTION_NAME]], the number of columns of the first matrix (%s) must "
+#~ "be equal to the \n"
+#~ "        number of rows of the second matrix (%s)."
+#~ msgstr ""
+#~ "В [[FUNCTION_NAME]], кількість стовпців першої матриці (%s) має "
+#~ "дорівнювати\n"
+#~ "       кількості рядків другої матриці (%s)."
+
+#, python-format
+#~ msgid ""
+#~ "Whether or not to remove empty text messages from the split results. The "
+#~ "default behavior is to treat \n"
+#~ "        consecutive delimiters as one (if TRUE). If FALSE, empty cells "
+#~ "values are added between consecutive delimiters."
+#~ msgstr ""
+#~ "Чи видаляти порожні текстові повідомлення з результатів розділення. За "
+#~ "замовчуванням послідовні роздільники\n"
+#~ " розглядаються як один (якщо TRUE). Якщо FALSE, значення порожніх "
+#~ "клітинок додаються між послідовними роздільниками."
+
+#, python-format
+#~ msgid ""
+#~ "Whether the array should be scanned by column. True scans the array by "
+#~ "column and false (default) \n"
+#~ "      scans the array by row."
+#~ msgstr ""
+#~ "Чи слід сканувати масив за стовпцями. True сканує масив за стовпцями, а "
+#~ "false (за замовчуванням) \n"
+#~ "сканує масив за рядками."
 
 #, python-format
 #~ msgid ""

@@ -1,4 +1,5 @@
 import re
+from base64 import b64encode
 from functools import wraps
 from io import BytesIO
 from unittest.mock import MagicMock, patch
@@ -94,7 +95,7 @@ def mock_requests_request(method, url, *args, **kwargs):
                 response = xml.read()
         elif '/pdf' in url:
             with file_open('l10n_tr_nilvera_einvoice/tests/test_files/fetching/invoice.pdf', 'rb') as pdf:
-                response = pdf.read()
+                response = b64encode(pdf.read()).decode()
         else:
             response.get.return_value = [
                 {'UUID': 'invoice_uuid'},
@@ -132,7 +133,7 @@ class TrNilveraCommon(AccountTestInvoicingCommon):
             'state_id': cls.env.ref('base.state_tr_81').id,
             'country_code': 'TR',
             'ref': 'Tax Office',
-            'bank_ids': [Command.create({'acc_number': 'TR0123456789'})],
+            'bank_ids': [Command.create({'acc_number': 'TR0123456789', 'allow_out_payment': True})],
         })
 
         cls.partner = cls.env['res.partner'].create({

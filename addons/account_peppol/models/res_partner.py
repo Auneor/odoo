@@ -102,12 +102,15 @@ class ResPartner(models.Model):
     @api.model
     def _peppol_lookup_participant(self, edi_identification):
         """NAPTR DNS peppol participant lookup through Odoo's Peppol proxy"""
-        if (edi_mode := self.env.company._get_peppol_edi_mode()) == 'demo':
+        company = self.env.company
+        if (edi_mode := company._get_peppol_edi_mode()) == 'demo':
             return
 
-        origin = self.env['account_edi_proxy_client.user']._get_proxy_urls()['peppol'][edi_mode]
+        proxy_type = company._get_peppol_proxy_type()
+        origin = self.env['account_edi_proxy_client.user']._get_proxy_urls()[proxy_type][edi_mode]
         query = parse.urlencode({'peppol_identifier': edi_identification.lower()})
-        endpoint = f'{origin}/api/peppol/1/lookup?{query}'
+        api_endpoint = self.env['account_edi_proxy_client.user']._get_peppol_proxy_endpoint('1/lookup', proxy_type=proxy_type)
+        endpoint = f'{origin}{api_endpoint}?{query}'
 
         try:
             response = requests.get(endpoint, timeout=TIMEOUT)
@@ -151,13 +154,13 @@ class ResPartner(models.Model):
             if not service_href:
                 return True
 
-            access_point_contact = True
+            access_point_description = True
             with contextlib.suppress(requests.exceptions.RequestException, etree.XMLSyntaxError):
                 response = requests.get(service_href, timeout=TIMEOUT)
                 if response.status_code == 200:
                     access_point_info = etree.fromstring(response.content)
-                    access_point_contact = access_point_info.findtext('.//{*}TechnicalContactUrl') or access_point_info.findtext('.//{*}TechnicalInformationUrl')
-            return access_point_contact
+                    access_point_description = access_point_info.findtext('.//{*}ServiceDescription')
+            return access_point_description
 
         return self._check_document_type_support(participant_info, ubl_cii_format)
 
@@ -167,6 +170,25 @@ class ResPartner(models.Model):
             service_document_id = service.get('document_id')
             if service_document_id and expected_customization_id in service_document_id:
                 return True
+        return False
+
+    @handle_demo
+    def _can_receive_self_billing(self, ubl_cii_format):
+        """Look up whether the partner can receive the self-billing variant of the
+        given EDI format on Peppol.
+        """
+        edi_identification = f'{self.peppol_eas}:{self.peppol_endpoint}'.lower()
+        participant_info = self._peppol_lookup_participant(edi_identification)
+
+        if not participant_info:
+            return False
+
+        if expected_customization_id := self.env['account.edi.xml.ubl_bis3']._get_selfbilling_customization_ids().get(ubl_cii_format):
+            for service in participant_info.get('services', []):
+                service_document_id = service.get('document_id')
+                if service_document_id and expected_customization_id in service_document_id:
+                    return True
+
         return False
 
     @api.onchange('ubl_cii_format', 'peppol_endpoint', 'peppol_eas')
@@ -180,7 +202,7 @@ class ResPartner(models.Model):
     @api.depends('ubl_cii_format')
     def _compute_is_peppol_edi_format(self):
         for partner in self:
-            partner.is_peppol_edi_format = partner.ubl_cii_format not in (False, 'facturx', 'oioubl_201', 'ciusro', 'ubl_tr')
+            partner.is_peppol_edi_format = partner.ubl_cii_format not in (False, 'zugferd', 'facturx', 'oioubl_201', 'ciusro', 'ubl_tr')
 
     @api.depends('peppol_eas', 'peppol_endpoint', 'ubl_cii_format')
     def _compute_account_peppol_is_endpoint_valid(self):
@@ -203,6 +225,18 @@ class ResPartner(models.Model):
                 partner.account_peppol_verification_label = 'valid'
             else:
                 partner.account_peppol_verification_label = 'not_valid'
+
+    def _compute_peppol_endpoint(self):
+        # Don't recompute on partners corresponding to registered companies
+        partners_not_to_recompute = self._get_partners_to_skip_peppol_computation()
+        partners_to_recompute = self.browse([partner.id for partner in self if partner._origin not in partners_not_to_recompute])
+        super(ResPartner, partners_to_recompute)._compute_peppol_endpoint()
+
+    def _compute_peppol_eas(self):
+        # Don't recompute on partners corresponding to registered companies
+        partners_not_to_recompute = self._get_partners_to_skip_peppol_computation()
+        partners_to_recompute = self.browse([partner.id for partner in self if partner._origin not in partners_not_to_recompute])
+        super(ResPartner, partners_to_recompute)._compute_peppol_eas()
 
     # -------------------------------------------------------------------------
     # BUSINESS ACTIONS
@@ -230,16 +264,16 @@ class ResPartner(models.Model):
                 'account_peppol_is_endpoint_valid': bool(self._check_peppol_participant_exists(edi_identification, ubl_cii_format=self.ubl_cii_format)),
             })
 
-            if (
-                not self.account_peppol_is_endpoint_valid
-                and self.peppol_eas in ('0208', '9925')
-            ):
-                inverse_eas = '9925' if self.peppol_eas == '0208' else '0208'
-                inverse_endpoint = f'BE{self.peppol_endpoint}' if self.peppol_eas == '0208' else self.peppol_endpoint[2:]
-                if self._check_peppol_participant_exists(f'{inverse_eas}:{inverse_endpoint}', ubl_cii_format=self.ubl_cii_format):
-                    self.write({
-                        'peppol_eas': inverse_eas,
-                        'peppol_endpoint': inverse_endpoint,
-                        'account_peppol_is_endpoint_valid': True,
-                    })
         return False
+
+    def _get_partners_to_skip_peppol_computation(self):
+        return self.env['res.company'].search([
+            ('account_peppol_proxy_state', 'in', ['pending', 'active']),
+        ]).mapped('partner_id')
+
+    @api.model
+    def _get_peppol_proxy_identification_info(self, peppol_eas, peppol_endpoint):
+        # Return tuple `(proxy_type, peppol_identifier)` where `peppol_identifier` is in form "{scheme}:{identifier}"
+        if not peppol_eas or not peppol_endpoint:
+            return None, ""
+        return 'peppol', f"{peppol_eas}:{peppol_endpoint}"
