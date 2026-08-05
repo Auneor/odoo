@@ -1,29 +1,31 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* stock
+# * stock
 #
 # Translators:
 # Martin Trigaux, 2024
 # Kseina Tyshchenko, 2024
 # Wil Odoo, 2024
 # Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2025
-#
+# Weblate <noreply-mt-weblate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-03 18:38+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2025\n"
-"Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
+"PO-Revision-Date: 2026-08-01 16:09+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Ukrainian <https://translate.odoo.com/projects/odoo-17/stock/"
+"uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. module: stock
 #. odoo-python
@@ -58,6 +60,8 @@ msgid ""
 "\n"
 "Package: %s"
 msgstr ""
+"\n"
+"Упаковка: %s"
 
 #. module: stock
 #. odoo-python
@@ -1677,6 +1681,8 @@ msgid ""
 "Changing the Lot/Serial number for move lines with different products is not "
 "allowed."
 msgstr ""
+"Зміна номера партії/серійного номера для рядка переміщення з різними "
+"товарами не дозволяється."
 
 #. module: stock
 #. odoo-python
@@ -1859,6 +1865,9 @@ msgid ""
 "                                    <strong>(please go to Home&gt;Apps to "
 "install)</strong>"
 msgstr ""
+"Розрахуйте вартість доставки та відправте її через DHL<br/>\n"
+"                                    <strong>(перейдіть на Головну&gt;Додати "
+"до встановлення)</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -1877,6 +1886,9 @@ msgid ""
 "                                    <strong>(please go to Home&gt;Apps to "
 "install)</strong>"
 msgstr ""
+"Розрахуйте вартість доставки та відправте її за допомогою FedEx<br/>\n"
+"                                    <strong>(перейдіть на Головну&gt;Додати "
+"до встановлення)</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -1900,6 +1912,9 @@ msgid ""
 "                                    <strong>(please go to Home&gt;Apps to "
 "install)</strong>"
 msgstr ""
+"Розрахуйте вартість доставки та відправте її за допомогою UPS<br/>\n"
+"                                    <strong>(перейдіть на Головну&gt;Додати "
+"до встановлення)</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -1913,6 +1928,9 @@ msgid ""
 "                                    <strong>(please go to Home&gt;Apps to "
 "install)</strong>"
 msgstr ""
+"Розрахуйте вартість доставки та відправте її через USPS<br/>\n"
+"                                    <strong>(перейдіть на Головну&gt;Додатки "
+"до встановлення)</strong>"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -2414,7 +2432,7 @@ msgstr "DEMO_UOM"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "DHL Connector"
-msgstr ""
+msgstr "Конектор DHL"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_config_settings__module_delivery_dhl
@@ -6560,6 +6578,8 @@ msgid ""
 "Press the \"New\" button to define the quantity for a product in your stock "
 "or import quantities from a spreadsheet via the Actions menu"
 msgstr ""
+"Натисніть кнопку «Нове», щоб визначити кількість товару на вашому складі, "
+"або імпортуйте кількість з електронної таблиці через меню «Дії»"
 
 #. module: stock
 #. odoo-javascript
@@ -9046,7 +9066,7 @@ msgstr ""
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
 msgid "The Lot/Serial number (%s) is linked to another product."
-msgstr ""
+msgstr "Партійний/серійний номер (%s) привʼязаний до іншого товару."
 
 #. module: stock
 #. odoo-python
@@ -9056,6 +9076,8 @@ msgid ""
 "The Picking Operations report has been deleted so you cannot print at this "
 "time unless the report is restored."
 msgstr ""
+"Звіт про комплектування видалено, тому наразі ви не можете його "
+"роздрукувати, доки звіт не буде відновлено."
 
 #. module: stock
 #. odoo-python
@@ -11056,7 +11078,7 @@ msgstr ""
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
 msgid "You cannot duplicate stock quants."
-msgstr ""
+msgstr "Ви не можете дублювати кількість запасів."
 
 #. module: stock
 #. odoo-python
@@ -11175,6 +11197,9 @@ msgid ""
 "You cannot validate a transfer if no quantities are reserved, or if only non-"
 "reserved moves are picked.To force the transfer, encode quantities."
 msgstr ""
+"Ви не можете підтвердити переміщення, якщо не зарезервовано жодної кількості "
+"або якщо вибрано лише незарезервовані переміщення. Щоб примусово здійснити "
+"переміщення, закодуйте кількості."
 
 #. module: stock
 #. odoo-python

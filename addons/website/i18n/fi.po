@@ -45,8 +45,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-24 17:36+0000\n"
-"PO-Revision-Date: 2026-06-25 14:22+0000\n"
+"POT-Creation-Date: 2026-07-24 17:38+0000\n"
+"PO-Revision-Date: 2026-07-30 09:39+0000\n"
 "Last-Translator: Saara Hakanen <sahak@odoo.com>\n"
 "Language-Team: Finnish <https://translate.odoo.com/projects/odoo-17/website/"
 "fi/>\n"
@@ -1362,7 +1362,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form
 msgid "<span class=\"s_website_form_label_content\">Your Company</span>"
-msgstr "<span class=\"s_website_form_label_content\">Yritys</span>"
+msgstr "<span class=\"s_website_form_label_content\">Yrityksesi</span>"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form
@@ -1370,7 +1370,7 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Your Email</span>\n"
 "                                <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
-"<span class=\"s_website_form_label_content\">Sähköpostiosoitteesi</span>\n"
+"<span class=\"s_website_form_label_content\">Sähköpostisi</span>\n"
 "                                <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website
@@ -2837,7 +2837,7 @@ msgstr "CDN perus-URL"
 #: model:ir.model.fields,field_description:website.field_res_config_settings__cdn_filters
 #: model:ir.model.fields,field_description:website.field_website__cdn_filters
 msgid "CDN Filters"
-msgstr "CDN suotimet"
+msgstr "CDN-suodattimet"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -5090,7 +5090,7 @@ msgstr "Lisäosan näkymä"
 #: model:ir.model.fields,field_description:website.field_website_controller_page__xml_id
 #: model:ir.model.fields,field_description:website.field_website_page__xml_id
 msgid "External ID"
-msgstr "Ulkoinen ID"
+msgstr "Ulkoinen tunnus"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_popup_options
@@ -5812,6 +5812,15 @@ msgstr "Google kartta"
 #: model:ir.model.fields,field_description:website.field_website__google_maps_api_key
 msgid "Google Maps API Key"
 msgstr "Google Maps API Key"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/js/editor/snippets.editor.js:0
+#, python-format
+msgid ""
+"Google Maps configuration has changed. Please reload the page for changes to "
+"take effect."
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__google_search_console
@@ -7514,7 +7523,7 @@ msgstr "Ohjattu livechat-toiminto"
 #: code:addons/website/static/src/xml/website.background.video.xml:0
 #, python-format
 msgid "Loading..."
-msgstr "Lataa..."
+msgstr "Ladataan..."
 
 #. module: website
 #. odoo-javascript
@@ -9244,14 +9253,14 @@ msgstr "Pinterest"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_form_options
 msgid "Placeholder"
-msgstr "Paikanpitäjä"
+msgstr "Paikkamerkki"
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/xml/website.editor.xml:0
 #, python-format
-msgid "Places API"
-msgstr "Places API"
+msgid "Places API (NEW)"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
@@ -11237,14 +11246,14 @@ msgstr "Kerro, mikä on tämän ominaisuuden arvo <br/>asiakkaalle."
 #: model_terms:ir.ui.view,arch_db:website.s_masonry_block_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Template"
-msgstr "Malli"
+msgstr "Mallipohja"
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/components/resource_editor/resource_editor.js:0
 #, python-format
 msgid "Template ID: %s"
-msgstr "Mallipohjan ID: %s"
+msgstr "Mallipohjan tunnus: %s"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.qweb_500
@@ -11795,9 +11804,9 @@ msgid ""
 "This is a simple hero unit, a simple jumbotron-style component for calling "
 "extra attention to featured content or information."
 msgstr ""
-"Tämä on yksinkertainen sankariyksikkö. Yksinkertainen jumbotron-tyylinen "
-"komponentti, jolla kiinnitetään erityistä huomiota esillä olevaan sisältöön "
-"tai tietoon."
+"Tämä on yksinkertainen hero-yksikkö. Yksinkertainen jumbotron-tyylinen "
+"komponentti, jolla kiinnitetään huomiota esillä olevaan sisältöön tai "
+"tietoon."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -13418,8 +13427,8 @@ msgid ""
 "Write a quote here from one of your customers. Quotes are a great way to "
 "build confidence in your products or services."
 msgstr ""
-"Kirjoita tähän lainaus joltakin asiakkaaltasi. Lainaukset ovat hyvä tapa "
-"lisätä luottamusta tuotteisiisi tai palveluihisi."
+"Kirjoita tähän sitaatti asiakkaaltasi. Asiakaspalaute on hyvä tapa lisätä "
+"luottamusta tuotteisiisi tai palveluihisi."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs
@@ -14270,7 +14279,7 @@ msgstr "puhelin"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.color_combinations_debug_view
 msgid "placeholder"
-msgstr "paikanvaraaja"
+msgstr "paikkamerkki"
 
 #. module: website
 #. odoo-javascript
@@ -14416,6 +14425,10 @@ msgstr "⌙ Erotin"
 #: model_terms:ir.ui.view,arch_db:website.s_google_map_options
 msgid "⌙ Style"
 msgstr "⌙ Tyyli"
+
+#, python-format
+#~ msgid "Places API"
+#~ msgstr "Places API"
 
 #~ msgid "$10.50"
 #~ msgstr "$10.50"
