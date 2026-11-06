@@ -14,6 +14,10 @@ from odoo.tools.misc import format_date
 from odoo.tools.translate import _lt
 
 from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
+try:
+    from odoo.addons.account_audit_trail.models.mail_message import bypass_token
+except ImportError:
+    bypass_token = None
 from odoo.addons.l10n_fr_pdp.models.account_peppol_response import PEPPOL_TO_PDP_STATUS, PDP_STATUSES
 from odoo.addons.l10n_fr_pdp.tools.demo_utils import handle_demo
 from odoo.addons.l10n_fr_pdp.utils.cdar import _parse_datetime_node as _parse_cdar_datetime_node
@@ -31,11 +35,14 @@ CDAR_NSMAP = MappingProxyType({
 
 PROCESS_CONDITION_CODE_TO_RESPONSE_CODE_PDP = MappingProxyType({
     '200': 'submitted',  # PA-S (sending platform)
+    '201': 'sent',  # PA-S
     '202': 'AB',  # PA-R (receiving platform)
     '203': 'made_available',  # PA-R
     '204': 'in_hand',  # R (receiver)
     '205': 'AP',  # R
     '207': 'contested',  # R
+    '208': 'suspended',  # R
+    '209': 'completed',  # S
     '210': 'refused',  # R
     '211': 'payment_sent',  # R
     '212': 'PD',  # S (sender)
@@ -60,6 +67,13 @@ PROCESS_CONDITION_CODE_TO_RESPONSE_CODE = MappingProxyType({
     **PROCESS_CONDITION_CODE_TO_RESPONSE_CODE_PPF,
 })
 
+FLOW_10_PPF_STATUS = MappingProxyType({
+    '300': ('completed', _lt("Deposited")),
+    '301': ('error', _lt("Rejected")),
+    '500': ('sent', _lt("Admissible")),
+    '501': ('error', _lt("Inadmissible")),
+})
+
 STATUS_TO_PROCESS_CONDITION_CODE_PDP = MappingProxyType({status: code for code, status in PROCESS_CONDITION_CODE_TO_RESPONSE_CODE_PDP.items()})
 
 PAYMENT_TYPE_CODES = MappingProxyType({
@@ -74,7 +88,6 @@ PAYMENT_TYPE_CODES = MappingProxyType({
 DEMO_ENDPOINTS = {  # pdp reports specific endpoints not already mocked by l10n_fr_pdp demo utils
     'pilot_phase': lambda params: {
         'annuaire_line_start_date': fields.Date.today(),
-        'pilot_phase': params['pdp_pilot_phase'],
     },
     'participant_status': lambda params: {},
     'send_document': lambda params: {
@@ -151,14 +164,6 @@ class AccountEdiProxyClientUser(models.Model):
             raise UserError(_("Please fill the Peppol Endpoint field with scheme '%s' on the company partner.", scheme))
         return f'0225:{company.pdp_identifier}'
 
-    def _get_company_details(self):
-        self.ensure_one()
-        result = super()._get_company_details()
-        if self.proxy_type != 'pdp':
-            return result
-        result['pdp_pilot_phase'] = self.company_id.l10n_fr_pdp_pilot_phase
-        return result
-
     @handle_demo
     def _register_proxy_user(self, company, proxy_type, edi_mode):
         """ Override to avoid using the deprecated route on IAP """
@@ -193,6 +198,7 @@ class AccountEdiProxyClientUser(models.Model):
                     'peppol_identifier': peppol_identifier,
                     'public_key': base64.b64encode(public_pem).decode(),
                     'auth_url_hash': company.pdp_authentication_uuid,
+                    'mobility_registration': True,
                 })
             except AccountEdiProxyError as e:
                 raise UserError(e.message)
@@ -209,6 +215,13 @@ class AccountEdiProxyClientUser(models.Model):
             'private_key': base64.b64encode(private_pem),
             'refresh_token': response['refresh_token'],
         })
+
+    def _get_peppol_supported_document_types(self):
+        self.ensure_one()
+        supported_types = super()._get_peppol_supported_document_types()
+        if self.proxy_type == 'pdp':
+            supported_types.update(self.company_id._pdp_supported_document_types())
+        return supported_types
 
     @handle_demo
     def _peppol_register_receiver(self):
@@ -250,8 +263,6 @@ class AccountEdiProxyClientUser(models.Model):
             company = self.sudo().company_id
             company.l10n_fr_pdp_annuaire_start_date = fields.Date.to_date(annuaire_start_date)
             company._force_update_l10n_fr_f10_moves()
-        if 'pilot_phase' in proxy_user:
-            self.sudo().company_id.l10n_fr_pdp_pilot_phase = proxy_user['pilot_phase']
 
     def _peppol_get_new_documents(self):
         if 'pdp_einvoicing_chatter_messages' not in self.env.context:
@@ -264,12 +275,16 @@ class AccountEdiProxyClientUser(models.Model):
 
         job_count = batch_size or BATCH_SIZE
         need_retrigger = False
+        params = {
+            'limit': job_count
+        }
         for edi_user in self:
             edi_user = edi_user.with_company(edi_user.company_id)
             try:
                 # Request all messages that haven't been acknowledged
                 messages = edi_user._call_peppol_proxy(
                     endpoint=edi_user._get_peppol_proxy_endpoint('1/get_all_ppf_documents'),
+                    params=params
                 )
             except AccountEdiProxyError as e:
                 _logger.error('Error while receiving the document from Peppol Proxy: %s', e.message)
@@ -282,8 +297,8 @@ class AccountEdiProxyClientUser(models.Model):
             if not message_uuids:
                 continue
 
-            need_retrigger = need_retrigger or len(message_uuids) > job_count
-            message_uuids = message_uuids[:job_count]
+            has_more = messages.get('has_more', False)
+            need_retrigger = need_retrigger or has_more
 
             # Retrieve attachments for filtered messages
             all_messages = edi_user._call_peppol_proxy(
@@ -410,7 +425,8 @@ class AccountEdiProxyClientUser(models.Model):
                 bodies={move.id: log_message for move in reference_moves},
             )
             return
-        self.env['account.peppol.response'].create([
+        response_info = dict(zip(reference_moves, response.get('messages')))
+        responses = self.env['account.peppol.response'].create([
             {
                 'peppol_message_uuid': message['message_uuid'],
                 'response_code': status,
@@ -424,13 +440,26 @@ class AccountEdiProxyClientUser(models.Model):
                 'pdp_issue_date': issue_time,
                 'pdp_flow_number': '2',
             }
-            for message, move in zip(response.get('messages'), reference_moves)
+            for move, message in response_info.items()
+            if message.get('message_uuid')
         ])
-        log_message = _(
+
+        sent_moves = responses.move_id
+        unsent_moves = reference_moves - sent_moves
+
+        sent_message = _(
             "A French e-invoicing response with Response Code '%(status)s' was sent to the Approved Platform.",
             status=status_string,
         )
-        reference_moves._message_log_batch(bodies={move.id: log_message for move in reference_moves})
+        unsent_message = _(
+            "A French e-invoicing response with Response Code '%(status)s' could not be sent to the Approved Platform.",
+            status=status_string,
+        )
+        message_bodies = {
+            **{move.id: sent_message for move in sent_moves},
+            **{move.id: unsent_message + (Markup('<br/>') + error if (error := response_info.get(move, {}).get('error', {}).get('message')) else "") for move in unsent_moves},
+        }
+        reference_moves._message_log_batch(bodies=message_bodies)
 
     def _peppol_process_new_messages(self, messages):
         self.ensure_one()
@@ -454,8 +483,11 @@ class AccountEdiProxyClientUser(models.Model):
             if not origin_move:
                 _logger.warning('The French e-invoicing response with UUID %s could not be imported: Original journal entry (UUID %s) not found.', uid, origin_uuid)
                 continue
-            if self._pdp_import_incoming_response(uid, content, origin_move[:1]):
-                processed_uuids.append(uid)
+            try:
+                self._pdp_import_incoming_response(uid, content, origin_move[:1])
+            except Exception:  # noqa: BLE001
+                _logger.exception('Error while processing the PDP Response with uid %s', uid)
+            processed_uuids.append(uid)
 
         return other_uuids + processed_uuids, moves
 
@@ -480,7 +512,11 @@ class AccountEdiProxyClientUser(models.Model):
                 if not origin_uuid or not origin_move:
                     _logger.warning('[Flow 1] The tax extract from the PPF with UUID %s could not be imported: Original journal entry (UUID %s) not found.', uid, origin_uuid)
                     continue
-                processed_messages[uid] = self._pdp_import_tax_extract(uid, content, origin_move[:1])
+
+                try:
+                    processed_messages[uid] = self._pdp_import_tax_extract(uid, content, origin_move[:1])
+                except Exception:  # noqa: BLE001
+                    _logger.exception('Error while processing the PPF message tax_extract with uid %s', uid)
             elif content['document_type'] == 'CrossDomainAcknowledgementAndResponse' and flow_number in ('1', '6'):
                 processed_messages[uid] = self.env['account.peppol.response']
                 origin_uuid = content['origin_peppol_message_uuid']
@@ -490,11 +526,20 @@ class AccountEdiProxyClientUser(models.Model):
                     _logger.warning('[Flow %s] The %s response from the PPF with UUID %s could not be imported: Original journal entry (UUID %s) not found.', flow_number, flow_description, uid, origin_uuid)
                     continue
                 if content['direction'] == 'outgoing':
-                    processed_messages[uid] = self._pdp_import_outgoing_response(uid, content, origin_move[:1])
+                    try:
+                        processed_messages[uid] = self._pdp_import_outgoing_response(uid, content, origin_move[:1])
+                    except Exception:  # noqa: BLE001
+                        _logger.exception('Error while processing the PPF message response with uid %s', uid)
                 else:
-                    processed_messages[uid] = self._pdp_import_incoming_response(uid, content, origin_move[:1])
+                    try:
+                        processed_messages[uid] = self._pdp_import_incoming_response(uid, content, origin_move[:1])
+                    except Exception:  # noqa: BLE001
+                        _logger.exception('Error while processing the PPF message response with uid %s', uid)
             elif content['document_type'] == 'CrossDomainAcknowledgementAndResponse' and flow_number == '10':
-                self._pdp_import_flow_10_response(uid, content)
+                try:
+                    self._pdp_import_flow_10_response(uid, content)
+                except Exception:  # noqa: BLE001
+                    _logger.exception('Error while processing the PPF message report response with uid %s', uid)
                 processed_messages[uid] = True
 
         return processed_messages
@@ -508,7 +553,7 @@ class AccountEdiProxyClientUser(models.Model):
             return
         document = self._peppol_get_decoded_document(content)
 
-        flow.payload_id = self.env['ir.attachment'].create({
+        self.env['ir.attachment'].create({
             'name': f'message.{uuid}.xml',
             'raw': document,
             'res_model': flow._name,
@@ -516,6 +561,31 @@ class AccountEdiProxyClientUser(models.Model):
             'type': 'binary',
             'mimetype': 'application/xml',
         })
+
+        response_info = self._pdp_extract_response_info(document)
+        status_code = response_info['process_condition_code']
+        status_details = self._pdp_status_infos_to_details(response_info['status_infos'])
+        state, status_label = FLOW_10_PPF_STATUS.get(status_code, ('error', _lt("Unknown")))
+        flow.write({
+            'state': state,
+            'transport_status': status_code,
+            'transport_message': '\n\n'.join(status_details) or False,
+        })
+
+        message = _(
+            "PPF Flow 10 response: %(status)s (%(status_code)s).",
+            status=status_label,
+            status_code=status_code or _("unknown"),
+        )
+        if status_details:
+            message = Markup("%s<br/>%s") % (
+                message,
+                Markup("<br/><br/>").join(
+                    self._pdp_format_multiline_value(detail)
+                    for detail in status_details
+                ),
+            )
+        flow._message_post_once(message)
 
     def _pdp_import_tax_extract(self, uuid, content, origin_move):
         if not origin_move:
@@ -595,13 +665,13 @@ class AccountEdiProxyClientUser(models.Model):
                 main_message = _(
                     "Failed to process incoming response for status %(ref_status_info)s with Response Code '%(response_code)s' issued on %(issue_date)s.",
                     ref_status_info=(ref_status_code_description or origin_ref_status_code),
-                    response_code=response_code_description,
+                    response_code=response_code_description or response_code,
                     issue_date=format_date(self.env, issue_date),
                 )
             else:
                 main_message = _(
                     "Failed to process incoming response with Response Code '%(response_code)s' issued on %(issue_date)s.",
-                    response_code=response_code_description,
+                    response_code=response_code_description or response_code,
                     issue_date=format_date(self.env, issue_date),
                 )
             self._pdp_log_einvoicing_chatter(
@@ -772,8 +842,9 @@ class AccountEdiProxyClientUser(models.Model):
             move._message_log(body=body)
             return
 
-        if message:
-            message.body = body
+        if message and bypass_token:
+            # replace the message that was just created to avoid giving conflicting states
+            message.with_context(bypass_audit=bypass_token).body = body
         else:
             message = move._message_log(body=body)
         chatter_messages[move] = (message, logged_details)
@@ -825,24 +896,39 @@ class AccountEdiProxyClientUser(models.Model):
             return "pdf", "application/pdf"
         return super()._peppol_get_filetype(content)
 
+    def _get_type_code(self, attachment, content):
+        # Factur-X format embeds the XML in a PDF file.
+        if content['document_type'] == 'Factur-X':
+            embedded_files = attachment._unwrap_edi_attachments()
+            xml_tree = next(filter(lambda file: file['type'] == 'xml', embedded_files))['xml_tree']
+            return xml_tree.findtext('.//{*}ExchangedDocument/{*}TypeCode')
+        return super()._get_type_code(attachment, content)
+
+    @api.model
+    def _pdp_get_send_lifecycles_moves(self, company, limit):
+        return self.env['account.move'].search(
+            [
+                ('company_id', '=', company.id),
+                ('pdp_ppf_move_state', 'in', ['sent', 'done']),
+                ('pdp_lifecycle_residual', '!=', 0.0),
+            ],
+            limit=limit,
+        )
+
     def _pdp_send_lifecycles(self, batch_size=None):
         job_count = batch_size or BATCH_SIZE
         need_retrigger = False
         for edi_user in self:
             edi_user = edi_user.with_company(edi_user.company_id)
             company = edi_user.company_id
-            collected_moves = self.env['account.move'].search(
-                [
-                    ('company_id', '=', company.id),
-                    ('pdp_ppf_move_state', 'in', ['sent', 'done']),
-                    ('pdp_lifecycle_residual', '!=', 0.0),
-                ],
-                limit=job_count + 1,
-            )
+            collected_moves = self._pdp_get_send_lifecycles_moves(company, job_count + 1)
             move_count = len(collected_moves)
             _logger.info("At least %s moves need payment lifecycles in company '%s'.", move_count, company.name)
             if not collected_moves:
                 continue
+            existing_responses = collected_moves.peppol_response_ids.filtered(
+                lambda r: r.response_code == 'PD' and r.pdp_flow_number == '2',
+            )
             need_retrigger = need_retrigger or move_count > job_count
             try:
                 wizard = self.env['pdp.response.wizard'].create({
@@ -853,6 +939,31 @@ class AccountEdiProxyClientUser(models.Model):
             except Exception:  # noqa: BLE001
                 _logger.exception('Error while sending payment lifecycles: %s')
                 continue
+            finally:
+                # Make sure that we only try to send the information once.
+                # I.e. we want to avoid the issue that the cron sends the same info again and again.
+                # This could happen if the `button_send` fails to create the 'account.peppol.response' records.
+                # Then the `pdp_lifecycle_residual` remains unchanged and we will send the same info again.
+                # This can i.e. lead to problems on IAP side in case of repeated retriggers.
+                new_responses = (collected_moves.peppol_response_ids - existing_responses).filtered(
+                    lambda r: r.response_code == 'PD' and r.pdp_flow_number == '2',
+                )
+                failed_moves = collected_moves - new_responses.move_id
+                self.env['account.peppol.response'].create([
+                    {
+                        'peppol_message_uuid': False,
+                        'peppol_state': 'error',
+                        'response_code': 'PD',
+                        'move_id': move.id,
+                        'pdp_payment_info': self.env['pdp.response.wizard']._get_payments_data(move),
+                        'pdp_issue_date': fields.Datetime.now(),
+                        'pdp_flow_number': '2',
+                    }
+                    for move in failed_moves
+                ])
+                message_bodies = {move.id: _("The payment info could not be sent to the Approved Platform") for move in collected_moves}
+                failed_moves._message_log_batch(bodies=message_bodies)
+
         if need_retrigger:
             self.env.ref('l10n_fr_pdp.ir_cron_pdp_send_lifecycles')._trigger()
 

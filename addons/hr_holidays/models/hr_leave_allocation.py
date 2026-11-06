@@ -6,6 +6,7 @@
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta
 from calendar import monthrange
+from pytz import timezone
 
 from odoo import api, fields, models, _
 from odoo.addons.resource.models.utils import HOURS_PER_DAY
@@ -477,7 +478,6 @@ class HolidaysAllocation(models.Model):
             leaves_taken = employee_days_per_allocation[origin.employee_id][origin.holiday_status_id][origin]['leaves_taken']
             return leaves_taken
 
-        date_to = date_to or fields.Date.today()
         already_accrued = {allocation.id: allocation.already_accrued or (allocation.number_of_days != 0 and allocation.accrual_plan_id.accrued_gain_time == 'start') for allocation in self}
         first_allocation = _("""This allocation have already ran once, any modification won't be effective to the days allocated to the employee. If you need to change the configuration of the allocation, delete and create a new one.""")
         for allocation in self:
@@ -486,6 +486,9 @@ class HolidaysAllocation(models.Model):
             level_ids = allocation.accrual_plan_id.level_ids.sorted('sequence')
             if not level_ids:
                 continue
+            if not date_to:
+                employee_tz = timezone(allocation.employee_id.tz or 'UTC')
+                date_to = datetime.now(employee_tz).date()
             # "cache" leaves taken, as it gets recomputed every time allocation.number_of_days is assigned to. Without this,
             # every loop will take 1+ second. It can be removed if computes don't chain in a way to always reassign accrual plan
             # even if the value doesn't change. This is the best performance atm.
@@ -871,6 +874,13 @@ class HolidaysAllocation(models.Model):
                 mail_activity_automation_skip=True
             ).create(allocation_vals)
             accrual_allocations = allocations.filtered(lambda a: a.allocation_type == 'accrual')
+            for date_from, allocation in accrual_allocations.grouped('date_from').items():
+                allocation.write({
+                    'lastcall': date_from,
+                    'nextcall': False,
+                    'already_accrued': False,
+                    'number_of_days': 0.0,
+                })
             for date_to, allocation in accrual_allocations.grouped('date_to').items():
                 date_to = min(date_to, date.today()) if date_to else False
                 allocation._process_accrual_plans(date_to)

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-03 18:38+0000\n"
-"PO-Revision-Date: 2026-08-01 16:11+0000\n"
+"PO-Revision-Date: 2026-10-01 14:20+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Slovak <https://translate.odoo.com/projects/odoo-17/stock/sk/>"
 "\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && "
 "n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 2026.6.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. module: stock
 #. odoo-python
@@ -488,8 +488,8 @@ msgstr ""
 "                <t t-set=\"multiple_carrier_tracking\" t-"
 "value=\"object.get_multiple_carrier_tracking()\"></t>\n"
 "                <t t-if=\"multiple_carrier_tracking\">\n"
-"                    <t t-foreach=\"multiple_carrier_tracking\" t-"
-"as=\"line\">\n"
+"                    <t t-foreach=\"multiple_carrier_tracking\" t-as=\"line\">"
+"\n"
 "                        <br><a t-att-href=\"line[1]\" target=\"_blank\" t-"
 "out=\"line[0] or ''\"></a>\n"
 "                    </t>\n"
@@ -3830,8 +3830,7 @@ msgstr "História"
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_picking_type__reservation_method
 msgid "How products in transfers of this operation type should be reserved."
-msgstr ""
-"Ako by sa mali rezervovať produkty na presunoch s týmto typom operácie."
+msgstr "Ako by sa mali rezervovať produkty na presunoch s týmto typom operácie."
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_lot_label_layout__id
@@ -3933,8 +3932,7 @@ msgstr "Ak označené, potom majú niektoré správy chybu dodania."
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move__propagate_cancel
 msgid "If checked, when this move is cancelled, cancel the linked move too"
-msgstr ""
-"Ak zaškrtnuté, keď je tento pohyb zrušený, zruší sa aj pridružený pohyb"
+msgstr "Ak zaškrtnuté, keď je tento pohyb zrušený, zruší sa aj pridružený pohyb"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move_line__result_package_id
@@ -8980,8 +8978,8 @@ msgid ""
 "Technical Field used to decide whether the button \"Allocation\" should be "
 "displayed."
 msgstr ""
-"Technické pole, ktoré sa používa na rozhodnutie, či sa má zobraziť tlačidlo "
-"„Pridelenie“."
+"Technické pole, ktoré sa používa na rozhodnutie, či sa má zobraziť tlačidlo „"
+"Pridelenie“."
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_warehouse
@@ -11087,8 +11085,8 @@ msgstr "Nemôžete rozdeliť koncept presunu. Najskôr musí byť potvrdený."
 #, python-format
 msgid "You cannot split a stock move that has been set to 'Done' or 'Cancel'."
 msgstr ""
-"Nie je možné rozdeliť skladový pohyb, ktorý bol nastavený na „Hotové“ alebo "
-"„Zrušené\"."
+"Nie je možné rozdeliť skladový pohyb, ktorý bol nastavený na „Hotové“ alebo „"
+"Zrušené\"."
 
 #. module: stock
 #. odoo-python
@@ -11292,8 +11290,8 @@ msgstr ""
 "zásob.\n"
 "           Vyberte množstvo, ktoré chcete nakúpiť alebo vyrobiť, a spustite "
 "objednávky jedným kliknutím.\n"
-"           Ak chcete v budúcnosti ušetriť čas, nastavte pravidlá ako "
-"„automatické“."
+"           Ak chcete v budúcnosti ušetriť čas, nastavte pravidlá ako „"
+"automatické“."
 
 #. module: stock
 #: model_terms:res.company,lunch_notify_message:stock.res_company_1
@@ -11454,7 +11452,7 @@ msgstr "je"
 #. module: stock
 #: model:product.removal,method:stock.removal_least_packages
 msgid "least_packages"
-msgstr ""
+msgstr "least_packages"
 
 #. module: stock
 #: model:product.removal,method:stock.removal_lifo
@@ -11493,7 +11491,7 @@ msgstr "spracované namiesto"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_report_view_graph
 msgid "report_stock_quantity_graph"
-msgstr ""
+msgstr "report_stock_quantity_graph"
 
 #. module: stock
 #. odoo-javascript
@@ -11512,7 +11510,7 @@ msgstr "treba doplniť zásobu"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_product_category__filter_for_stock_putaway_rule
 msgid "stock.putaway.rule"
-msgstr ""
+msgstr "stock.putaway.rule"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move__warehouse_id

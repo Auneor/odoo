@@ -313,6 +313,30 @@ class TestAccountEdiUblCii(AccountTestInvoicingCommon):
         self.assertEqual(bill.message_main_attachment_id.mimetype, "application/pdf", "The Bill should have a main attachment")
         self.assertEqual(len(bill.message_ids.mapped('attachment_ids')), 4, "All nested attachments should be attached to a chatter message")
 
+    def test_import_empty_embedded_document(self):
+        """
+        Importing an xml with an empty embedded document (self-closing EmbeddedDocumentBinaryObject) should skip it instead of failing the import
+        """
+        self.env.ref('base.EUR').active = True  # EUR might not be active and is used in the xml testing file
+        file_path = f"{self.test_module}/tests/test_files/bis3_bill_example.xml"
+        with file_open(file_path, 'rb') as file:
+            xml_tree = etree.fromstring(file.read())
+
+        # Keep a single additional document, without any content
+        additional_doc, *other_docs = xml_tree.findall('./{*}AdditionalDocumentReference')
+        for doc in other_docs:
+            xml_tree.remove(doc)
+        additional_doc.find('./{*}Attachment/{*}EmbeddedDocumentBinaryObject').text = None
+        xml_attachment = self.env['ir.attachment'].create({
+            'mimetype': 'application/xml',
+            'name': 'test_invoice.xml',
+            'raw': etree.tostring(xml_tree),
+        })
+
+        bill = self.import_attachment(xml_attachment, self.company_data['default_journal_purchase'])
+        self.assertRecordValues(bill.invoice_line_ids, [{'quantity': 1.0, 'price_unit': 657.0}])
+        self.assertFalse(bill.attachment_ids.filtered(lambda att: att.mimetype == 'application/pdf'))
+
     def test_peppol_eas_endpoint_compute(self):
         partner = self.partner_a
         partner.vat = 'DE123456788'
@@ -437,6 +461,31 @@ class TestAccountEdiUblCii(AccountTestInvoicingCommon):
         end_date = xml_tree.find('.//ram:ApplicableHeaderTradeSettlement/ram:BillingSpecifiedPeriod/ram:EndDateTime/udt:DateTimeString', self.namespaces)
         self.assertEqual(start_date.text, '20241201')
         self.assertEqual(end_date.text, '20241231')
+
+    def test_unit_price_keeps_its_decimals_in_cii_xml(self):
+        """ The Factur-X unit price keeps the Product Price decimals. """
+        self.env['decimal.precision'].search([('name', '=', 'Product Price')], limit=1).digits = 4
+
+        invoice = self.env['account.move'].create({
+            'partner_id': self.partner_a.id,
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [Command.create({
+                'product_id': self.product_a.id,
+                'quantity': 400.0,
+                'price_unit': 0.487,
+            })],
+        })
+        invoice.action_post()
+
+        xml_tree = etree.fromstring(self.env['account.edi.xml.cii']._export_invoice(invoice)[0])
+        line = xml_tree.find('.//ram:IncludedSupplyChainTradeLineItem', self.namespaces)
+        net_price = line.find('.//ram:NetPriceProductTradePrice/ram:ChargeAmount', self.namespaces)
+        quantity = line.find('.//ram:BilledQuantity', self.namespaces)
+        line_total = line.find('.//ram:SpecifiedTradeSettlementLineMonetarySummation/ram:LineTotalAmount', self.namespaces)
+
+        self.assertEqual(net_price.text, '0.487')
+        # The billed quantity times the net unit price gives the line total back.
+        self.assertEqual(round(float(quantity.text) * float(net_price.text), 2), float(line_total.text))
 
     def test_export_import_billing_dates(self):
         if self.env.ref('base.module_account_accountant').state != 'installed':
@@ -1461,3 +1510,43 @@ comment-->1000.0</TaxExclusiveAmount></xpath>"""
              '43.50', '43.50', '87.00', '87.00', '87.00', '87.00', '87.00']
         )
         self.assertEqual(root.findtext('./{*}LegalMonetaryTotal/{*}LineExtensionAmount'), '651.39')
+
+    def test_facturx_export_non_eu_supplier_to_eu_customer(self):
+        """Test that a non-EU/EEA supplier (e.g. Switzerland) exporting goods to an EU customer
+        is classified as 'G' / VATEX-EU-G (export outside the EU).
+        """
+        switzerland = self.env.ref("base.ch")
+        germany = self.env.ref("base.de")
+
+        company = self.env.company
+        company.country_id = switzerland.id
+        company.vat = 'CHE-123.456.788 MWST'
+
+        self.partner_a.country_id = germany.id
+        self.partner_a.ubl_cii_format = 'facturx'
+
+        tax_0_export = self.env['account.tax'].create({
+            'name': 'CH Export 0%',
+            'amount': 0.0,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+        })
+
+        invoice = self.env['account.move'].create({
+            'partner_id': self.partner_a.id,
+            'move_type': 'out_invoice',
+            'invoice_date': fields.Date.from_string('2025-12-22'),
+            'invoice_line_ids': [Command.create({
+                'product_id': self.product_a.id,
+                'tax_ids': [Command.set(tax_0_export.ids)],
+            })],
+        })
+        invoice.action_post()
+
+        xml_bytes = self.env["account.edi.xml.cii"]._export_invoice(invoice)[0]
+        xml_tree = etree.fromstring(xml_bytes)
+
+        category_code = xml_tree.find('.//ram:ApplicableTradeTax/ram:CategoryCode', self.namespaces)
+        exemption_reason_code = xml_tree.find('.//ram:ApplicableTradeTax/ram:ExemptionReasonCode', self.namespaces)
+        self.assertEqual(category_code.text, 'G')
+        self.assertEqual(exemption_reason_code.text, 'VATEX-EU-G')

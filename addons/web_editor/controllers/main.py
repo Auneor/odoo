@@ -556,6 +556,9 @@ class Web_Editor(http.Controller):
         Creates a modified copy of an attachment and returns its image_src to be
         inserted into the DOM.
         """
+        format_error_msg = _("Uploaded image's format is not supported. Try with: %s", ', '.join(SUPPORTED_IMAGE_MIMETYPES.values()))
+        if mimetype and mimetype not in SUPPORTED_IMAGE_MIMETYPES:
+            return {'error': format_error_msg}
         self._clean_context()
         attachment = request.env['ir.attachment'].browse(attachment.id)
 
@@ -594,6 +597,11 @@ class Web_Editor(http.Controller):
             attachment = attachment.sudo().copy(fields).sudo(False)
             # Override mimetype with SUPERUSER if it was forced to plain text
             if attachment.mimetype == 'text/plain' != fields['mimetype']:
+                mimetype_exempt = any(
+                    request.env.user.has_group(group) for group in attachment._get_mimetype_exempt_groups()
+                )
+                if not mimetype_exempt:
+                    request.env['ir.ui.view'].sudo(False).check_access_rights('write')
                 attachment.with_user(SUPERUSER_ID).mimetype = fields['mimetype']
 
         if alt_data:
@@ -862,6 +870,8 @@ class Web_Editor(http.Controller):
 
     @http.route("/web_editor/generate_text", type="json", auth="user")
     def generate_text(self, prompt, conversation_history):
+        if not request.env.user._is_internal():
+            raise AccessError(_("Only internal users can use AI text generation."))
         try:
             IrConfigParameter = request.env['ir.config_parameter'].sudo()
             olg_api_endpoint = IrConfigParameter.get_param('web_editor.olg_api_endpoint', DEFAULT_OLG_ENDPOINT)
