@@ -41,6 +41,36 @@ class AccountAccount(models.Model):
             start, _ = date_utils.get_fiscal_year(end, fiscal_day, fiscal_month)
         return start, end
 
+    @api.model
+    def _get_spreadsheet_code_prefix_domain(self, company_id, codes):
+        """Return a domain matching the accounts whose code starts with one of ``codes``.
+
+        ``code`` is computed from the company-dependent ``code_store``: each
+        ``('code', '=like', ...)`` leaf becomes its own ``id IN (SELECT ...)``
+        subquery doing a full scan of account_account, so the previous
+        ``Domain.OR`` of one leaf per code scaled linearly with the number of
+        codes (ODOO.ACCOUNT.GROUP can pass thousands of them). Resolve the
+        prefixes once, on the small account table, and return literal ids.
+        """
+        if not codes:
+            return Domain.FALSE
+        Account = self.env["account.account"].with_company(company_id)
+        root_accounts = Account.with_company(Account.env.company.root_id).with_context(active_test=False).sudo()
+        if any(char in code for code in codes for char in '%_\\'):
+            # LIKE wildcards in a code: keep the =like semantics, in a single subquery
+            return Domain("id", "in", root_accounts._search(Domain.OR(
+                Domain("code_store", "=like", f"{code}%")
+                for code in codes
+            )))
+        prefixes = set(codes)
+        lengths = sorted({len(prefix) for prefix in prefixes})
+        account_ids = [
+            account.id
+            for account in root_accounts.search_fetch([('code_store', '!=', False)], ['code'])
+            if account.code and any(account.code[:length] in prefixes for length in lengths)
+        ]
+        return Domain("id", "in", account_ids)
+
     def _build_spreadsheet_formula_domain(self, formula_params, default_accounts=False):
         company_id = formula_params.get("company_id") or self.env.company.id
         company = self.env["res.company"].browse(company_id)
@@ -70,10 +100,7 @@ class AccountAccount(models.Model):
                 default_domain = Domain('account_type', 'in', ['liability_payable', 'asset_receivable'])
 
             # It is more optimized to (like) search for code directly in account.account than in account_move_line
-            code_domain = Domain.OR(
-                Domain("code", "=like", f"{code}%")
-                for code in codes
-            )
+            code_domain = self._get_spreadsheet_code_prefix_domain(company_id, codes)
             account_domain = code_domain | default_domain
             account_ids = self.env["account.account"].with_company(company_id).search(account_domain).ids
             account_id_domain = [("account_id", "in", account_ids)]
